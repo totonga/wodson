@@ -1,0 +1,551 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: wodson feasability study
+  contact:
+    name: andreas.krantz@gmx.de
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+consumes:
+  - application/json
+produces:
+  - application/json
+schemes:
+  - http
+  - https
+paths:
+  /querydata:
+    get:
+      tags:
+        - Api
+        - Data
+      description: get data from server by using query
+      operationId: app.get_querydata
+      parameters:
+        - name: simple_query
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/SimpleQueryStructure'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/DataMatrix'
+        '404':
+          description: not conneted
+      security:
+        - session_auth:
+            - read_data
+    post:
+      tags:
+        - Api
+        - Data
+      description: get data from server by using query. The post is added because some serers do not accept get with body
+      operationId: app.post_querydata
+      parameters:
+        - name: simple_query
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/SimpleQueryStructure'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/DataMatrix'
+        '404':
+          description: not conneted
+      security:
+        - session_auth:
+            - read_data
+  /writedata:
+    post:
+      tags:
+        - Api
+        - Data
+        - Transaction
+      description: update or create instances
+      operationId: app.post_writedata
+      parameters:
+        - name: data_matrix
+          in: body
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+          schema:
+            $ref: '#/definitions/DataMatrix'
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_schema
+    put:
+      tags:
+        - Api
+        - Data
+        - Transaction
+      description: update or create instances
+      operationId: app.put_writedata
+      parameters:
+        - name: data_matrix
+          in: body
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_schema
+  /transaction:
+    put:
+      tags:
+        - Api
+        - Transaction
+      description: commit transaction opend by a command that uses transaction
+      operationId: app.put_transaction
+      responses:
+        '200':
+          description: Successful committed transaction
+        '405':
+          description: Invalid input. Transaction was not opened
+      security:
+        - session_auth:
+            - write_data
+    delete:
+      tags:
+        - Api
+        - Transaction
+      description: rollback transaction opend by a command that uses transaction
+      operationId: app.delete_transaction
+      responses:
+        '200':
+          description: Successful rolled back transaction
+        '405':
+          description: Invalid input. Transaction was not opened
+      security:
+        - session_auth:
+            - write_data
+  /schema:
+    get:
+      tags:
+        - Api
+        - Info
+        - Schema
+      description: get schema/model information
+      operationId: app.get_schema
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/ServerSchema'
+        '404':
+          description: not conneted
+      security:
+        - session_auth:
+            - read_data
+    put:
+      tags:
+        - Api
+        - Schema
+        - Transaction
+      description: update or extend the schema/model
+      operationId: app.put_schema
+      parameters:
+        - name: schema
+          in: body
+          schema:
+            $ref: '#/definitions/ServerSchema'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_schema
+    delete:
+      tags:
+        - Api
+        - Schema
+        - Transaction
+      description: delete elements in the schema/model
+      operationId: app.delete_schema
+      parameters:
+        - name: schema
+          in: body
+          schema:
+            $ref: '#/definitions/ServerSchema'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_schema
+  /context:
+    get:
+      tags:
+        - Api
+        - Info
+      description: get information about current context
+      operationId: app.get_context
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/NameValuePairs'
+        '404':
+          description: not conneted
+      security:
+        - session_auth:
+            - read_data
+    put:
+      tags:
+        - Api
+        - Init
+      operationId: app.put_context
+      parameters:
+        - name: parameters
+          in: body
+          schema:
+            $ref: '#/definitions/NameValuePairs'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - write_data
+securityDefinitions:
+  session_auth:
+    type: oauth2
+    authorizationUrl: 'http://swagger.asam.net/api/oauth/dialog'
+    flow: implicit
+    scopes:
+      write_data: write data to server
+      read_data: read data from server
+      modify_schema: capable to change server schema
+definitions:
+  SimpleQueryStructure:
+    type: object
+    properties:
+      entityName:
+        type: string
+        description: name of the appication element
+        example: MeaQuantity
+      conditions:
+        type: array
+        items:
+          type: string
+          description: query condition or barckets and conjunction operators.
+          example: 'measurement.name=PK_*'
+      attributes:
+        type: array
+        items:
+          type: string
+          description: attribute path. asterics or empty array can be used to get all attributes
+          example: measurement.name
+      orderBy:
+        type: array
+        items:
+          type: string
+          description: 'attribute path that may contain warping ASCENDING, DESCENDING'
+          example: ASCENDING(name)
+      groupBy:
+        type: array
+        items:
+          type: string
+          description: attribute path
+          example: name
+      maxCount:
+        type: integer
+        format: int64
+        example: 1000
+      skipCount:
+        type: integer
+        format: int64
+        example: 0
+      vectorSkipCount:
+        type: integer
+        format: int64
+        example: 0
+      vectorMaxCount:
+        type: integer
+        format: int64
+        example: 10000
+  NameValuePairs:
+    type: array
+    items:
+      title: Parameter
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of the name-value pair
+          example: USER
+        value:
+          type: string
+          description: value of the name-value pair
+          example: system
+  ServerSchema:
+    type: object
+    properties:
+      enumerations:
+        type: array
+        items:
+          title: Enumeration
+          type: object
+          properties:
+            name:
+              type: string
+            entries:
+              type: array
+              items:
+                title: EnumItem
+                type: object
+                properties:
+                  name:
+                    type: string
+                  index:
+                    type: integer
+                    format: int32
+      entities:
+        type: array
+        items:
+          title: Entity
+          type: object
+          properties:
+            name:
+              type: string
+            baseName:
+              type: string
+            aid:
+              type: integer
+              format: int64
+            attributes:
+              type: array
+              items:
+                title: Attribute
+                type: object
+                properties:
+                  name:
+                    type: string
+                  baseName:
+                    type: string
+                  dataType:
+                    type: string
+                    enum:
+                      - DT_UNKNOWN
+                      - DT_STRING
+                      - DT_SHORT
+                      - DT_FLOAT
+                      - DT_BOOLEAN
+                      - DT_BYTE
+                      - DT_LONG
+                      - DT_DOUBLE
+                      - DT_LONGLONG
+                      - DT_ID
+                      - DT_DATE
+                      - DT_BYTESTR
+                      - DT_BLOB
+                      - DT_COMPLEX
+                      - DT_DCOMPLEX
+                      - DS_STRING
+                      - DS_SHORT
+                      - DS_FLOAT
+                      - DS_BOOLEAN
+                      - DS_BYTE
+                      - DS_LONG
+                      - DS_DOUBLE
+                      - DS_LONGLONG
+                      - DS_COMPLEX
+                      - DS_DCOMPLEX
+                      - DS_ID
+                      - DS_DATE
+                      - DS_BYTESTR
+                      - DT_EXTERNALREFERENCE
+                      - DS_EXTERNALREFERENCE
+                      - DT_ENUM
+                      - DS_ENUM
+                  length:
+                    type: integer
+                    format: int64
+                  obligatory:
+                    type: boolean
+                  unique:
+                    type: boolean
+                  unitId:
+                    type: integer
+                    format: int64
+                  enumeration:
+                    type: string
+            relations:
+              type: array
+              items:
+                title: Relation
+                type: object
+                properties:
+                  name:
+                    type: string
+                  baseName:
+                    type: string
+                  inverseName:
+                    type: string
+                  inverseBaseName:
+                    type: string
+                  obligatory:
+                    type: boolean
+                  type:
+                    type: string
+                    enum:
+                      - 1-n
+                      - n-1
+                      - n-m
+                  kind:
+                    type: string
+                    enum:
+                      - FATHER_CHILD
+                      - INFO
+                  relEntityName:
+                    type: string
+                  relEntityBaseName:
+                    type: string
+  DataMatrix:
+    type: object
+    properties:
+      name:
+        type: string
+        example: MyInfoObj
+      baseName:
+        type: string
+        example: AoAny
+      skipCount:
+        type: integer
+        format: int64
+        example: 0
+      vectorSkipCount:
+        type: integer
+        format: int64
+        example: 0
+      columns:
+        type: array
+        items:
+          title: Column
+          type: object
+          properties:
+            name:
+              type: string
+            baseName:
+              type: string
+            aggregate:
+              type: string
+            values:
+              title: ValueUnion
+              type: object
+              properties:
+                dataType:
+                  type: string
+                  enum:
+                    - DT_UNKNOWN
+                    - DT_STRING
+                    - DT_SHORT
+                    - DT_FLOAT
+                    - DT_BOOLEAN
+                    - DT_BYTE
+                    - DT_LONG
+                    - DT_DOUBLE
+                    - DT_LONGLONG
+                    - DT_DATE
+                    - DT_BYTESTR
+                    - DT_COMPLEX
+                    - DT_DCOMPLEX
+                    - DS_STRING
+                    - DS_SHORT
+                    - DS_FLOAT
+                    - DS_BOOLEAN
+                    - DS_BYTE
+                    - DS_LONG
+                    - DS_DOUBLE
+                    - DS_LONGLONG
+                    - DS_COMPLEX
+                    - DS_DCOMPLEX
+                    - DS_DATE
+                    - DS_BYTESTR
+                    - DT_EXTERNALREFERENCE
+                    - DS_EXTERNALREFERENCE
+                    - DT_ENUM
+                    - DS_ENUM
+                strVal:
+                  type: array
+                  items:
+                    type: string
+                numVal:
+                  type: array
+                  items:
+                    type: number
+                dateVal:
+                  type: array
+                  items:
+                    type: string
+                    format: date-time
+                strSeq:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                numSeq:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: number
+                dateSeq:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                      format: date-time
+                unknownSeq:
+                  type: array
+                  items:
+                    title: TypedValueVector
+                    dataType:
+                      type: string
+                      enum:
+                        - DS_STRING
+                        - DS_SHORT
+                        - DS_FLOAT
+                        - DS_BOOLEAN
+                        - DS_BYTE
+                        - DS_LONG
+                        - DS_DOUBLE
+                        - DS_LONGLONG
+                        - DS_COMPLEX
+                        - DS_DCOMPLEX
+                        - DS_DATE
+                        - DS_BYTESTR
+                        - DS_EXTERNALREFERENCE
+                    strSeq:
+                      type: array
+                      items:
+                        type: string
+                    numSeq:
+                      type: array
+                      items:
+                        type: number
+                    dateSeq:
+                      type: array
+                      items:
+                        type: string
+                        format: date-time
