@@ -99,7 +99,7 @@ paths:
           schema:
             $ref: '#/definitions/DataMatrix'
         '404':
-          description: not conneted
+          description: not connected
       security:
         - session_auth:
             - read_data
@@ -108,7 +108,7 @@ paths:
       tags:
         - Api
         - Transaction
-      description: commit transaction opend by a command that uses transaction
+      description: commit transaction opened by a command that uses transaction
       operationId: app.put_transaction
       responses:
         '200':
@@ -146,7 +146,7 @@ paths:
           schema:
             $ref: '#/definitions/ServerSchema'
         '404':
-          description: not conneted
+          description: not connected
       security:
         - session_auth:
             - read_data
@@ -203,7 +203,7 @@ paths:
           schema:
             $ref: '#/definitions/NameValuePairs'
         '404':
-          description: not conneted
+          description: not connected
       security:
         - session_auth:
             - read_data
@@ -240,13 +240,13 @@ definitions:
     properties:
       entityName:
         type: string
-        description: name of the appication element
+        description: name of the application element or base element or string version of the aid. In case multiple elements are derived from this base element the first one is picked
         example: MeaQuantity
       conditions:
         type: array
         items:
           type: string
-          description: query condition or barckets and conjunction operators.
+          description: query condition or brackets and conjunction operators.
           example: 'measurement.name=PK_*'
       attributes:
         type: array

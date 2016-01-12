@@ -365,6 +365,14 @@ class CModel:
         elem = self.GetElem(aeName)
         return elem.aid
 
+    def GetElemEx(self, strVal):
+        rv = self.GetElem(strVal)
+        if rv is None:
+            rv = self.GetElemB(strVal)
+        if rv is None and strVal.isdigit():
+            rv = self.GetElemByAid(Int2LL(int(strVal)))
+        return rv
+
     def GetElem(self, aeName):
         for elem in self.model_.applElems:
             if aeName == elem.aeName:

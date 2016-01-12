@@ -72,6 +72,22 @@ curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"c
 }
 ```
 
+- Get all attributes of the first entity derived from this base type
+
+```json
+{
+	"entityName": "AoTest"
+}
+```
+
+- Get all attributes of the entity with the aid
+
+```json
+{
+	"entityName": "1"
+}
+```
+
 - Get maximal 10 rows of all attributes of the given entity
 
 ```json

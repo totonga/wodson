@@ -134,8 +134,8 @@ def get_data(simple_query):
 
     so = Session__()
     model = so.Model()
-    elem = model.GetElem(entityName)
-    result = so.GetInstancesExSimple(entityName, conditions, attributes, orderBy, groupBy, maxCount)
+    elem = model.GetElemEx(entityName)
+    result = so.GetInstancesExSimple(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
 
     rv = {}
     rv['name'] = elem.aeName
