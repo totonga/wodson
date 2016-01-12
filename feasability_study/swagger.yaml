@@ -15,13 +15,13 @@ schemes:
   - http
   - https
 paths:
-  /querydata:
+  /data:
     get:
       tags:
         - Api
         - Data
-      description: get data from server by using query
-      operationId: app.get_querydata
+      description: get data from server by using query.
+      operationId: app.get_data
       parameters:
         - name: simple_query
           in: body
@@ -38,36 +38,13 @@ paths:
       security:
         - session_auth:
             - read_data
-    post:
-      tags:
-        - Api
-        - Data
-      description: get data from server by using query. The post is added because some serers do not accept get with body
-      operationId: app.post_querydata
-      parameters:
-        - name: simple_query
-          in: body
-          type: string
-          schema:
-            $ref: '#/definitions/SimpleQueryStructure'
-      responses:
-        '200':
-          description: Successful response
-          schema:
-            $ref: '#/definitions/DataMatrix'
-        '404':
-          description: not conneted
-      security:
-        - session_auth:
-            - read_data
-  /writedata:
     post:
       tags:
         - Api
         - Data
         - Transaction
-      description: update or create instances
-      operationId: app.post_writedata
+      description: create instances
+      operationId: app.post_data
       parameters:
         - name: data_matrix
           in: body
@@ -88,8 +65,8 @@ paths:
         - Api
         - Data
         - Transaction
-      description: update or create instances
-      operationId: app.put_writedata
+      description: update instances
+      operationId: app.put_data
       parameters:
         - name: data_matrix
           in: body
@@ -103,6 +80,29 @@ paths:
       security:
         - session_auth:
             - modify_schema
+  /dataGP:
+    post:
+      tags:
+        - Workaround
+        - Data
+      description: get data from server by using query. The post is added because some serers do not accept get with body
+      operationId: app.post_dataGP
+      parameters:
+        - name: simple_query
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/SimpleQueryStructure'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/DataMatrix'
+        '404':
+          description: not conneted
+      security:
+        - session_auth:
+            - read_data
   /transaction:
     put:
       tags:

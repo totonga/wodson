@@ -109,17 +109,17 @@ def Session__():
 
     return session_obj__
 
-def post_writedata(data_matrix):
-    logging.info('create or update instances')
+def post_data(data_matrix):
+    logging.info('create instances')
 
     return {}, 200
 
-def put_writedata(data_matrix):
-    logging.info('create or update instances')
+def put_data(data_matrix):
+    logging.info('update instances')
 
     return NoContent, 200
 
-def get_querydata(simple_query):
+def get_data(simple_query):
     logging.info('retrieve data')
 
     entityName = simple_query['entityName']
@@ -218,8 +218,8 @@ def get_querydata(simple_query):
 
     return rv, 200
 
-def post_querydata(simple_query):
-    return get_querydata(simple_query)
+def post_dataGP(simple_query):
+    return get_data(simple_query)
 
 def put_transaction():
     logging.info('commit transaction')
