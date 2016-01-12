@@ -222,8 +222,10 @@ curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"c
 
 - delete an entity
 
+```json
 {
 	"entities": [{
 		"name": "MyAny"
 	}]
 }
+```
