@@ -1,0 +1,1134 @@
+module org{
+  module asam{
+    module ods{
+
+      interface AoFactory;
+      interface AoSession;
+      interface ApplicationAttribute;
+      interface ApplicationElement;
+      interface ApplicationRelation;
+      interface ApplicationStructure;
+      interface BaseAttribute;
+      interface BaseElement;
+      interface BaseRelation;
+      interface BaseStructure;
+      interface Blob;
+      interface Column;
+      interface InstanceElement;
+      interface InstanceElementIterator;
+      interface Measurement;
+      interface NameIterator;
+      interface NameValueIterator;
+      interface NameValueUnitIterator;
+      interface SMatLink;
+      interface SubMatrix;
+      interface ValueMatrix;
+      interface NameValueUnitIdIterator;
+      interface ApplElemAccess;
+      interface QueryEvaluator;
+      interface Query;
+      interface NameValueUnitSequenceIterator;
+      interface EnumerationDefinition;
+      interface ElemResultSetExtSeqIterator;
+      interface ODSFile;
+      interface ODSReadTransfer;
+      interface ODSWriteTransfer;
+
+      enum SeverityFlag {
+        SUCCESS,
+        INFORMATION,
+        WARNING,
+        ERROR
+      };
+
+      enum RelationType {
+        FATHER_CHILD,
+        INFO,
+        INHERITANCE
+      };
+
+      enum Relationship {
+        FATHER,
+        CHILD,
+        INFO_TO,
+        INFO_FROM,
+        INFO_REL,
+        SUPERTYPE,
+        SUBTYPE,
+        ALL_REL
+      };
+
+      enum DataType {
+        DT_UNKNOWN,
+        DT_STRING,
+        DT_SHORT,
+        DT_FLOAT,
+        DT_BOOLEAN,
+        DT_BYTE,
+        DT_LONG,
+        DT_DOUBLE,
+        DT_LONGLONG,
+        DT_ID,
+        DT_DATE,
+        DT_BYTESTR,
+        DT_BLOB,
+        DT_COMPLEX,
+        DT_DCOMPLEX,
+        DS_STRING,
+        DS_SHORT,
+        DS_FLOAT,
+        DS_BOOLEAN,
+        DS_BYTE,
+        DS_LONG,
+        DS_DOUBLE,
+        DS_LONGLONG,
+        DS_COMPLEX,
+        DS_DCOMPLEX,
+        DS_ID,
+        DS_DATE,
+        DS_BYTESTR,
+        DT_EXTERNALREFERENCE,
+        DS_EXTERNALREFERENCE,
+        DT_ENUM,
+        DS_ENUM
+      };
+
+      enum BuildUpFunction {
+        BUP_JOIN,
+        BUP_MERGE,
+        BUP_SORT
+      };
+
+      enum AttrType {
+        APPLATTR_ONLY,
+        INSTATTR_ONLY,
+        ALL
+      };
+
+      enum SetType {
+        APPEND,
+        INSERT,
+        UPDATE,
+        REMOVE
+      };
+
+      enum ErrorCode {
+        AO_UNKNOWN_ERROR,
+        AO_ACCESS_DENIED,
+        AO_BAD_OPERATION,
+        AO_BAD_PARAMETER,
+        AO_CONNECT_FAILED,
+        AO_CONNECT_REFUSED,
+        AO_CONNECTION_LOST,
+        AO_DUPLICATE_BASE_ATTRIBUTE,
+        AO_DUPLICATE_NAME,
+        AO_DUPLICATE_VALUE,
+        AO_HAS_INSTANCES,
+        AO_HAS_REFERENCES,
+        AO_IMPLEMENTATION_PROBLEM,
+        AO_INCOMPATIBLE_UNITS,
+        AO_INVALID_ASAM_PATH,
+        AO_INVALID_ATTRIBUTE_TYPE,
+        AO_INVALID_BASE_ELEMENT,
+        AO_INVALID_BASETYPE,
+        AO_INVALID_BUILDUP_FUNCTION,
+        AO_INVALID_COLUMN,
+        AO_INVALID_COUNT,
+        AO_INVALID_DATATYPE,
+        AO_INVALID_ELEMENT,
+        AO_INVALID_LENGTH,
+        AO_INVALID_ORDINALNUMBER,
+        AO_INVALID_RELATION,
+        AO_INVALID_RELATION_RANGE,
+        AO_INVALID_RELATION_TYPE,
+        AO_INVALID_RELATIONSHIP,
+        AO_INVALID_SET_TYPE,
+        AO_INVALID_SMATLINK,
+        AO_INVALID_SUBMATRIX,
+        AO_IS_BASE_ATTRIBUTE,
+        AO_IS_BASE_RELATION,
+        AO_IS_MEASUREMENT_MATRIX,
+        AO_MATH_ERROR,
+        AO_MISSING_APPLICATION_ELEMENT,
+        AO_MISSING_ATTRIBUTE,
+        AO_MISSING_RELATION,
+        AO_MISSING_VALUE,
+        AO_NO_MEMORY,
+        AO_NO_PATH_TO_ELEMENT,
+        AO_NOT_FOUND,
+        AO_NOT_IMPLEMENTED,
+        AO_NOT_UNIQUE,
+        AO_OPEN_MODE_NOT_SUPPORTED,
+        AO_SESSION_LIMIT_REACHED,
+        AO_SESSION_NOT_ACTIVE,
+        AO_TRANSACTION_ALREADY_ACTIVE,
+        AO_TRANSACTION_NOT_ACTIVE,
+        AO_HAS_BASE_RELATION,
+        AO_HAS_BASE_ATTRIBUTE,
+        AO_UNKNOWN_UNIT,
+        AO_NO_SCALING_COLUMN,
+        AO_QUERY_TYPE_INVALID,
+        AO_QUERY_INVALID,
+        AO_QUERY_PROCESSING_ERROR,
+        AO_QUERY_TIMEOUT_EXCEEDED,
+        AO_QUERY_INCOMPLETE,
+        AO_QUERY_INVALID_RESULTTYPE,
+        AO_INVALID_VALUEMATRIX_STRUCTURE,
+        AO_FILE_LOCKED,
+        AO_SYSTEM_PROBLEM
+      };
+
+      enum SelOpcode {
+        EQ,
+        NEQ,
+        LT,
+        GT,
+        LTE,
+        GTE,
+        INSET,
+        NOTINSET,
+        LIKE,
+        CI_EQ,
+        CI_NEQ,
+        CI_LT,
+        CI_GT,
+        CI_LTE,
+        CI_GTE,
+        CI_INSET,
+        CI_NOTINSET,
+        CI_LIKE,
+        IS_NULL,
+        IS_NOT_NULL,
+        NOTLIKE,
+        CI_NOTLIKE,
+        BETWEEN
+      };
+
+      enum SelOperator {
+        AND,
+        OR,
+        NOT,
+        OPEN,
+        CLOSE
+      };
+
+      enum RightsSet {
+        SET_RIGHT,
+        ADD_RIGHT,
+        REMOVE_RIGHT
+      };
+
+      enum QueryStatus {
+        COMPLETE,
+        INCOMPLETE
+      };
+
+      enum AggrFunc {
+        NONE,
+        COUNT,
+        DCOUNT,
+        MIN,
+        MAX,
+        AVG,
+        STDDEV,
+        SUM,
+        DISTINCT,
+        POINT
+      };
+
+      enum SelType {
+        SEL_VALUE_TYPE,
+        SEL_OPERATOR_TYPE
+      };
+
+      enum JoinType {
+        JTDEFAULT,
+        JTOUTER
+      };
+
+      enum ValueMatrixMode {
+        CALCULATED,
+        STORAGE
+      };
+
+      typedef string T_STRING;
+      typedef boolean T_BOOLEAN;
+      typedef short T_SHORT;
+      typedef float T_FLOAT;
+      typedef octet T_BYTE;
+      typedef long T_LONG;
+      typedef double T_DOUBLE;
+      typedef T_STRING Name;
+      typedef T_STRING Pattern;
+      typedef T_STRING BaseType;
+      typedef T_STRING T_DATE;
+      typedef Blob T_BLOB;
+      typedef sequence<T_BYTE> T_BYTESTR;
+      typedef sequence<T_BOOLEAN> S_BOOLEAN;
+      typedef sequence<T_BYTE> S_BYTE;
+      typedef sequence<T_DOUBLE> S_DOUBLE;
+      typedef sequence<T_FLOAT> S_FLOAT;
+      typedef sequence<T_LONG> S_LONG;
+      typedef sequence<T_SHORT> S_SHORT;
+      typedef sequence<T_STRING> S_STRING;
+      typedef sequence<BaseType> BaseTypeSequence;
+      typedef sequence<Name> NameSequence;
+      typedef sequence<Column> ColumnSequence;
+      typedef sequence<SMatLink> SMatLinkSequence;
+      typedef sequence<SubMatrix> SubMatrixSequence;
+      typedef sequence<T_DATE> S_DATE;
+      typedef sequence<T_BYTESTR> S_BYTESTR;
+      typedef sequence<S_STRING> SS_STRING;
+      typedef sequence<S_SHORT> SS_SHORT;
+      typedef sequence<S_FLOAT> SS_FLOAT;
+      typedef sequence<S_BOOLEAN> SS_BOOLEAN;
+      typedef sequence<S_BYTE> SS_BYTE;
+      typedef sequence<S_LONG> SS_LONG;
+      typedef sequence<S_DOUBLE> SS_DOUBLE;
+      typedef sequence<S_DATE> SS_DATE;
+      typedef sequence<S_BYTESTR> SS_BYTESTR;
+      typedef sequence<T_BLOB> S_BLOB;
+      typedef sequence<ApplicationElement> ApplicationElementSequence;
+      typedef sequence<ApplicationRelation> ApplicationRelationSequence;
+      typedef sequence<ApplicationAttribute> ApplicationAttributeSequence;
+      typedef sequence<BaseRelation> BaseRelationSequence;
+      typedef sequence<BaseAttribute> BaseAttributeSequence;
+      typedef sequence<BaseElement> BaseElementSequence;
+      typedef sequence<InstanceElement> InstanceElementSequence;
+      typedef sequence<SelOperator> SelOperatorSequence;
+
+      struct RelationRange {
+        T_SHORT min;
+        T_SHORT max;
+      };
+
+      struct T_LONGLONG {
+        T_LONG high;
+        T_LONG low;
+      };
+
+      struct T_COMPLEX {
+        T_FLOAT r;
+        T_FLOAT i;
+      };
+
+      struct T_DCOMPLEX {
+        T_DOUBLE r;
+        T_DOUBLE i;
+      };
+
+      struct NameUnit {
+        Name valName;
+        T_STRING unit;
+      };
+
+      struct T_ExternalReference {
+        T_STRING description;
+        T_STRING mimeType;
+        T_STRING location;
+      };
+
+      struct ApplAttr {
+        Name aaName;
+        Name baName;
+        DataType dType;
+        T_LONG length;
+        T_BOOLEAN isObligatory;
+        T_BOOLEAN isUnique;
+        T_LONGLONG unitId;
+      };
+
+      struct ApplRel {
+        T_LONGLONG elem1;
+        T_LONGLONG elem2;
+        Name arName;
+        Name invName;
+        Name brName;
+        Name invBrName;
+        RelationType arRelationType;
+        RelationRange arRelationRange;
+        RelationRange invRelationRange;
+      };
+
+      struct AIDName {
+        T_LONGLONG aid;
+        Name aaName;
+      };
+
+      struct ElemId {
+        T_LONGLONG aid;
+        T_LONGLONG iid;
+      };
+
+      struct AIDNameUnitId {
+        AIDName attr;
+        T_LONGLONG unitId;
+      };
+
+      struct SelOrder {
+        AIDName attr;
+        T_BOOLEAN ascending;
+      };
+
+      struct ACL {
+        T_LONGLONG usergroupId;
+        T_LONG rights;
+      };
+
+      struct InitialRight {
+        T_LONG rights;
+        T_LONGLONG usergroupId;
+        T_LONGLONG refAid;
+      };
+
+      struct SelAIDNameUnitId {
+        AIDName attr;
+        T_LONGLONG unitId;
+        AggrFunc aggregate;
+      };
+
+      struct JoinDef {
+        T_LONGLONG fromAID;
+        T_LONGLONG toAID;
+        Name refName;
+        JoinType joiningType;
+      };
+
+      struct ApplicationRelationInstanceElementSeq {
+        ApplicationRelation applRel;
+        InstanceElementSequence instances;
+      };
+
+      struct EnumerationAttributeStructure {
+        T_LONGLONG aid;
+        T_STRING aaName;
+        T_STRING enumName;
+      };
+
+      struct EnumerationItemStructure {
+        T_LONG index;
+        T_STRING itemName;
+      };
+
+      typedef sequence<EnumerationAttributeStructure> EnumerationAttributeStructureSequence;
+      typedef sequence<EnumerationItemStructure> EnumerationItemStructureSequence;
+      typedef sequence<T_COMPLEX> S_COMPLEX;
+      typedef sequence<T_DCOMPLEX> S_DCOMPLEX;
+      typedef sequence<T_LONGLONG> S_LONGLONG;
+      typedef sequence<S_LONGLONG> SS_LONGLONG;
+      typedef sequence<S_COMPLEX> SS_COMPLEX;
+      typedef sequence<S_DCOMPLEX> SS_DCOMPLEX;
+      typedef sequence<T_ExternalReference> S_ExternalReference;
+      typedef sequence<S_ExternalReference> SS_ExternalReference;
+      typedef sequence<ApplAttr> ApplAttrSequence;
+      typedef sequence<ApplRel> ApplRelSequence;
+      typedef sequence<AIDName> AIDNameSequence;
+      typedef sequence<AIDNameUnitId> AIDNameUnitIdSequence;
+      typedef sequence<ElemId> ElemIdSequence;
+      typedef sequence<SelOrder> SelOrderSequence;
+      typedef sequence<ACL> ACLSequence;
+      typedef sequence<InitialRight> InitialRightSequence;
+      typedef sequence<SelAIDNameUnitId> SelAIDNameUnitIdSequence;
+      typedef sequence<JoinDef> JoinDefSequence;
+      typedef sequence<ApplicationRelationInstanceElementSeq> ApplicationRelationInstanceElementSeqSequence;
+
+      struct ApplElem {
+        T_LONGLONG aid;
+        Name beName;
+        Name aeName;
+        ApplAttrSequence attributes;
+      };
+
+      struct EnumerationStructure {
+        T_STRING enumName;
+        EnumerationItemStructureSequence items;
+      };
+
+      union TS_Union switch (DataType) {
+        case DT_STRING: T_STRING stringVal;
+        case DT_SHORT: T_SHORT shortVal;
+        case DT_FLOAT: T_FLOAT floatVal;
+        case DT_BYTE: T_BYTE byteVal;
+        case DT_BOOLEAN: T_BOOLEAN booleanVal;
+        case DT_LONG: T_LONG longVal;
+        case DT_DOUBLE: T_DOUBLE doubleVal;
+        case DT_LONGLONG: T_LONGLONG longlongVal;
+        case DT_COMPLEX: T_COMPLEX complexVal;
+        case DT_DCOMPLEX: T_DCOMPLEX dcomplexVal;
+        case DT_DATE: T_DATE dateVal;
+        case DT_BYTESTR: T_BYTESTR bytestrVal;
+        case DT_BLOB: T_BLOB blobVal;
+        case DS_STRING: S_STRING stringSeq;
+        case DS_SHORT: S_SHORT shortSeq;
+        case DS_FLOAT: S_FLOAT floatSeq;
+        case DS_BYTE: S_BYTE byteSeq;
+        case DS_BOOLEAN: S_BOOLEAN booleanSeq;
+        case DS_LONG: S_LONG longSeq;
+        case DS_DOUBLE: S_DOUBLE doubleSeq;
+        case DS_LONGLONG: S_LONGLONG longlongSeq;
+        case DS_COMPLEX: S_COMPLEX complexSeq;
+        case DS_DCOMPLEX: S_DCOMPLEX dcomplexSeq;
+        case DS_DATE: S_DATE dateSeq;
+        case DS_BYTESTR: S_BYTESTR bytestrSeq;
+        case DT_EXTERNALREFERENCE: T_ExternalReference extRefVal;
+        case DS_EXTERNALREFERENCE: S_ExternalReference extRefSeq;
+        case DT_ENUM: T_LONG enumVal;
+        case DS_ENUM: S_LONG enumSeq;
+      };
+
+      union TS_UnionSeq switch (DataType) {
+        case DT_STRING: S_STRING stringVal;
+        case DT_SHORT: S_SHORT shortVal;
+        case DT_FLOAT: S_FLOAT floatVal;
+        case DT_BYTE: S_BYTE byteVal;
+        case DT_BOOLEAN: S_BOOLEAN booleanVal;
+        case DT_LONG: S_LONG longVal;
+        case DT_DOUBLE: S_DOUBLE doubleVal;
+        case DT_LONGLONG: S_LONGLONG longlongVal;
+        case DT_COMPLEX: S_COMPLEX complexVal;
+        case DT_DCOMPLEX: S_DCOMPLEX dcomplexVal;
+        case DT_DATE: S_DATE dateVal;
+        case DT_BYTESTR: S_BYTESTR bytestrVal;
+        case DT_BLOB: S_BLOB blobVal;
+        case DS_STRING: SS_STRING stringSeq;
+        case DS_SHORT: SS_SHORT shortSeq;
+        case DS_FLOAT: SS_FLOAT floatSeq;
+        case DS_BYTE: SS_BYTE byteSeq;
+        case DS_BOOLEAN: SS_BOOLEAN booleanSeq;
+        case DS_LONG: SS_LONG longSeq;
+        case DS_DOUBLE: SS_DOUBLE doubleSeq;
+        case DS_LONGLONG: SS_LONGLONG longlongSeq;
+        case DS_COMPLEX: SS_COMPLEX complexSeq;
+        case DS_DCOMPLEX: SS_DCOMPLEX dcomplexSeq;
+        case DS_DATE: SS_DATE dateSeq;
+        case DS_BYTESTR: SS_BYTESTR bytestrSeq;
+        case DT_EXTERNALREFERENCE: S_ExternalReference extRefVal;
+        case DS_EXTERNALREFERENCE: SS_ExternalReference extRefSeq;
+        case DT_ENUM: S_LONG enumVal;
+        case DS_ENUM: SS_LONG enumSeq;
+      };
+
+      typedef sequence<EnumerationStructure> EnumerationStructureSequence;
+      typedef sequence<ApplElem> ApplElemSequence;
+
+      struct TS_Value {
+        TS_Union u;
+        T_SHORT flag;
+      };
+
+      struct TS_ValueSeq {
+        TS_UnionSeq u;
+        S_SHORT flag;
+      };
+
+      struct ApplicationStructureValue {
+        ApplElemSequence applElems;
+        ApplRelSequence applRels;
+      };
+
+      struct NameValueSeqUnit {
+        Name valName;
+        TS_ValueSeq value;
+        T_STRING unit;
+      };
+
+      struct AIDNameValueUnitId {
+        AIDName attr;
+        T_LONGLONG unitId;
+        TS_Value values;
+      };
+
+      struct AIDNameValueSeqUnitId {
+        AIDName attr;
+        T_LONGLONG unitId;
+        TS_ValueSeq values;
+      };
+
+      struct NameValueSeqUnitId {
+        Name valName;
+        TS_ValueSeq value;
+        T_LONGLONG unitId;
+      };
+
+      struct SelValue {
+        AIDNameValueUnitId attr;
+        SelOpcode oper;
+        TS_Value value;
+      };
+
+      struct NameValueUnitId {
+        Name valName;
+        TS_Value value;
+        T_LONGLONG unitId;
+      };
+
+      struct SelValueExt {
+        AIDNameUnitId attr;
+        SelOpcode oper;
+        TS_Value value;
+      };
+
+      union SelItem switch (SelType) {
+        case SEL_VALUE_TYPE: SelValueExt value;
+        case SEL_OPERATOR_TYPE: SelOperator operator;
+      };
+
+      typedef sequence<NameValueSeqUnit> NameValueSeqUnitSequence;
+      typedef sequence<AIDNameValueSeqUnitId> AIDNameValueSeqUnitIdSequence;
+      typedef sequence<SelValue> SelValueSequence;
+      typedef sequence<NameValueSeqUnitId> NameValueSeqUnitIdSequence;
+      typedef sequence<SelItem> SelItemSequence;
+
+      struct NameValue {
+        Name valName;
+        TS_Value value;
+      };
+
+      struct NameValueUnit {
+        Name valName;
+        TS_Value value;
+        T_STRING unit;
+      };
+
+      struct AttrResultSet {
+        NameValueSeqUnitId attrValues;
+        NameValueUnitIdIterator rest;
+      };
+
+      struct QueryStructure {
+        AIDNameUnitIdSequence anuSeq;
+        SelValueSequence condSeq;
+        SelOperatorSequence operSeq;
+        ElemId relInst;
+        Name relName;
+        SelOrderSequence orderBy;
+      };
+
+      struct ElemResultSetExt {
+        T_LONGLONG aid;
+        NameValueSeqUnitIdSequence values;
+      };
+
+      struct QueryStructureExt {
+        SelAIDNameUnitIdSequence anuSeq;
+        SelItemSequence condSeq;
+        JoinDefSequence joinSeq;
+        SelOrderSequence orderBy;
+        AIDNameSequence groupBy;
+      };
+
+      typedef sequence<NameValue> NameValueSequence;
+      typedef sequence<NameValueUnit> NameValueUnitSequence;
+      typedef sequence<AttrResultSet> AttrResultSetSequence;
+      typedef sequence<ElemResultSetExt> ElemResultSetExtSequence;
+
+      struct ElemResultSet {
+        T_LONGLONG aid;
+        AttrResultSetSequence attrValues;
+      };
+
+      struct ResultSetExt {
+        ElemResultSetExtSequence firstElems;
+        ElemResultSetExtSeqIterator restElems;
+      };
+
+      typedef sequence<ElemResultSet> ElemResultSetSequence;
+      typedef sequence<ResultSetExt> ResultSetExtSequence;
+
+      interface ResultType {
+        const T_SHORT INSTELEM_ITERATOR_AS_RESULT = 0;
+        const T_SHORT TABLE_ITERATOR_AS_RESULT = 1;
+        const T_SHORT TABLE_AS_RESULT = 2;
+      };
+
+      interface LockMode {
+        const T_SHORT LOCK_INSTANCEELEMENT = 0;
+        const T_SHORT LOCK_APPLICATIONELEMENT = 1;
+        const T_SHORT LOCK_CHILDREN = 2;
+      };
+
+      interface SecurityRights {
+        const T_LONG SEC_READ = 1;
+        const T_LONG SEC_UPDATE = 2;
+        const T_LONG SEC_INSERT = 4;
+        const T_LONG SEC_DELETE = 8;
+        const T_LONG SEC_GRANT = 16;
+      };
+
+      interface SecurityLevel {
+        const T_LONG NO_SECURITY = 0;
+        const T_LONG ELEMENT_SECURITY = 1;
+        const T_LONG INSTANCE_SECURITY = 2;
+        const T_LONG ATTRIBUTE_SECURITY = 4;
+      };
+
+      interface QueryConstants {
+        const T_LONG MaxDurationDEFAULT = 0;
+        const T_STRING MaxDuration = "MaxDuration";
+        const T_STRING QueryResultType = "QueryResultType";
+        const T_LONG QueryResultTypeDEFAULT = ResultType::INSTELEM_ITERATOR_AS_RESULT;
+      };
+
+      exception AoException{
+        ErrorCode errCode;
+        SeverityFlag sevFlag;
+        T_LONG minorCode;
+        T_STRING reason;
+      };
+
+      interface AoFactory {
+        T_STRING getDescription() raises(AoException);
+        T_STRING getInterfaceVersion() raises(AoException);
+        T_STRING getName() raises(AoException);
+        T_STRING getType() raises(AoException);
+        AoSession newSession(in T_STRING auth) raises(AoException);
+        AoSession newSessionNameValue(in NameValueSequence auth) raises(AoException);
+      };
+
+      interface AoSession {
+        void abortTransaction() raises(AoException);
+        void close() raises(AoException);
+        void commitTransaction() raises(AoException);
+        ApplicationStructure getApplicationStructure() raises(AoException);
+        ApplicationStructureValue getApplicationStructureValue() raises(AoException);
+        BaseStructure getBaseStructure() raises(AoException);
+        NameValueIterator getContext(in Pattern varPattern) raises(AoException);
+        NameValue getContextByName(in Name varName) raises(AoException);
+        NameIterator listContext(in Pattern varPattern) raises(AoException);
+        void removeContext(in Pattern varPattern) raises(AoException);
+        void setContext(in NameValue contextVariable) raises(AoException);
+        void setContextString(in Name varName,in T_STRING value) raises(AoException);
+        void startTransaction() raises(AoException);
+        void flush() raises(AoException);
+        void setCurrentInitialRights(in InitialRightSequence irlEntries,in T_BOOLEAN set) raises(AoException);
+        T_SHORT getLockMode() raises(AoException);
+        void setLockMode(in T_SHORT lockMode) raises(AoException);
+        ApplElemAccess getApplElemAccess() raises(AoException);
+        void setPassword(in T_STRING username,in T_STRING oldPassword,in T_STRING newPassword) raises(AoException);
+        T_STRING getDescription() raises(AoException);
+        Name getName() raises(AoException);
+        T_STRING getType() raises(AoException);
+        QueryEvaluator createQueryEvaluator() raises(AoException);
+        Blob createBlob() raises(AoException);
+        AoSession createCoSession() raises(AoException);
+        InstanceElement getUser() raises(AoException);
+        EnumerationAttributeStructureSequence getEnumerationAttributes() raises(AoException);
+        EnumerationStructureSequence getEnumerationStructure() raises(AoException);
+        T_LONG getId() raises(AoException);
+      };
+
+      interface ApplicationAttribute {
+        BaseAttribute getBaseAttribute() raises(AoException);
+        DataType getDataType() raises(AoException);
+        T_LONG getLength() raises(AoException);
+        Name getName() raises(AoException);
+        T_LONGLONG getUnit() raises(AoException);
+        T_BOOLEAN isObligatory() raises(AoException);
+        T_BOOLEAN isUnique() raises(AoException);
+        void setBaseAttribute(in BaseAttribute baseAttr) raises(AoException);
+        void setDataType(in DataType aaDataType) raises(AoException);
+        void setIsObligatory(in T_BOOLEAN aaIsObligatory) raises(AoException);
+        void setIsUnique(in T_BOOLEAN aaIsUnique) raises(AoException);
+        void setLength(in T_LONG aaLength) raises(AoException);
+        void setName(in Name aaName) raises(AoException);
+        void setUnit(in T_LONGLONG aaUnit) raises(AoException);
+        void setRights(in InstanceElement usergroup,in T_LONG rights,in RightsSet set) raises(AoException);
+        ACLSequence getRights() raises(AoException);
+        ApplicationElement getApplicationElement() raises(AoException);
+        T_BOOLEAN isAutogenerated() raises(AoException);
+        void setIsAutogenerated(in T_BOOLEAN isAutogenerated) raises(AoException);
+        EnumerationDefinition getEnumerationDefinition() raises(AoException);
+        void setEnumerationDefinition(in EnumerationDefinition enumDef) raises(AoException);
+        T_BOOLEAN hasUnit() raises(AoException);
+        void withUnit(in T_BOOLEAN withUnit) raises(AoException);
+        T_BOOLEAN hasValueFlag() raises(AoException);
+        void withValueFlag(in T_BOOLEAN withValueFlag) raises(AoException);
+      };
+
+      interface ApplicationElement {
+        ApplicationAttribute createAttribute() raises(AoException);
+        InstanceElement createInstance(in Name ieName) raises(AoException);
+        ApplicationElementSequence getAllRelatedElements() raises(AoException);
+        ApplicationRelationSequence getAllRelations() raises(AoException);
+        ApplicationAttribute getAttributeByBaseName(in Name baName) raises(AoException);
+        ApplicationAttribute getAttributeByName(in Name aaName) raises(AoException);
+        ApplicationAttributeSequence getAttributes(in Pattern aaPattern) raises(AoException);
+        BaseElement getBaseElement() raises(AoException);
+        T_LONGLONG getId() raises(AoException);
+        InstanceElement getInstanceById(in T_LONGLONG ieId) raises(AoException);
+        InstanceElement getInstanceByName(in Name ieName) raises(AoException);
+        InstanceElementIterator getInstances(in Pattern iePattern) raises(AoException);
+        Name getName() raises(AoException);
+        ApplicationElementSequence getRelatedElementsByRelationship(in Relationship aeRelationship) raises(AoException);
+        ApplicationRelationSequence getRelationsByType(in RelationType aeRelationType) raises(AoException);
+        NameSequence listAllRelatedElements() raises(AoException);
+        NameSequence listAttributes(in Pattern aaPattern) raises(AoException);
+        NameIterator listInstances(in Pattern aaPattern) raises(AoException);
+        NameSequence listRelatedElementsByRelationship(in Relationship aeRelationship) raises(AoException);
+        void removeAttribute(in ApplicationAttribute applAttr) raises(AoException);
+        void removeInstance(in T_LONGLONG ieId,in T_BOOLEAN recursive) raises(AoException);
+        void setBaseElement(in BaseElement baseElem) raises(AoException);
+        void setName(in Name aeName) raises(AoException);
+        void setRights(in InstanceElement usergroup,in T_LONG rights,in RightsSet set) raises(AoException);
+        ACLSequence getRights() raises(AoException);
+        InitialRightSequence getInitialRights() raises(AoException);
+        void setInitialRights(in InstanceElement usergroup,in T_LONG rights,in T_LONGLONG refAid,in RightsSet set) raises(AoException);
+        void setInitialRightRelation(in ApplicationRelation applRel,in T_BOOLEAN set) raises(AoException);
+        ApplicationRelationSequence getInitialRightRelations() raises(AoException);
+        T_LONG getSecurityLevel() raises(AoException);
+        void setSecurityLevel(in T_LONG secLevel,in RightsSet set) raises(AoException);
+        ApplicationStructure getApplicationStructure() raises(AoException);
+        InstanceElementSequence createInstances(in NameValueSeqUnitSequence attributes,in ApplicationRelationInstanceElementSeqSequence relatedInstances) raises(AoException);
+        ApplicationRelationSequence getRelationsByBaseName(in Name baseRelName) raises(AoException);
+      };
+
+      interface ApplicationRelation {
+        BaseRelation getBaseRelation() raises(AoException);
+        ApplicationElement getElem1() raises(AoException);
+        ApplicationElement getElem2() raises(AoException);
+        RelationRange getInverseRelationRange() raises(AoException);
+        Relationship getInverseRelationship() raises(AoException);
+        Name getRelationName() raises(AoException);
+        RelationRange getRelationRange() raises(AoException);
+        Relationship getRelationship() raises(AoException);
+        RelationType getRelationType() raises(AoException);
+        void setBaseRelation(in BaseRelation baseRel) raises(AoException);
+        void setElem1(in ApplicationElement applElem) raises(AoException);
+        void setElem2(in ApplicationElement applElem) raises(AoException);
+        void setInverseRelationRange(in RelationRange arRelationRange) raises(AoException);
+        void setRelationName(in Name arName) raises(AoException);
+        void setRelationRange(in RelationRange arRelationRange) raises(AoException);
+        void setRelationType(in RelationType arRelationType) raises(AoException);
+        Name getInverseRelationName() raises(AoException);
+        void setInverseRelationName(in Name arInvName) raises(AoException);
+      };
+
+      interface ApplicationStructure {
+        void check() raises(AoException);
+        ApplicationElement createElement(in BaseElement baseElem) raises(AoException);
+        ApplicationRelation createRelation() raises(AoException);
+        ApplicationElement getElementById(in T_LONGLONG aeId) raises(AoException);
+        ApplicationElement getElementByName(in Name aeName) raises(AoException);
+        ApplicationElementSequence getElements(in Pattern aePattern) raises(AoException);
+        ApplicationElementSequence getElementsByBaseType(in BaseType aeType) raises(AoException);
+        InstanceElement getInstanceByAsamPath(in Name asamPath) raises(AoException);
+        ApplicationRelationSequence getRelations(in ApplicationElement applElem1,in ApplicationElement applElem2) raises(AoException);
+        ApplicationElementSequence getTopLevelElements(in BaseType aeType) raises(AoException);
+        NameSequence listElements(in Pattern aePattern) raises(AoException);
+        NameSequence listElementsByBaseType(in BaseType aeType) raises(AoException);
+        NameSequence listTopLevelElements(in BaseType aeType) raises(AoException);
+        void removeElement(in ApplicationElement applElem) raises(AoException);
+        void removeRelation(in ApplicationRelation applRel) raises(AoException);
+        InstanceElementSequence getInstancesById(in ElemIdSequence ieIds) raises(AoException);
+        AoSession getSession() raises(AoException);
+        EnumerationDefinition createEnumerationDefinition(in T_STRING enumName) raises(AoException);
+        void removeEnumerationDefinition(in T_STRING enumName) raises(AoException);
+        NameSequence listEnumerations() raises(AoException);
+        EnumerationDefinition getEnumerationDefinition(in T_STRING enumName) raises(AoException);
+        void createInstanceRelations(in ApplicationRelation applRel,in InstanceElementSequence elemList1,in InstanceElementSequence elemList2) raises(AoException);
+      };
+
+      interface BaseAttribute {
+        DataType getDataType() raises(AoException);
+        Name getName() raises(AoException);
+        T_BOOLEAN isObligatory() raises(AoException);
+        T_BOOLEAN isUnique() raises(AoException);
+        BaseElement getBaseElement() raises(AoException);
+        EnumerationDefinition getEnumerationDefinition() raises(AoException);
+      };
+
+      interface BaseElement {
+        BaseRelationSequence getAllRelations() raises(AoException);
+        BaseAttributeSequence getAttributes(in Pattern baPattern) raises(AoException);
+        BaseElementSequence getRelatedElementsByRelationship(in Relationship brRelationship) raises(AoException);
+        BaseRelationSequence getRelationsByType(in RelationType brRelationType) raises(AoException);
+        BaseType getType() raises(AoException);
+        T_BOOLEAN isTopLevel() raises(AoException);
+        NameSequence listAttributes(in Pattern baPattern) raises(AoException);
+        BaseTypeSequence listRelatedElementsByRelationship(in Relationship brRelationship) raises(AoException);
+      };
+
+      interface BaseRelation {
+        BaseElement getElem1() raises(AoException);
+        BaseElement getElem2() raises(AoException);
+        RelationRange getInverseRelationRange() raises(AoException);
+        Relationship getInverseRelationship() raises(AoException);
+        Name getRelationName() raises(AoException);
+        RelationRange getRelationRange() raises(AoException);
+        Relationship getRelationship() raises(AoException);
+        RelationType getRelationType() raises(AoException);
+        Name getInverseRelationName() raises(AoException);
+      };
+
+      interface BaseStructure {
+        BaseElement getElementByType(in BaseType beType) raises(AoException);
+        BaseElementSequence getElements(in Pattern bePattern) raises(AoException);
+        BaseRelation getRelation(in BaseElement elem1,in BaseElement elem2) raises(AoException);
+        BaseElementSequence getTopLevelElements(in Pattern bePattern) raises(AoException);
+        T_STRING getVersion() raises(AoException);
+        BaseTypeSequence listElements(in Pattern bePattern) raises(AoException);
+        BaseTypeSequence listTopLevelElements(in Pattern bePattern) raises(AoException);
+        BaseRelationSequence getRelations(in BaseElement elem1,in BaseElement elem2) raises(AoException);
+      };
+
+      interface Blob {
+        void append(in S_BYTE value) raises(AoException);
+        T_BOOLEAN compare(in T_BLOB aBlob) raises(AoException);
+        S_BYTE get(in T_LONG offset,in T_LONG length) raises(AoException);
+        T_STRING getHeader() raises(AoException);
+        T_LONG getLength() raises(AoException);
+        void set(in S_BYTE value) raises(AoException);
+        void setHeader(in T_STRING header) raises(AoException);
+        void destroy() raises(AoException);
+      };
+
+      interface Column {
+        T_STRING getFormula() raises(AoException);
+        Name getName() raises(AoException);
+        InstanceElement getSourceMQ() raises(AoException);
+        T_STRING getUnit() raises(AoException);
+        void setFormula(in T_STRING formula) raises(AoException);
+        void setUnit(in T_STRING unit) raises(AoException);
+        T_BOOLEAN isIndependent() raises(AoException);
+        T_BOOLEAN isScaling() raises(AoException);
+        void setIndependent(in T_BOOLEAN independent) raises(AoException);
+        void setScaling(in T_BOOLEAN scaling) raises(AoException);
+        DataType getDataType() raises(AoException);
+        void destroy() raises(AoException);
+        T_LONG getSequenceRepresentation() raises(AoException);
+        void setSequenceRepresentation(in T_LONG sequenceRepresentation) raises(AoException);
+        TS_Union getGenerationParameters() raises(AoException);
+        void setGenerationParameters(in TS_Union generationParameters) raises(AoException);
+        DataType getRawDataType() raises(AoException);
+      };
+
+      interface InstanceElement {
+        void addInstanceAttribute(in NameValueUnit instAttr) raises(AoException);
+        void createRelation(in ApplicationRelation relation,in InstanceElement instElem) raises(AoException);
+        ApplicationElement getApplicationElement() raises(AoException);
+        Name getAsamPath() raises(AoException);
+        T_LONGLONG getId() raises(AoException);
+        Name getName() raises(AoException);
+        InstanceElementIterator getRelatedInstances(in ApplicationRelation applRel,in Pattern iePattern) raises(AoException);
+        InstanceElementIterator getRelatedInstancesByRelationship(in Relationship ieRelationship,in Pattern iePattern) raises(AoException);
+        NameValueUnit getValue(in Name attrName) raises(AoException);
+        NameValueUnit getValueByBaseName(in Name baseAttrName) raises(AoException);
+        NameSequence listAttributes(in Pattern iaPattern,in AttrType aType) raises(AoException);
+        NameIterator listRelatedInstances(in ApplicationRelation ieRelation,in Pattern iePattern) raises(AoException);
+        NameIterator listRelatedInstancesByRelationship(in Relationship ieRelationship,in Pattern iePattern) raises(AoException);
+        void removeInstanceAttribute(in Name attrName) raises(AoException);
+        void removeRelation(in ApplicationRelation applRel,in InstanceElement instElem_nm) raises(AoException);
+        void renameInstanceAttribute(in Name oldName,in Name newName) raises(AoException);
+        void setName(in Name iaName) raises(AoException);
+        void setValue(in NameValueUnit value) raises(AoException);
+        Measurement upcastMeasurement() raises(AoException);
+        SubMatrix upcastSubMatrix() raises(AoException);
+        NameValueUnit getValueInUnit(in NameUnit attr) raises(AoException);
+        void setValueSeq(in NameValueUnitSequence values) raises(AoException);
+        void setRights(in InstanceElement usergroup,in T_LONG rights,in RightsSet set) raises(AoException);
+        ACLSequence getRights() raises(AoException);
+        InitialRightSequence getInitialRights() raises(AoException);
+        void setInitialRights(in InstanceElement usergroup,in T_LONG rights,in T_LONGLONG refAid,in RightsSet set) raises(AoException);
+        InstanceElement shallowCopy(in T_STRING newName,in T_STRING newVersion) raises(AoException);
+        InstanceElement deepCopy(in T_STRING newName,in T_STRING newVersion) raises(AoException);
+        NameValueUnitSequence getValueSeq(in NameSequence attrNames) raises(AoException);
+        void destroy() raises(AoException);
+        T_LONGLONG compare(in InstanceElement compIeObj) raises(AoException);
+        InstanceElementSequence createRelatedInstances(in ApplicationRelation applRel,in NameValueSeqUnitSequence attributes,in ApplicationRelationInstanceElementSeqSequence relatedInstances) raises(AoException);
+        ODSFile upcastODSFile() raises(AoException);
+      };
+
+      interface InstanceElementIterator {
+        void destroy() raises(AoException);
+        T_LONG getCount() raises(AoException);
+        InstanceElementSequence nextN(in T_LONG how_many) raises(AoException);
+        InstanceElement nextOne() raises(AoException);
+        void reset() raises(AoException);
+      };
+
+      interface Measurement : InstanceElement {
+        SMatLink createSMatLink() raises(AoException);
+        SMatLinkSequence getSMatLinks() raises(AoException);
+        ValueMatrix getValueMatrix() raises(AoException);
+        void removeSMatLink(in SMatLink smLink) raises(AoException);
+        ValueMatrix getValueMatrixInMode(in ValueMatrixMode vmMode) raises(AoException);
+      };
+
+      interface NameIterator {
+        void destroy() raises(AoException);
+        T_LONG getCount() raises(AoException);
+        NameSequence nextN(in T_LONG how_many) raises(AoException);
+        Name nextOne() raises(AoException);
+        void reset() raises(AoException);
+      };
+
+      interface NameValueIterator {
+        void destroy() raises(AoException);
+        T_LONG getCount() raises(AoException);
+        NameValueSequence nextN(in T_LONG how_many) raises(AoException);
+        NameValue nextOne() raises(AoException);
+        void reset() raises(AoException);
+      };
+
+      interface NameValueUnitIterator {
+        void destroy() raises(AoException);
+        T_LONG getCount() raises(AoException);
+        NameValueUnitSequence nextN(in T_LONG how_many) raises(AoException);
+        NameValueUnit nextOne() raises(AoException);
+        void reset() raises(AoException);
+      };
+
+      interface SMatLink {
+        BuildUpFunction getLinkType() raises(AoException);
+        T_LONG getOrdinalNumber() raises(AoException);
+        SubMatrix getSMat1() raises(AoException);
+        ColumnSequence getSMat1Columns() raises(AoException);
+        SubMatrix getSMat2() raises(AoException);
+        ColumnSequence getSMat2Columns() raises(AoException);
+        void setLinkType(in BuildUpFunction linkType) raises(AoException);
+        void setOrdinalNumber(in T_LONG ordinalNumber) raises(AoException);
+        void setSMat1(in SubMatrix subMat1) raises(AoException);
+        void setSMat1Columns(in ColumnSequence columns) raises(AoException);
+        void setSMat2(in SubMatrix subMat2) raises(AoException);
+        void setSMat2Columns(in ColumnSequence columns) raises(AoException);
+      };
+
+      interface SubMatrix : InstanceElement {
+        ColumnSequence getColumns(in Pattern colPattern) raises(AoException);
+        ValueMatrix getValueMatrix() raises(AoException);
+        NameSequence listColumns(in Pattern colPattern) raises(AoException);
+        ValueMatrix getValueMatrixInMode(in ValueMatrixMode vmMode) raises(AoException);
+      };
+
+      interface ValueMatrix {
+        ColumnSequence getColumns(in Pattern colPattern) raises(AoException);
+        T_LONG getColumnCount() raises(AoException);
+        ColumnSequence getIndependentColumns(in Pattern colPattern) raises(AoException);
+        T_LONG getRowCount() raises(AoException);
+        NameValueUnitIterator getValueMeaPoint(in T_LONG meaPoint) raises(AoException);
+        TS_ValueSeq getValueVector(in Column col,in T_LONG startPoint,in T_LONG count) raises(AoException);
+        NameSequence listColumns(in Pattern colPattern) raises(AoException);
+        NameSequence listIndependentColumns(in Pattern colPattern) raises(AoException);
+        void removeValueMeaPoint(in NameSequence columnNames,in T_LONG meaPoint,in T_LONG count) raises(AoException);
+        void removeValueVector(in Column col,in T_LONG startPoint,in T_LONG count) raises(AoException);
+        void setValueMeaPoint(in SetType set,in T_LONG meaPoint,in NameValueSequence value) raises(AoException);
+        void setValueVector(in Column col,in SetType set,in T_LONG startPoint,in TS_ValueSeq value) raises(AoException);
+        void setValue(in SetType set,in T_LONG startPoint,in NameValueSeqUnitSequence value) raises(AoException);
+        Column addColumn(in NameUnit newColumn) raises(AoException);
+        NameSequence listScalingColumns(in Pattern colPattern) raises(AoException);
+        ColumnSequence getScalingColumns(in Pattern colPattern) raises(AoException);
+        NameSequence listColumnsScaledBy(in Column scalingColumn) raises(AoException);
+        ColumnSequence getColumnsScaledBy(in Column scalingColumn) raises(AoException);
+        Column addColumnScaledBy(in NameUnit newColumn,in Column scalingColumn) raises(AoException);
+        void destroy() raises(AoException);
+        NameValueSeqUnitSequence getValue(in ColumnSequence columns,in T_LONG startPoint,in T_LONG count) raises(AoException);
+        ValueMatrixMode getMode() raises(AoException);
+      };
+
+      interface NameValueUnitIdIterator {
+        void destroy() raises(AoException);
+        T_LONG getCount() raises(AoException);
+        NameValueSeqUnitId nextN(in T_LONG how_many) raises(AoException);
+        NameValueUnitId nextOne() raises(AoException);
+        void reset() raises(AoException);
+      };
+
+      interface ApplElemAccess {
+        ElemResultSetSequence getInstances(in QueryStructure aoq,in T_LONG how_many) raises(AoException);
+        S_LONGLONG getRelInst(in ElemId elem,in Name relName) raises(AoException);
+        void setRelInst(in ElemId elem,in Name relName,in S_LONGLONG instIds,in SetType type) raises(AoException);
+        ElemIdSequence insertInstances(in AIDNameValueSeqUnitIdSequence val) raises(AoException);
+        void updateInstances(in AIDNameValueSeqUnitIdSequence val) raises(AoException);
+        void deleteInstances(in T_LONGLONG aid,in S_LONGLONG instIds) raises(AoException);
+        ValueMatrix getValueMatrix(in ElemId elem) raises(AoException);
+        void setAttributeRights(in T_LONGLONG aid,in T_STRING attrName,in T_LONGLONG usergroupId,in T_LONG rights,in RightsSet set) raises(AoException);
+        void setElementRights(in T_LONGLONG aid,in T_LONGLONG usergroupId,in T_LONG rights,in RightsSet set) raises(AoException);
+        void setInstanceRights(in T_LONGLONG aid,in S_LONGLONG instIds,in T_LONGLONG usergroupId,in T_LONG rights,in RightsSet set) raises(AoException);
+        ACLSequence getAttributeRights(in T_LONGLONG aid,in T_STRING attrName) raises(AoException);
+        ACLSequence getElementRights(in T_LONGLONG aid) raises(AoException);
+        ACLSequence getInstanceRights(in T_LONGLONG aid,in T_LONGLONG iid) raises(AoException);
+        void setElementInitialRights(in T_LONGLONG aid,in T_LONGLONG usergroupId,in T_LONG rights,in T_LONGLONG refAid,in RightsSet set) raises(AoException);
+        void setInstanceInitialRights(in T_LONGLONG aid,in S_LONGLONG instIds,in T_LONGLONG usergroupId,in T_LONG rights,in T_LONGLONG refAid,in RightsSet set) raises(AoException);
+        void setInitialRightReference(in T_LONGLONG aid,in T_STRING refName,in RightsSet set) raises(AoException);
+        NameSequence getInitialRightReference(in T_LONGLONG aid) raises(AoException);
+        InitialRightSequence getElementInitialRights(in T_LONGLONG aid) raises(AoException);
+        InitialRightSequence getInstanceInitialRights(in T_LONGLONG aid,in T_LONGLONG iid) raises(AoException);
+        ResultSetExtSequence getInstancesExt(in QueryStructureExt aoq,in T_LONG how_many) raises(AoException);
+        ValueMatrix getValueMatrixInMode(in ElemId elem,in ValueMatrixMode vmMode) raises(AoException);
+        ODSFile getODSFile(in ElemId elem) raises(AoException);
+      };
+
+      interface QueryEvaluator {
+        InstanceElementIterator getInstances(in T_STRING queryStr,in NameValueSequence params) raises(AoException);
+        NameValueUnitSequenceIterator getTableRows(in T_STRING queryStr,in NameValueSequence params) raises(AoException);
+        NameValueSeqUnitSequence getTable(in T_STRING queryStr,in NameValueSequence params) raises(AoException);
+        Query createQuery(in T_STRING queryStr,in NameValueSequence params) raises(AoException);
+      };
+
+      interface Query {
+        QueryEvaluator getQueryEvaluator() raises(AoException);
+        void prepareQuery(in NameValueSequence params) raises(AoException);
+        void executeQuery(in NameValueSequence params) raises(AoException);
+        QueryStatus getStatus() raises(AoException);
+        InstanceElementIterator getInstances() raises(AoException);
+        NameValueUnitSequenceIterator getTableRows() raises(AoException);
+        NameValueSeqUnitSequence getTable() raises(AoException);
+      };
+
+      interface NameValueUnitSequenceIterator {
+        void destroy() raises(AoException);
+        T_LONG getCount() raises(AoException);
+        NameValueSeqUnitSequence nextN(in T_LONG how_many) raises(AoException);
+        NameValueSeqUnit nextOne() raises(AoException);
+        void reset() raises(AoException);
+      };
+
+      interface EnumerationDefinition {
+        NameSequence listItemNames() raises(AoException);
+        T_LONG getItem(in T_STRING itemName) raises(AoException);
+        T_STRING getItemName(in T_LONG item) raises(AoException);
+        void addItem(in T_STRING itemName) raises(AoException);
+        void renameItem(in T_STRING oldItemName,in T_STRING newItemName) raises(AoException);
+        T_STRING getName() raises(AoException);
+        void setName(in T_STRING enumName) raises(AoException);
+        T_LONG getIndex() raises(AoException);
+      };
+
+      interface ElemResultSetExtSeqIterator {
+        void destroy() raises(AoException);
+        T_LONG getCount() raises(AoException);
+        ElemResultSetExtSequence nextN(in T_LONG how_many) raises(AoException);
+        ElemResultSetExt nextOne() raises(AoException);
+        void reset() raises(AoException);
+      };
+
+      interface ODSFile : InstanceElement {
+        ODSWriteTransfer append() raises(AoException);
+        T_BOOLEAN canRead() raises(AoException);
+        T_BOOLEAN canWrite() raises(AoException);
+        ODSWriteTransfer create() raises(AoException);
+        T_BOOLEAN exists() raises(AoException);
+        T_DATE getDate() raises(AoException);
+        T_LONGLONG getSize() raises(AoException);
+        void remove() raises(AoException);
+        ODSReadTransfer read() raises(AoException);
+        void takeUnderControl(in T_STRING sourceUrl) raises(AoException);
+        void removeFromControl(in T_STRING targetUrl) raises(AoException);
+      };
+
+      interface ODSReadTransfer {
+        const T_LONG READALL = -1;
+        void close() raises(AoException);
+        S_BYTE getOctetSeq(in T_LONG maxOctets) raises(AoException);
+        T_LONGLONG skipOctets(in T_LONGLONG numOctets) raises(AoException);
+        T_LONGLONG getPosition() raises(AoException);
+      };
+
+      interface ODSWriteTransfer {
+        void close() raises(AoException);
+        void putOctectSeq(in S_BYTE buffer) raises(AoException);
+        T_LONGLONG getPosition() raises(AoException);
+      };
+    };
+  };
+};

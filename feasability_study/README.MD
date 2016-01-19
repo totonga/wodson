@@ -1,7 +1,12 @@
 #Wodson - Feasability Study
 
+## Content
+- [Setup Build System](#setup-build-system)
+- [Curl Commands](#curl-commands)
+- [SimpleQueryStructure Explanation](#simpleQueryStructure-explanation)
+- [Modify Schema](#modify-schema)
 
-## Prepare
+## Setup Build System
 
 Download omniORBpy package
 http://sourceforge.net/projects/omniorb/files/omniORBpy/
@@ -16,7 +21,7 @@ cp omniORBpy-4.2.1-win64-python27\bin\x86_win32\*.* env\Scripts\.
 Create python stub
 
 ```
-\env\Scripts\omniidl.exe -bpython ODS53.IDL
+\env\Scripts\omniidl.exe -bpython corbaserver.IDL
 ```
 
 Include omiorb and stub into pythonpath
@@ -25,7 +30,7 @@ Include omiorb and stub into pythonpath
 set PYTHONPATH=%PYTHONPATH%;???\omniORBpy-4.2.1-win64-python27\lib\python;???
 ```
 
-## curl commands
+## Curl Commands
 
 ```
 curl -X PUT "http://localhost:8080/context" -d "[{\"name\":\"URL\",\"value\":\"corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS\"},{\"name\":\"USER\",\"value\":\"System\"},{\"name\":\"PASSWORD\",\"value\":\"puma\"}]" --header "Content-Type: application/json" --header "Accept: application/json"
