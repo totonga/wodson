@@ -248,10 +248,8 @@ Visit http://localhost:8080/ui/ to see the swagger help
 
 Get some development tools
 
-Developer tools
-
 ```sh
-sudo apt-get install retext eric 
+sudo apt-get install eric curl
 ```
 
 ### Windows

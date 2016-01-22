@@ -109,6 +109,13 @@ def Session__():
 
     return session_obj__
 
+def SessionClose__():
+    global session_obj__
+    
+    if not session_obj__ is None:
+        session_obj__.Close()
+        session_obj__ = None
+
 def post_data(data_matrix):
     logging.info('create instances')
 
@@ -328,6 +335,9 @@ def get_context():
 
 def put_context(parameters):
     logging.info('set context variables')
+    # make sure we can use different context
+    SessionClose__()
+    
     for param in parameters:
         pName = param['name']
         pValue = param['value']

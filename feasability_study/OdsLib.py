@@ -469,6 +469,9 @@ class CSession:
         self.model_ = CModel(self.session_)
         self.aea_ = self.session_.getApplElemAccess()
 
+    def __del__(self):
+        self.Close()
+
     def Model(self):
         return self.model_
         
