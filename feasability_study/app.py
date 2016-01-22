@@ -21,16 +21,7 @@ import connexion
 # from flask import Flask
 # from flask import render_template
 # from flask import Response
-from omniORB import CORBA
 from connexion import NoContent
-
-# Initialise the ORB
-orbStartParameter = []
-orbStartParameter.append("-ORBnativeCharCodeSet")
-orbStartParameter.append("UTF-8")
-orbStartParameter.append("-ORBgiopMaxMsgSize")
-orbStartParameter.append("268435456") # 256 MB
-orb = CORBA.ORB_init(orbStartParameter, CORBA.ORB_ID)
 
 context_vars__ = {}
 session_obj__ = None
@@ -105,7 +96,7 @@ def Session__():
         sUrl = context_vars__['URL']
         sUsr = context_vars__['USER']
         sPwd = context_vars__['PASSWORD']
-        session_obj__ = OdsLib.CSession(orb, sUrl, sUsr, sPwd)
+        session_obj__ = OdsLib.CSession(sUrl, sUsr, sPwd)
 
     return session_obj__
 
@@ -351,10 +342,10 @@ logging.basicConfig(level=logging.INFO)
 app = connexion.App(__name__)
 app.add_api('swagger.yaml')
 # set the WSGI application callable to allow using uWSGI:
-# uwsgi --http :8080 -w app
+# uwsgi --http :8081 -w app
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.app.wsgi_app
 application = app.app
 
 if __name__ == '__main__':
-    application.run('localhost', 8080)
+    application.run('localhost', 8081)

@@ -18,6 +18,22 @@ from omniORB import CORBA
 import org
 import re
 
+orb_obj__ = None
+
+def Orb__():
+    global orb_obj__
+
+    if orb_obj__ is None:
+        # Initialise the ORB
+        orbStartParameter = []
+        orbStartParameter.append("-ORBnativeCharCodeSet")
+        orbStartParameter.append("UTF-8")
+        orbStartParameter.append("-ORBgiopMaxMsgSize")
+        orbStartParameter.append("268435456") # 256 MB
+        orb_obj__ = CORBA.ORB_init(orbStartParameter, CORBA.ORB_ID)
+
+    return orb_obj__
+
 attributeParser__ = re.compile(r'\s*((?P<aggregate>(NONE)|(COUNT)|(DCOUNT)|(MIN)|(MAX)|(AVG)|(STDDEV)|(SUM)|(DISTINCT)|(POINT))\()?\s*?(?P<attribute>.*)')
 orderByParser__ = re.compile(r'\s*((?P<order>(ASCENDING)|(DESCENDING))\()?\s*?(?P<attribute>.*)')
 
@@ -316,8 +332,8 @@ def CreateTsValue(aaType, strVal):
         print "Unknown how to attach '" + strVal + "' does not exist as " + str(aaType) + " union."
         sys.exit(1)
     
-def GetSession(orb, objString, user, password):
-    obj = orb.string_to_object(objString)
+def GetSession(objString, user, password):
+    obj = Orb__().string_to_object(objString)
     if obj is None:
         return None
     print "object retrieved"
@@ -461,8 +477,8 @@ class CSession:
     model_ = None
     # access data
     aea_ = None
-    def __init__(self, orb, objString, user, password):
-        self.session_ = GetSession(orb, objString, user, password)
+    def __init__(self, objString, user, password):
+        self.session_ = GetSession(objString, user, password)
         if self.session_ is None:
             print "Retrieving session failed"
             sys.exit(1)
