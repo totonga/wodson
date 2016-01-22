@@ -5,21 +5,6 @@ Access ASAM Ods python using omniorb and wrap it using swagger
 Copyright (c) 2015, Andreas Krantz
 License: Apache 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 """
-
-import logging
-import sys
-import org
-import OdsLib
-import connexion
-import datetime
-
-from flask import Flask
-from flask import render_template
-from flask import Response
-from datetime import datetime
-from omniORB import CORBA
-from connexion import NoContent
-
 __author__ = "Andreas Krantz"
 __license__ = "Apache 2.0"
 __version__ = "0.0.1"
@@ -27,10 +12,25 @@ __maintainer__ = "Andreas Krantz"
 __email__ = "totonga@gmail.com"
 __status__ = "Prototype"
 
+import logging
+import sys
+import org
+import OdsLib
+import connexion
+
+# from flask import Flask
+# from flask import render_template
+# from flask import Response
+from omniORB import CORBA
+from connexion import NoContent
+
 # Initialise the ORB
-sys.argv.append("-ORBnativeCharCodeSet")
-sys.argv.append("UTF-8")
-orb = CORBA.ORB_init(sys.argv, CORBA.ORB_ID)
+orbStartParameter = []
+orbStartParameter.append("-ORBnativeCharCodeSet")
+orbStartParameter.append("UTF-8")
+orbStartParameter.append("-ORBgiopMaxMsgSize")
+orbStartParameter.append("268435456") # 256 MB
+orb = CORBA.ORB_init(orbStartParameter, CORBA.ORB_ID)
 
 context_vars__ = {}
 session_obj__ = None
@@ -347,5 +347,4 @@ wsgi_app = app.app.wsgi_app
 application = app.app
 
 if __name__ == '__main__':
-    import os
     application.run('localhost', 8080)

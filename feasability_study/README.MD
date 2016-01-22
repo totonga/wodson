@@ -1,68 +1,44 @@
 #Wodson - Feasability Study
 
 ## Content
-- [Setup Build System](#setup-build-system)
 - [Curl Commands](#curl-commands)
 - [SimpleQueryStructure Explanation](#simpleQueryStructure-explanation)
 - [Modify Schema](#modify-schema)
-
-## Setup Build System
-
-Download omniORBpy package
-http://sourceforge.net/projects/omniorb/files/omniORBpy/
-
-Copy omniorb runtime or add it to path
-
-```
-cp omniORBpy-4.2.1-win64-python27\lib\x86_win32\*.* env\Scripts\.
-cp omniORBpy-4.2.1-win64-python27\bin\x86_win32\*.* env\Scripts\.
-```
-
-Create python stub
-
-```
-\env\Scripts\omniidl.exe -bpython corbaserver.IDL
-```
-
-Include omiorb and stub into pythonpath
-
-```
-set PYTHONPATH=%PYTHONPATH%;???\omniORBpy-4.2.1-win64-python27\lib\python;???
-```
+- [Setup System](#setup-system)
 
 ## Curl Commands
 
 ```
-curl -X PUT "http://localhost:8080/context" -d "[{\"name\":\"URL\",\"value\":\"corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS\"},{\"name\":\"USER\",\"value\":\"System\"},{\"name\":\"PASSWORD\",\"value\":\"puma\"}]" --header "Content-Type: application/json" --header "Accept: application/json"
-curl -X GET "http://localhost:8080/context" --header "Accept: application/json"
-curl -X GET "http://localhost:8080/schema"  --header "Accept: application/json"
+curl.exe -X PUT "http://localhost:8080/context" -d "[{\"name\":\"URL\",\"value\":\"corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS\"},{\"name\":\"USER\",\"value\":\"System\"},{\"name\":\"PASSWORD\",\"value\":\"puma\"}]" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X GET "http://localhost:8080/context" --header "Accept: application/json"
+curl.exe -X GET "http://localhost:8080/schema"  --header "Accept: application/json"
 
-curl -X PUT "http://localhost:8080/schema" -d"{\"entities\":[{\"name\":\"MyAny\",\"baseName\":\"AoAny\",\"relations\":[{\"name\":\"myMeasurment\",\"kind\":\"INFO\",\"inverseName\":\"myInfoElement\",\"obligatory\":false,\"type\":\"n-1\",\"relEntityName\":\"Measurement\"}],\"attributes\":[{\"name\":\"Id\",\"baseName\":\"id\"},{\"name\":\"Name\",\"baseName\":\"name\"},{\"name\":\"my_classification\",\"dataType\":\"DT_DOUBLE\",\"obligatory\":true}]}]}" --header "Content-Type:application/json"
-curl -X DELETE "http://localhost:8080/schema" -d"{\"entities\":[{\"name\":\"MyAny\"}]}" --header "Content-Type:application/json"
+curl.exe -X PUT "http://localhost:8080/schema" -d"{\"entities\":[{\"name\":\"MyAny\",\"baseName\":\"AoAny\",\"relations\":[{\"name\":\"myMeasurment\",\"kind\":\"INFO\",\"inverseName\":\"myInfoElement\",\"obligatory\":false,\"type\":\"n-1\",\"relEntityName\":\"Measurement\"}],\"attributes\":[{\"name\":\"Id\",\"baseName\":\"id\"},{\"name\":\"Name\",\"baseName\":\"name\"},{\"name\":\"my_classification\",\"dataType\":\"DT_DOUBLE\",\"obligatory\":true}]}]}" --header "Content-Type:application/json"
+curl.exe -X DELETE "http://localhost:8080/schema" -d"{\"entities\":[{\"name\":\"MyAny\"}]}" --header "Content-Type:application/json"
 
-curl -X GET  "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
-curl -X POST "http://localhost:8080/dataGP" -d "{\"entityName\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
-curl -X GET  "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
-curl -X GET  "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"conditions\":[\"id=4\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X GET  "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X POST "http://localhost:8080/dataGP" -d "{\"entityName\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X GET  "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X GET  "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"conditions\":[\"id=4\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"measurement=2\"]}"    --header "Content-Type: application/json" --header "Accept: application/json" 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"measurement.id=2\"]}" --header "Content-Type: application/json" --header "Accept: application/json" 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"id=4\"]}"             --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"measurement=2\"]}"    --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"measurement.id=2\"]}" --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"id=4\"]}"             --header "Content-Type: application/json" --header "Accept: application/json" 
 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"DISTINCT(name)\"]}"  --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"DISTINCT(name)\"]}"  --header "Content-Type: application/json" --header "Accept: application/json" 
 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"name\"]}"              --header "Content-Type: application/json" --header "Accept: application/json" 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"ASCENDING(name)\"]}"   --header "Content-Type: application/json" --header "Accept: application/json" 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"DESCENDING(name)\"]}"  --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"name\"]}"              --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"ASCENDING(name)\"]}"   --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"DESCENDING(name)\"]}"  --header "Content-Type: application/json" --header "Accept: application/json" 
 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\"}"                                                       --header "Content-Type: application/json" --header "Accept: application/json"
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"attributes\":[\"id\"],\"conditions\":[\"id=12\"]}"    --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\"}"                                                       --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"attributes\":[\"id\"],\"conditions\":[\"id=12\"]}"    --header "Content-Type: application/json" --header "Accept: application/json" 
 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\"]}"                                                                                 --header "Content-Type: application/json" --header "Accept: application/json" 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\"]}"                                                                       --header "Content-Type: application/json" --header "Accept: application/json" 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"]}"                                             --header "Content-Type: application/json" --header "Accept: application/json" 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"],\"vectorMaxCount\":10}"                       --header "Content-Type: application/json" --header "Accept: application/json" 
-curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"],\"vectorSkipCount\":5,\"vectorMaxCount\":10}" --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\"]}"                                                                                 --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\"]}"                                                                       --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"]}"                                             --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"],\"vectorMaxCount\":10}"                       --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"],\"vectorSkipCount\":5,\"vectorMaxCount\":10}" --header "Content-Type: application/json" --header "Accept: application/json" 
 ```
 
 ##SimpleQueryStructure Explanation
@@ -249,4 +225,60 @@ curl -X GET "http://localhost:8080/data" -d "{\"entityName\":\"LocalColumn\",\"c
 		"name": "MyAny"
 	}]
 }
+```
+
+## Setup System
+
+### Linux
+
+Run the folloowing commands in a terminal.
+
+```sh
+sudo apt-get install python omniidl-python python-pip git
+mkdir dev
+cd dev
+git clone https://github.com/totonga/wodson.git
+cd wodson/feasability_study/
+omniidl -bpython corbaserver.idl
+pip install --user -r requirements.txt
+python app.py
+```
+
+Visit http://localhost:8080/ui/ to see the swagger help
+
+Get some development tools
+
+Developer tools
+
+```sh
+sudo apt-get install retext eric 
+```
+
+### Windows
+
+Download omniORBpy package
+http://sourceforge.net/projects/omniorb/files/omniORBpy/
+
+Copy omniorb runtime or add it to path
+Add omniorb python components to PYTHONPATH 
+```
+set PYTHONPATH=%PYTHONPATH%;???\omniORBpy-4.2.1-win64-python27\lib\python
+```
+
+If Visual Studio 2015 si used the omniorb runtime can be copied to an environment
+```
+cp omniORBpy-4.2.1-win64-python27\lib\x86_win32\*.* env\Scripts\.
+cp omniORBpy-4.2.1-win64-python27\bin\x86_win32\*.* env\Scripts\.
+```
+
+Create python stub
+
+```
+\env\Scripts\omniidl.exe -bpython corbaserver.IDL
+```
+
+Include omiorb and stub into pythonpath
+
+```
+set PYTHONPATH=%PYTHONPATH%;???\omniORBpy-4.2.1-win64-python27\lib\python;???
 ```
