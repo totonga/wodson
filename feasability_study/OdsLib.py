@@ -6,18 +6,17 @@ Copyright (c) 2015, Andreas Krantz
 License: Apache 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 """
 
-import sys
-from omniORB import CORBA
-import CosNaming
-import org
-import re
-
 __author__ = "Andreas Krantz"
 __license__ = "Apache 2.0"
 __version__ = "0.0.1"
 __maintainer__ = "Andreas Krantz"
 __email__ = "totonga@gmail.com"
 __status__ = "Prototype"
+
+import sys
+from omniORB import CORBA
+import org
+import re
 
 attributeParser__ = re.compile(r'\s*((?P<aggregate>(NONE)|(COUNT)|(DCOUNT)|(MIN)|(MAX)|(AVG)|(STDDEV)|(SUM)|(DISTINCT)|(POINT))\()?\s*?(?P<attribute>.*)')
 orderByParser__ = re.compile(r'\s*((?P<order>(ASCENDING)|(DESCENDING))\()?\s*?(?P<attribute>.*)')
@@ -182,7 +181,7 @@ def ExtractAttributeNameFromColumnName(columnName):
         elif 'DISTINCT' == aAggrTypeStr: aAggrType = org.asam.ods.DISTINCT
         elif 'POINT' == aAggrTypeStr: aAggrType = org.asam.ods.POINT
         else:
-            print "Unknown aggregate type in '" + attributeName + "'"
+            print "Unknown aggregate type in '" + columnName + "'"
             sys.exit(1)
 
     return aName.strip(), aAggrType
@@ -324,7 +323,7 @@ def GetSession(orb, objString, user, password):
     print "object retrieved"
     factory = obj._narrow(org.asam.ods.AoFactory)
     if (factory is None):
-        return none
+        return None
     print "Got factory"
     paramstring = "USER=" + user + ",PASSWORD=" + password
     session = factory.newSession(paramstring.encode('utf-8'))
@@ -432,13 +431,6 @@ class CModel:
                 return rel
         return None
     
-    def GetRelationB(self, aeName, brName):
-        aid = self.Aid(aeName)
-        for rel in self.model_.applRels:
-            if LL_Equal(rel.elem1, aid) and rel.brName == brName:
-                return rel
-        return None
-
     def GetRelationEx(self, aeName, relationName):
         rv = self.GetRelation(aeName, relationName)
         if rv is None:
@@ -504,7 +496,6 @@ class CSession:
         if(0 == len(attributeArray)):
             anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*"), org.asam.ods.T_LONGLONG(0,0), org.asam.ods.NONE))
         else:
-            attributeParser = re.compile(r'\s*((?P<aggregate>(NONE)|(COUNT)|(DCOUNT)|(MIN)|(MAX)|(AVG)|(STDDEV)|(SUM)|(DISTINCT)|(POINT))\()?\s*?(?P<attribute>.*)')
             for attributeItem in attributeArray:
                 if("*" == attributeItem):
                     anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*"), org.asam.ods.T_LONGLONG(0,0), org.asam.ods.NONE))
