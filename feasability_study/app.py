@@ -19,8 +19,8 @@ import OdsLib
 import connexion
 
 # from flask import Flask
-# from flask import render_template
-# from flask import Response
+from flask import render_template
+from flask import request
 from connexion import NoContent
 
 context_vars__ = {}
@@ -30,6 +30,10 @@ session_obj__ = None
 context_vars__['URL'] = 'corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS'
 context_vars__['USER'] = ''
 context_vars__['PASSWORD'] = ''
+
+def request_wants_json():
+    best = request.accept_mimetypes.best_match(['application/json', 'text/html'])
+    return best == 'application/json' and request.accept_mimetypes[best] > request.accept_mimetypes['text/html']
 
 def GetDiscriminatorArrayName__(arrayType):
     if arrayType == org.asam.ods.DT_UNKNOWN:
@@ -214,8 +218,11 @@ def get_data(simple_query):
     
     rv['columns'] = columnsObj
 
-    return rv, 200
-
+    if request_wants_json():
+            return rv, 200
+    
+    return render_template('datamatrix.html', datamatrix=rv)
+ 
 def post_dataGP(simple_query):
     return get_data(simple_query)
 
