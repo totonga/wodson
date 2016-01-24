@@ -6,15 +6,15 @@
     </head> 
     <body>
         <table>
-          <tr><th>name</th><th>basename</th><th>skipCount</th><th>vectorSkipCount</th></tr>
-          <tr><td>{{ datamatrix['name'] }}</td><td>{{ datamatrix['basename'] }}</td><td>{{ datamatrix['skipCount'] }}</td><td>{{ datamatrix['vectorSkipCount'] }}</td></tr>
+          <tr><th>name</th><th>baseName</th><th>skipCount</th><th>vectorSkipCount</th></tr>
+          <tr><td>{{ datamatrix['name'] }}</td><td>{{ datamatrix['baseName'] }}</td><td>{{ datamatrix['skipCount'] }}</td><td>{{ datamatrix['vectorSkipCount'] }}</td></tr>
         </table>
 
         <table>
-            <tr><th>name</th><th>basename</th><th>aggregate</th><th>dataType</th></tr>
+            <tr><th>name</th><th>baseName</th><th>aggregate</th><th>dataType</th></tr>
             <tr>
             {% for column in datamatrix['columns'] %}
-                <td>{{ column['name'] }}</td><td>{{ column['basename'] }}</td><td>{{ column['aggregate'] }}</td><td>{{ column['values'].dataType }}</td>
+                <td>{{ column['name'] }}</td><td>{{ column['baseName'] }}</td><td>{{ column['aggregate'] }}</td><td>{{ column['values'].dataType }}</td>
                 {% if 'numVal' in column['values'].keys() %}
                     {% for columnValue in column['values']['numVal'] -%}<td>{{ columnValue }}</td>{% endfor %}
                 {% elif 'strVal' in column['values'].keys() %}

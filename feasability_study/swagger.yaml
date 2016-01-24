@@ -238,9 +238,9 @@ definitions:
   SimpleQueryStructure:
     type: object
     properties:
-      entityName:
+      entity:
         type: string
-        description: name of the application element or base element or string version of the aid. In case multiple elements are derived from this base element the first one is picked
+        description: name of the application element or base element or string version of the objecttype/aid. In case multiple elements are derived from this base element the first one is picked
         example: MeaQuantity
       conditions:
         type: array
@@ -328,7 +328,7 @@ definitions:
               type: string
             baseName:
               type: string
-            aid:
+            objecttype:
               type: integer
               format: int64
             attributes:

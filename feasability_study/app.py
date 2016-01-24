@@ -124,7 +124,7 @@ def put_data(data_matrix):
 def get_data(simple_query):
     logging.info('retrieve data')
 
-    entityName = simple_query['entityName']
+    entityStr = simple_query['entity']
     conditions = simple_query['conditions'] if 'conditions' in simple_query else []
     attributes = simple_query['attributes'] if 'attributes' in simple_query else []
     orderBy = simple_query['orderBy'] if 'orderBy' in simple_query else []
@@ -136,12 +136,12 @@ def get_data(simple_query):
 
     so = Session__()
     model = so.Model()
-    elem = model.GetElemEx(entityName)
+    elem = model.GetElemEx(entityStr)
     result = so.GetInstancesExSimple(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
 
     rv = {}
     rv['name'] = elem.aeName
-    rv['basename'] = elem.beName
+    rv['baseName'] = elem.beName
     rv['skipCount'] = skipCount
     rv['vectorSkipCount'] = vectorSkipCount
 
@@ -278,7 +278,7 @@ def get_schema():
         entityObj = {}
         entityObj['name'] = elem.aeName
         entityObj['baseName'] = elem.beName
-        entityObj['aid'] = OdsLib.LL2Int(elem.aid)
+        entityObj['objecttype'] = OdsLib.LL2Int(elem.aid)
         # add attributes
         attributes = []
         for attr in elem.attributes:

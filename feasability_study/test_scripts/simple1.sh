@@ -28,12 +28,12 @@ curl -X GET --header 'Accept: application/json' 'http://localhost:8081/schema'
 
 pause 'Retrieve name and id from AoTests [Press key to continue]'
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
-    "entityName": "AoTest",
+    "entity": "AoTest",
     "attributes": ["name","id"]
 }' 'http://localhost:8081/data'
 
 pause 'Retrieve maximal 10 measurements with all query able attribute [Press key to continue]'
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
-    "entityName": "AoMeasurement",
+    "entity": "AoMeasurement",
     "maxCount": 50
 }' 'http://localhost:8081/data'

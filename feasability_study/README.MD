@@ -16,29 +16,29 @@ curl.exe -X GET "http://localhost:8081/schema"  --header "Accept: application/js
 curl.exe -X PUT "http://localhost:8081/schema" -d"{\"entities\":[{\"name\":\"MyAny\",\"baseName\":\"AoAny\",\"relations\":[{\"name\":\"myMeasurment\",\"kind\":\"INFO\",\"inverseName\":\"myInfoElement\",\"obligatory\":false,\"type\":\"n-1\",\"relEntityName\":\"Measurement\"}],\"attributes\":[{\"name\":\"Id\",\"baseName\":\"id\"},{\"name\":\"Name\",\"baseName\":\"name\"},{\"name\":\"my_classification\",\"dataType\":\"DT_DOUBLE\",\"obligatory\":true}]}]}" --header "Content-Type:application/json"
 curl.exe -X DELETE "http://localhost:8081/schema" -d"{\"entities\":[{\"name\":\"MyAny\"}]}" --header "Content-Type:application/json"
 
-curl.exe -X GET  "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
-curl.exe -X POST "http://localhost:8081/dataGP" -d "{\"entityName\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
-curl.exe -X GET  "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
-curl.exe -X GET  "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\",\"conditions\":[\"id=4\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X GET  "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X POST "http://localhost:8081/dataGP" -d "{\"entity\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X GET  "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X GET  "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"conditions\":[\"id=4\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"measurement=2\"]}"    --header "Content-Type: application/json" --header "Accept: application/json" 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"measurement.id=2\"]}" --header "Content-Type: application/json" --header "Accept: application/json" 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"id=4\"]}"             --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"measurement=2\"]}"    --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"measurement.id=2\"]}" --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"],\"conditions\":[\"id=4\"]}"             --header "Content-Type: application/json" --header "Accept: application/json" 
 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"DISTINCT(name)\"]}"  --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"attributes\":[\"DISTINCT(name)\"]}"  --header "Content-Type: application/json" --header "Accept: application/json" 
 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"name\"]}"              --header "Content-Type: application/json" --header "Accept: application/json" 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"ASCENDING(name)\"]}"   --header "Content-Type: application/json" --header "Accept: application/json" 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"DESCENDING(name)\"]}"  --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"name\"]}"              --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"ASCENDING(name)\"]}"   --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"attributes\":[\"name\"],\"orderBy\":[\"DESCENDING(name)\"]}"  --header "Content-Type: application/json" --header "Accept: application/json" 
 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"}"                                                       --header "Content-Type: application/json" --header "Accept: application/json"
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\",\"attributes\":[\"id\"],\"conditions\":[\"id=12\"]}"    --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\"}"                                                       --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"attributes\":[\"id\"],\"conditions\":[\"id=12\"]}"    --header "Content-Type: application/json" --header "Accept: application/json" 
 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\"]}"                                                                                 --header "Content-Type: application/json" --header "Accept: application/json" 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\"]}"                                                                       --header "Content-Type: application/json" --header "Accept: application/json" 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"]}"                                             --header "Content-Type: application/json" --header "Accept: application/json" 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"],\"vectorMaxCount\":10}"                       --header "Content-Type: application/json" --header "Accept: application/json" 
-curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"],\"vectorSkipCount\":5,\"vectorMaxCount\":10}" --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\"]}"                                                                                 --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\"]}"                                                                       --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"]}"                                             --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"],\"vectorMaxCount\":10}"                       --header "Content-Type: application/json" --header "Accept: application/json" 
+curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"],\"vectorSkipCount\":5,\"vectorMaxCount\":10}" --header "Content-Type: application/json" --header "Accept: application/json" 
 ```
 
 ##SimpleQueryStructure Explanation
@@ -49,7 +49,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "MeaQuantity"
+	"entity": "MeaQuantity"
 }
 ```
 
@@ -57,15 +57,15 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "AoTest"
+	"entity": "AoTest"
 }
 ```
 
-- Get all attributes of the entity with the aid
+- Get all attributes of the entity with the aid/objecttype
 
 ```json
 {
-	"entityName": "1"
+	"entity": "1"
 }
 ```
 
@@ -73,7 +73,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "MeaQuantity",
+	"entity": "MeaQuantity",
 	"maxCount": 50
 }
 ```
@@ -82,7 +82,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "MeaQuantity",
+	"entity": "MeaQuantity",
 	"attributes": ["name","id"]
 }
 ```
@@ -91,7 +91,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "MeaQuantity",
+	"entity": "MeaQuantity",
 	"attributes": ["name","id","measurement.name"]
 }
 ```
@@ -100,7 +100,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "MeaQuantity",
+	"entity": "MeaQuantity",
 	"conditions": ["id=4"]
 }
 ```
@@ -109,7 +109,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "MeaQuantity",
+	"entity": "MeaQuantity",
 	"attributes": ["name","id"],
 	"conditions": ["measurement=2"]
 }
@@ -119,7 +119,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "MeaQuantity",
+	"entity": "MeaQuantity",
 	"attributes": ["name","id","measurement.name","measurement.id"],
 	"conditions": ["measurement.test=2"]
 }
@@ -129,7 +129,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "MeaQuantity",
+	"entity": "MeaQuantity",
 	"attributes": ["DISTINCT(name)"]
 }
 ```
@@ -138,7 +138,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "MeaQuantity",
+	"entity": "MeaQuantity",
 	"attributes": ["name"],
 	"orderBy": ["DESCENDING(name)"]
 }
@@ -150,7 +150,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "LocalColumn",
+	"entity": "LocalColumn",
 	"conditions": ["id=12"],
 	"attributes": ["id","values","flags","generation_parameters"]
 }
@@ -160,7 +160,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "LocalColumn",
+	"entity": "LocalColumn",
 	"conditions": ["submatrix=8"],
 	"attributes": ["id","values","flags","generation_parameters"],
 	"vectorMaxCount": 1000
@@ -171,7 +171,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entityName\":\"LocalColumn\"
 
 ```json
 {
-	"entityName": "LocalColumn",
+	"entity": "LocalColumn",
 	"conditions": ["submatrix=8"],
 	"attributes": ["id","values","flags"],
 	"vectorSkipCount": 1000,
