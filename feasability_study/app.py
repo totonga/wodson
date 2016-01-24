@@ -19,7 +19,7 @@ import OdsLib
 import connexion
 
 # from flask import Flask
-from flask import render_template,  redirect
+from flask import render_template,  redirect,  jsonify
 from flask import request
 from connexion import NoContent
 
@@ -222,9 +222,9 @@ def get_data(simple_query):
     rv['columns'] = columnsObj
 
     if request_wants_json():
-        return rv, 200
+        return jsonify(rv), 200
     
-    return render_template('datamatrix.html', datamatrix=rv)
+    return render_template('datamatrix.html', datamatrix=rv),  200
  
 def post_dataGP(simple_query):
     return get_data(simple_query)

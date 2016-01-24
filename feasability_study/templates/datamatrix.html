@@ -5,25 +5,22 @@
         <title>DataMatrix</title> 
     </head> 
     <body>
-        <table>
+        <table border="1">
           <tr><th>name</th><th>baseName</th><th>skipCount</th><th>vectorSkipCount</th></tr>
           <tr><td>{{ datamatrix['name'] }}</td><td>{{ datamatrix['baseName'] }}</td><td>{{ datamatrix['skipCount'] }}</td><td>{{ datamatrix['vectorSkipCount'] }}</td></tr>
         </table>
-
-        <table>
+        <br />
+        <table border="1">
             <tr><th>name</th><th>baseName</th><th>aggregate</th><th>dataType</th></tr>
-            <tr>
             {% for column in datamatrix['columns'] %}
-                <td>{{ column['name'] }}</td><td>{{ column['baseName'] }}</td><td>{{ column['aggregate'] }}</td><td>{{ column['values'].dataType }}</td>
-                {% if 'numVal' in column['values'].keys() %}
-                    {% for columnValue in column['values']['numVal'] -%}<td>{{ columnValue }}</td>{% endfor %}
-                {% elif 'strVal' in column['values'].keys() %}
-                    {% for columnValue in column['values']['strVal'] -%}<td>{{ columnValue }}</td>{% endfor %}
-                {% elif 'dateVal' in column['values'].keys() %}
-                    {% for columnValue in column['values']['dateVal'] -%}<td>{{ columnValue }}</td>{% endfor %}
-                {% endif %}
+            <tr><td>{{ column['name'] }}</td><td>{{ column['baseName'] }}</td><td>{{ column['aggregate'] }}</td><td>{{ column['values'].dataType }}</td>{% if 'numVal' in column['values'].keys() -%}
+                    {% for columnValue in column['values']['numVal'] -%}<td>{{ columnValue }}</td>{% endfor -%}</tr>
+                {% elif 'strVal' in column['values'].keys() -%}
+                    {% for columnValue in column['values']['strVal'] -%}<td>{{ columnValue }}</td>{% endfor -%}</tr>
+                {% elif 'dateVal' in column['values'].keys() -%}
+                    {% for columnValue in column['values']['dateVal'] -%}<td>{{ columnValue }}</td>{% endfor -%}</tr>
+                {% endif -%}
             {% endfor %}
-            </tr>
         </table>
     </body>
 </html>

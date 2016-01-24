@@ -43,3 +43,9 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
   "entity": "AoTest",
   "id": 1
 }' 'http://localhost:8081/utils/asampath/create'
+
+pause 'Retrieve name and id from AoTests using html [Press key to continue]'
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: text/html' -d '{
+    "entity": "AoTest",
+    "attributes": ["name","id"]
+}' 'http://localhost:8081/data'

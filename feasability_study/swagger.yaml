@@ -34,6 +34,9 @@ paths:
             $ref: '#/definitions/DataMatrix'
         '404':
           description: not conneted
+      produces:
+        - application/json
+        - text/html
       security:
         - session_auth:
           - read_data
@@ -98,6 +101,9 @@ paths:
             $ref: '#/definitions/DataMatrix'
         '404':
           description: not connected
+      produces:
+        - application/json
+        - text/html
       security:
         - session_auth:
           - read_data
