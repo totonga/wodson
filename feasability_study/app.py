@@ -19,9 +19,12 @@ import OdsLib
 import connexion
 
 # from flask import Flask
-from flask import render_template
+from flask import render_template,  redirect
 from flask import request
 from connexion import NoContent
+
+app = connexion.App(__name__)
+
 
 context_vars__ = {}
 session_obj__ = None
@@ -219,7 +222,7 @@ def get_data(simple_query):
     rv['columns'] = columnsObj
 
     if request_wants_json():
-            return rv, 200
+        return rv, 200
     
     return render_template('datamatrix.html', datamatrix=rv)
  
@@ -343,10 +346,43 @@ def put_context(parameters):
 
     return NoContent, 200
 
+def get_utils_asampath_create(params):
+    logging.info('create an asam path')
+    
+    entityStr = params['entity']
+    iid = params['id']
+
+    so = Session__()
+    model = so.Model()
+    elem = model.GetElemEx(entityStr)
+    rv = {}
+    rv['path'] = so.AsamPathCreate(elem.aid,  iid)
+    return rv
+
+def post_utils_asampath_create(params):
+    return get_utils_asampath_create(params)
+
+def get_utils_asampath_resolve(params):
+    logging.info('resolve an asam path')
+    
+    path = params['path']
+ 
+    so = Session__()
+    entity,  iid = so.AsamPathResolve(path)
+    rv = {}
+    rv['entity'] = entity
+    rv['id'] = iid
+    return rv
+
+def post_utils_asampath_resolve(params):
+    return get_utils_asampath_resolve(params)
+
+@app.route('/')
+def index():
+    return redirect('ui/')
 
 logging.basicConfig(level=logging.INFO)
 
-app = connexion.App(__name__)
 app.add_api('swagger.yaml')
 # set the WSGI application callable to allow using uWSGI:
 # uwsgi --http :8081 -w app

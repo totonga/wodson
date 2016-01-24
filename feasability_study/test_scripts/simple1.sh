@@ -37,3 +37,9 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
     "entity": "AoMeasurement",
     "maxCount": 50
 }' 'http://localhost:8081/data'
+
+pause 'Create asam path for instance [Press key to continue]'
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+  "entity": "AoTest",
+  "id": 1
+}' 'http://localhost:8081/utils/asampath/create'

@@ -496,6 +496,19 @@ class CSession:
             self.session_.close()
             self.session_ = None
 
+    def AsamPathCreate(self,  aid,  iid):
+        applStruct = self.session_.getApplicationStructure()
+        ae = applStruct.getElementById(aid)
+        ie = ae.getInstanceById(Int2LL(iid))
+        return ie.getAsamPath()
+
+    def AsamPathResolve(self,  path):
+        applStruct = self.session_.getApplicationStructure()
+        ie = applStruct.getInstanceByAsamPath(path.encode('utf-8'))
+        iid = ie.getId()
+        entity = ie.getApplicationElement().getName()
+        return entity,  LL2Int(iid)
+        
     def GetInstancesExSimple(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
         
         if conditionArray is None: conditionArray = []

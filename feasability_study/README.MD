@@ -227,6 +227,30 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"c
 }
 ```
 
+### Utils
+
+### AsamPath
+
+- Create an asam path
+
+```sh
+pause 'Create asam path for instance [Press key to continue]'
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+  "entity": "Projekt",
+  "id": 1
+}' 'http://localhost:8081/utils/asampath/create'
+```
+
+- Resolve an asam path
+
+```sh
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+  "path": "/[Environment]testenv;1/[Projekt]Project;V1"
+}' 'http://localhost:8081/utils/asampath/resolve'
+```
+
+
+
 ## Setup System
 
 ### Linux
@@ -280,3 +304,4 @@ Include omiorb and stub into pythonpath
 ```
 set PYTHONPATH=%PYTHONPATH%;???\omniORBpy-4.2.1-win64-python27\lib\python;???
 ```
+

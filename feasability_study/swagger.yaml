@@ -25,7 +25,6 @@ paths:
       parameters:
         - name: simple_query
           in: body
-          type: string
           schema:
             $ref: '#/definitions/SimpleQueryStructure'
       responses:
@@ -37,7 +36,7 @@ paths:
           description: not conneted
       security:
         - session_auth:
-            - read_data
+          - read_data
     post:
       tags:
         - Api
@@ -90,7 +89,6 @@ paths:
       parameters:
         - name: simple_query
           in: body
-          type: string
           schema:
             $ref: '#/definitions/SimpleQueryStructure'
       responses:
@@ -102,7 +100,7 @@ paths:
           description: not connected
       security:
         - session_auth:
-            - read_data
+          - read_data
   /transaction:
     put:
       tags:
@@ -117,7 +115,7 @@ paths:
           description: Invalid input. Transaction was not opened
       security:
         - session_auth:
-            - write_data
+          - write_data
     delete:
       tags:
         - Api
@@ -131,7 +129,7 @@ paths:
           description: Invalid input. Transaction was not opened
       security:
         - session_auth:
-            - write_data
+          - write_data
   /schema:
     get:
       tags:
@@ -149,7 +147,7 @@ paths:
           description: not connected
       security:
         - session_auth:
-            - read_data
+          - read_data
     put:
       tags:
         - Api
@@ -189,7 +187,7 @@ paths:
           description: Invalid input
       security:
         - session_auth:
-            - modify_schema
+          - modify_schema
   /context:
     get:
       tags:
@@ -225,6 +223,89 @@ paths:
       security:
         - session_auth:
             - write_data
+  /utils/asampath/create:
+    get:
+      tags:
+        - Api
+        - Utils
+      description: get data from server by using query.
+      operationId: app.get_utils_asampath_create
+      parameters:
+        - name: params
+          in: body
+          schema:
+            $ref: '#/definitions/Instance'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/AsamPath'
+        '404':
+          description: not conneted
+      security:
+        - session_auth:
+          - read_data
+    post:
+      tags:
+        - Workaround
+      description: will redirect to get with body
+      operationId: app.post_utils_asampath_create
+      parameters:
+        - name: params
+          in: body
+          schema:
+            $ref: '#/definitions/Instance'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/AsamPath'
+        '404':
+          description: not conneted
+      security:
+        - session_auth:
+          - read_data
+  /utils/asampath/resolve:
+    get:
+      tags:
+        - Api
+        - Utils
+      description: will redirect to get with body
+      operationId: app.post_utils_asampath_resolve
+      parameters:
+        - name: params
+          in: body
+          schema:
+            $ref: '#/definitions/AsamPath'
+      responses:
+        '200':
+          description: Successful updated
+          schema:
+            $ref: '#/definitions/Instance'
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+          - read_data
+    post:
+      tags:
+        - Workaround
+      operationId: app.get_utils_asampath_resolve
+      parameters:
+        - name: params
+          in: body
+          schema:
+            $ref: '#/definitions/AsamPath'
+      responses:
+        '200':
+          description: Successful updated
+          schema:
+            $ref: '#/definitions/Instance'
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+          - read_data
 securityDefinitions:
   session_auth:
     type: oauth2
@@ -235,6 +316,24 @@ securityDefinitions:
       read_data: read data from server
       modify_schema: capable to change server schema
 definitions:
+  Instance:
+    type: object
+    properties:
+      entity:
+        type: string
+        description: name of the application element or base element or string version of the objecttype/aid. In case multiple elements are derived from this base element the first one is picked
+        example: MeaQuantity
+      id:
+        type: integer
+        format: int64
+        example: 1
+  AsamPath:
+    type: object
+    properties:
+      path:
+        type: string
+        description: string representing an AsamPath 
+        example: /[test]myTest/[measurement]myMeasurement
   SimpleQueryStructure:
     type: object
     properties:
