@@ -19,8 +19,24 @@
                     {% for columnValue in column['values']['strVal'] -%}<td>{{ columnValue }}</td>{% endfor -%}</tr>
                 {% elif 'dateVal' in column['values'].keys() -%}
                     {% for columnValue in column['values']['dateVal'] -%}<td>{{ columnValue }}</td>{% endfor -%}</tr>
+                {% elif 'numSeq' in column['values'].keys() -%}
+                    {% for columnValue in column['values']['numSeq'] -%}<td><table border="1"><tr>{% for seqValue in columnValue -%}<td>{{ seqValue }}</td>{% endfor -%}</tr></table></td>{% endfor -%}</tr>
+                {% elif 'strSeq' in column['values'].keys() -%}
+                    {% for columnValue in column['values']['strSeq'] -%}<td><table border="1"><tr>{% for seqValue in columnValue -%}<td>{{ seqValue }}</td>{% endfor -%}</tr></table></td>{% endfor -%}</tr>
+                {% elif 'dateSeq' in column['values'].keys() -%}
+                    {% for columnValue in column['values']['dateSeq'] -%}<td><table border="1"><tr>{% for seqValue in columnValue -%}<td>{{ seqValue }}</td>{% endfor -%}</tr></table></td>{% endfor -%}</tr>
+                {% elif 'unknownSeq' in column['values'].keys() -%}
+                    {% for columnValue in column['values']['unknownSeq'] -%}
+                    <td>dataType:{{ columnValue['dataType'] }}{% if 'numSeq' in columnValue.keys() -%}<table border="1"><tr>
+                        {% for seqValue in columnValue['numSeq'] -%}<td>{{ seqValue }}</td>{% endfor -%}</tr></table></td>
+                        {% elif 'strSeq' in columnValue.keys() -%}<table border="1"><tr>
+                        {% for seqValue in columnValue['strSeq'] -%}<td>{{ seqValue }}</td>{% endfor -%}</tr></table></td>
+                        {% elif 'dateSeq' in columnValue.keys() -%}<table border="1"><tr>
+                        {% for seqValue in columnValue['dateSeq'] -%}<td>{{ seqValue }}</td>{% endfor -%}</tr></table></td>
+                        {% endif %}
+                    {% endfor -%}
                 {% endif -%}
-            {% endfor %}
+            {% endfor -%}</tr>
         </table>
     </body>
 </html>
