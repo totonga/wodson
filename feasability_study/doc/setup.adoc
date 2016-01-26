@@ -1,4 +1,6 @@
 == Setup System
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
 
 === Linux
 
