@@ -1,0 +1,70 @@
+== Asam Security
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+****
+Asam Ods allows security on entity, instance and attribute level.
+The information is stored in database tables and can be read and modified
+using the *data* resource.
+****
+
+Following entities do exist:
+
+.security entities
+[options="header]
+|===========================================
+| <<ACLI>>            | instance security
+| <<ACLA>>            | attribute security
+| <<ACLTemplate>>     | ???
+| <<SecurityLevel>>   | ???
+| <<InitialRightsAt>> | ???
+|===========================================
+
+=== Attributes and Relations of Asam Security
+
+.ACLI[[ACLI]]
+[options="header"]
+|=================================================
+| attribute         | datatype      | reftype
+| users             | DT_LONGLONG   | AoUserGroup
+| appl_element_name | DT_STRING     |
+| rights            | DT_SHORT      |
+| instance_id       | DT_LONGLONG   |
+|=================================================
+
+.ACLA[[ACLA]]
+[options="header"]
+|=================================================
+| attribute         | datatype      | reftype
+| users             | DT_LONGLONG   | AoUserGroup
+| appl_element_name | DT_STRING     |
+| rights            | DT_SHORT      |
+| attribute_name    | ST_STRING     |
+|=================================================
+
+.ACLTemplate[[ACLTemplate]]
+[options="header"]
+|=================================================
+| attribute         | datatype      | reftype
+| users             | DT_LONGLONG   | AoUserGroup
+| appl_element_name | DT_STRING     |
+| rights            | DT_SHORT      |
+| instance_id       | DT_LONGLONG   |
+| ref_appl_elem_name| ST_STRING     |
+|=================================================
+
+.SecurityLevel[[SecurityLevel]]
+[options="header"]
+|=================================================
+| attribute         | datatype      | reftype
+| appl_element_name | DT_STRING     |
+| level             | DT_SHORT      |
+|=================================================
+
+.InitialRightsAt[[InitialRightsAt]]
+[options="header"]
+|=================================================
+| attribute         | datatype      | reftype
+| appl_element_name | DT_STRING     |
+| attribute_name    | DT_STRING     |
+|=================================================

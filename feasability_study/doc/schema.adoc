@@ -1,0 +1,132 @@
+== Schema
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+****
+The physical storage of an ASAM ODS server is a relational database.
+The schema contains the entity relationship definitions needed to retrieve the stored data sensful.
+****
+
+TIP: In ASAM ODS the schema is called application model. Because the word model
+     is used different today we picked schema here.
+
+=== Get schema
+
+****
+If a client is not hard coded against a schema, it should retrieve the schema in 
+one piece and use local source code to extract information from the schema.
+****
+
+IMPORTANT: The schema should be cached and not retrieved every time.
+
+.retrieve the schema
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/shema'
+----
+
+*Result:*
+
+.header
+----
+----
+.body
+[source,json]
+----
+----
+================================
+
+TIP: The content of the schema needs to be known to fill later request to *data* resource.
+
+
+=== Modify schema
+
+==== Add components to schema
+
+.create entity *MyAny*
+================================
+.request
+[source,json]
+----
+curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+	"entities": [{
+		"name": "MyAny",
+		"baseName": "AoAny",
+		"relations": [{
+			"name": "myMeasurment",
+			"inverseName": "myInfoElement",
+			"obligatory": false,
+			"type": "n-1",
+			"relEntityName": "Measurement"
+		}],
+		"attributes": [{
+			"name": "Id",
+			"baseName": "id"
+		},
+		{
+			"name": "Name",
+			"baseName": "name"
+		},
+		{
+			"name": "my_classification",
+			"dataType": "DT_DOUBLE",
+			"obligatory": true
+		}]
+	}]
+}' 'http://localhost:8081/shema'
+----
+================================
+
+.add attribute *my_value* to *MyAny*
+================================
+.request
+[source,json]
+----
+curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+	"entities": [{
+		"name": "MyAny",
+		"attributes": [{
+			"name": "my_value",
+			"dataType": "DT_DOUBLE",
+			"obligatory": true
+		}]
+	}]
+}' 'http://localhost:8081/shema'
+----
+================================
+
+
+
+==== Delete schema components
+
+.delete attribute *my_value* at *MyAny*
+================================
+.request
+[source,json]
+----
+curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+	"entities": [{
+		"name": "MyAny",
+		"attributes": [{
+			"name": "my_value"
+		}]
+	}]
+}' 'http://localhost:8081/shema'
+----
+================================
+
+
+.delete entity *MyAny*
+================================
+.request
+[source,json]
+----
+curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+	"entities": [{
+		"name": "MyAny"
+	}]
+}' 'http://localhost:8081/shema'
+----
+================================

@@ -1,0 +1,58 @@
+== Setup System
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+=== Linux
+
+Run the following commands in a terminal.
+
+.shell script to get server up and running
+[source,sh]
+----
+sudo apt-get install python omniidl-python python-pip git
+mkdir dev
+cd dev
+git clone https://github.com/totonga/wodson.git
+cd wodson/feasability_study/
+omniidl -bpython corbaserver.idl
+pip install --user -r requirements.txt
+python app.py
+----
+
+Visit http://localhost:8081/ui/ to see the integrated swagger UI.
+
+.some additional development tools
+[source,sh]
+----
+sudo apt-get install eric curl
+----
+
+=== Windows
+
+Download omniORBpy package from homepage http://sourceforge.net/projects/omniorb/files/omniORBpy/
+
+.copy omniorb runtime or add it to PATH
+----
+set PATH=%PATH%;???\omniORBpy-4.2.1-win64-python27\lbin\x86_win32
+----
+
+.add omniorb python components to PYTHONPATH 
+----
+set PYTHONPATH=%PYTHONPATH%;???\omniORBpy-4.2.1-win64-python27\lib\python
+----
+
+If Visual Studio 2015 is used the omniorb runtime can be copied to an environment
+----
+copy ???\omniORBpy-4.2.1-win64-python27\lib\x86_win32\*.* env\Scripts\.
+copy ???\omniORBpy-4.2.1-win64-python27\bin\x86_win32\*.* env\Scripts\.
+----
+
+.create python stub
+----
+omniidl.exe -bpython corbaserver.IDL
+----
+
+.include omiorb and stub into pythonpath
+----
+set PYTHONPATH=%PYTHONPATH%;???\omniORBpy-4.2.1-win64-python27\lib\python;???
+----

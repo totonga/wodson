@@ -1,0 +1,18 @@
+== Data
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+****
+ASAM ODS is about making measurement data persistent. So this is the most important chapter. Its is about writing and reading data (meta/bulk).
+****
+
+:toc:
+
+=== Read meta data
+
+=== Write meta data
+
+=== Read bulk data
+
+=== Write bulk data
+
