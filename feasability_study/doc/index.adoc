@@ -1,0 +1,9 @@
+Wodson - Feasability Study
+==========================
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+:toc:
+
+include::schema.adoc[]
+include::setup.adoc[]
