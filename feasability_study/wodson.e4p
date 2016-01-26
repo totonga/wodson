@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-5.1.dtd">
+<!-- eric5 project file for project wodson -->
+<!-- Saved: 2016-01-22, 16:46:00 -->
+<!-- Copyright (C) 2016 Andreas Krantz, totonga@gmail.com -->
+<Project version="5.1">
+  <Language>en_US</Language>
+  <Hash>a50af2593e9bb247889909cd459456c9eb83b505</Hash>
+  <ProgLanguage mixed="0">Python2</ProgLanguage>
+  <ProjectType>Console</ProjectType>
+  <Description></Description>
+  <Version>0.1</Version>
+  <Author>Andreas Krantz</Author>
+  <Email>totonga@gmail.com</Email>
+  <Eol index="1"/>
+  <Sources>
+    <Source>app.py</Source>
+    <Source>OdsLib.py</Source>
+    <Source>README.MD</Source>
+    <Source>swagger.yaml</Source>
+    <Source>requirements.txt</Source>
+    <Source>test_scripts/simple1.sh</Source>
+    <Source>templates/datamatrix.html</Source>
+  </Sources>
+  <Forms/>
+  <Translations/>
+  <Resources/>
+  <Interfaces/>
+  <Others>
+    <Other>app.py</Other>
+  </Others>
+  <MainScript>app.py</MainScript>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES"/>
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.py2" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.pyw2" type="SOURCES"/>
+  </FiletypeAssociations>
+</Project>
