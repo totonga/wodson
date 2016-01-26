@@ -35,6 +35,1498 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 .body
 [source,json]
 ----
+{
+  "enumerations": [
+    {
+      "name": "ao_storagetype_enum",
+      "entries": [
+        {
+          "index": 0,
+          "name": "database"
+        },
+        {
+          "index": 1,
+          "name": "external_only"
+        },
+        {
+          "index": 2,
+          "name": "mixed"
+        },
+        {
+          "index": 3,
+          "name": "foreign_format"
+        }
+      ]
+    },
+    {
+      "name": "bool_enum",
+      "entries": [
+        {
+          "index": 0,
+          "name": "false"
+        },
+        {
+          "index": 1,
+          "name": "true"
+        }
+      ]
+    },
+    {
+      "name": "datatype_enum",
+      "entries": [
+        {
+          "index": 0,
+          "name": "DT_UNKNOWN"
+        },
+        {
+          "index": 1,
+          "name": "DT_STRING"
+        },
+        {
+          "index": 2,
+          "name": "DT_SHORT"
+        },
+        {
+          "index": 3,
+          "name": "DT_FLOAT"
+        },
+        {
+          "index": 4,
+          "name": "DT_BOOLEAN"
+        },
+        {
+          "index": 5,
+          "name": "DT_BYTE"
+        },
+        {
+          "index": 6,
+          "name": "DT_LONG"
+        },
+        {
+          "index": 7,
+          "name": "DT_DOUBLE"
+        },
+        {
+          "index": 8,
+          "name": "DT_LONGLONG"
+        },
+        {
+          "index": 9,
+          "name": "DT_ID"
+        },
+        {
+          "index": 10,
+          "name": "DT_DATE"
+        },
+        {
+          "index": 11,
+          "name": "DT_BYTESTR"
+        },
+        {
+          "index": 12,
+          "name": "DT_BLOB"
+        },
+        {
+          "index": 13,
+          "name": "DT_COMPLEX"
+        },
+        {
+          "index": 14,
+          "name": "DT_DCOMPLEX"
+        },
+        {
+          "index": 28,
+          "name": "DT_EXTERNALREFERENCE"
+        },
+        {
+          "index": 30,
+          "name": "DT_ENUM"
+        }
+      ]
+    },
+    {
+      "name": "interpolation_enum",
+      "entries": [
+        {
+          "index": 0,
+          "name": "no_interpolation"
+        },
+        {
+          "index": 1,
+          "name": "linear_interpolation"
+        },
+        {
+          "index": 2,
+          "name": "application_specific"
+        }
+      ]
+    },
+    {
+      "name": "quantity_class_enum",
+      "entries": [
+        {
+          "index": 0,
+          "name": "measured"
+        },
+        {
+          "index": 1,
+          "name": "state"
+        }
+      ]
+    },
+    {
+      "name": "seq_rep_enum",
+      "entries": [
+        {
+          "index": 0,
+          "name": "explicit"
+        },
+        {
+          "index": 1,
+          "name": "implicit_constant"
+        },
+        {
+          "index": 2,
+          "name": "implicit_linear"
+        },
+        {
+          "index": 3,
+          "name": "implicit_saw"
+        },
+        {
+          "index": 4,
+          "name": "raw_linear"
+        },
+        {
+          "index": 5,
+          "name": "raw_polynomial"
+        },
+        {
+          "index": 6,
+          "name": "formula"
+        },
+        {
+          "index": 7,
+          "name": "external_component"
+        },
+        {
+          "index": 8,
+          "name": "raw_linear_external"
+        },
+        {
+          "index": 9,
+          "name": "raw_polynomial_external"
+        },
+        {
+          "index": 10,
+          "name": "raw_linear_calibrated"
+        },
+        {
+          "index": 11,
+          "name": "raw_linear_calibrated_external"
+        }
+      ]
+    },
+    {
+      "name": "typespec_enum",
+      "entries": [
+        {
+          "index": 0,
+          "name": "dt_boolean"
+        },
+        {
+          "index": 1,
+          "name": "dt_byte"
+        },
+        {
+          "index": 2,
+          "name": "dt_short"
+        },
+        {
+          "index": 3,
+          "name": "dt_long"
+        },
+        {
+          "index": 4,
+          "name": "dt_longlong"
+        },
+        {
+          "index": 5,
+          "name": "ieeefloat4"
+        },
+        {
+          "index": 6,
+          "name": "ieeefloat8"
+        },
+        {
+          "index": 7,
+          "name": "dt_short_beo"
+        },
+        {
+          "index": 8,
+          "name": "dt_long_beo"
+        },
+        {
+          "index": 9,
+          "name": "dt_longlong_beo"
+        },
+        {
+          "index": 10,
+          "name": "ieeefloat4_beo"
+        },
+        {
+          "index": 11,
+          "name": "ieeefloat8_beo"
+        },
+        {
+          "index": 12,
+          "name": "dt_string"
+        },
+        {
+          "index": 13,
+          "name": "dt_bytestream"
+        },
+        {
+          "index": 14,
+          "name": "dt_blob"
+        },
+        {
+          "index": 15,
+          "name": "dt_boolean_flags_beo"
+        },
+        {
+          "index": 16,
+          "name": "dt_byte_flags_beo"
+        },
+        {
+          "index": 17,
+          "name": "dt_string_flags_beo"
+        },
+        {
+          "index": 18,
+          "name": "dt_bytestr_beo"
+        },
+        {
+          "index": 19,
+          "name": "dt_sbyte"
+        },
+        {
+          "index": 20,
+          "name": "dt_sbyte_flags_beo"
+        },
+        {
+          "index": 21,
+          "name": "dt_ushort"
+        },
+        {
+          "index": 22,
+          "name": "dt_ushort_beo"
+        },
+        {
+          "index": 23,
+          "name": "dt_ulong"
+        },
+        {
+          "index": 24,
+          "name": "dt_ulong_beo"
+        },
+        {
+          "index": 25,
+          "name": "dt_string_utf8"
+        },
+        {
+          "index": 26,
+          "name": "dt_string_utf8_flags_beo"
+        },
+        {
+          "index": 27,
+          "name": "dt_bit_int"
+        },
+        {
+          "index": 28,
+          "name": "dt_bit_int_beo"
+        },
+        {
+          "index": 29,
+          "name": "dt_bit_uint"
+        },
+        {
+          "index": 30,
+          "name": "dt_bit_uint_beo"
+        },
+        {
+          "index": 31,
+          "name": "dt_bit_ieeefloat"
+        },
+        {
+          "index": 32,
+          "name": "dt_bit_ieeefloat_beo"
+        },
+        {
+          "index": 33,
+          "name": "dt_bytestr_leo"
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "attributes": [
+        {
+          "name": "Name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "Description",
+          "dataType": "DT_STRING",
+          "baseName": "description",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "BaseModelVersion",
+          "dataType": "DT_STRING",
+          "baseName": "base_model_version",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "MeaningOfAlias",
+          "dataType": "DS_STRING",
+          "baseName": "meaning_of_aliases",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoEnvironment",
+      "name": "Environment",
+      "relations": [
+        {
+          "kind": "INFO",
+          "name": "Roots",
+          "inverseName": "Environment",
+          "inverseBaseName": "environment",
+          "baseName": "tests",
+          "relEntityBaseName": "AoTest",
+          "obligatory": false,
+          "relEntityName": "Root",
+          "type": "n-1"
+        },
+        {
+          "kind": "INFO",
+          "name": "Earthquakes",
+          "inverseName": "Environment",
+          "inverseBaseName": "environment",
+          "baseName": "uuts",
+          "relEntityBaseName": "AoUnitUnderTest",
+          "obligatory": false,
+          "relEntityName": "Earthquake",
+          "type": "n-1"
+        },
+        {
+          "kind": "INFO",
+          "name": "Stations",
+          "inverseName": "Environment",
+          "inverseBaseName": "environment",
+          "baseName": "equipments",
+          "relEntityBaseName": "AoTestEquipment",
+          "obligatory": false,
+          "relEntityName": "Station",
+          "type": "n-1"
+        },
+        {
+          "kind": "INFO",
+          "name": "NameMaps",
+          "inverseName": "Environment",
+          "inverseBaseName": "environment",
+          "baseName": "entity_mapping",
+          "relEntityBaseName": "AoNameMap",
+          "obligatory": false,
+          "relEntityName": "EQNameMap",
+          "type": "n-1"
+        }
+      ],
+      "objecttype": 1
+    },
+    {
+      "attributes": [
+        {
+          "name": "EntityName",
+          "dataType": "DT_STRING",
+          "baseName": "entity_name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "AliasNames",
+          "dataType": "DS_STRING",
+          "baseName": "alias_names",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        }
+      ],
+      "baseName": "AoNameMap",
+      "name": "EQNameMap",
+      "relations": [
+        {
+          "kind": "INFO",
+          "name": "Environment",
+          "inverseName": "NameMaps",
+          "inverseBaseName": "entity_mapping",
+          "baseName": "environment",
+          "relEntityBaseName": "AoEnvironment",
+          "obligatory": true,
+          "relEntityName": "Environment",
+          "type": "1-n"
+        },
+        {
+          "kind": "INFO",
+          "name": "AttributeMapping",
+          "inverseName": "NameMap",
+          "inverseBaseName": "name_mapping",
+          "baseName": "attribute_mapping",
+          "relEntityBaseName": "AoAttributeMap",
+          "obligatory": false,
+          "relEntityName": "EQAttributeMap",
+          "type": "n-1"
+        }
+      ],
+      "objecttype": 2
+    },
+    {
+      "attributes": [
+        {
+          "name": "AttributeName",
+          "dataType": "DT_STRING",
+          "baseName": "attribute_name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "AliasNames",
+          "dataType": "DS_STRING",
+          "baseName": "alias_names",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        }
+      ],
+      "baseName": "AoAttributeMap",
+      "name": "EQAttributeMap",
+      "relations": [
+        {
+          "kind": "INFO",
+          "name": "NameMap",
+          "inverseName": "AttributeMapping",
+          "inverseBaseName": "attribute_mapping",
+          "baseName": "name_mapping",
+          "relEntityBaseName": "AoNameMap",
+          "obligatory": true,
+          "relEntityName": "EQNameMap",
+          "type": "1-n"
+        }
+      ],
+      "objecttype": 3
+    },
+    {
+      "attributes": [
+        {
+          "name": "Name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "Description",
+          "dataType": "DT_STRING",
+          "baseName": "description",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoTest",
+      "name": "Root",
+      "relations": [
+        {
+          "kind": "FATHER_CHILD",
+          "name": "Groups",
+          "inverseName": "Root",
+          "inverseBaseName": "test",
+          "baseName": "children",
+          "relEntityBaseName": "AoMeasurement",
+          "obligatory": false,
+          "relEntityName": "Group",
+          "type": "n-1"
+        },
+        {
+          "kind": "INFO",
+          "name": "Environment",
+          "inverseName": "Roots",
+          "inverseBaseName": "tests",
+          "baseName": "environment",
+          "relEntityBaseName": "AoEnvironment",
+          "obligatory": false,
+          "relEntityName": "Environment",
+          "type": "1-n"
+        }
+      ],
+      "objecttype": 4
+    },
+    {
+      "attributes": [
+        {
+          "name": "Name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "Description",
+          "dataType": "DT_STRING",
+          "baseName": "description",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Begin",
+          "dataType": "DT_DATE",
+          "baseName": "measurement_begin",
+          "obligatory": false,
+          "length": 23,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "End",
+          "dataType": "DT_DATE",
+          "baseName": "measurement_end",
+          "obligatory": false,
+          "length": 23,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "EpicenterAzimuth",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "EpicentralDistance",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoMeasurement",
+      "name": "Group",
+      "relations": [
+        {
+          "kind": "FATHER_CHILD",
+          "name": "Root",
+          "inverseName": "Groups",
+          "inverseBaseName": "children",
+          "baseName": "test",
+          "relEntityBaseName": "AoTest",
+          "obligatory": true,
+          "relEntityName": "Root",
+          "type": "1-n"
+        },
+        {
+          "kind": "INFO",
+          "name": "Earthquake",
+          "inverseName": "Groups",
+          "inverseBaseName": "measurement",
+          "baseName": "units_under_test",
+          "relEntityBaseName": "AoUnitUnderTest",
+          "obligatory": false,
+          "relEntityName": "Earthquake",
+          "type": "n-m"
+        },
+        {
+          "kind": "INFO",
+          "name": "Station",
+          "inverseName": "Groups",
+          "inverseBaseName": "measurement",
+          "baseName": "equipments",
+          "relEntityBaseName": "AoTestEquipment",
+          "obligatory": false,
+          "relEntityName": "Station",
+          "type": "n-m"
+        },
+        {
+          "kind": "FATHER_CHILD",
+          "name": "Channels",
+          "inverseName": "Group",
+          "inverseBaseName": "measurement",
+          "baseName": "measurement_quantities",
+          "relEntityBaseName": "AoMeasurementQuantity",
+          "obligatory": false,
+          "relEntityName": "Channel",
+          "type": "n-1"
+        },
+        {
+          "kind": "FATHER_CHILD",
+          "name": "Submatrices",
+          "inverseName": "measurement",
+          "inverseBaseName": "measurement",
+          "baseName": "submatrices",
+          "relEntityBaseName": "AoSubmatrix",
+          "obligatory": false,
+          "relEntityName": "submatrix",
+          "type": "n-1"
+        }
+      ],
+      "objecttype": 5
+    },
+    {
+      "attributes": [
+        {
+          "name": "Name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "Description",
+          "dataType": "DT_STRING",
+          "baseName": "description",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "DataType",
+          "dataType": "DT_ENUM",
+          "baseName": "datatype",
+          "enumeration": "datatype_enum",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Minimum",
+          "dataType": "DT_DOUBLE",
+          "baseName": "minimum",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Maximum",
+          "dataType": "DT_DOUBLE",
+          "baseName": "maximum",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "SignalType",
+          "dataType": "DT_STRING",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoMeasurementQuantity",
+      "name": "Channel",
+      "relations": [
+        {
+          "kind": "FATHER_CHILD",
+          "name": "Group",
+          "inverseName": "Channels",
+          "inverseBaseName": "measurement_quantities",
+          "baseName": "measurement",
+          "relEntityBaseName": "AoMeasurement",
+          "obligatory": true,
+          "relEntityName": "Group",
+          "type": "1-n"
+        },
+        {
+          "kind": "INFO",
+          "name": "LocalColumns",
+          "inverseName": "measurement_quantity",
+          "inverseBaseName": "measurement_quantity",
+          "baseName": "local_columns",
+          "relEntityBaseName": "AoLocalColumn",
+          "obligatory": false,
+          "relEntityName": "localcolumn",
+          "type": "n-1"
+        },
+        {
+          "kind": "INFO",
+          "name": "Sensor",
+          "inverseName": "Channels",
+          "inverseBaseName": "measurement_quantities",
+          "baseName": "quantity",
+          "relEntityBaseName": "AoQuantity",
+          "obligatory": false,
+          "relEntityName": "Sensor",
+          "type": "1-n"
+        },
+        {
+          "kind": "INFO",
+          "name": "Unit",
+          "inverseName": "Channels",
+          "inverseBaseName": "measurement_quantities",
+          "baseName": "unit",
+          "relEntityBaseName": "AoUnit",
+          "obligatory": false,
+          "relEntityName": "Unit",
+          "type": "1-n"
+        }
+      ],
+      "objecttype": 6
+    },
+    {
+      "attributes": [
+        {
+          "name": "name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "number_of_rows",
+          "dataType": "DT_LONG",
+          "baseName": "number_of_rows",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoSubmatrix",
+      "name": "submatrix",
+      "relations": [
+        {
+          "kind": "FATHER_CHILD",
+          "name": "measurement",
+          "inverseName": "Submatrices",
+          "inverseBaseName": "submatrices",
+          "baseName": "measurement",
+          "relEntityBaseName": "AoMeasurement",
+          "obligatory": true,
+          "relEntityName": "Group",
+          "type": "1-n"
+        },
+        {
+          "kind": "FATHER_CHILD",
+          "name": "local_columns",
+          "inverseName": "submatrix",
+          "inverseBaseName": "submatrix",
+          "baseName": "local_columns",
+          "relEntityBaseName": "AoLocalColumn",
+          "obligatory": false,
+          "relEntityName": "localcolumn",
+          "type": "n-1"
+        }
+      ],
+      "objecttype": 7
+    },
+    {
+      "attributes": [
+        {
+          "name": "name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "flags",
+          "dataType": "DS_SHORT",
+          "baseName": "flags",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "global_flag",
+          "dataType": "DT_SHORT",
+          "baseName": "global_flag",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "independent",
+          "dataType": "DT_SHORT",
+          "baseName": "independent",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "minimum",
+          "dataType": "DT_DOUBLE",
+          "baseName": "minimum",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "maximum",
+          "dataType": "DT_DOUBLE",
+          "baseName": "maximum",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "sequence_representation",
+          "dataType": "DT_ENUM",
+          "baseName": "sequence_representation",
+          "enumeration": "seq_rep_enum",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "generation_parameters",
+          "dataType": "DS_DOUBLE",
+          "baseName": "generation_parameters",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Values",
+          "dataType": "DT_UNKONWN",
+          "baseName": "values",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoLocalColumn",
+      "name": "localcolumn",
+      "relations": [
+        {
+          "kind": "INFO",
+          "name": "measurement_quantity",
+          "inverseName": "LocalColumns",
+          "inverseBaseName": "local_columns",
+          "baseName": "measurement_quantity",
+          "relEntityBaseName": "AoMeasurementQuantity",
+          "obligatory": true,
+          "relEntityName": "Channel",
+          "type": "1-n"
+        },
+        {
+          "kind": "FATHER_CHILD",
+          "name": "submatrix",
+          "inverseName": "local_columns",
+          "inverseBaseName": "local_columns",
+          "baseName": "submatrix",
+          "relEntityBaseName": "AoSubmatrix",
+          "obligatory": true,
+          "relEntityName": "submatrix",
+          "type": "1-n"
+        }
+      ],
+      "objecttype": 8
+    },
+    {
+      "attributes": [
+        {
+          "name": "Name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "Description",
+          "dataType": "DT_STRING",
+          "baseName": "description",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Date",
+          "dataType": "DT_DATE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 23,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "EpicenterDepth",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "EpicenterLatitude",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "EpicenterLongitude",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "MagnitudeMoment",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "MagnitudeSurfaceWave",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "SeismicMoment",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoUnitUnderTest",
+      "name": "Earthquake",
+      "relations": [
+        {
+          "kind": "INFO",
+          "name": "Groups",
+          "inverseName": "Earthquake",
+          "inverseBaseName": "units_under_test",
+          "baseName": "measurement",
+          "relEntityBaseName": "AoMeasurement",
+          "obligatory": false,
+          "relEntityName": "Group",
+          "type": "n-m"
+        },
+        {
+          "kind": "INFO",
+          "name": "Environment",
+          "inverseName": "Earthquakes",
+          "inverseBaseName": "uuts",
+          "baseName": "environment",
+          "relEntityBaseName": "AoEnvironment",
+          "obligatory": false,
+          "relEntityName": "Environment",
+          "type": "1-n"
+        }
+      ],
+      "objecttype": 9
+    },
+    {
+      "attributes": [
+        {
+          "name": "Name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "Description",
+          "dataType": "DT_STRING",
+          "baseName": "description",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Latitude",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Longitude",
+          "dataType": "DT_DOUBLE",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoTestEquipment",
+      "name": "Station",
+      "relations": [
+        {
+          "kind": "INFO",
+          "name": "Environment",
+          "inverseName": "Stations",
+          "inverseBaseName": "equipments",
+          "baseName": "environment",
+          "relEntityBaseName": "AoEnvironment",
+          "obligatory": false,
+          "relEntityName": "Environment",
+          "type": "1-n"
+        },
+        {
+          "kind": "INFO",
+          "name": "Groups",
+          "inverseName": "Station",
+          "inverseBaseName": "equipments",
+          "baseName": "measurement",
+          "relEntityBaseName": "AoMeasurement",
+          "obligatory": false,
+          "relEntityName": "Group",
+          "type": "n-m"
+        },
+        {
+          "kind": "INFO",
+          "name": "Sensors",
+          "inverseName": "Station",
+          "inverseBaseName": "",
+          "baseName": "",
+          "relEntityBaseName": "AoQuantity",
+          "obligatory": false,
+          "relEntityName": "Sensor",
+          "type": "n-1"
+        }
+      ],
+      "objecttype": 10
+    },
+    {
+      "attributes": [
+        {
+          "name": "Name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "RecorderSNo",
+          "dataType": "DT_STRING",
+          "baseName": "version",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "HDegrees",
+          "dataType": "DT_SHORT",
+          "baseName": "",
+          "obligatory": false,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Description",
+          "dataType": "DT_STRING",
+          "baseName": "description",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoQuantity",
+      "name": "Sensor",
+      "relations": [
+        {
+          "kind": "INFO",
+          "name": "Channels",
+          "inverseName": "Sensor",
+          "inverseBaseName": "quantity",
+          "baseName": "measurement_quantities",
+          "relEntityBaseName": "AoMeasurementQuantity",
+          "obligatory": false,
+          "relEntityName": "Channel",
+          "type": "n-1"
+        },
+        {
+          "kind": "INFO",
+          "name": "Station",
+          "inverseName": "Sensors",
+          "inverseBaseName": "",
+          "baseName": "",
+          "relEntityBaseName": "AoTestEquipment",
+          "obligatory": false,
+          "relEntityName": "Station",
+          "type": "1-n"
+        }
+      ],
+      "objecttype": 11
+    },
+    {
+      "attributes": [
+        {
+          "name": "Name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "Description",
+          "dataType": "DT_STRING",
+          "baseName": "description",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Factor",
+          "dataType": "DT_DOUBLE",
+          "baseName": "factor",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Offset",
+          "dataType": "DT_DOUBLE",
+          "baseName": "offset",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoUnit",
+      "name": "Unit",
+      "relations": [
+        {
+          "kind": "INFO",
+          "name": "PhysDim",
+          "inverseName": "Units",
+          "inverseBaseName": "units",
+          "baseName": "phys_dimension",
+          "relEntityBaseName": "AoPhysicalDimension",
+          "obligatory": true,
+          "relEntityName": "PhysDim",
+          "type": "1-n"
+        },
+        {
+          "kind": "INFO",
+          "name": "Channels",
+          "inverseName": "Unit",
+          "inverseBaseName": "unit",
+          "baseName": "measurement_quantities",
+          "relEntityBaseName": "AoMeasurementQuantity",
+          "obligatory": false,
+          "relEntityName": "Channel",
+          "type": "n-1"
+        }
+      ],
+      "objecttype": 12
+    },
+    {
+      "attributes": [
+        {
+          "name": "Name",
+          "dataType": "DT_STRING",
+          "baseName": "name",
+          "obligatory": true,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "Id",
+          "dataType": "DT_LONGLONG",
+          "baseName": "id",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": true
+        },
+        {
+          "name": "Description",
+          "dataType": "DT_STRING",
+          "baseName": "description",
+          "obligatory": false,
+          "length": 1024,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "length",
+          "dataType": "DT_LONG",
+          "baseName": "length_exp",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "mass",
+          "dataType": "DT_LONG",
+          "baseName": "mass_exp",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "time",
+          "dataType": "DT_LONG",
+          "baseName": "time_exp",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "current",
+          "dataType": "DT_LONG",
+          "baseName": "current_exp",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "temperature",
+          "dataType": "DT_LONG",
+          "baseName": "temperature_exp",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "molar",
+          "dataType": "DT_LONG",
+          "baseName": "molar_amount_exp",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        },
+        {
+          "name": "luminous",
+          "dataType": "DT_LONG",
+          "baseName": "luminous_intensity_exp",
+          "obligatory": true,
+          "length": 1,
+          "unitId": 0,
+          "unique": false
+        }
+      ],
+      "baseName": "AoPhysicalDimension",
+      "name": "PhysDim",
+      "relations": [
+        {
+          "kind": "INFO",
+          "name": "Units",
+          "inverseName": "PhysDim",
+          "inverseBaseName": "phys_dimension",
+          "baseName": "units",
+          "relEntityBaseName": "AoUnit",
+          "obligatory": false,
+          "relEntityName": "Unit",
+          "type": "n-1"
+        }
+      ],
+      "objecttype": 13
+    }
+  ]
+}
 ----
 ================================
 
