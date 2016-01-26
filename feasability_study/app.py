@@ -30,9 +30,12 @@ context_vars__ = {}
 session_obj__ = None
 
 # initialize to do single call without init
-context_vars__['URL'] = 'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS'
-context_vars__['USER'] = 'test'
-context_vars__['PASSWORD'] = 'test'
+#context_vars__['URL'] = 'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS'
+#context_vars__['USER'] = 'test'
+#context_vars__['PASSWORD'] = 'test'
+context_vars__['URL'] = 'corbaname::130.164.139.3#AtfxNameMapTest.ASAM-ODS'
+context_vars__['USER'] = ''
+context_vars__['PASSWORD'] = ''
 
 def request_wants_json():
     best = request.accept_mimetypes.best_match(['application/json', 'text/html'])
