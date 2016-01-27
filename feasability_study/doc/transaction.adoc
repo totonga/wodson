@@ -1,0 +1,37 @@
+== Transaction
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+****
+Changing schema or data(meta/bulk) will automatically open an transaction. This need to be aborted or committed. There is only one transaction level to be used.
+****
+
+NOTE: Because the physical storage of an ASAM ODS server is a relational database we need transaction handling
+
+IMPORTANT: Try to do all changes in a single transaction. 
+           Might be hard because you have to care about the 
+           right sequence of write operations or bundle them 
+           in one call but you get an rollback as a reward 
+
+=== Commit the Transaction
+
+.commit an open transaction
+================================
+.request
+[source,json]
+----
+curl -X PUT --header 'Accept: application/problem+json' 'http://localhost:8081/transaction'
+----
+================================
+
+
+=== Abort the Transaction
+
+.commit an open transaction
+================================
+.request
+[source,json]
+----
+curl -X DELETE --header 'Accept: application/problem+json' 'http://localhost:8081/transaction'
+----
+================================

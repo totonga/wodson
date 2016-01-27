@@ -4,7 +4,15 @@
 :toc:
 
 include::data.adoc[]
+
 include::schema.adoc[]
+
+include::context.adoc[]
+
+include::transaction.adoc[] 
+
 include::asampath.adoc[]
+
 include::asamsecurity.adoc[]
+
 include::setup.adoc[]

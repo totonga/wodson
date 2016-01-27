@@ -27,12 +27,9 @@ IMPORTANT: The schema should be cached and not retrieved every time.
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/shema'
 ----
 
-*Result:*
-
-.header
+.result
 ----
 ----
-.body
 [source,json]
 ----
 {

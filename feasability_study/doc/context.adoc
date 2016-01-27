@@ -1,0 +1,61 @@
+== Context
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+****
+ASAM Server contains some context variables that influence its behavior.
+The simplest context variables are those needed to establish the connection. 
+****
+
+=== Read Context Variables 
+
+.read all context variables
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/context'
+----
+
+.result
+----
+----
+[source,json]
+----
+[
+    {
+        "name":"URL",
+        "value":"corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
+    },
+    {
+        "name":"USER",
+        "value":"System"
+    }
+]
+----
+================================
+
+
+=== Set Context Variables
+
+.set initialization context variables
+================================
+.request
+[source,json]
+----
+curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '[
+    {
+        "name":"URL",
+        "value":"corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
+    },
+    {
+        "name":"USER",
+        "value":"System"
+    },
+    {
+        "name":"PASSWORD",
+        "value":"puma"
+    }
+]' 'http://localhost:8081/context'
+----
+================================

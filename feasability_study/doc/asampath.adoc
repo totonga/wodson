@@ -23,12 +23,9 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 }' 'http://localhost:8081/utils/asampath/create'
 ----
 
-*Result:*
-
-.header
+.result
 ----
 ----
-.body
 [source,json]
 ----
 {
@@ -49,12 +46,9 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 }' 'http://localhost:8081/utils/asampath/resolve'
 ----
 
-*Result:*
-
-.header
+.result
 ----
 ----
-.body
 [source,json]
 ----
 {
