@@ -384,6 +384,11 @@ def post_utils_asampath_resolve(params):
 def index():
     return redirect('ui/')
 
+@app.route('/testdataget/')
+def testdataget():
+    return app.app.send_static_file('testdataget.html')
+
+
 logging.basicConfig(level=logging.INFO)
 
 app.add_api('swagger.yaml')

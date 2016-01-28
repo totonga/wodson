@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Text Box using textarea</title>
+        <script>
+
+        function SendText()
+        {
+            nocache = "&nocache=" + Math.random() * 1000000;
+            
+            try {
+                var request = new XMLHttpRequest();
+                request.open('POST', document.getElementById("url_form").form_text.value, false);
+                request.setRequestHeader('Content-type', 'application/json');
+                request.setRequestHeader('Accept', 'text/html');
+                request.send(document.getElementById("txt_form").form_text.value);
+
+                var out_win = window.open('','Results','status=0,scrollbars=1, location=0');
+                out_win.document.clear
+                out_win.document.write(request.responseText);
+            } catch (e) {
+                alert(e);
+                return;
+            } finally {
+            }
+        }
+        </script>
+    </head>
+
+    <body>
+        <form id="url_form" name="frmText1">
+            <textarea name="form_text" rows="1" cols="40">/dataGP</textarea>
+        </form>
+        <form id="txt_form" name="frmText2">
+            <textarea name="form_text" rows="10" cols="40">{
+	"entity": "AoMeasurement",
+	"attributes": ["name","id"]
+}
+</textarea>
+        </form>
+        <input type="submit" value="Send Text" onclick="SendText()" />
+    </body>
+
+</html>
