@@ -78,7 +78,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 -----------
 {
 	"AoTest": {
-		"name": "MyTest"
+		"name": "MyTest",
 		"version": "V1"
 	}
 }
@@ -90,7 +90,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 {
 	"AoTest": {
 		"name": {
-			"$eq": "MyTest"
+			"$eq": "MyTest",
 			"$options": "i"
 		}
 	}
@@ -103,7 +103,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 {
 	"AoTest": {
 		"name": {
-			"$like": "My*"
+			"$like": "My*",
 			"$options": "i"
 		}
 	}
@@ -115,13 +115,13 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 -----------
 {
 	"AoMeasurement": {
-		"name": "MyMea"
-		"version": "V1"
-		"test.name": "MySubTest2"
-		"test.version": "V1"
-		"test.parent_test.name": "MySubTest1"
-		"test.parent_test.version": "V1"
-		"test.parent_test.parent_test.name": "MyTest"
+		"name": "MyMea",
+		"version": "V1",
+		"test.name": "MySubTest2",
+		"test.version": "V1",
+		"test.parent_test.name": "MySubTest1",
+		"test.parent_test.version": "V1",
+		"test.parent_test.parent_test.name": "MyTest",
 		"test.parent_test.parent_test.version": "V1"
 	}
 }
@@ -132,16 +132,16 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 -----------
 {
 	"AoMeasurement": {
-		"name": "MyMea"
-		"version": "V1"
+		"name": "MyMea",
+		"version": "V1",
 		"test": {
-			"name": "MySubTest2"
-			"version": "V1"
+			"name": "MySubTest2",
+			"version": "V1",
 			"parent_test": {
-				"name": "MySubTest1"
-				"version": "V1"
+				"name": "MySubTest1",
+				"version": "V1",
 				"parent_test": {
-					"name": "MyTest"
+					"name": "MyTest",
 					"version": "V1"
 				}
 			}
@@ -155,7 +155,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 {
 	"AoMeasurement": {
 		"id": {
-			"$in": [471147124713]
+			"$in": [4711,4712,4713]
 		}
 	}
 }
@@ -166,7 +166,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 {
 	"AoMeasurement": {
 		"measurement_begin": {
-			"$gte": "2012-04-23T00:00:00.000Z"
+			"$gte": "2012-04-23T00:00:00.000Z",
 			"$lt": "2012-04-24T00:00:00.000Z"
 		}
 	}
@@ -178,8 +178,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 {
 	"AoMeasurement": {
 		"measurement_begin": {
-			"$between": ["2012-04-23T00:00:00.000Z"
-			"2012-04-24T00:00:00.000Z"]
+			"$between": ["2012-04-23T00:00:00.000Z", "2012-04-24T00:00:00.000Z"]
 		}
 	}
 }
@@ -191,13 +190,13 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 	"AoMeasurement": {
 		"$and": [{
 			"measurement_begin": {
-				"$gte": "2012-04-23T00:00:00.000Z"
+				"$gte": "2012-04-23T00:00:00.000Z",
 				"$lt": "2012-04-24T00:00:00.000Z"
 			}
-		}
+		},
 		{
 			"measurement_end": {
-				"$gte": "2012-04-23T00:00:00.000Z"
+				"$gte": "2012-04-23T00:00:00.000Z",
 				"$lt": "2012-04-24T00:00:00.000Z"
 			}
 		}]
@@ -211,19 +210,19 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 	"AoMeasurement": {
 		"$or": [{
 			"measurement_begin": {
-				"$gte": "2012-04-23T00:00:00.000Z"
+				"$gte": "2012-04-23T00:00:00.000Z",
 				"$lt": "2012-04-24T00:00:00.000Z"
 			}
-		}
+		},
 		{
 			"measurement_begin": {
-				"$gte": "2012-05-23T00:00:00.000Z"
+				"$gte": "2012-05-23T00:00:00.000Z",
 				"$lt": "2012-05-24T00:00:00.000Z"
 			}
-		}
+		},
 		{
 			"measurement_begin": {
-				"$gte": "2012-06-23T00:00:00.000Z"
+				"$gte": "2012-06-23T00:00:00.000Z",
 				"$lt": "2012-06-24T00:00:00.000Z"
 			}
 		}]
@@ -238,7 +237,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 		"$not": {
 			"$and": [{
 				"name": "MyMea"
-			}
+			},
 			{
 				"version": "V1"
 			}]
@@ -255,10 +254,10 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 	"AoTest": {
 		"$and": [{
 			"name": {
-				"$like": "My*"
+				"$like": "My*",
 				"$options": "i"
 			}
-		}
+		},
 		{
 			"name": {
 				"$like": "??Test"
@@ -288,37 +287,37 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 	"AoMeasurement": {
 		"$or": [{
 			"measurement_begin": {
-				"$gte": "2012-04-23T00:00:00.000Z"
+				"$gte": "2012-04-23T00:00:00.000Z",
 				"$lt": "2012-04-24T00:00:00.000Z"
 			}
 		}{
 			"measurement_begin": {
-				"$gte": "2012-05-23T00:00:00.000Z"
+				"$gte": "2012-05-23T00:00:00.000Z",
 				"$lt": "2012-05-24T00:00:00.000Z"
 			}
 		}{
 			"measurement_begin": {
-				"$gte": "2012-06-23T00:00:00.000Z"
+				"$gte": "2012-06-23T00:00:00.000Z",
 				"$lt": "2012-06-24T00:00:00.000Z"
 			}
 		}]
-	}
+	},
 	"$options": {
-		"count": 1000
+		"count": 1000,
 		"skip": 500
-	}
+	},
 	"$attributes": {
-		"name": 1
-		"id": 1
+		"name": 1,
+		"id": 1,
 		"test": {
-			"name": 1
+			"name": 1,
 			"id": 1
 		}
-	}
+	},
 	"$orderby": {
-		"test.name": 0
+		"test.name": 0,
 		"name": 1
-	}
+	},
 	"$groupby": {
 		"id": 1
 	}
@@ -328,7 +327,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 [source,json]
 -----------
 {
-	"AoMeasurement": {}
+	"AoMeasurement": {},
 	"$attributes": {
 		"name": {
 			"$distinct": 1
@@ -341,7 +340,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 [source,json]
 -----------
 {
-	"AoMeasurementQuantity": {}
+	"AoMeasurementQuantity": {},
 	"$attributes": {
 		"datatype": {
 			"$options": "e"
@@ -358,6 +357,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 | $attributes | list of attributes to retrieve
 | $orderby    | order the results by this 1 ascending 0 decending
 | $groupby    | group the results by this
+| $options    | global options
 |===========================================
 
 .conjuctions
