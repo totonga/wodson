@@ -270,7 +270,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 [source,json]
 -----------
 {
-	"AoMeasurement": 4711
+	"AoMeasurement": 4711,
 	"$attributes": {
 		"name": 1
 		"id": 1
