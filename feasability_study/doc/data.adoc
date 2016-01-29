@@ -8,6 +8,238 @@ ASAM ODS is about making measurement data persistent. So this is the most import
 
 === Read meta data
 
+.get results from first entity derived from AoTest with all properties
+================================
+TIP: The server will have a default maxCount setting.
+     He will potentially not return all AoTest if there are more of them.
+     
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "AoTest"
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+.get results from instances with objecttype 1 with all properties
+================================
+TIP: Using the objecttype will give no great speed improvement. It is not even readable.
+     
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "1"
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+.get results of instances with objecttype MeaQuantity and define the maximal number of rows to return
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "MeaQuantity",
+	"maxCount": 50
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+.get id and name attribute of the given entity
+================================
+TIP: if an instance should be shown in a tree it is sufficient to retrieve name and id
+
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "MeaQuantity",
+	"attributes": [ "name" , "id" ]
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+.get id and name attribute of the given entity and the name attribute of the related measurement
+================================
+TIP: if an instance should shown it might be usefult to retrieve some parent/related attributes
+
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "MeaQuantity",
+	"attributes": [ "name", "id", "measurement.name" ]
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+
+.get all attributes if for a given instance
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "MeaQuantity",
+	"conditions": { "id" : 4 }
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+.get children MeasurementQuantities of the Measurement with id=2
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "MeaQuantity",
+	"attributes": [ "name", "id" ],
+	"conditions": { "measurement" : 2 }
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+.Get information about all MeasurementQuantities of a the SubTest with id=2
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "MeaQuantity",
+	"attributes": ["name","id","measurement.name","measurement.id"],
+	"conditions": { "measurement.test" : 2 }
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+.Get information about all MeasurementQuantities of a the SubTest with id=2
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "MeaQuantity",
+	"attributes": ["name","id","measurement.name","measurement.id"],
+	"conditions": { "measurement.test" : { "$EQ" : 2 } }
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+.get DISTINCT of all MeasurementQuantity names
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "MeaQuantity",
+	"attributes": [ {"name" : "$DISTINCT"} ]
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
+.get names of given entity in descending order
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "MeaQuantity",
+	"attributes": ["name"],
+	"orderBy": [ {"name" : "$DESCENDING"} ]
+}' 
+'http://localhost:8081/data'
+----
+.result
+----
+----
+[source,json]
+----
+----
+================================
+
 === Write meta data
 
 === Read bulk data

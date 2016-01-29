@@ -1,0 +1,400 @@
+== Simple Query 
+
+=== The json query structure
+
+.get all Aotests
+[source,json]
+-----------
+{
+	"AoTest": {}
+}
+-----------
+
+.access instances using id only
+=============================
+
+.get measurement with id 4711
+[source,json]
+-----------
+{
+	"AoMeasurement": 4711
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": "4711"
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"id": "4711"
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"id": 4711
+	}
+}
+-----------
+
+.get children of a given subtest
+==============================
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"test": 4611
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"test.id": 4611
+	}
+}
+-----------
+
+TIP: `test.id` is a duplicate because the id is also stored in test column
+
+==============================
+
+=============================
+
+
+[source,json]
+-----------
+{
+	"AoTest": {
+		"name": "MyTest"
+		"version": "V1"
+	}
+}
+-----------
+
+.case insensitive match 
+[source,json]
+-----------
+{
+	"AoTest": {
+		"name": {
+			"$eq": "MyTest"
+			"$options": "i"
+		}
+	}
+}
+-----------
+
+.case insensitive match 
+[source,json]
+-----------
+{
+	"AoTest": {
+		"name": {
+			"$like": "My*"
+			"$options": "i"
+		}
+	}
+}
+-----------
+
+.resolve asam path
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"name": "MyMea"
+		"version": "V1"
+		"test.name": "MySubTest2"
+		"test.version": "V1"
+		"test.parent_test.name": "MySubTest1"
+		"test.parent_test.version": "V1"
+		"test.parent_test.parent_test.name": "MyTest"
+		"test.parent_test.parent_test.version": "V1"
+	}
+}
+-----------
+
+.resolve asam path
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"name": "MyMea"
+		"version": "V1"
+		"test": {
+			"name": "MySubTest2"
+			"version": "V1"
+			"parent_test": {
+				"name": "MySubTest1"
+				"version": "V1"
+				"parent_test": {
+					"name": "MyTest"
+					"version": "V1"
+				}
+			}
+		}
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"id": {
+			"$in": [471147124713]
+		}
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"measurement_begin": {
+			"$gte": "2012-04-23T00:00:00.000Z"
+			"$lt": "2012-04-24T00:00:00.000Z"
+		}
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"measurement_begin": {
+			"$between": ["2012-04-23T00:00:00.000Z"
+			"2012-04-24T00:00:00.000Z"]
+		}
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"$and": [{
+			"measurement_begin": {
+				"$gte": "2012-04-23T00:00:00.000Z"
+				"$lt": "2012-04-24T00:00:00.000Z"
+			}
+		}
+		{
+			"measurement_end": {
+				"$gte": "2012-04-23T00:00:00.000Z"
+				"$lt": "2012-04-24T00:00:00.000Z"
+			}
+		}]
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"$or": [{
+			"measurement_begin": {
+				"$gte": "2012-04-23T00:00:00.000Z"
+				"$lt": "2012-04-24T00:00:00.000Z"
+			}
+		}
+		{
+			"measurement_begin": {
+				"$gte": "2012-05-23T00:00:00.000Z"
+				"$lt": "2012-05-24T00:00:00.000Z"
+			}
+		}
+		{
+			"measurement_begin": {
+				"$gte": "2012-06-23T00:00:00.000Z"
+				"$lt": "2012-06-24T00:00:00.000Z"
+			}
+		}]
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"$not": {
+			"$and": [{
+				"name": "MyMea"
+			}
+			{
+				"version": "V1"
+			}]
+		}
+	}
+}
+-----------
+
+
+.mixed case sensitive/insensitive  
+[source,json]
+-----------
+{
+	"AoTest": {
+		"$and": [{
+			"name": {
+				"$like": "My*"
+				"$options": "i"
+			}
+		}
+		{
+			"name": {
+				"$like": "??Test"
+			}
+		}]
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": 4711
+	"$attributes": {
+		"name": 1
+		"id": 1
+		"scale": {
+			"$unit": 123
+		}
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {
+		"$or": [{
+			"measurement_begin": {
+				"$gte": "2012-04-23T00:00:00.000Z"
+				"$lt": "2012-04-24T00:00:00.000Z"
+			}
+		}{
+			"measurement_begin": {
+				"$gte": "2012-05-23T00:00:00.000Z"
+				"$lt": "2012-05-24T00:00:00.000Z"
+			}
+		}{
+			"measurement_begin": {
+				"$gte": "2012-06-23T00:00:00.000Z"
+				"$lt": "2012-06-24T00:00:00.000Z"
+			}
+		}]
+	}
+	"$options": {
+		"count": 1000
+		"skip": 500
+	}
+	"$attributes": {
+		"name": 1
+		"id": 1
+		"test": {
+			"name": 1
+			"id": 1
+		}
+	}
+	"$orderby": {
+		"test.name": 0
+		"name": 1
+	}
+	"$groupby": {
+		"id": 1
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoMeasurement": {}
+	"$attributes": {
+		"name": {
+			"$distinct": 1
+		}
+	}
+}
+-----------
+
+.retrieve enumerations as strings instead of int
+[source,json]
+-----------
+{
+	"AoMeasurementQuantity": {}
+	"$attributes": {
+		"datatype": {
+			"$options": "e"
+		}
+	}
+}
+-----------
+
+
+=== Special key values
+
+.top level
+|===========================================
+| $attributes | list of attributes to retrieve
+| $orderby    | order the results by this 1 ascending 0 decending
+| $groupby    | group the results by this
+|===========================================
+
+.conjuctions
+|===========================================
+| $and | connect array elements with logical AND. Contains Array of expressions.
+| $or  | connect array elements with logical OR. Contains Array of expressions.
+| $not | invert result of object. Contains single expression
+|===========================================
+
+.operators
+|===========================================
+| $eq          | equal
+| $neq         | not equal
+| $lt          | lesser than
+| $gt          | greater than
+| $lte         | lesser than equal
+| $gte         | greater than equal
+| $in          | contained in array
+| $notin       | not contained in array
+| $like        | equal using wildcards *?
+| $notlike     | not equal using wildcards *?
+| $null        | is null value ("$null":1)
+| $notnull     | not is null value ("$notnull":1)
+| $between     | two values in an array. Equal to a $gte $lt pair
+| $options     | string containing letters: `i` for case insensitive
+|===========================================
+
+.aggregates
+|===========================================
+| $count     | return int containing the number of rows
+| $dcount    | return int containing the number of distincted rows
+| $min       | returns minimal value of the attribute
+| $max       | returns maximal value of the attribute
+| $avg       | returns average value of the attribute
+| $stddev    | returns standard derivation value of the attribute
+| $sum       | returns sum of all attribute values
+| $distinct  | distinct attribute values
+| $point     | used for query on bulk data. returning indices of local column values
+| $options   | string containing letters: `e` enum values as string 
+|===========================================
