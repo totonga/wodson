@@ -4,14 +4,16 @@
         <meta charset="utf-8"> 
         <title>DataMatrix</title> 
     </head> 
-    <body>
-        <table border="1">
-          <tr><th>name</th><th>baseName</th><th>skipCount</th><th>vectorSkipCount</th></tr>
-          <tr><td>{{ datamatrix['name'] }}</td><td>{{ datamatrix['baseName'] }}</td><td>{{ datamatrix['skipCount'] }}</td><td>{{ datamatrix['vectorSkipCount'] }}</td></tr>
+    <body><table border="1">
+    {% for datamatrix in datamatrices %}
+        <tr><td><table border="1">
+          <tr><th>name</th><td>{{ datamatrix['name'] }}</td></tr>
+          <tr><th>baseName</th><td>{{ datamatrix['baseName'] }}</td></tr>
+          <tr><th>skipCount</th><td>{{ datamatrix['skipCount'] }}</td></tr>
+          <tr><th>vectorSkipCount</th><td>{{ datamatrix['vectorSkipCount'] }}</td></tr>
         </table>
-        <br />
         <table border="1">
-            <tr><th>name</th><th>baseName</th><th>aggregate</th><th>dataType</th></tr>
+            <tr><th>name</th><th>baseName</th><th>aggregate</th><th>dataType</th><th>...</th></tr>
             {% for column in datamatrix['columns'] %}
             <tr><td>{{ column['name'] }}</td><td>{{ column['baseName'] }}</td><td>{{ column['aggregate'] }}</td><td>{{ column['values'].dataType }}</td>{% if 'numVal' in column['values'].keys() -%}
                     {% for columnValue in column['values']['numVal'] -%}<td>{{ columnValue }}</td>{% endfor -%}</tr>
@@ -37,6 +39,7 @@
                     {% endfor -%}
                 {% endif -%}
             {% endfor -%}</tr>
-        </table>
-    </body>
+        </td></tr></table>
+    {% endfor -%}
+    </table></body>
 </html>

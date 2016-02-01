@@ -17,6 +17,7 @@ import sys
 from omniORB import CORBA
 import org
 import re
+import logging
 
 orb_obj__ = None
 
@@ -55,7 +56,11 @@ def ParsePathAndAddJoins(model, applElem, attribPath, joinSeq):
             aaApplElem = model.GetElemByAid(relation.elem2)
 
             # add join
-            AddJoinToSeq(relation, joinSeq)
+            if (-1==relation.arRelationRange.max) and (1==relation.invRelationRange.max):
+                realRelation = model.FindInverseRelation(relation)
+                AddJoinToSeq(realRelation, joinSeq)
+            else:
+                AddJoinToSeq(relation, joinSeq)
         else:
             # maybe relation or attribute
             attribute = model.GetAttributeEx(aaApplElem.aeName, pathPart)
@@ -439,13 +444,16 @@ class CModel:
             return rv
             
         return None
-        
-    def GetRelation(self, aeName, arName):
-        aid = self.Aid(aeName)
+
+    def GetRelationByAid(self, aid, arName):
         for rel in self.model_.applRels:
             if LL_Equal(rel.elem1, aid) and rel.arName == arName:
                 return rel
         return None
+        
+    def GetRelation(self, aeName, arName):
+        aid = self.Aid(aeName)
+        return self.GetRelationByAid(aid,  arName)
     
     def GetRelationEx(self, aeName, relationName):
         rv = self.GetRelation(aeName, relationName)
@@ -456,6 +464,9 @@ class CModel:
 
         return None
     
+    def FindInverseRelation(self,  relation):
+        return self.GetRelationByAid(relation.elem2,  relation.invName)
+        
     def GetRelationB(self, aeName, brName):
         aid = self.Aid(aeName)
         for rel in self.model_.applRels:
@@ -508,9 +519,10 @@ class CSession:
         iid = ie.getId()
         entity = ie.getApplicationElement().getName()
         return entity,  LL2Int(iid)
-        
-    def GetInstancesExSimple(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
-        
+ 
+
+    def GetInstancesEx_Ver2(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
+  
         if conditionArray is None: conditionArray = []
         if attributeArray is None: attributeArray = []
         if orderByArray is None: orderByArray = []
@@ -604,11 +616,21 @@ class CSession:
                     condSeq.append(selItem)
         
         qse = org.asam.ods.QueryStructureExt(anuSeq, condSeq, joinSeq, orderBySeq, groupBySeq)
+        
+        logging.info('Call ApplElemAccess.getInstancesExt(aoq="' + str(qse) + '", how_many=' + str(how_many) + '")')
         rs = self.aea_.getInstancesExt(qse, how_many)
         for r in rs:
-            for rse in r.firstElems:
-                    if LL_Equal(rse.aid, aid):
-                        return rse
+            return r.firstElems
 
-        print "No results found"
-        sys.exit(1)
+        return None
+
+    def GetInstancesEx_Ver1(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
+
+        rv = self.GetInstancesEx_Ver2(aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many)
+
+        aid = self.Model().GetElem(aeName).aid
+        for rse in rv:
+            if LL_Equal(rse.aid, aid):
+                return rse
+        return None
+        

@@ -31,7 +31,9 @@ paths:
         '200':
           description: Successful response
           schema:
-            $ref: '#/definitions/DataMatrix'
+            type: array
+            items:
+                $ref: '#/definitions/DataMatrix'
         '404':
           description: not conneted
       produces:
@@ -98,7 +100,9 @@ paths:
         '200':
           description: Successful response
           schema:
-            $ref: '#/definitions/DataMatrix'
+            type: array
+            items:
+                $ref: '#/definitions/DataMatrix'
         '404':
           description: not connected
       produces:

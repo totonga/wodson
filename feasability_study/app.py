@@ -30,12 +30,10 @@ context_vars__ = {}
 session_obj__ = None
 
 # initialize to do single call without init
-#context_vars__['URL'] = 'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS'
-#context_vars__['USER'] = 'test'
-#context_vars__['PASSWORD'] = 'test'
-context_vars__['URL'] = 'corbaname::130.164.139.3#AtfxNameMapTest.ASAM-ODS'
-context_vars__['USER'] = ''
-context_vars__['PASSWORD'] = ''
+#context_vars__ = {'URL':'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', 'USER':'', 'PASSWORD':''}
+#context_vars__ = {'URL':'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', 'USER':'', 'PASSWORD':''}
+#context_vars__ = {'URL':'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', 'USER':'test', 'PASSWORD':'test'}
+context_vars__ = {'URL':'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', 'USER':'System', 'PASSWORD':'puma'}
 
 def request_wants_json():
     best = request.accept_mimetypes.best_match(['application/json', 'text/html'])
@@ -143,91 +141,98 @@ def get_data(simple_query):
     so = Session__()
     model = so.Model()
     elem = model.GetElemEx(entityStr)
-    result = so.GetInstancesExSimple(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
+    result = so.GetInstancesEx_Ver2(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
+    
+    rv = []
 
-    rv = {}
-    rv['name'] = elem.aeName
-    rv['baseName'] = elem.beName
-    rv['skipCount'] = skipCount
-    rv['vectorSkipCount'] = vectorSkipCount
+    for table in result:
+        
+        tableElem = model.GetElemByAid(table.aid)
+    
+        tableObj = {}
+        tableObj['name'] = tableElem.aeName
+        tableObj['baseName'] = tableElem.beName
+        tableObj['skipCount'] = skipCount
+        tableObj['vectorSkipCount'] = vectorSkipCount
 
-    columnsObj = []
+        columnsObj = []
 
-    for column in result.values:
-        columnObj = {}
-        columnValues = OdsLib.ColumnGetSeqEx(column)
-        for rowIndex, row in enumerate(columnValues):
-            if isinstance(row, list):
-                # we should do this using value matrix but actually we are emulating it
-                rowNumAvailable = len(row)
-                if(rowNumAvailable > 0 and (vectorSkipCount > 0 or vectorMaxCount < rowNumAvailable)):
-                    if(vectorSkipCount >= rowNumAvailable):
-                        columnValues = []
-                    else:
-                        numtakeable = rowNumAvailable - vectorSkipCount
-                        if(numtakeable > vectorMaxCount): 
-                            numtakeable = vectorMaxCount
-                        columnValues[rowIndex] = row[vectorSkipCount:(vectorSkipCount + numtakeable)]
+        for column in table.values:
+            columnObj = {}
+            columnValues = OdsLib.ColumnGetSeqEx(column)
+            for rowIndex, row in enumerate(columnValues):
+                if isinstance(row, list):
+                    # we should do this using value matrix but actually we are emulating it
+                    rowNumAvailable = len(row)
+                    if(rowNumAvailable > 0 and (vectorSkipCount > 0 or vectorMaxCount < rowNumAvailable)):
+                        if(vectorSkipCount >= rowNumAvailable):
+                            columnValues = []
+                        else:
+                            numtakeable = rowNumAvailable - vectorSkipCount
+                            if(numtakeable > vectorMaxCount): 
+                                numtakeable = vectorMaxCount
+                            columnValues[rowIndex] = row[vectorSkipCount:(vectorSkipCount + numtakeable)]
 
-        columnFlags = column.value.flag
-        columnFlagLength = len(columnFlags)
-        aName, aAggrType = OdsLib.ExtractAttributeNameFromColumnName(column.valName)
-        columnObj['aggregate'] = OdsLib.GetAggrTypeStr(aAggrType)
+            columnFlags = column.value.flag
+            columnFlagLength = len(columnFlags)
+            aName, aAggrType = OdsLib.ExtractAttributeNameFromColumnName(column.valName)
+            columnObj['aggregate'] = OdsLib.GetAggrTypeStr(aAggrType)
 
-        attr = model.GetAttribute(elem.aeName, aName)
-        valuesObj = {}
-        if not attr is None:
-            valuesObj['dataType'] = OdsLib.GetDataTypeStr(attr.dType)
-            columnObj['name'] = attr.aaName
-            columnObj['baseName'] = attr.baName
+            attr = model.GetAttribute(tableElem.aeName, aName)
+            valuesObj = {}
+            if not attr is None:
+                valuesObj['dataType'] = OdsLib.GetDataTypeStr(attr.dType)
+                columnObj['name'] = attr.aaName
+                columnObj['baseName'] = attr.baName
 
-            if(org.asam.ods.DT_UNKNOWN != attr.dType):
+                if(org.asam.ods.DT_UNKNOWN != attr.dType):
+                    valArray = []
+                    for valIndex, columnValue in enumerate(columnValues):
+                        valueValid = True
+                        if valIndex < columnFlagLength:
+                            valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
+                        valArray.append(columnValue if(True == valueValid) else None)
+
+                    valuesObj[GetDiscriminatorArrayName__(attr.dType)] = valArray
+                else:
+                    # column values
+                    unknownSeqArray = []
+                    for valIndex, columnValue in enumerate(columnValues):
+                        valueValid = True
+                        if valIndex < columnFlagLength:
+                            valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
+                        TypedValueVectorObj = {}
+                        TypedValueVectorObj['dataType'] = OdsLib.GetDataTypeStr(column.value.u._d)
+                        TypedValueVectorObj[GetDiscriminatorArrayName__(column.value.u._d)] = columnValue
+                        unknownSeqArray.append(TypedValueVectorObj if(True == valueValid) else None)
+                    
+                    valuesObj[GetDiscriminatorArrayName__(attr.dType)] = unknownSeqArray
+            else:
+                relAttr = model.GetRelation(tableElem.aeName, aName)
+                valuesObj['dataType'] = OdsLib.GetDataTypeStr(org.asam.ods.DT_LONGLONG)
+                columnObj['name'] = relAttr.arName
+                columnObj['baseName'] = relAttr.brName
+
                 valArray = []
                 for valIndex, columnValue in enumerate(columnValues):
                     valueValid = True
                     if valIndex < columnFlagLength:
                         valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
+                    if 0 == columnValue:
+                        valueValid = False
                     valArray.append(columnValue if(True == valueValid) else None)
+                valuesObj[GetDiscriminatorArrayName__(org.asam.ods.DT_LONGLONG)] = valArray
 
-                valuesObj[GetDiscriminatorArrayName__(attr.dType)] = valArray
-            else:
-                # column values
-                unknownSeqArray = []
-                for valIndex, columnValue in enumerate(columnValues):
-                    valueValid = True
-                    if valIndex < columnFlagLength:
-                        valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
-                    TypedValueVectorObj = {}
-                    TypedValueVectorObj['dataType'] = OdsLib.GetDataTypeStr(column.value.u._d)
-                    TypedValueVectorObj[GetDiscriminatorArrayName__(column.value.u._d)] = columnValue
-                    unknownSeqArray.append(TypedValueVectorObj if(True == valueValid) else None)
-                
-                valuesObj[GetDiscriminatorArrayName__(attr.dType)] = unknownSeqArray
-        else:
-            relAttr = model.GetRelation(elem.aeName, aName)
-            valuesObj['dataType'] = OdsLib.GetDataTypeStr(org.asam.ods.DT_LONGLONG)
-            columnObj['name'] = relAttr.arName
-            columnObj['baseName'] = relAttr.brName
-
-            valArray = []
-            for valIndex, columnValue in enumerate(columnValues):
-                valueValid = True
-                if valIndex < columnFlagLength:
-                    valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
-                if 0 == columnValue:
-                    valueValid = False
-                valArray.append(columnValue if(True == valueValid) else None)
-            valuesObj[GetDiscriminatorArrayName__(org.asam.ods.DT_LONGLONG)] = valArray
-
-        columnObj['values'] = valuesObj
-        columnsObj.append(columnObj)
-    
-    rv['columns'] = columnsObj
+            columnObj['values'] = valuesObj
+            columnsObj.append(columnObj)
+        
+        tableObj['columns'] = columnsObj
+        rv.append(tableObj)
 
     if request_wants_json():
         return jsonify(rv), 200
     
-    return render_template('datamatrix.html', datamatrix=rv),  200
+    return render_template('datamatrix.html', datamatrices=rv),  200
  
 def post_dataGP(simple_query):
     return get_data(simple_query)
