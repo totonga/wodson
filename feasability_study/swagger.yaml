@@ -31,9 +31,7 @@ paths:
         '200':
           description: Successful response
           schema:
-            type: array
-            items:
-                $ref: '#/definitions/DataMatrix'
+            $ref: '#/definitions/DataMatrices'
         '404':
           description: not conneted
       produces:
@@ -100,9 +98,7 @@ paths:
         '200':
           description: Successful response
           schema:
-            type: array
-            items:
-                $ref: '#/definitions/DataMatrix'
+            $ref: '#/definitions/DataMatrices'
         '404':
           description: not connected
       produces:
@@ -629,32 +625,41 @@ definitions:
                   type: array
                   items:
                     title: TypedValueVector
-                    dataType:
-                      type: string
-                      enum:
-                        - DS_STRING
-                        - DS_SHORT
-                        - DS_FLOAT
-                        - DS_BOOLEAN
-                        - DS_BYTE
-                        - DS_LONG
-                        - DS_DOUBLE
-                        - DS_LONGLONG
-                        - DS_COMPLEX
-                        - DS_DCOMPLEX
-                        - DS_DATE
-                        - DS_BYTESTR
-                        - DS_EXTERNALREFERENCE
-                    strSeq:
-                      type: array
-                      items:
-                        type: string
-                    numSeq:
-                      type: array
-                      items:
-                        type: number
-                    dateSeq:
-                      type: array
-                      items:
-                        type: string
-                        format: date-time
+                    type: object 
+                    properties:
+                        dataType:
+                          type: string
+                          enum:
+                            - DS_STRING
+                            - DS_SHORT
+                            - DS_FLOAT
+                            - DS_BOOLEAN
+                            - DS_BYTE
+                            - DS_LONG
+                            - DS_DOUBLE
+                            - DS_LONGLONG
+                            - DS_COMPLEX
+                            - DS_DCOMPLEX
+                            - DS_DATE
+                            - DS_BYTESTR
+                            - DS_EXTERNALREFERENCE
+                        strSeq:
+                          type: array
+                          items:
+                            type: string
+                        numSeq:
+                          type: array
+                          items:
+                            type: number
+                        dateSeq:
+                          type: array
+                          items:
+                            type: string
+                            format: date-time
+  DataMatrices:
+    type: object
+    properties:
+        tables:
+            type: array
+            items:
+                $ref: '#/definitions/DataMatrix'

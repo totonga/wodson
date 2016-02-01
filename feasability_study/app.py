@@ -143,7 +143,8 @@ def get_data(simple_query):
     elem = model.GetElemEx(entityStr)
     result = so.GetInstancesEx_Ver2(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
     
-    rv = []
+    rv = {}
+    rv['tables']=[]
 
     for table in result:
         
@@ -227,7 +228,7 @@ def get_data(simple_query):
             columnsObj.append(columnObj)
         
         tableObj['columns'] = columnsObj
-        rv.append(tableObj)
+        rv['tables'].append(tableObj)
 
     if request_wants_json():
         return jsonify(rv), 200

@@ -5,7 +5,7 @@
         <title>DataMatrix</title> 
     </head> 
     <body><table border="1">
-    {% for datamatrix in datamatrices %}
+    {% for datamatrix in datamatrices['tables'] %}
         <tr><td><table border="1">
           <tr><th>name</th><td>{{ datamatrix['name'] }}</td></tr>
           <tr><th>baseName</th><td>{{ datamatrix['baseName'] }}</td></tr>
