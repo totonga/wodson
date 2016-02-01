@@ -14,6 +14,23 @@ produces:
 schemes:
   - http
   - https
+tags:
+  - name: Api
+    description: All real API methods
+  - name: Data
+    description: meta and bulk data
+  - name: Schema
+    description: Server schema/model
+  - name: Transaction
+    description: Handle transactions, Open transactions
+  - name: Info
+    description: Have alook at server configuration
+  - name: Init
+    description: Used to initialize server configuration
+  - name: Utils
+    description: Utilities to do special jobs
+  - name: Workaround
+    description: For some http functionality we need workaround like delete over post ...
 paths:
   /data:
     get:
