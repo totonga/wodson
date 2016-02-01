@@ -1,4 +1,15 @@
-== Simple Query 
+== Simple Json Query
+
+****
+MongoDb uses a json based flexible query structure that allows a good learning 
+curve because of a simple form for every day jobs. Inspired by this, the idea for this
+approach came up.
+****
+
+IMPORTANT: It is always possible to use application or base names for entity, relations, attributes. 
+           Order is 1.) application 2.) base. If base name is not uniquely assigned in the schema one of the vector is picked. 
+           This is important for writing generic code even without having to analyze the complete schema.
+           Be aware that application name can always be used to access any element or attribute.
 
 === The json query structure
 
@@ -68,6 +79,35 @@
 -----------
 
 TIP: `test.id` is a duplicate because the id is also stored in test column
+
+.use inverse to do the same job
+===============================
+
+[source,json]
+-----------
+{
+	"AoSubTest": "4611",
+	"$attributes": {
+		"children.name": 1,
+		"children.id": 1
+	}
+}
+-----------
+
+[source,json]
+-----------
+{
+	"AoSubTest": "4611",
+	"$attributes": {    
+		"children": {
+            "name": 1,
+            "id": 1
+        }
+	}
+}
+-----------
+
+===============================
 
 ==============================
 
@@ -322,8 +362,8 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 		}]
 	},
 	"$options": {
-		"count": 1000,
-		"skip": 500
+		"$rowlimit": 1000,
+		"$rowskip": 500
 	},
 	"$attributes": {
 		"name": 1,
@@ -417,3 +457,13 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 | $point     | used for query on bulk data. returning indices of local column values
 | $options   | string containing letters: `e` enum values as string 
 |===========================================
+
+.global options
+|===========================================
+| $rowlimit    | maximal number of rows to return
+| $rowskip     | number of rows to be skipped
+| $seqlimit    | maximal number of entries in a single sequence
+| $seqskip     | number of entries to be skipped in a single sequence
+| $calcoptions | 'c' for expanding non explicit values. 'f' to integrate flags into values
+|===========================================
+
