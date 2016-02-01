@@ -13,6 +13,8 @@ include::transaction.adoc[]
 
 include::asampath.adoc[]
 
+include::file.adoc[]
+
 include::asamsecurity.adoc[]
 
 include::setup.adoc[]
