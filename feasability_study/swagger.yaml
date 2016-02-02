@@ -43,7 +43,7 @@ paths:
         - name: simple_query
           in: body
           schema:
-            $ref: '#/definitions/SimpleQueryStructure'
+            $ref: '#/definitions/QueryStructureV1'
       responses:
         '200':
           description: Successful response
@@ -110,7 +110,7 @@ paths:
         - name: simple_query
           in: body
           schema:
-            $ref: '#/definitions/SimpleQueryStructure'
+            $ref: '#/definitions/QueryStructureV1'
       responses:
         '200':
           description: Successful response
@@ -357,7 +357,7 @@ definitions:
         type: string
         description: string representing an AsamPath 
         example: /[test]myTest/[measurement]myMeasurement
-  SimpleQueryStructure:
+  QueryStructureV1:
     type: object
     properties:
       entity:

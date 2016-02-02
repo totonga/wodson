@@ -2,7 +2,7 @@
 
 ## Content
 - [Curl Commands](#curl-commands)
-- [SimpleQueryStructure Explanation](#simpleQueryStructure-explanation)
+- [QueryStructureV1 Explanation](#simpleQueryStructure-explanation)
 - [Modify Schema](#modify-schema)
 - [Setup System](#setup-system)
 
@@ -41,7 +41,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"c
 curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"conditions\":[\"id=12\"],\"attributes\":[\"id\",\"values\",\"flags\",\"generation_parameters\"],\"vectorSkipCount\":5,\"vectorMaxCount\":10}" --header "Content-Type: application/json" --header "Accept: application/json" 
 ```
 
-## SimpleQueryStructure Explanation
+## QueryStructureV1 Explanation
 
 ### Meta information
 
