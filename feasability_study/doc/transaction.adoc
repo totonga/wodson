@@ -3,7 +3,7 @@
 :Email:     totonga@gmail.com
 
 ****
-Changing schema or data(meta/bulk) will automatically open an transaction. This need to be aborted or committed. There is only one transaction level to be used.
+Changing model or data(meta/bulk) will automatically open an transaction. This need to be aborted or committed. There is only one transaction level to be used.
 ****
 
 NOTE: Because the physical storage of an ASAM ODS server is a relational database we need transaction handling

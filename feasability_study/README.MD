@@ -3,7 +3,7 @@
 ## Content
 - [Curl Commands](#curl-commands)
 - [QueryStructureV1 Explanation](#querystructureV1-explanation)
-- [Modify Schema](#modify-schema)
+- [Modify Model](#modify-model)
 - [Setup System](#setup-system)
 
 ## Curl Commands
@@ -11,10 +11,10 @@
 ```
 curl.exe -X PUT "http://localhost:8081/context" -d "[{\"name\":\"URL\",\"value\":\"corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS\"},{\"name\":\"USER\",\"value\":\"System\"},{\"name\":\"PASSWORD\",\"value\":\"puma\"}]" --header "Content-Type: application/json" --header "Accept: application/json"
 curl.exe -X GET "http://localhost:8081/context" --header "Accept: application/json"
-curl.exe -X GET "http://localhost:8081/schema"  --header "Accept: application/json"
+curl.exe -X GET "http://localhost:8081/model"  --header "Accept: application/json"
 
-curl.exe -X PUT "http://localhost:8081/schema" -d"{\"entities\":[{\"name\":\"MyAny\",\"baseName\":\"AoAny\",\"relations\":[{\"name\":\"myMeasurment\",\"kind\":\"INFO\",\"inverseName\":\"myInfoElement\",\"obligatory\":false,\"type\":\"n-1\",\"relEntityName\":\"Measurement\"}],\"attributes\":[{\"name\":\"Id\",\"baseName\":\"id\"},{\"name\":\"Name\",\"baseName\":\"name\"},{\"name\":\"my_classification\",\"dataType\":\"DT_DOUBLE\",\"obligatory\":true}]}]}" --header "Content-Type:application/json"
-curl.exe -X DELETE "http://localhost:8081/schema" -d"{\"entities\":[{\"name\":\"MyAny\"}]}" --header "Content-Type:application/json"
+curl.exe -X PUT "http://localhost:8081/model" -d"{\"entities\":[{\"name\":\"MyAny\",\"baseName\":\"AoAny\",\"relations\":[{\"name\":\"myMeasurment\",\"kind\":\"INFO\",\"inverseName\":\"myInfoElement\",\"obligatory\":false,\"type\":\"n-1\",\"relEntityName\":\"Measurement\"}],\"attributes\":[{\"name\":\"Id\",\"baseName\":\"id\"},{\"name\":\"Name\",\"baseName\":\"name\"},{\"name\":\"my_classification\",\"dataType\":\"DT_DOUBLE\",\"obligatory\":true}]}]}" --header "Content-Type:application/json"
+curl.exe -X DELETE "http://localhost:8081/model" -d"{\"entities\":[{\"name\":\"MyAny\"}]}" --header "Content-Type:application/json"
 
 curl.exe -X GET  "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
 curl.exe -X POST "http://localhost:8081/data/access" -d "{\"entity\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
@@ -179,9 +179,9 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"c
 }
 ```
 
-## Modify Schema
+## Modify Model
 
-### Create schema POST
+### Create model POST
 
 - Create an entity with attributes and relations
 
@@ -215,7 +215,7 @@ curl.exe -X GET "http://localhost:8081/data" -d "{\"entity\":\"LocalColumn\",\"c
 }
 ```
 
-### Delete stuff using schema DELETE
+### Delete stuff using model DELETE
 
 - delete an entity
 

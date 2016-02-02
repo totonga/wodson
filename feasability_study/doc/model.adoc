@@ -1,25 +1,24 @@
-== Schema
+== Model
 :Author:    Andreas Krantz
 :Email:     totonga@gmail.com
 
 ****
 The physical storage of an ASAM ODS server is a relational database.
-The schema contains the entity relationship definitions needed to retrieve the stored data sensful.
+The model contains the entity relationship definitions (ERM) needed to retrieve the stored data sensful.
 ****
 
-TIP: In ASAM ODS the schema is called application model. Because the word model
-     is used different today we picked schema here.
+TIP: The model is the schema of the ASAM ODS Server
 
-=== Get schema
+=== Get model
 
 ****
-If a client is not hard coded against a schema, it should retrieve the schema in 
-one piece and use local source code to extract information from the schema.
+If a client is not hard coded against a model, it should retrieve the model in 
+one piece and use local source code to extract information from the model.
 ****
 
-IMPORTANT: The schema should be cached and not retrieved every time.
+IMPORTANT: The model should be cached and not retrieved every time.
 
-.retrieve the schema
+.retrieve the model
 ================================
 .request
 [source,json]
@@ -1527,12 +1526,12 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 ----
 ================================
 
-TIP: The content of the schema needs to be known to fill later request to *data* resource.
+TIP: The content of the model needs to be known to fill later request to *data* resource.
 
 
-=== Modify schema
+=== Modify model
 
-==== Add components to schema
+==== Add components to model
 
 .create entity *MyAny*
 ================================
@@ -1588,7 +1587,7 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
 
 
 
-==== Delete schema components
+==== Delete model components
 
 .delete attribute *my_value* at *MyAny*
 ================================

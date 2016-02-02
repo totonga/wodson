@@ -23,8 +23,8 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: text/htm
   }
 ]' 'http://localhost:8081/context'
 
-pause 'Get Server Schema [Press key to continue]'
-curl -X GET --header 'Accept: application/json' 'http://localhost:8081/schema'
+pause 'Get Server Model [Press key to continue]'
+curl -X GET --header 'Accept: application/json' 'http://localhost:8081/model'
 
 pause 'Retrieve name and id from AoTests [Press key to continue]'
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{

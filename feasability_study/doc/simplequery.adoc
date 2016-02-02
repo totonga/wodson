@@ -7,8 +7,8 @@ approach came up.
 ****
 
 IMPORTANT: It is always possible to use application or base names for entity, relations, attributes. 
-           Order is 1.) application 2.) base. If base name is not uniquely assigned in the schema one of the vector is picked. 
-           This is important for writing generic code even without having to analyze the complete schema.
+           Order is 1.) application 2.) base. If base name is not uniquely assigned in the model one of the vector is picked. 
+           This is important for writing generic code even without having to analyze the complete model.
            Be aware that application name can always be used to access any element or attribute.
 
 === The json query structure

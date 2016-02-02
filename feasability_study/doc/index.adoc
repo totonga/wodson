@@ -5,7 +5,7 @@
 
 include::data.adoc[]
 
-include::schema.adoc[]
+include::model.adoc[]
 
 include::context.adoc[]
 

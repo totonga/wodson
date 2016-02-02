@@ -21,8 +21,8 @@ tags:
     description: All methods using Http
   - name: Data
     description: meta and bulk data
-  - name: Schema
-    description: Server schema/model
+  - name: Model
+    description: Server model
   - name: Transaction
     description: Handle transactions, Open transactions
   - name: Info
@@ -223,7 +223,7 @@ paths:
       security:
         - session_auth:
           - modify_data
-          - modify_schema
+          - modify_model
     delete:
       tags:
         - API_Http
@@ -238,22 +238,22 @@ paths:
           description: Invalid input. Transaction was not opened
       security:
         - session_auth:
-          - modify_schema
+          - modify_model
           - modify_data
-  /schema:
+  /model:
     get:
       tags:
         - API_Http
         - API_Rest
         - Info
-        - Schema
-      description: get schema/model information
-      operationId: app.schema_get
+        - Model
+      description: get model information
+      operationId: app.model_get
       responses:
         '200':
           description: Successful response
           schema:
-            $ref: '#/definitions/ServerSchema'
+            $ref: '#/definitions/ServerModel'
         '404':
           description: not connected
       security:
@@ -263,15 +263,15 @@ paths:
       tags:
         - API_Http
         - API_Rest
-        - Schema
+        - Model
         - Transaction
-      description: update or extend the schema/model
-      operationId: app.schema_put
+      description: update or extend the model
+      operationId: app.model_put
       parameters:
-        - name: schema
+        - name: model
           in: body
           schema:
-            $ref: '#/definitions/ServerSchema'
+            $ref: '#/definitions/ServerModel'
       responses:
         '200':
           description: Successful updated
@@ -279,20 +279,20 @@ paths:
           description: Invalid input
       security:
         - session_auth:
-            - modify_schema
+            - modify_model
     delete:
       tags:
         - API_Http
         - API_Rest
-        - Schema
+        - Model
         - Transaction
-      description: delete elements in the schema/model
-      operationId: app.schema_delete
+      description: delete elements in the model
+      operationId: app.model_delete
       parameters:
-        - name: schema
+        - name: model
           in: body
           schema:
-            $ref: '#/definitions/ServerSchema'
+            $ref: '#/definitions/ServerModel'
       responses:
         '200':
           description: Successful updated
@@ -300,7 +300,7 @@ paths:
           description: Invalid input
       security:
         - session_auth:
-          - modify_schema
+          - modify_model
   /context:
     get:
       tags:
@@ -431,7 +431,7 @@ securityDefinitions:
     scopes:
       access_data: read data from server
       modify_data: write/delete data to server
-      modify_schema: capable to change server schema
+      modify_model: capable to change server model
 definitions:
   Instance:
     type: object
@@ -512,7 +512,7 @@ definitions:
           type: string
           description: value of the name-value pair
           example: system
-  ServerSchema:
+  ServerModel:
     type: object
     properties:
       enumerations:

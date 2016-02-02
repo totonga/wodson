@@ -262,9 +262,9 @@ def transaction_delete():
     
     return NoContent, 200
 
-def schema_put(schema):
-    logging.info('create or overwrite entity/attribute/enum in schema')
-    for entity in schema['entities']:
+def model_put(model):
+    logging.info('create or overwrite entity/attribute/enum in model')
+    for entity in model['entities']:
         logging.info('create ' + entity['name'])
         for attribute in entity['attributes']:
             logging.info('  create attribute ' + attribute['name'])
@@ -273,15 +273,15 @@ def schema_put(schema):
 
     return NoContent, 200
 
-def schema_delete(schema):
-    logging.info('delete entity/attribute/enum in schema')
-    for entity in schema['entities']:
+def model_delete(model):
+    logging.info('delete entity/attribute/enum in model')
+    for entity in model['entities']:
         logging.info('delete ' + entity['name'])
 
     return NoContent, 200
 
-def schema_get():
-    logging.info('get the server schema')
+def model_get():
+    logging.info('get the server model')
     rv = {}
     model = Session__().Model()
     # add enumerations
