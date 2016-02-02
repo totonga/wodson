@@ -40,7 +40,7 @@ paths:
       description: get data from server by using query.
       operationId: app.get_data
       parameters:
-        - name: simple_query
+        - name: query_struct
           in: body
           schema:
             $ref: '#/definitions/QueryStructureV1'
@@ -107,7 +107,7 @@ paths:
       description: get data from server by using query. The post is added because some serers do not accept get with body
       operationId: app.post_dataGP
       parameters:
-        - name: simple_query
+        - name: query_struct
           in: body
           schema:
             $ref: '#/definitions/QueryStructureV1'

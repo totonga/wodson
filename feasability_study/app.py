@@ -125,18 +125,18 @@ def put_data(data_matrix):
 
     return NoContent, 200
 
-def get_data(simple_query):
+def get_data(query_struct):
     logging.info('retrieve data')
 
-    entityStr = simple_query['entity']
-    conditions = simple_query['conditions'] if 'conditions' in simple_query else []
-    attributes = simple_query['attributes'] if 'attributes' in simple_query else []
-    orderBy = simple_query['orderBy'] if 'orderBy' in simple_query else []
-    groupBy = simple_query['groupBy'] if 'groupBy' in simple_query else []
-    maxCount = simple_query['maxCount'] if 'maxCount' in simple_query else 10000
-    skipCount = simple_query['skipCount'] if 'skipCount' in simple_query else 0
-    vectorSkipCount = simple_query['vectorSkipCount'] if 'vectorSkipCount' in simple_query else 0
-    vectorMaxCount = simple_query['vectorMaxCount'] if 'vectorMaxCount' in simple_query else sys.maxsize
+    entityStr = query_struct['entity']
+    conditions = query_struct['conditions'] if 'conditions' in query_struct else []
+    attributes = query_struct['attributes'] if 'attributes' in query_struct else []
+    orderBy = query_struct['orderBy'] if 'orderBy' in query_struct else []
+    groupBy = query_struct['groupBy'] if 'groupBy' in query_struct else []
+    maxCount = query_struct['maxCount'] if 'maxCount' in query_struct else 10000
+    skipCount = query_struct['skipCount'] if 'skipCount' in query_struct else 0
+    vectorSkipCount = query_struct['vectorSkipCount'] if 'vectorSkipCount' in query_struct else 0
+    vectorMaxCount = query_struct['vectorMaxCount'] if 'vectorMaxCount' in query_struct else sys.maxsize
 
     so = Session__()
     model = so.Model()
@@ -235,8 +235,8 @@ def get_data(simple_query):
     
     return render_template('datamatrix.html', datamatrices=rv),  200
  
-def post_dataGP(simple_query):
-    return get_data(simple_query)
+def post_dataGP(query_struct):
+    return get_data(query_struct)
 
 def put_transaction():
     logging.info('commit transaction')
