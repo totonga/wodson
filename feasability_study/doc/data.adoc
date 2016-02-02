@@ -20,7 +20,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 {
 	"entity": "AoTest"
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -41,7 +41,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 {
 	"entity": "1"
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -61,7 +61,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 	"entity": "MeaQuantity",
 	"maxCount": 50
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -83,7 +83,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 	"entity": "MeaQuantity",
 	"attributes": [ "name" , "id" ]
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -105,7 +105,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 	"entity": "MeaQuantity",
 	"attributes": [ "name", "id", "measurement.name" ]
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -126,7 +126,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 	"entity": "MeaQuantity",
 	"conditions": { "id" : 4 }
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -147,7 +147,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 	"attributes": [ "name", "id" ],
 	"conditions": { "measurement" : 2 }
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -168,7 +168,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 	"attributes": ["name","id","measurement.name","measurement.id"],
 	"conditions": { "measurement.test" : 2 }
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -189,7 +189,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 	"attributes": ["name","id","measurement.name","measurement.id"],
 	"conditions": { "measurement.test" : { "$EQ" : 2 } }
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -209,7 +209,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 	"entity": "MeaQuantity",
 	"attributes": [ {"name" : "$DISTINCT"} ]
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----
@@ -230,7 +230,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 	"attributes": ["name"],
 	"orderBy": [ {"name" : "$DESCENDING"} ]
 }' 
-'http://localhost:8081/data'
+'http://localhost:8081/env/e1/data'
 ----
 .result
 ----

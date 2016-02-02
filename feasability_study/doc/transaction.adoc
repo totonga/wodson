@@ -20,7 +20,7 @@ IMPORTANT: Try to do all changes in a single transaction.
 .request
 [source,json]
 ----
-curl -X PUT --header 'Accept: application/problem+json' 'http://localhost:8081/transaction'
+curl -X PUT --header 'Accept: application/problem+json' 'http://localhost:8081/env/e1/transaction'
 ----
 ================================
 
@@ -32,6 +32,6 @@ curl -X PUT --header 'Accept: application/problem+json' 'http://localhost:8081/t
 .request
 [source,json]
 ----
-curl -X DELETE --header 'Accept: application/problem+json' 'http://localhost:8081/transaction'
+curl -X DELETE --header 'Accept: application/problem+json' 'http://localhost:8081/env/e1/transaction'
 ----
 ================================

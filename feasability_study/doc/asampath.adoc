@@ -20,7 +20,7 @@ CAUTION: While creating the ASAM path is somehow cheap, resolving it might be ex
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
   "entity": "Projekt",
   "id": 1
-}' 'http://localhost:8081/utils/asampath/create'
+}' 'http://localhost:8081/env/e1/utils/asampath/create'
 ----
 
 .result
@@ -43,7 +43,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
   "path": "/[Environment]testenv;1/[Projekt]Project;V1"
-}' 'http://localhost:8081/utils/asampath/resolve'
+}' 'http://localhost:8081/env/e1/utils/asampath/resolve'
 ----
 
 .result

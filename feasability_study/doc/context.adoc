@@ -14,7 +14,7 @@ The simplest context variables are those needed to establish the connection.
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/context'
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/env/e1/context'
 ----
 
 .result
@@ -56,6 +56,6 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
         "name":"PASSWORD",
         "value":"puma"
     }
-]' 'http://localhost:8081/context'
+]' 'http://localhost:8081/env/e1/context'
 ----
 ================================

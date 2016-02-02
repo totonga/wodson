@@ -20,7 +20,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
   "attribute": "content1",
   "vectorMaxCount": 1000
   "vectorSkipCount":500
-}' 'http://localhost:8081/utils/binary'
+}' 'http://localhost:8081/env/e1/utils/binary'
 ----
 
 ================================
@@ -37,7 +37,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
   "id": "2710",
   "vectorMaxCount": 10000
   "vectorSkipCount":700
-}' 'http://localhost:8081/utils/binary'
+}' 'http://localhost:8081/env/e1/utils/binary'
 ----
 
 ================================

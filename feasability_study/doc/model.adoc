@@ -23,7 +23,7 @@ IMPORTANT: The model should be cached and not retrieved every time.
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/shema'
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/env/e1/shema'
 ----
 
 .result
@@ -1563,7 +1563,7 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
 			"obligatory": true
 		}]
 	}]
-}' 'http://localhost:8081/shema'
+}' 'http://localhost:8081/env/e1/shema'
 ----
 ================================
 
@@ -1581,7 +1581,7 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
 			"obligatory": true
 		}]
 	}]
-}' 'http://localhost:8081/shema'
+}' 'http://localhost:8081/env/e1/shema'
 ----
 ================================
 
@@ -1601,7 +1601,7 @@ curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: appli
 			"name": "my_value"
 		}]
 	}]
-}' 'http://localhost:8081/shema'
+}' 'http://localhost:8081/env/e1/shema'
 ----
 ================================
 
@@ -1615,6 +1615,6 @@ curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: appli
 	"entities": [{
 		"name": "MyAny"
 	}]
-}' 'http://localhost:8081/shema'
+}' 'http://localhost:8081/env/e1/shema'
 ----
 ================================

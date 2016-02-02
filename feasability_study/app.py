@@ -25,15 +25,19 @@ from connexion import NoContent
 
 app = connexion.App(__name__)
 
+class CEnv:
+    context_vars_ = {}
+    session_obj_ = None
 
-context_vars__ = {}
-session_obj__ = None
+    def __init__(self, context_vars):
+        self.context_vars_ = context_vars
+    
+_envs = {}
 
-# initialize to do single call without init
-#context_vars__ = {'URL':'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', 'USER':'', 'PASSWORD':''}
-#context_vars__ = {'URL':'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', 'USER':'', 'PASSWORD':''}
-#context_vars__ = {'URL':'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', 'USER':'test', 'PASSWORD':'test'}
-context_vars__ = {'URL':'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', 'USER':'System', 'PASSWORD':'puma'}
+_envs['e1'] =  CEnv({u'URL':u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER':'System', u'PASSWORD':u'puma'})
+_envs['e2'] =  CEnv({u'URL':u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER':'test', u'PASSWORD':u'test'})
+_envs['e3'] =  CEnv({u'URL':u'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', u'USER':'', u'PASSWORD':u''})
+_envs['e4'] =  CEnv({u'URL':u'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', u'USER':'', u'PASSWORD':u''})
 
 def _RequestWantsJson():
     best = request.accept_mimetypes.best_match(['application/json', 'text/html'])
@@ -97,49 +101,49 @@ def _GetDiscriminatorArrayName(arrayType):
     return None
 
 
-def _Session():
+def _Session(envI):
     global session_obj__
 
-    if session_obj__ is None:
-        sUrl = context_vars__['URL']
-        sUsr = context_vars__['USER']
-        sPwd = context_vars__['PASSWORD']
-        session_obj__ = OdsLib.CSession(sUrl, sUsr, sPwd)
+    if _envs[envI].session_obj_ is None:
+        sUrl = _envs[envI].context_vars_['URL']
+        sUsr = _envs[envI].context_vars_['USER']
+        sPwd = _envs[envI].context_vars_['PASSWORD']
+        _envs[envI].session_obj_ = OdsLib.CSession(sUrl, sUsr, sPwd)
 
-    return session_obj__
+    return _envs[envI].session_obj_
 
-def _SessionClose():
+def _SessionClose(envI):
     global session_obj__
     
-    if not session_obj__ is None:
-        session_obj__.Close()
-        session_obj__ = None
+    if not _envs[envI].session_obj_ is None:
+        _envs[envI].session_obj_.Close()
+        _envs[envI].session_obj_ = None
 
-def data_post(data_matrix):
+def data_post(envI, data_matrix):
     logging.info('create instances')
 
     return {}, 200
 
-def data_modify_post(data_matrix):
-    return data_post(data_matrix)
+def data_modify_post(envI, data_matrix):
+    return data_post(envI, data_matrix)
 
-def data_put(data_matrix):
+def data_put(envI, data_matrix):
     logging.info('update instances')
 
     return NoContent, 200
 
-def data_modify_put(data_matrix):
-    return data_put(data_matrix)
+def data_modify_put(envI, data_matrix):
+    return data_put(envI, data_matrix)
 
-def data_delete(data_matrix):
+def data_delete(envI, data_matrix):
     logging.info('delete instances')
 
     return NoContent, 200
 
-def data_modify_delete(data_matrix):
-    return data_delete(data_matrix)
+def data_modify_delete(envI, data_matrix):
+    return data_delete(envI, data_matrix)
 
-def data_get(query_struct):
+def data_get(envI,  query_struct):
     logging.info('retrieve data')
 
     entityStr = query_struct['entity']
@@ -152,7 +156,7 @@ def data_get(query_struct):
     vectorSkipCount = query_struct['vectorSkipCount'] if 'vectorSkipCount' in query_struct else 0
     vectorMaxCount = query_struct['vectorMaxCount'] if 'vectorMaxCount' in query_struct else sys.maxsize
 
-    so = _Session()
+    so = _Session(envI)
     model = so.Model()
     elem = model.GetElemEx(entityStr)
     result = so.GetInstancesEx_Ver2(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
@@ -249,20 +253,20 @@ def data_get(query_struct):
     
     return render_template('datamatrix.html', datamatrices=rv),  200
  
-def data_access_post(query_struct):
-    return data_get(query_struct)
+def data_access_post(envI, query_struct):
+    return data_get(envI, query_struct)
 
-def transaction_put():
+def transaction_put(envI):
     logging.info('commit transaction')
     
     return NoContent, 200
 
-def transaction_delete():
+def transaction_delete(envI):
     logging.info('abort transaction')
     
     return NoContent, 200
 
-def model_put(model):
+def model_put(envI, model):
     logging.info('create or overwrite entity/attribute/enum in model')
     for entity in model['entities']:
         logging.info('create ' + entity['name'])
@@ -273,17 +277,17 @@ def model_put(model):
 
     return NoContent, 200
 
-def model_delete(model):
+def model_delete(envI, model):
     logging.info('delete entity/attribute/enum in model')
     for entity in model['entities']:
         logging.info('delete ' + entity['name'])
 
     return NoContent, 200
 
-def model_get():
+def model_get(envI):
     logging.info('get the server model')
     rv = {}
-    model = _Session().Model()
+    model = _Session(envI).Model()
     # add enumerations
     enumsArray = []
     for enum in model.enums_:
@@ -346,59 +350,59 @@ def model_get():
     rv['entities'] = entities
     return rv
 
-def context_get():
+def context_get(envI):
     logging.info('get context variables')
     rv = []
-    for param in context_vars__:
+    for param in _envs[envI].context_vars_:
         if 'PASSWORD' != param:
             pObj = {}
             pObj['name'] = param
-            pObj['value'] = context_vars__[param]
+            pObj['value'] = _envs[envI].context_vars_[param]
             rv.append(pObj)
     return rv
 
-def context_put(parameters):
+def context_put(envI, parameters):
     logging.info('set context variables')
     # make sure we can use different context
-    _SessionClose()
+    _SessionClose(envI)
     
     for param in parameters:
         pName = param['name']
         pValue = param['value']
-        context_vars__[pName] = pValue
+        _envs[envI].context_vars_[pName] = pValue
 
     return NoContent, 200
 
-def utils_asampath_create_get(params):
+def utils_asampath_create_get(envI, params):
     logging.info('create an asam path')
     
     entityStr = params['entity']
     iid = params['id']
 
-    so = _Session()
+    so = _Session(envI)
     model = so.Model()
     elem = model.GetElemEx(entityStr)
     rv = {}
     rv['path'] = so.AsamPathCreate(elem.aid,  iid)
     return rv
 
-def utils_asampath_create_post(params):
-    return utils_asampath_create_get(params)
+def utils_asampath_create_post(envI, params):
+    return utils_asampath_create_get(envI, params)
 
-def utils_asampath_resolve_get(params):
+def utils_asampath_resolve_get(envI, params):
     logging.info('resolve an asam path')
     
     path = params['path']
  
-    so = _Session()
+    so = _Session(envI)
     entity,  iid = so.AsamPathResolve(path)
     rv = {}
     rv['entity'] = entity
     rv['id'] = iid
     return rv
 
-def utils_asampath_resolve_post(params):
-    return utils_asampath_resolve_get(params)
+def utils_asampath_resolve_post(envI, params):
+    return utils_asampath_resolve_get(envI, params)
 
 @app.route('/')
 def index():

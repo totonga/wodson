@@ -32,7 +32,7 @@ tags:
   - name: Utils
     description: Utilities to do special jobs
 paths:
-  /data:
+  /env/{envI}/data:
     get:
       tags:
         - API_Rest
@@ -40,6 +40,12 @@ paths:
       description: get data from server by using query.
       operationId: app.data_get
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: query_struct
           in: body
           schema:
@@ -65,6 +71,12 @@ paths:
       description: create instances
       operationId: app.data_post
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: data_matrix
           in: body
           schema:
@@ -87,6 +99,12 @@ paths:
       description: update instances
       operationId: app.data_put
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: data_matrix
           in: body
           schema:
@@ -107,6 +125,12 @@ paths:
       description: update instances
       operationId: app.data_delete
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: data_matrix
           in: body
           schema:
@@ -119,7 +143,7 @@ paths:
       security:
         - session_auth:
             - modify_data
-  /data/access:
+  /env/{envI}/data/access:
     post:
       tags:
         - API_Http
@@ -127,6 +151,12 @@ paths:
       description: get data from server by using query. The post is added because some serers do not accept get with body
       operationId: app.data_access_post
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: query_struct
           in: body
           schema:
@@ -144,7 +174,7 @@ paths:
       security:
         - session_auth:
           - access_data
-  /data/modify:
+  /env/{envI}/data/modify:
     post:
       tags:
         - API_Http
@@ -153,6 +183,12 @@ paths:
       description: create instances
       operationId: app.data_modify_post
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: data_matrix
           in: body
           schema:
@@ -175,6 +211,12 @@ paths:
       description: update instances
       operationId: app.data_modify_put
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: data_matrix
           in: body
           schema:
@@ -195,6 +237,12 @@ paths:
       description: update instances
       operationId: app.data_modify_delete
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: data_matrix
           in: body
           schema:
@@ -207,7 +255,7 @@ paths:
       security:
         - session_auth:
             - modify_data  
-  /transaction:
+  /env/{envI}/transaction:
     put:
       tags:
         - API_Http
@@ -215,6 +263,13 @@ paths:
         - Transaction
       description: commit transaction opened by a command that uses transaction
       operationId: app.transaction_put
+      parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
       responses:
         '200':
           description: Successful committed transaction
@@ -231,6 +286,13 @@ paths:
         - Transaction
       description: rollback transaction opend by a command that uses transaction
       operationId: app.transaction_delete
+      parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
       responses:
         '200':
           description: Successful rolled back transaction
@@ -240,7 +302,7 @@ paths:
         - session_auth:
           - modify_model
           - modify_data
-  /model:
+  /env/{envI}/model:
     get:
       tags:
         - API_Http
@@ -249,6 +311,13 @@ paths:
         - Model
       description: get model information
       operationId: app.model_get
+      parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
       responses:
         '200':
           description: Successful response
@@ -268,6 +337,12 @@ paths:
       description: update or extend the model
       operationId: app.model_put
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: model
           in: body
           schema:
@@ -289,6 +364,12 @@ paths:
       description: delete elements in the model
       operationId: app.model_delete
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: model
           in: body
           schema:
@@ -301,7 +382,7 @@ paths:
       security:
         - session_auth:
           - modify_model
-  /context:
+  /env/{envI}/context:
     get:
       tags:
         - API_Http
@@ -309,6 +390,13 @@ paths:
         - Info
       description: get information about current context
       operationId: app.context_get
+      parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
       responses:
         '200':
           description: Successful response
@@ -326,6 +414,12 @@ paths:
         - Init
       operationId: app.context_put
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: parameters
           in: body
           schema:
@@ -338,7 +432,7 @@ paths:
       security:
         - session_auth:
             - modify_data
-  /utils/asampath/create:
+  /env/{envI}/utils/asampath/create:
     get:
       tags:
         - API_Rest
@@ -346,6 +440,12 @@ paths:
       description: get data from server by using query.
       operationId: app.utils_asampath_create_get
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: params
           in: body
           schema:
@@ -367,6 +467,12 @@ paths:
       description: will redirect to get with body
       operationId: app.utils_asampath_create_post
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: params
           in: body
           schema:
@@ -381,7 +487,7 @@ paths:
       security:
         - session_auth:
           - access_data
-  /utils/asampath/resolve:
+  /env/{envI}/utils/asampath/resolve:
     get:
       tags:
         - API_Rest
@@ -389,6 +495,12 @@ paths:
       description: will redirect to get with body
       operationId: app.utils_asampath_resolve_post
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: params
           in: body
           schema:
@@ -409,6 +521,12 @@ paths:
         - Utils
       operationId: app.utils_asampath_resolve_get
       parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
         - name: params
           in: body
           schema:
