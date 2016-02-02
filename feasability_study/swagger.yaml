@@ -15,8 +15,10 @@ schemes:
   - http
   - https
 tags:
-  - name: Api
-    description: All real API methods
+  - name: RestApi
+    description: All RestApi methods
+  - name: HttpApi
+    description: All HttpApi methods
   - name: Data
     description: meta and bulk data
   - name: Schema
@@ -29,13 +31,11 @@ tags:
     description: Used to initialize server configuration
   - name: Utils
     description: Utilities to do special jobs
-  - name: Workaround
-    description: For some http functionality we need workaround like delete over post ...
 paths:
   /data:
     get:
       tags:
-        - Api
+        - RestApi
         - Data
       description: get data from server by using query.
       operationId: app.get_data
@@ -56,10 +56,10 @@ paths:
         - text/html
       security:
         - session_auth:
-          - read_data
+          - access_data
     post:
       tags:
-        - Api
+        - RestApi
         - Data
         - Transaction
       description: create instances
@@ -78,10 +78,10 @@ paths:
           description: Invalid input
       security:
         - session_auth:
-            - modify_schema
+            - modify_data
     put:
       tags:
-        - Api
+        - RestApi
         - Data
         - Transaction
       description: update instances
@@ -98,11 +98,93 @@ paths:
           description: Invalid input
       security:
         - session_auth:
-            - modify_schema
-  /dataGP:
+            - modify_data
+    delete:
+      tags:
+        - RestApi
+        - Data
+        - Transaction
+      description: update instances
+      operationId: app.delete_data
+      parameters:
+        - name: data_matrix
+          in: body
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_data
+  /data/modify:
     post:
       tags:
-        - Workaround
+        - HttpApi
+        - Data
+        - Transaction
+      description: create instances
+      operationId: app.post_data
+      parameters:
+        - name: data_matrix
+          in: body
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+          schema:
+            $ref: '#/definitions/DataMatrix'
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_data
+    put:
+      tags:
+        - HttpApi
+        - Data
+        - Transaction
+      description: update instances
+      operationId: app.put_data
+      parameters:
+        - name: data_matrix
+          in: body
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_data
+    delete:
+      tags:
+        - HttpApi
+        - Data
+        - Transaction
+      description: update instances
+      operationId: app.delete_data
+      parameters:
+        - name: data_matrix
+          in: body
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_data  /data/access:
+    post:
+      tags:
+        - HttpApi
         - Data
       description: get data from server by using query. The post is added because some serers do not accept get with body
       operationId: app.post_dataGP
@@ -123,11 +205,12 @@ paths:
         - text/html
       security:
         - session_auth:
-          - read_data
+          - access_data
   /transaction:
     put:
       tags:
-        - Api
+        - HttpApi
+        - RestApi
         - Transaction
       description: commit transaction opened by a command that uses transaction
       operationId: app.put_transaction
@@ -138,10 +221,12 @@ paths:
           description: Invalid input. Transaction was not opened
       security:
         - session_auth:
-          - write_data
+          - modify_data
+          - modify_schema
     delete:
       tags:
-        - Api
+        - HttpApi
+        - RestApi
         - Transaction
       description: rollback transaction opend by a command that uses transaction
       operationId: app.delete_transaction
@@ -152,11 +237,13 @@ paths:
           description: Invalid input. Transaction was not opened
       security:
         - session_auth:
-          - write_data
+          - modify_schema
+          - modify_data
   /schema:
     get:
       tags:
-        - Api
+        - HttpApi
+        - RestApi
         - Info
         - Schema
       description: get schema/model information
@@ -170,10 +257,11 @@ paths:
           description: not connected
       security:
         - session_auth:
-          - read_data
+          - access_data
     put:
       tags:
-        - Api
+        - HttpApi
+        - RestApi
         - Schema
         - Transaction
       description: update or extend the schema/model
@@ -193,7 +281,8 @@ paths:
             - modify_schema
     delete:
       tags:
-        - Api
+        - HttpApi
+        - RestApi
         - Schema
         - Transaction
       description: delete elements in the schema/model
@@ -214,7 +303,8 @@ paths:
   /context:
     get:
       tags:
-        - Api
+        - HttpApi
+        - RestApi
         - Info
       description: get information about current context
       operationId: app.get_context
@@ -227,10 +317,11 @@ paths:
           description: not connected
       security:
         - session_auth:
-            - read_data
+            - access_data
     put:
       tags:
-        - Api
+        - HttpApi
+        - RestApi
         - Init
       operationId: app.put_context
       parameters:
@@ -245,11 +336,11 @@ paths:
           description: Invalid input
       security:
         - session_auth:
-            - write_data
+            - modify_data
   /utils/asampath/create:
     get:
       tags:
-        - Api
+        - RestApi
         - Utils
       description: get data from server by using query.
       operationId: app.get_utils_asampath_create
@@ -267,10 +358,11 @@ paths:
           description: not conneted
       security:
         - session_auth:
-          - read_data
+          - access_data
     post:
       tags:
-        - Workaround
+        - HttpApi
+        - Utils
       description: will redirect to get with body
       operationId: app.post_utils_asampath_create
       parameters:
@@ -287,11 +379,11 @@ paths:
           description: not conneted
       security:
         - session_auth:
-          - read_data
+          - access_data
   /utils/asampath/resolve:
     get:
       tags:
-        - Api
+        - RestApi
         - Utils
       description: will redirect to get with body
       operationId: app.post_utils_asampath_resolve
@@ -309,10 +401,11 @@ paths:
           description: Invalid input
       security:
         - session_auth:
-          - read_data
+          - access_data
     post:
       tags:
-        - Workaround
+        - HttpApi
+        - Utils
       operationId: app.get_utils_asampath_resolve
       parameters:
         - name: params
@@ -328,15 +421,15 @@ paths:
           description: Invalid input
       security:
         - session_auth:
-          - read_data
+          - access_data
 securityDefinitions:
   session_auth:
     type: oauth2
     authorizationUrl: 'http://swagger.asam.net/api/oauth/dialog'
     flow: implicit
     scopes:
-      write_data: write data to server
-      read_data: read data from server
+      access_data: read data from server
+      modify_data: write/delete data to server
       modify_schema: capable to change server schema
 definitions:
   Instance:
