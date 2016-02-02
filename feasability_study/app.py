@@ -115,17 +115,31 @@ def SessionClose__():
         session_obj__.Close()
         session_obj__ = None
 
-def post_data(data_matrix):
+def data_post(data_matrix):
     logging.info('create instances')
 
     return {}, 200
 
-def put_data(data_matrix):
+def data_modify_post(data_matrix):
+    return data_post(data_matrix)
+
+def data_put(data_matrix):
     logging.info('update instances')
 
     return NoContent, 200
 
-def get_data(query_struct):
+def data_modify_put(data_matrix):
+    return data_put(data_matrix)
+
+def data_delete(data_matrix):
+    logging.info('delete instances')
+
+    return NoContent, 200
+
+def data_modify_delete(data_matrix):
+    return data_delete(data_matrix)
+
+def data_get(query_struct):
     logging.info('retrieve data')
 
     entityStr = query_struct['entity']
@@ -235,20 +249,20 @@ def get_data(query_struct):
     
     return render_template('datamatrix.html', datamatrices=rv),  200
  
-def post_dataGP(query_struct):
-    return get_data(query_struct)
+def data_access_post(query_struct):
+    return data_get(query_struct)
 
-def put_transaction():
+def transaction_put():
     logging.info('commit transaction')
     
     return NoContent, 200
 
-def delete_transaction():
+def transaction_delete():
     logging.info('abort transaction')
     
     return NoContent, 200
 
-def put_schema(schema):
+def schema_put(schema):
     logging.info('create or overwrite entity/attribute/enum in schema')
     for entity in schema['entities']:
         logging.info('create ' + entity['name'])
@@ -259,14 +273,14 @@ def put_schema(schema):
 
     return NoContent, 200
 
-def delete_schema(schema):
+def schema_delete(schema):
     logging.info('delete entity/attribute/enum in schema')
     for entity in schema['entities']:
         logging.info('delete ' + entity['name'])
 
     return NoContent, 200
 
-def get_schema():
+def schema_get():
     logging.info('get the server schema')
     rv = {}
     model = Session__().Model()
@@ -332,7 +346,7 @@ def get_schema():
     rv['entities'] = entities
     return rv
 
-def get_context():
+def context_get():
     logging.info('get context variables')
     rv = []
     for param in context_vars__:
@@ -343,7 +357,7 @@ def get_context():
             rv.append(pObj)
     return rv
 
-def put_context(parameters):
+def context_put(parameters):
     logging.info('set context variables')
     # make sure we can use different context
     SessionClose__()
@@ -355,7 +369,7 @@ def put_context(parameters):
 
     return NoContent, 200
 
-def get_utils_asampath_create(params):
+def utils_asampath_create_get(params):
     logging.info('create an asam path')
     
     entityStr = params['entity']
@@ -368,10 +382,10 @@ def get_utils_asampath_create(params):
     rv['path'] = so.AsamPathCreate(elem.aid,  iid)
     return rv
 
-def post_utils_asampath_create(params):
-    return get_utils_asampath_create(params)
+def utils_asampath_create_post(params):
+    return utils_asampath_create_get(params)
 
-def get_utils_asampath_resolve(params):
+def utils_asampath_resolve_get(params):
     logging.info('resolve an asam path')
     
     path = params['path']
@@ -383,8 +397,8 @@ def get_utils_asampath_resolve(params):
     rv['id'] = iid
     return rv
 
-def post_utils_asampath_resolve(params):
-    return get_utils_asampath_resolve(params)
+def utils_asampath_resolve_post(params):
+    return utils_asampath_resolve_get(params)
 
 @app.route('/')
 def index():

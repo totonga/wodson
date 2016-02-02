@@ -17,7 +17,7 @@ curl.exe -X PUT "http://localhost:8081/schema" -d"{\"entities\":[{\"name\":\"MyA
 curl.exe -X DELETE "http://localhost:8081/schema" -d"{\"entities\":[{\"name\":\"MyAny\"}]}" --header "Content-Type:application/json"
 
 curl.exe -X GET  "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
-curl.exe -X POST "http://localhost:8081/dataGP" -d "{\"entity\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
+curl.exe -X POST "http://localhost:8081/data/access" -d "{\"entity\":\"MeaQuantity\"}" --header "Content-Type: application/json" --header "Accept: application/json"
 curl.exe -X GET  "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"attributes\":[\"name\",\"id\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
 curl.exe -X GET  "http://localhost:8081/data" -d "{\"entity\":\"MeaQuantity\",\"conditions\":[\"id=4\"]}" --header "Content-Type: application/json" --header "Accept: application/json"
 

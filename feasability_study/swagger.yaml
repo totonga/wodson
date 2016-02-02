@@ -15,10 +15,10 @@ schemes:
   - http
   - https
 tags:
-  - name: RestApi
-    description: All RestApi methods
-  - name: HttpApi
-    description: All HttpApi methods
+  - name: API_Rest
+    description: All methods using Rest 
+  - name: API_Http
+    description: All methods using Http
   - name: Data
     description: meta and bulk data
   - name: Schema
@@ -26,7 +26,7 @@ tags:
   - name: Transaction
     description: Handle transactions, Open transactions
   - name: Info
-    description: Have alook at server configuration
+    description: Have a look at server configuration
   - name: Init
     description: Used to initialize server configuration
   - name: Utils
@@ -35,10 +35,10 @@ paths:
   /data:
     get:
       tags:
-        - RestApi
+        - API_Rest
         - Data
       description: get data from server by using query.
-      operationId: app.get_data
+      operationId: app.data_get
       parameters:
         - name: query_struct
           in: body
@@ -59,11 +59,11 @@ paths:
           - access_data
     post:
       tags:
-        - RestApi
+        - API_Rest
         - Data
         - Transaction
       description: create instances
-      operationId: app.post_data
+      operationId: app.data_post
       parameters:
         - name: data_matrix
           in: body
@@ -81,11 +81,11 @@ paths:
             - modify_data
     put:
       tags:
-        - RestApi
+        - API_Rest
         - Data
         - Transaction
       description: update instances
-      operationId: app.put_data
+      operationId: app.data_put
       parameters:
         - name: data_matrix
           in: body
@@ -101,11 +101,11 @@ paths:
             - modify_data
     delete:
       tags:
-        - RestApi
+        - API_Rest
         - Data
         - Transaction
       description: update instances
-      operationId: app.delete_data
+      operationId: app.data_delete
       parameters:
         - name: data_matrix
           in: body
@@ -113,81 +113,19 @@ paths:
             $ref: '#/definitions/DataMatrix'
       responses:
         '200':
-          description: Successful updated
+          description: Successful deleted
         '405':
           description: Invalid input
       security:
         - session_auth:
             - modify_data
-  /data/modify:
+  /data/access:
     post:
       tags:
-        - HttpApi
-        - Data
-        - Transaction
-      description: create instances
-      operationId: app.post_data
-      parameters:
-        - name: data_matrix
-          in: body
-          schema:
-            $ref: '#/definitions/DataMatrix'
-      responses:
-        '200':
-          description: Successful updated
-          schema:
-            $ref: '#/definitions/DataMatrix'
-        '405':
-          description: Invalid input
-      security:
-        - session_auth:
-            - modify_data
-    put:
-      tags:
-        - HttpApi
-        - Data
-        - Transaction
-      description: update instances
-      operationId: app.put_data
-      parameters:
-        - name: data_matrix
-          in: body
-          schema:
-            $ref: '#/definitions/DataMatrix'
-      responses:
-        '200':
-          description: Successful updated
-        '405':
-          description: Invalid input
-      security:
-        - session_auth:
-            - modify_data
-    delete:
-      tags:
-        - HttpApi
-        - Data
-        - Transaction
-      description: update instances
-      operationId: app.delete_data
-      parameters:
-        - name: data_matrix
-          in: body
-          schema:
-            $ref: '#/definitions/DataMatrix'
-      responses:
-        '200':
-          description: Successful updated
-        '405':
-          description: Invalid input
-      security:
-        - session_auth:
-            - modify_data  /data/access:
-    post:
-      tags:
-        - HttpApi
+        - API_Http
         - Data
       description: get data from server by using query. The post is added because some serers do not accept get with body
-      operationId: app.post_dataGP
+      operationId: app.data_access_post
       parameters:
         - name: query_struct
           in: body
@@ -206,14 +144,77 @@ paths:
       security:
         - session_auth:
           - access_data
+  /data/modify:
+    post:
+      tags:
+        - API_Http
+        - Data
+        - Transaction
+      description: create instances
+      operationId: app.data_modify_post
+      parameters:
+        - name: data_matrix
+          in: body
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+          schema:
+            $ref: '#/definitions/DataMatrix'
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_data
+    put:
+      tags:
+        - API_Http
+        - Data
+        - Transaction
+      description: update instances
+      operationId: app.data_modify_put
+      parameters:
+        - name: data_matrix
+          in: body
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_data
+    delete:
+      tags:
+        - API_Http
+        - Data
+        - Transaction
+      description: update instances
+      operationId: app.data_modify_delete
+      parameters:
+        - name: data_matrix
+          in: body
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+            - modify_data  
   /transaction:
     put:
       tags:
-        - HttpApi
-        - RestApi
+        - API_Http
+        - API_Rest
         - Transaction
       description: commit transaction opened by a command that uses transaction
-      operationId: app.put_transaction
+      operationId: app.transaction_put
       responses:
         '200':
           description: Successful committed transaction
@@ -225,11 +226,11 @@ paths:
           - modify_schema
     delete:
       tags:
-        - HttpApi
-        - RestApi
+        - API_Http
+        - API_Rest
         - Transaction
       description: rollback transaction opend by a command that uses transaction
-      operationId: app.delete_transaction
+      operationId: app.transaction_delete
       responses:
         '200':
           description: Successful rolled back transaction
@@ -242,12 +243,12 @@ paths:
   /schema:
     get:
       tags:
-        - HttpApi
-        - RestApi
+        - API_Http
+        - API_Rest
         - Info
         - Schema
       description: get schema/model information
-      operationId: app.get_schema
+      operationId: app.schema_get
       responses:
         '200':
           description: Successful response
@@ -260,12 +261,12 @@ paths:
           - access_data
     put:
       tags:
-        - HttpApi
-        - RestApi
+        - API_Http
+        - API_Rest
         - Schema
         - Transaction
       description: update or extend the schema/model
-      operationId: app.put_schema
+      operationId: app.schema_put
       parameters:
         - name: schema
           in: body
@@ -281,12 +282,12 @@ paths:
             - modify_schema
     delete:
       tags:
-        - HttpApi
-        - RestApi
+        - API_Http
+        - API_Rest
         - Schema
         - Transaction
       description: delete elements in the schema/model
-      operationId: app.delete_schema
+      operationId: app.schema_delete
       parameters:
         - name: schema
           in: body
@@ -303,11 +304,11 @@ paths:
   /context:
     get:
       tags:
-        - HttpApi
-        - RestApi
+        - API_Http
+        - API_Rest
         - Info
       description: get information about current context
-      operationId: app.get_context
+      operationId: app.context_get
       responses:
         '200':
           description: Successful response
@@ -320,10 +321,10 @@ paths:
             - access_data
     put:
       tags:
-        - HttpApi
-        - RestApi
+        - API_Http
+        - API_Rest
         - Init
-      operationId: app.put_context
+      operationId: app.context_put
       parameters:
         - name: parameters
           in: body
@@ -340,10 +341,10 @@ paths:
   /utils/asampath/create:
     get:
       tags:
-        - RestApi
+        - API_Rest
         - Utils
       description: get data from server by using query.
-      operationId: app.get_utils_asampath_create
+      operationId: app.utils_asampath_create_get
       parameters:
         - name: params
           in: body
@@ -361,10 +362,10 @@ paths:
           - access_data
     post:
       tags:
-        - HttpApi
+        - API_Http
         - Utils
       description: will redirect to get with body
-      operationId: app.post_utils_asampath_create
+      operationId: app.utils_asampath_create_post
       parameters:
         - name: params
           in: body
@@ -383,10 +384,10 @@ paths:
   /utils/asampath/resolve:
     get:
       tags:
-        - RestApi
+        - API_Rest
         - Utils
       description: will redirect to get with body
-      operationId: app.post_utils_asampath_resolve
+      operationId: app.utils_asampath_resolve_post
       parameters:
         - name: params
           in: body
@@ -404,9 +405,9 @@ paths:
           - access_data
     post:
       tags:
-        - HttpApi
+        - API_Http
         - Utils
-      operationId: app.get_utils_asampath_resolve
+      operationId: app.utils_asampath_resolve_get
       parameters:
         - name: params
           in: body
