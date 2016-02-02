@@ -35,11 +35,11 @@ session_obj__ = None
 #context_vars__ = {'URL':'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', 'USER':'test', 'PASSWORD':'test'}
 context_vars__ = {'URL':'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', 'USER':'System', 'PASSWORD':'puma'}
 
-def request_wants_json():
+def _RequestWantsJson():
     best = request.accept_mimetypes.best_match(['application/json', 'text/html'])
     return best == 'application/json' and request.accept_mimetypes[best] > request.accept_mimetypes['text/html']
 
-def GetDiscriminatorArrayName__(arrayType):
+def _GetDiscriminatorArrayName(arrayType):
     if arrayType == org.asam.ods.DT_UNKNOWN:
         return "unknownSeq"
     if arrayType == org.asam.ods.DT_BYTE:
@@ -97,7 +97,7 @@ def GetDiscriminatorArrayName__(arrayType):
     return None
 
 
-def Session__():
+def _Session():
     global session_obj__
 
     if session_obj__ is None:
@@ -108,7 +108,7 @@ def Session__():
 
     return session_obj__
 
-def SessionClose__():
+def _SessionClose():
     global session_obj__
     
     if not session_obj__ is None:
@@ -152,7 +152,7 @@ def data_get(query_struct):
     vectorSkipCount = query_struct['vectorSkipCount'] if 'vectorSkipCount' in query_struct else 0
     vectorMaxCount = query_struct['vectorMaxCount'] if 'vectorMaxCount' in query_struct else sys.maxsize
 
-    so = Session__()
+    so = _Session()
     model = so.Model()
     elem = model.GetElemEx(entityStr)
     result = so.GetInstancesEx_Ver2(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
@@ -208,7 +208,7 @@ def data_get(query_struct):
                             valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
                         valArray.append(columnValue if(True == valueValid) else None)
 
-                    valuesObj[GetDiscriminatorArrayName__(attr.dType)] = valArray
+                    valuesObj[_GetDiscriminatorArrayName(attr.dType)] = valArray
                 else:
                     # column values
                     unknownSeqArray = []
@@ -218,10 +218,10 @@ def data_get(query_struct):
                             valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
                         TypedValueVectorObj = {}
                         TypedValueVectorObj['dataType'] = OdsLib.GetDataTypeStr(column.value.u._d)
-                        TypedValueVectorObj[GetDiscriminatorArrayName__(column.value.u._d)] = columnValue
+                        TypedValueVectorObj[_GetDiscriminatorArrayName(column.value.u._d)] = columnValue
                         unknownSeqArray.append(TypedValueVectorObj if(True == valueValid) else None)
                     
-                    valuesObj[GetDiscriminatorArrayName__(attr.dType)] = unknownSeqArray
+                    valuesObj[_GetDiscriminatorArrayName(attr.dType)] = unknownSeqArray
             else:
                 relAttr = model.GetRelation(tableElem.aeName, aName)
                 valuesObj['dataType'] = OdsLib.GetDataTypeStr(org.asam.ods.DT_LONGLONG)
@@ -236,7 +236,7 @@ def data_get(query_struct):
                     if 0 == columnValue:
                         valueValid = False
                     valArray.append(columnValue if(True == valueValid) else None)
-                valuesObj[GetDiscriminatorArrayName__(org.asam.ods.DT_LONGLONG)] = valArray
+                valuesObj[_GetDiscriminatorArrayName(org.asam.ods.DT_LONGLONG)] = valArray
 
             columnObj['values'] = valuesObj
             columnsObj.append(columnObj)
@@ -244,7 +244,7 @@ def data_get(query_struct):
         tableObj['columns'] = columnsObj
         rv['tables'].append(tableObj)
 
-    if request_wants_json():
+    if _RequestWantsJson():
         return jsonify(rv), 200
     
     return render_template('datamatrix.html', datamatrices=rv),  200
@@ -283,7 +283,7 @@ def model_delete(model):
 def model_get():
     logging.info('get the server model')
     rv = {}
-    model = Session__().Model()
+    model = _Session().Model()
     # add enumerations
     enumsArray = []
     for enum in model.enums_:
@@ -360,7 +360,7 @@ def context_get():
 def context_put(parameters):
     logging.info('set context variables')
     # make sure we can use different context
-    SessionClose__()
+    _SessionClose()
     
     for param in parameters:
         pName = param['name']
@@ -375,7 +375,7 @@ def utils_asampath_create_get(params):
     entityStr = params['entity']
     iid = params['id']
 
-    so = Session__()
+    so = _Session()
     model = so.Model()
     elem = model.GetElemEx(entityStr)
     rv = {}
@@ -390,7 +390,7 @@ def utils_asampath_resolve_get(params):
     
     path = params['path']
  
-    so = Session__()
+    so = _Session()
     entity,  iid = so.AsamPathResolve(path)
     rv = {}
     rv['entity'] = entity
