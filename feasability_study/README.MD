@@ -2,7 +2,7 @@
 
 ## Content
 - [Curl Commands](#curl-commands)
-- [QueryStructureV1 Explanation](#simpleQueryStructure-explanation)
+- [QueryStructureV1 Explanation](#querystructureV1-explanation)
 - [Modify Schema](#modify-schema)
 - [Setup System](#setup-system)
 
