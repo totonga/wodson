@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric5 project file for project wodson -->
-<!-- Saved: 2016-01-22, 16:46:00 -->
+<!-- Saved: 2016-02-03, 14:26:27 -->
 <!-- Copyright (C) 2016 Andreas Krantz, totonga@gmail.com -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -21,13 +21,24 @@
     <Source>requirements.txt</Source>
     <Source>test_scripts/simple1.sh</Source>
     <Source>templates/datamatrix.html</Source>
+    <Source>corbaserver.idl</Source>
   </Sources>
   <Forms/>
   <Translations/>
   <Resources/>
-  <Interfaces/>
+  <Interfaces>
+    <Interface>corbaserver.idl</Interface>
+  </Interfaces>
   <Others>
     <Other>app.py</Other>
+    <Other>doc</Other>
+    <Other>corbaserver_idl.py</Other>
+    <Other>org__POA/asam/__init__.py</Other>
+    <Other>org__POA/asam/ods/__init__.py</Other>
+    <Other>org__POA/__init__.py</Other>
+    <Other>org/asam/__init__.py</Other>
+    <Other>org/asam/ods/__init__.py</Other>
+    <Other>org/__init__.py</Other>
   </Others>
   <MainScript>app.py</MainScript>
   <Vcs>
