@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 0.0.1
+  version: 0.0.2
   title: wodson feasability study
   contact:
     name: totonga@gmail,com
@@ -48,6 +48,7 @@ paths:
           example: e1
         - name: query_struct
           in: body
+          required: true
           schema:
             $ref: '#/definitions/QueryStructureV1'
       responses:
@@ -79,6 +80,7 @@ paths:
           example: e1
         - name: data_matrix
           in: body
+          required: true
           schema:
             $ref: '#/definitions/DataMatrix'
       responses:
@@ -107,6 +109,7 @@ paths:
           example: e1
         - name: data_matrix
           in: body
+          required: true
           schema:
             $ref: '#/definitions/DataMatrix'
       responses:
@@ -133,6 +136,7 @@ paths:
           example: e1
         - name: data_matrix
           in: body
+          required: true
           schema:
             $ref: '#/definitions/DataMatrix'
       responses:
@@ -143,6 +147,40 @@ paths:
       security:
         - session_auth:
             - modify_data
+  /env/{envI}/data/iteratorguid/{iteratorGuid}:
+    get:
+      tags:
+        - API_Http
+        - API_Rest
+        - Data
+      description: get data from server by using query. The post is added because some serers do not accept get with body
+      operationId: app.data_iteratorguid_get
+      parameters:
+        - name: envI
+          in: path
+          description: string identify the selected environment
+          required: true
+          type: string
+          example: e1
+        - name: iteratorGuid
+          in: path
+          description: guid to retrieve additional results
+          required: true
+          type: string
+          example: 49f1e6d8-4425-46c1-955b-12fe4c0ace2f
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/DataMatrices'
+        '404':
+          description: not connected
+      produces:
+        - application/json
+        - text/html
+      security:
+        - session_auth:
+          - access_data
   /env/{envI}/data/access:
     post:
       tags:
@@ -159,6 +197,7 @@ paths:
           example: e1
         - name: query_struct
           in: body
+          required: true
           schema:
             $ref: '#/definitions/QueryStructureV1'
       responses:
@@ -191,6 +230,7 @@ paths:
           example: e1
         - name: data_matrix
           in: body
+          required: true
           schema:
             $ref: '#/definitions/DataMatrix'
       responses:
@@ -219,6 +259,7 @@ paths:
           example: e1
         - name: data_matrix
           in: body
+          required: true
           schema:
             $ref: '#/definitions/DataMatrix'
       responses:
@@ -245,6 +286,7 @@ paths:
           example: e1
         - name: data_matrix
           in: body
+          required: true
           schema:
             $ref: '#/definitions/DataMatrix'
       responses:
@@ -345,6 +387,7 @@ paths:
           example: e1
         - name: model
           in: body
+          required: true
           schema:
             $ref: '#/definitions/ServerModel'
       responses:
@@ -372,6 +415,7 @@ paths:
           example: e1
         - name: model
           in: body
+          required: true
           schema:
             $ref: '#/definitions/ServerModel'
       responses:
@@ -422,6 +466,7 @@ paths:
           example: e1
         - name: parameters
           in: body
+          required: true
           schema:
             $ref: '#/definitions/NameValuePairs'
       responses:
@@ -448,6 +493,7 @@ paths:
           example: e1
         - name: params
           in: body
+          required: true
           schema:
             $ref: '#/definitions/Instance'
       responses:
@@ -475,6 +521,7 @@ paths:
           example: e1
         - name: params
           in: body
+          required: true
           schema:
             $ref: '#/definitions/Instance'
       responses:
@@ -503,6 +550,7 @@ paths:
           example: e1
         - name: params
           in: body
+          required: true
           schema:
             $ref: '#/definitions/AsamPath'
       responses:
@@ -529,6 +577,7 @@ paths:
           example: e1
         - name: params
           in: body
+          required: true
           schema:
             $ref: '#/definitions/AsamPath'
       responses:
@@ -888,7 +937,10 @@ definitions:
   DataMatrices:
     type: object
     properties:
-        tables:
-            type: array
-            items:
-                $ref: '#/definitions/DataMatrix'
+      iteratorGuid:
+        type: string
+        description: optional guid that will show up if the results have been chunked  
+      tables:
+        type: array
+        items:
+          $ref: '#/definitions/DataMatrix'

@@ -121,15 +121,13 @@ def _SessionClose(envI):
 
 def data_post(envI, data_matrix):
     logging.info('create instances')
-
-    return {}, 200
+    return jsonify({}), 200
 
 def data_modify_post(envI, data_matrix):
     return data_post(envI, data_matrix)
 
 def data_put(envI, data_matrix):
     logging.info('update instances')
-
     return NoContent, 200
 
 def data_modify_put(envI, data_matrix):
@@ -256,14 +254,16 @@ def data_get(envI,  query_struct):
 def data_access_post(envI, query_struct):
     return data_get(envI, query_struct)
 
+def data_iteratorguid_get(envI,  iteratorGuid):
+    logging.info('get additional results for ' + iteratorGuid)
+    return jsonify({}), 200
+
 def transaction_put(envI):
     logging.info('commit transaction')
-    
     return NoContent, 200
 
 def transaction_delete(envI):
     logging.info('abort transaction')
-    
     return NoContent, 200
 
 def model_put(envI, model):
