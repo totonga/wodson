@@ -17,4 +17,6 @@ include::file.adoc[]
 
 include::asamsecurity.adoc[]
 
+include::faq.adoc[]
+
 include::setup.adoc[]

@@ -13,6 +13,10 @@ Becasue the conten is equal for the client side we can threat it as one.
 POST /env/{envI}/utils/binary
 ----
 
+****
+The header of the blob is returned/written by the normal /data/access methods. It will be read/written using strVal. 
+****
+
 .Read chunk
 ================================
 .request

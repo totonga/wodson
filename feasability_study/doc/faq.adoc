@@ -1,0 +1,7 @@
+== FAQ (Frequency Asked Questions)
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+.Questions
+. *Where is the ValueMatrix?* The Value matrix for submatrices is now handled by normal /data/access. If calculated should be used, set valuesType to CALCULATED. The ValueMatrix for Measurement is missing. This is done because it is assumed that there are not many customers for it. They might be added as a utility later on.
+. *Where is the session?* In the past the client needed to close the session. In fact every server has a timeout handling that closes the session. On the other hand the client wanted it to be automatically reopened. Because of this the session no longer exists but is replaced by an envI that is used to identify a configured connection configuration and use it to automatically establish a connection on request. /env can be used to close it from client side.
