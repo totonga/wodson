@@ -19,7 +19,7 @@ pip install --user -r requirements.txt
 python app.py
 ----
 
-Visit http://localhost:8081/env/e1/ui/ to see the integrated swagger UI.
+Visit http://localhost:8081/ui/ to see the integrated swagger UI.
 
 .some additional development tools
 [source,sh]
