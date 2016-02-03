@@ -647,9 +647,9 @@ definitions:
         example: 10000
       valuesType:
         type: string
-          enum:
-            - STORAGE
-            - CALCULATED
+        enum:
+          - STORAGE
+          - CALCULATED
   NameValuePairs:
     type: array
     items:
