@@ -4,7 +4,7 @@
 
 ****
 Each instance of the asam server is uniquely identified by *entityname/id* if a more human 
-readable version is needed to store the path to an instance the human readable ASAM Path is used. 
+readable or name based version is needed to identify an instance the human readable ASAM Path is used. 
 ****
 
 CAUTION: While creating the ASAM path is somehow cheap, resolving it might be expensive. Think about using *entityname/id* 
@@ -12,12 +12,16 @@ CAUTION: While creating the ASAM path is somehow cheap, resolving it might be ex
          
 === Create an AsamPath
 
+----
+POST /env/{envI}/utils/asampath/create
+----
+
 .create an AsamPath for *Projekt/1*
 ================================
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
   "entity": "Projekt",
   "id": 1
 }' 'http://localhost:8081/env/e1/utils/asampath/create'
@@ -35,6 +39,10 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 ================================
 
 === Resolve an AsamPath
+
+----
+POST /env/{envI}/utils/asampath/resolve
+----
 
 .resolve AsamPath */[Environment]testenv;1/[Projekt]Project;V1*
 ================================

@@ -9,6 +9,10 @@ The simplest context variables are those needed to establish the connection.
 
 === Read Context Variables 
 
+----
+GET /env/{envI}/context
+----
+
 .read all context variables
 ================================
 .request
@@ -37,6 +41,10 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 
 
 === Set Context Variables
+
+----
+PUT /env/{envI}/context
+----
 
 .set initialization context variables
 ================================

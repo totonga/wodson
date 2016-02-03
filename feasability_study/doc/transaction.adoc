@@ -15,6 +15,10 @@ IMPORTANT: Try to do all changes in a single transaction.
 
 === Commit the Transaction
 
+----
+PUT /env/{envI}/transaction
+----
+
 .commit an open transaction
 ================================
 .request
@@ -26,6 +30,10 @@ curl -X PUT --header 'Accept: application/problem+json' 'http://localhost:8081/e
 
 
 === Abort the Transaction
+
+----
+DELETE /env/{envI}/transaction
+----
 
 .commit an open transaction
 ================================

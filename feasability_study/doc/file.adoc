@@ -9,12 +9,16 @@ Becasue the conten is equal for the client side we can threat it as one.
 
 === Read DT_BLOB 
 
+----
+POST /env/{envI}/utils/binary
+----
+
 .Read chunk
 ================================
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
   "entity": "Layout",
   "id": 2710,
   "attribute": "content1",
@@ -27,12 +31,16 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 
 === Read AoFile
 
+----
+POST /env/{envI}/utils/binary
+----
+
 .Read chunk
 ================================
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
   "entity": "DataFile",
   "id": "2710",
   "vectorMaxCount": 10000

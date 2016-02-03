@@ -8,6 +8,10 @@ ASAM ODS is about making measurement data persistent. So this is the most import
 
 === Read meta data
 
+----
+POST /env/{envI}/data/access
+----
+
 .get results from first entity derived from AoTest with all properties
 ================================
 TIP: The server will have a default maxCount setting.
@@ -16,11 +20,11 @@ TIP: The server will have a default maxCount setting.
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "AoTest"
 }' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -37,11 +41,11 @@ TIP: Using the objecttype will give no great speed improvement. It is not even r
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "1"
 }' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -56,12 +60,12 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "MeaQuantity",
 	"maxCount": 50
 }' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -78,12 +82,12 @@ TIP: if an instance should be shown in a tree it is sufficient to retrieve name 
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "MeaQuantity",
 	"attributes": [ "name" , "id" ]
 }' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -100,12 +104,12 @@ TIP: if an instance should shown it might be usefult to retrieve some parent/rel
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "MeaQuantity",
 	"attributes": [ "name", "id", "measurement.name" ]
 }' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -121,12 +125,12 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "MeaQuantity",
-	"conditions": { "id" : 4 }
+	"conditions": ["id=4"]
 }' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -141,13 +145,13 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "MeaQuantity",
 	"attributes": [ "name", "id" ],
-	"conditions": { "measurement" : 2 }
+	"conditions": ["measurement=2"]
 }' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -162,34 +166,13 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "MeaQuantity",
 	"attributes": ["name","id","measurement.name","measurement.id"],
-	"conditions": { "measurement.test" : 2 }
+	"conditions": ["measurement.test=2"]
 }' 
-'http://localhost:8081/env/e1/data'
-----
-.result
-----
-----
-[source,json]
-----
-----
-================================
-
-.Get information about all MeasurementQuantities of a the SubTest with id=2
-================================
-.request
-[source,json]
-----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
-{
-	"entity": "MeaQuantity",
-	"attributes": ["name","id","measurement.name","measurement.id"],
-	"conditions": { "measurement.test" : { "$EQ" : 2 } }
-}' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -204,12 +187,12 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "MeaQuantity",
-	"attributes": [ {"name" : "$DISTINCT"} ]
+	"attributes": ["DISTINCT(name)"]
 }' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -224,13 +207,13 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
 	"entity": "MeaQuantity",
 	"attributes": ["name"],
-	"orderBy": [ {"name" : "$DESCENDING"} ]
+	"orderBy": ["DESCENDING(name)"]
 }' 
-'http://localhost:8081/env/e1/data'
+'http://localhost:8081/env/e1/data/access'
 ----
 .result
 ----
@@ -240,9 +223,126 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 ----
 ================================
 
+=== Read bulk data
+
+----
+POST /env/{envI}/data/access
+----
+
+****
+When bulk data is returned the AoLocalColumn::values attribute is used. It has type DT_UNKNOWN. So the values
+will be returned in unkownSeq which allows different types for each result row.
+****
+
+.Get values, flags and generation_parameters of the given localcolumn
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "AoLocalColumn",
+	"conditions": ["id=12"],
+	"attributes": ["id","values","flags","generation_parameters"]
+}' 
+'http://localhost:8081/env/e1/data/access'
+----
+.result
+[source,json]
+----
+----
+================================
+
+.Get id, values, flags and generation_parameters of all local columns of the Submatrix with id=8, but return maximal 1000 sequence rows
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "LocalColumn",
+	"conditions": ["submatrix=8"],
+	"attributes": ["id","values","flags","generation_parameters"],
+	"vectorMaxCount": 1000
+}' 
+'http://localhost:8081/env/e1/data/access'
+----
+.result
+[source,json]
+----
+----
+================================
+
+.Get next chunk id, values and flags of all local columns of the Submatrix with id=8
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "LocalColumn",
+	"conditions": ["submatrix=8"],
+	"attributes": ["id","values","flags","generation_parameters"],
+	"vectorSkipCount": 1000,
+	"vectorMaxCount": 1500
+}' 
+'http://localhost:8081/env/e1/data/access'
+----
+.result
+[source,json]
+----
+----
+================================
+
+.Get id, values, flags and generation_parameters of all local column Time and Revs of the Submatrix with id=8
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+	"entity": "LocalColumn",
+	"conditions": ["submatrix=8","and","(","name=Time","or","name=Revs",")"],
+	"attributes": ["id","values","flags","generation_parameters"]
+}' 
+'http://localhost:8081/env/e1/data/access'
+----
+.result
+[source,json]
+----
+----
+================================
+
+
 === Write meta data
 
-=== Read bulk data
+----
+POST /env/{envI}/data/modify
+PUT /env/{envI}/data/modify
+DELETE /env/{envI}/data/modify
+----
+
+==== Create new instances
+
+----
+POST /env/{envI}/data/modify
+----
+
+==== Update instances
+
+----
+PUT /env/{envI}/data/modify
+----
+
+==== Delete Instances
+
+----
+DELETE /env/{envI}/data/modify
+----
+
 
 === Write bulk data
 
+----
+PUT /env/{envI}/data/modify
+----
