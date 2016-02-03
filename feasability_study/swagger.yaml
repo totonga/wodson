@@ -37,7 +37,7 @@ paths:
       tags:
         - API_Rest
         - Data
-      description: get data from server by using query.
+      description: get data from server by using query structure
       operationId: app.data_get
       parameters:
         - name: envI
@@ -149,7 +149,7 @@ paths:
         - API_Http
         - API_Rest
         - Data
-      description: get data from server by using query. The post is added because some serers do not accept get with body
+      description: If a method was not able to return the complete result in a single DataMatrix it will add an iteratorguid that can be used to fetch the next chunk 
       operationId: app.data_iteratorguid_get
       parameters:
         - name: envI
@@ -180,7 +180,7 @@ paths:
       tags:
         - API_Http
         - Data
-      description: get data from server by using query. The post is added because some serers do not accept get with body
+      description: Get data from server by using query structure
       operationId: app.data_access_post
       parameters:
         - name: envI
@@ -465,7 +465,7 @@ paths:
       tags:
         - API_Rest
         - Utils
-      description: get data from server by using query.
+      description: Create an ASAM path for a given instance
       operationId: app.utils_asampath_create_get
       parameters:
         - name: envI
@@ -492,7 +492,7 @@ paths:
       tags:
         - API_Http
         - Utils
-      description: will redirect to get with body
+      description: Create an ASAM path for a given instance
       operationId: app.utils_asampath_create_post
       parameters:
         - name: envI
@@ -520,7 +520,7 @@ paths:
       tags:
         - API_Rest
         - Utils
-      description: will redirect to get with body
+      description: Get instance for given ASAM path
       operationId: app.utils_asampath_resolve_post
       parameters:
         - name: envI
@@ -547,6 +547,7 @@ paths:
       tags:
         - API_Http
         - Utils
+      description: Get instance for given ASAM path
       operationId: app.utils_asampath_resolve_get
       parameters:
         - name: envI
