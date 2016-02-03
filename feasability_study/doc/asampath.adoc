@@ -28,8 +28,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 
 .result
-----
-----
 [source,json]
 ----
 {
@@ -55,8 +53,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 
 .result
-----
-----
 [source,json]
 ----
 {

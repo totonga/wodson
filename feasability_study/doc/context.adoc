@@ -22,8 +22,6 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 ----
 
 .result
-----
-----
 [source,json]
 ----
 [

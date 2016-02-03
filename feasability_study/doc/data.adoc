@@ -27,8 +27,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
@@ -48,8 +46,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
@@ -68,8 +64,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
@@ -90,8 +84,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
@@ -112,8 +104,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
@@ -133,8 +123,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
@@ -154,8 +142,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
@@ -175,8 +161,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
@@ -195,8 +179,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
@@ -216,8 +198,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 'http://localhost:8081/env/e1/data/access'
 ----
 .result
-----
-----
 [source,json]
 ----
 ----
