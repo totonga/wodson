@@ -22,7 +22,7 @@ TIP: The server will have a default maxCount setting.
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "AoTest"
+  "entity": "AoTest"
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -43,7 +43,7 @@ TIP: Using the objecttype will give no great speed improvement. It is not even r
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "1"
+  "entity": "1"
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -62,8 +62,8 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "MeaQuantity",
-	"maxCount": 50
+  "entity": "MeaQuantity",
+  "maxCount": 50
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -84,8 +84,8 @@ TIP: if an instance should be shown in a tree it is sufficient to retrieve name 
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "MeaQuantity",
-	"attributes": [ "name" , "id" ]
+  "entity": "MeaQuantity",
+  "attributes": [ "name" , "id" ]
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -106,8 +106,8 @@ TIP: if an instance should shown it might be usefult to retrieve some parent/rel
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "MeaQuantity",
-	"attributes": [ "name", "id", "measurement.name" ]
+  "entity": "MeaQuantity",
+  "attributes": [ "name", "id", "measurement.name" ]
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -127,8 +127,8 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "MeaQuantity",
-	"conditions": ["id=4"]
+  "entity": "MeaQuantity",
+  "conditions": ["id=4"]
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -147,9 +147,9 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "MeaQuantity",
-	"attributes": [ "name", "id" ],
-	"conditions": ["measurement=2"]
+  "entity": "MeaQuantity",
+  "attributes": [ "name", "id" ],
+  "conditions": ["measurement=2"]
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -168,9 +168,9 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "MeaQuantity",
-	"attributes": ["name","id","measurement.name","measurement.id"],
-	"conditions": ["measurement.test=2"]
+  "entity": "MeaQuantity",
+  "attributes": ["name","id","measurement.name","measurement.id"],
+  "conditions": ["measurement.test=2"]
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -189,8 +189,8 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "MeaQuantity",
-	"attributes": ["DISTINCT(name)"]
+  "entity": "MeaQuantity",
+  "attributes": ["DISTINCT(name)"]
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -209,9 +209,9 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "MeaQuantity",
-	"attributes": ["name"],
-	"orderBy": ["DESCENDING(name)"]
+  "entity": "MeaQuantity",
+  "attributes": ["name"],
+  "orderBy": ["DESCENDING(name)"]
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -241,9 +241,9 @@ will be returned in unkownSeq which allows different types for each result row.
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "AoLocalColumn",
-	"conditions": ["id=12"],
-	"attributes": ["id","values","flags","generation_parameters"]
+  "entity": "AoLocalColumn",
+  "conditions": ["id=12"],
+  "attributes": ["id","values","flags","generation_parameters"]
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -260,10 +260,10 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "LocalColumn",
-	"conditions": ["submatrix=8"],
-	"attributes": ["id","values","flags","generation_parameters"],
-	"vectorMaxCount": 1000
+  "entity": "LocalColumn",
+  "conditions": ["submatrix=8"],
+  "attributes": ["id","values","flags","generation_parameters"],
+  "vectorMaxCount": 1000
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -280,11 +280,11 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "LocalColumn",
-	"conditions": ["submatrix=8"],
-	"attributes": ["id","values","flags","generation_parameters"],
-	"vectorSkipCount": 1000,
-	"vectorMaxCount": 1500
+  "entity": "LocalColumn",
+  "conditions": ["submatrix=8"],
+  "attributes": ["id","values","flags","generation_parameters"],
+  "vectorSkipCount": 1000,
+  "vectorMaxCount": 1500
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
@@ -301,9 +301,9 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-	"entity": "LocalColumn",
-	"conditions": ["submatrix=8","and","(","name=Time","or","name=Revs",")"],
-	"attributes": ["id","values","flags","generation_parameters"]
+  "entity": "LocalColumn",
+  "conditions": ["submatrix=8","and","(","name=Time","or","name=Revs",")"],
+  "attributes": ["id","values","flags","generation_parameters"]
 }' 
 'http://localhost:8081/env/e1/data/access'
 ----
