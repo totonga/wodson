@@ -17,7 +17,7 @@ IMPORTANT: It is always possible to use application or base names for entity, re
 [source,json]
 -----------
 {
-  "AoTest": {}
+    "AoTest": {}
 }
 -----------
 
@@ -28,32 +28,32 @@ IMPORTANT: It is always possible to use application or base names for entity, re
 [source,json]
 -----------
 {
-  "AoMeasurement": 4711
+    "AoMeasurement": 4711
 }
 -----------
 
 [source,json]
 -----------
 {
-  "AoMeasurement": "4711"
+    "AoMeasurement": "4711"
 }
 -----------
 
 [source,json]
 -----------
 {
-  "AoMeasurement": {
-    "id": "4711"
-  }
+    "AoMeasurement": {
+        "id": "4711"
+    }
 }
 -----------
 
 [source,json]
 -----------
 {
-  "AoMeasurement": {
-    "id": 4711
-  }
+    "AoMeasurement": {
+        "id": 4711
+    }
 }
 -----------
 
@@ -63,18 +63,18 @@ IMPORTANT: It is always possible to use application or base names for entity, re
 [source,json]
 -----------
 {
-  "AoMeasurement": {
-    "test": 4611
-  }
+    "AoMeasurement": {
+        "test": 4611
+    }
 }
 -----------
 
 [source,json]
 -----------
 {
-  "AoMeasurement": {
-    "test.id": 4611
-  }
+    "AoMeasurement": {
+        "test.id": 4611
+    }
 }
 -----------
 
@@ -86,24 +86,24 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 [source,json]
 -----------
 {
-  "AoSubTest": "4611",
-  "$attributes": {
-    "children.name": 1,
-    "children.id": 1
-  }
+    "AoSubTest": "4611",
+    "$attributes": {
+        "children.name": 1,
+        "children.id": 1
+    }
 }
 -----------
 
 [source,json]
 -----------
 {
-  "AoSubTest": "4611",
-  "$attributes": {    
-    "children": {
+    "AoSubTest": "4611",
+    "$attributes": {
+        "children": {
             "name": 1,
             "id": 1
         }
-  }
+    }
 }
 -----------
 
@@ -117,172 +117,185 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 [source,json]
 -----------
 {
-  "AoTest": {
-    "name": "MyTest",
-    "version": "V1"
-  }
-}
------------
-
-.case insensitive match 
-[source,json]
------------
-{
-  "AoTest": {
-    "name": {
-      "$eq": "MyTest",
-      "$options": "i"
-    }
-  }
-}
------------
-
-.case insensitive match 
-[source,json]
------------
-{
-  "AoTest": {
-    "name": {
-      "$like": "My*",
-      "$options": "i"
-    }
-  }
-}
------------
-
-.resolve asam path
-[source,json]
------------
-{
-  "AoMeasurement": {
-    "name": "MyMea",
-    "version": "V1",
-    "test.name": "MySubTest2",
-    "test.version": "V1",
-    "test.parent_test.name": "MySubTest1",
-    "test.parent_test.version": "V1",
-    "test.parent_test.parent_test.name": "MyTest",
-    "test.parent_test.parent_test.version": "V1"
-  }
-}
------------
-
-.resolve asam path
-[source,json]
------------
-{
-  "AoMeasurement": {
-    "name": "MyMea",
-    "version": "V1",
-    "test": {
-      "name": "MySubTest2",
-      "version": "V1",
-      "parent_test": {
-        "name": "MySubTest1",
-        "version": "V1",
-        "parent_test": {
-          "name": "MyTest",
-          "version": "V1"
-        }
-      }
-    }
-  }
-}
------------
-
-[source,json]
------------
-{
-  "AoMeasurement": {
-    "id": {
-      "$in": [4711,4712,4713]
-    }
-  }
-}
------------
-
-[source,json]
------------
-{
-  "AoMeasurement": {
-    "measurement_begin": {
-      "$gte": "2012-04-23T00:00:00.000Z",
-      "$lt": "2012-04-24T00:00:00.000Z"
-    }
-  }
-}
------------
-
-[source,json]
------------
-{
-  "AoMeasurement": {
-    "measurement_begin": {
-      "$between": ["2012-04-23T00:00:00.000Z", "2012-04-24T00:00:00.000Z"]
-    }
-  }
-}
------------
-
-[source,json]
------------
-{
-  "AoMeasurement": {
-    "$and": [{
-      "measurement_begin": {
-        "$gte": "2012-04-23T00:00:00.000Z",
-        "$lt": "2012-04-24T00:00:00.000Z"
-      }
-    },
-    {
-      "measurement_end": {
-        "$gte": "2012-04-23T00:00:00.000Z",
-        "$lt": "2012-04-24T00:00:00.000Z"
-      }
-    }]
-  }
-}
------------
-
-[source,json]
------------
-{
-  "AoMeasurement": {
-    "$or": [{
-      "measurement_begin": {
-        "$gte": "2012-04-23T00:00:00.000Z",
-        "$lt": "2012-04-24T00:00:00.000Z"
-      }
-    },
-    {
-      "measurement_begin": {
-        "$gte": "2012-05-23T00:00:00.000Z",
-        "$lt": "2012-05-24T00:00:00.000Z"
-      }
-    },
-    {
-      "measurement_begin": {
-        "$gte": "2012-06-23T00:00:00.000Z",
-        "$lt": "2012-06-24T00:00:00.000Z"
-      }
-    }]
-  }
-}
------------
-
-[source,json]
------------
-{
-  "AoMeasurement": {
-    "$not": {
-      "$and": [{
-        "name": "MyMea"
-      },
-      {
+    "AoTest": {
+        "name": "MyTest",
         "version": "V1"
-      }]
     }
-  }
+}
+-----------
+
+.case insensitive match 
+[source,json]
+-----------
+{
+    "AoTest": {
+        "name": {
+            "$eq": "MyTest",
+            "$options": "i"
+        }
+    }
+}
+-----------
+
+.case insensitive match 
+[source,json]
+-----------
+{
+    "AoTest": {
+        "name": {
+            "$like": "My*",
+            "$options": "i"
+        }
+    }
+}
+-----------
+
+.resolve asam path
+[source,json]
+-----------
+{
+    "AoMeasurement": {
+        "name": "MyMea",
+        "version": "V1",
+        "test.name": "MySubTest2",
+        "test.version": "V1",
+        "test.parent_test.name": "MySubTest1",
+        "test.parent_test.version": "V1",
+        "test.parent_test.parent_test.name": "MyTest",
+        "test.parent_test.parent_test.version": "V1"
+    }
+}
+-----------
+
+.resolve asam path
+[source,json]
+-----------
+{
+    "AoMeasurement": {
+        "name": "MyMea",
+        "version": "V1",
+        "test": {
+            "name": "MySubTest2",
+            "version": "V1",
+            "parent_test": {
+                "name": "MySubTest1",
+                "version": "V1",
+                "parent_test": {
+                    "name": "MyTest",
+                    "version": "V1"
+                }
+            }
+        }
+    }
+}
+-----------
+
+[source,json]
+-----------
+{
+    "AoMeasurement": {
+        "id": {
+            "$in": [
+                4711,
+                4712,
+                4713
+            ]
+        }
+    }
+}
+-----------
+
+[source,json]
+-----------
+{
+    "AoMeasurement": {
+        "measurement_begin": {
+            "$gte": "2012-04-23T00:00:00.000Z",
+            "$lt": "2012-04-24T00:00:00.000Z"
+        }
+    }
+}
+-----------
+
+[source,json]
+-----------
+{
+    "AoMeasurement": {
+        "measurement_begin": {
+            "$between": [
+                "2012-04-23T00:00:00.000Z",
+                "2012-04-24T00:00:00.000Z"
+            ]
+        }
+    }
+}
+-----------
+
+[source,json]
+-----------
+{
+    "AoMeasurement": {
+        "$and": [
+            {
+                "measurement_begin": {
+                    "$gte": "2012-04-23T00:00:00.000Z",
+                    "$lt": "2012-04-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_end": {
+                    "$gte": "2012-04-23T00:00:00.000Z",
+                    "$lt": "2012-04-24T00:00:00.000Z"
+                }
+            }
+        ]
+    }
+}
+-----------
+
+[source,json]
+-----------
+{
+    "AoMeasurement": {
+        "$or": [
+            {
+                "measurement_begin": {
+                    "$gte": "2012-04-23T00:00:00.000Z",
+                    "$lt": "2012-04-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_begin": {
+                    "$gte": "2012-05-23T00:00:00.000Z",
+                    "$lt": "2012-05-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_begin": {
+                    "$gte": "2012-06-23T00:00:00.000Z",
+                    "$lt": "2012-06-24T00:00:00.000Z"
+                }
+            }
+        ]
+    }
+}
+-----------
+
+[source,json]
+-----------
+{
+    "AoMeasurement": {
+        "$not": {
+            "$and": [
+                {
+                    "name": "MyMea"
+                },
+                {
+                    "version": "V1"
+                }
+            ]
+        }
+    }
 }
 -----------
 
@@ -291,107 +304,113 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 [source,json]
 -----------
 {
-  "AoTest": {
-    "$and": [{
-      "name": {
-        "$like": "My*",
-        "$options": "i"
-      }
+    "AoTest": {
+        "$and": [
+            {
+                "name": {
+                    "$like": "My*",
+                    "$options": "i"
+                }
+            },
+            {
+                "name": {
+                    "$like": "??Test"
+                }
+            }
+        ]
+    }
+}
+-----------
+
+[source,json]
+-----------
+{
+    "AoMeasurement": 4711,
+    "$attributes": {
+        "name": 1,
+        "id": 1,
+        "scale": {
+            "$unit": 123
+        }
+    }
+}
+-----------
+
+[source,json]
+-----------
+{
+    "AoMeasurementQuantity": {
+        "name": "Revs"
     },
-    {
-      "name": {
-        "$like": "??Test"
-      }
-    }]
-  }
-}
------------
-
-[source,json]
------------
-{
-  "AoMeasurement": 4711,
-  "$attributes": {
-    "name": 1,
-    "id": 1,
-    "scale": {
-      "$unit": 123
+    "$attributes": {
+        "minimum": {
+            "$min": 1,
+            "$max": 1
+        },
+        "maximum": {
+            "$min": 1,
+            "$max": 1
+        }
     }
-  }
 }
 -----------
 
 [source,json]
 -----------
 {
-  "AoMeasurementQuantity": {
-    "name": "Revs"
-  },
-  "$attributes": {
-    "minimum": {
-      "$min": 1,
-      "$max": 1
+    "AoMeasurement": {
+        "$or": [
+            {
+                "measurement_begin": {
+                    "$gte": "2012-04-23T00:00:00.000Z",
+                    "$lt": "2012-04-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_begin": {
+                    "$gte": "2012-05-23T00:00:00.000Z",
+                    "$lt": "2012-05-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_begin": {
+                    "$gte": "2012-06-23T00:00:00.000Z",
+                    "$lt": "2012-06-24T00:00:00.000Z"
+                }
+            }
+        ]
     },
-    "maximum": {
-      "$min": 1,
-      "$max": 1
+    "$options": {
+        "$rowlimit": 1000,
+        "$rowskip": 500
+    },
+    "$attributes": {
+        "name": 1,
+        "id": 1,
+        "test": {
+            "name": 1,
+            "id": 1
+        }
+    },
+    "$orderby": {
+        "test.name": 0,
+        "name": 1
+    },
+    "$groupby": {
+        "id": 1
     }
-  }
 }
 -----------
 
 [source,json]
 -----------
 {
-  "AoMeasurement": {
-    "$or": [{
-      "measurement_begin": {
-        "$gte": "2012-04-23T00:00:00.000Z",
-        "$lt": "2012-04-24T00:00:00.000Z"
-      }
-    }{
-      "measurement_begin": {
-        "$gte": "2012-05-23T00:00:00.000Z",
-        "$lt": "2012-05-24T00:00:00.000Z"
-      }
-    }{
-      "measurement_begin": {
-        "$gte": "2012-06-23T00:00:00.000Z",
-        "$lt": "2012-06-24T00:00:00.000Z"
-      }
-    }]
-  },
-  "$options": {
-    "$rowlimit": 1000,
-    "$rowskip": 500
-  },
-  "$attributes": {
-    "name": 1,
-    "id": 1,
-    "test": {
-      "name": 1,
-      "id": 1
+    "AoMeasurement": {},
+    "$attributes": {
+        "name": {
+            "$distinct": 1
+        }
     }
-  },
-  "$orderby": {
-    "test.name": 0,
-    "name": 1
-  },
-  "$groupby": {
-    "id": 1
-  }
-}
------------
-
-[source,json]
------------
-{
-  "AoMeasurement": {},
-  "$attributes": {
-    "name": {
-      "$distinct": 1
-    }
-  }
 }
 -----------
 
@@ -412,17 +431,17 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 [source,json]
 -----------
 {
-  "AoParameter": {},
-  "$attributes": {
-        "name" : 1,
-        "parameter_datatype" : 1,
-    "pvalue": {
-      "$options": "u"
+    "AoParameter": {},
+    "$attributes": {
+        "name": 1,
+        "parameter_datatype": 1,
+        "pvalue": {
+            "$options": "u"
+        }
+    },
+    "$options": {
+        "$rowlimit": 100
     }
-  },
-  "$options": {
-    "$rowlimit": 100,
-  }
 }
 -----------
 

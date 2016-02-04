@@ -22,8 +22,8 @@ POST /env/{envI}/utils/asampath/create
 [source,json]
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
-  "entity": "Projekt",
-  "id": 1
+    "entity": "Projekt",
+    "id": 1
 }' 'http://localhost:8081/env/e1/utils/asampath/create'
 ----
 
@@ -31,7 +31,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 [source,json]
 ----
 {
-  "path": "/[Environment]testenv;1/[Projekt]Project;V1"
+    "path": "/[Environment]testenv;1/[Projekt]Project;V1"
 }
 ----
 ================================
@@ -48,7 +48,7 @@ POST /env/{envI}/utils/asampath/resolve
 [source,json]
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
-  "path": "/[Environment]testenv;1/[Projekt]Project;V1"
+    "path": "/[Environment]testenv;1/[Projekt]Project;V1"
 }' 'http://localhost:8081/env/e1/utils/asampath/resolve'
 ----
 
@@ -56,8 +56,8 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 [source,json]
 ----
 {
-  "entity": "Projekt",
-  "id": 1
+    "entity": "Projekt",
+    "id": 1
 }
 ----
 ================================

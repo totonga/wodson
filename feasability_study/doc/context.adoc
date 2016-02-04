@@ -26,12 +26,12 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 ----
 [
     {
-        "name":"URL",
-        "value":"corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
+        "name": "URL",
+        "value": "corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
     },
     {
-        "name":"USER",
-        "value":"System"
+        "name": "USER",
+        "value": "System"
     }
 ]
 ----
@@ -51,16 +51,16 @@ PUT /env/{envI}/context
 ----
 curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '[
     {
-        "name":"URL",
-        "value":"corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
+        "name": "URL",
+        "value": "corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
     },
     {
-        "name":"USER",
-        "value":"System"
+        "name": "USER",
+        "value": "System"
     },
     {
-        "name":"PASSWORD",
-        "value":"puma"
+        "name": "PASSWORD",
+        "value": "puma"
     }
 ]' 'http://localhost:8081/env/e1/context'
 ----

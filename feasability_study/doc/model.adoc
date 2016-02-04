@@ -58,30 +58,36 @@ PUT /env/{envI}/shema
 [source,json]
 ----
 curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
-  "entities": [{
-    "name": "MyAny",
-    "baseName": "AoAny",
-    "relations": [{
-      "name": "myMeasurment",
-      "inverseName": "myInfoElement",
-      "obligatory": false,
-      "type": "n-1",
-      "relEntityName": "Measurement"
-    }],
-    "attributes": [{
-      "name": "Id",
-      "baseName": "id"
-    },
-    {
-      "name": "Name",
-      "baseName": "name"
-    },
-    {
-      "name": "my_classification",
-      "dataType": "DT_DOUBLE",
-      "obligatory": true
-    }]
-  }]
+    "entities": [
+        {
+            "name": "MyAny",
+            "baseName": "AoAny",
+            "relations": [
+                {
+                    "name": "myMeasurment",
+                    "inverseName": "myInfoElement",
+                    "obligatory": false,
+                    "type": "n-1",
+                    "relEntityName": "Measurement"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "Id",
+                    "baseName": "id"
+                },
+                {
+                    "name": "Name",
+                    "baseName": "name"
+                },
+                {
+                    "name": "my_classification",
+                    "dataType": "DT_DOUBLE",
+                    "obligatory": true
+                }
+            ]
+        }
+    ]
 }' 'http://localhost:8081/env/e1/shema'
 ----
 ================================
@@ -92,14 +98,18 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
 [source,json]
 ----
 curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
-  "entities": [{
-    "name": "MyAny",
-    "attributes": [{
-      "name": "my_value",
-      "dataType": "DT_DOUBLE",
-      "obligatory": true
-    }]
-  }]
+    "entities": [
+        {
+            "name": "MyAny",
+            "attributes": [
+                {
+                    "name": "my_value",
+                    "dataType": "DT_DOUBLE",
+                    "obligatory": true
+                }
+            ]
+        }
+    ]
 }' 'http://localhost:8081/env/e1/shema'
 ----
 ================================
@@ -117,12 +127,16 @@ DELETE /env/{envI}/shema
 [source,json]
 ----
 curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
-  "entities": [{
-    "name": "MyAny",
-    "attributes": [{
-      "name": "my_value"
-    }]
-  }]
+    "entities": [
+        {
+            "name": "MyAny",
+            "attributes": [
+                {
+                    "name": "my_value"
+                }
+            ]
+        }
+    ]
 }' 'http://localhost:8081/env/e1/shema'
 ----
 ================================
@@ -134,9 +148,11 @@ curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: appli
 [source,json]
 ----
 curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
-  "entities": [{
-    "name": "MyAny"
-  }]
+    "entities": [
+        {
+            "name": "MyAny"
+        }
+    ]
 }' 'http://localhost:8081/env/e1/shema'
 ----
 ================================
