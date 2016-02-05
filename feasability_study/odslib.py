@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 """
-Access ASAM Ods server via python using omniorb
+Access ASAM Ods server via python using omniorb.
 
 Copyright (c) 2015, Andreas Krantz
 License: Apache 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+
 """
 
 __author__ = "Andreas Krantz"
@@ -21,6 +22,7 @@ import logging
 
 orb_obj__ = None
 
+
 def Orb__():
     global orb_obj__
 
@@ -30,7 +32,7 @@ def Orb__():
         orbStartParameter.append("-ORBnativeCharCodeSet")
         orbStartParameter.append("UTF-8")
         orbStartParameter.append("-ORBgiopMaxMsgSize")
-        orbStartParameter.append("268435456") # 256 MB
+        orbStartParameter.append("268435456")  # 256 MB
         orb_obj__ = CORBA.ORB_init(orbStartParameter, CORBA.ORB_ID)
 
     return orb_obj__
@@ -38,8 +40,10 @@ def Orb__():
 attributeParser__ = re.compile(r'\s*((?P<aggregate>(NONE)|(COUNT)|(DCOUNT)|(MIN)|(MAX)|(AVG)|(STDDEV)|(SUM)|(DISTINCT)|(POINT))\()?\s*?(?P<attribute>.*)')
 orderByParser__ = re.compile(r'\s*((?P<order>(ASCENDING)|(DESCENDING))\()?\s*?(?P<attribute>.*)')
 
+
 def ValidFlag(flagVal):
     return 9 == flagVal & 9
+
 
 def ParsePathAndAddJoins(model, applElem, attribPath, joinSeq):
     aaType = org.asam.ods.DT_UNKNOWN
@@ -56,7 +60,7 @@ def ParsePathAndAddJoins(model, applElem, attribPath, joinSeq):
             aaApplElem = model.GetElemByAid(relation.elem2)
 
             # add join
-            if (-1==relation.arRelationRange.max) and (1==relation.invRelationRange.max):
+            if (-1 == relation.arRelationRange.max) and (1 == relation.invRelationRange.max):
                 realRelation = model.FindInverseRelation(relation)
                 AddJoinToSeq(realRelation, joinSeq)
             else:
@@ -70,17 +74,19 @@ def ParsePathAndAddJoins(model, applElem, attribPath, joinSeq):
             else:
                 relation = model.GetRelationEx(aaApplElem.aeName, pathPart)
                 aaName = relation.arName
-                aaType = org.asam.ods.DT_LONGLONG # its an id
-    return aaType, aaName, aaApplElem                           
+                aaType = org.asam.ods.DT_LONGLONG  # its an id
+    return aaType, aaName, aaApplElem
+
 
 def AddJoinToSeq(relation, joinSeq):
     for join in joinSeq:
         if LL_Equal(join.fromAID, relation.elem1) and LL_Equal(join.toAID, relation.elem2) and (join.refName == relation.arName):
             # already in sequence
             return
-    
-    joinDef = org.asam.ods.JoinDef(relation.elem1,relation.elem2,relation.arName, org.asam.ods.JTDEFAULT)
+
+    joinDef = org.asam.ods.JoinDef(relation.elem1, relation.elem2, relation.arName, org.asam.ods.JTDEFAULT)
     joinSeq.append(joinDef)
+
 
 def GetRelationType(relationType):
     if relationType == org.asam.ods.FATHER_CHILD:
@@ -90,6 +96,7 @@ def GetRelationType(relationType):
     elif relationType == org.asam.ods.INHERITANCE:
         return "INHERITANCE"
     return None
+
 
 def GetAggrTypeStr(aggrType):
     if aggrType == org.asam.ods.NONE:
@@ -114,6 +121,7 @@ def GetAggrTypeStr(aggrType):
         return "POINT"
 
     return None
+
 
 def GetDataTypeStr(dataType):
     columnType = dataType
@@ -173,6 +181,7 @@ def GetDataTypeStr(dataType):
         return "DS_EXTERNALREFERENCE"
     return None
 
+
 def ExtractAttributeNameFromOrderByName(strVal):
     m = orderByParser__.search(strVal)
     aName = m.group("attribute")
@@ -183,6 +192,7 @@ def ExtractAttributeNameFromOrderByName(strVal):
 
     return aName, ("DESCENDING" != order)
 
+
 def ExtractAttributeNameFromColumnName(columnName):
     m = attributeParser__.search(columnName)
     aName = m.group("attribute")
@@ -191,7 +201,7 @@ def ExtractAttributeNameFromColumnName(columnName):
     if not aAggrTypeStr is None:
         # cut closing bracket and determine aggregate type
         aName = aName.rstrip(" \t)")
-        if   'NONE' == aAggrTypeStr: aAggrType = org.asam.ods.NONE
+        if 'NONE' == aAggrTypeStr: aAggrType = org.asam.ods.NONE
         elif 'COUNT' == aAggrTypeStr: aAggrType = org.asam.ods.COUNT
         elif 'DCOUNT' == aAggrTypeStr: aAggrType = org.asam.ods.DCOUNT
         elif 'MIN' == aAggrTypeStr: aAggrType = org.asam.ods.MIN
@@ -207,8 +217,10 @@ def ExtractAttributeNameFromColumnName(columnName):
 
     return aName.strip(), aAggrType
 
+
 def ColumnType(column):
     return column.value.u._d
+
 
 def ColumnGetSeqEx(column):
     if org.asam.ods.DT_LONGLONG == column.value.u._d:
@@ -224,7 +236,8 @@ def ColumnGetSeqEx(column):
             iSeq.append(val.decode('utf-8'))
         return iSeq
     return ColumnGetSeq(column)
-    
+
+
 def ColumnGetSeq(column):
     columnType = column.value.u._d
     if columnType == org.asam.ods.DT_BYTE:
@@ -283,6 +296,7 @@ def ColumnGetSeq(column):
 #    assert(False)
     return None
 
+
 def ColumnCountRows(column):
     seq = ColumnGetSeq(column)
     if seq is None:
@@ -291,7 +305,8 @@ def ColumnCountRows(column):
 
 
 def LL0():
-    return org.asam.ods.T_LONGLONG(0,0)
+    return org.asam.ods.T_LONGLONG(0, 0)
+
 
 def LL2Int(val):
     if 0 != val.high:
@@ -301,8 +316,10 @@ def LL2Int(val):
     else:
         return val.low
 
+
 def Int2LL(val):
     return org.asam.ods.T_LONGLONG(int((val >> 32) & 0xFFFFFFFF), int(val & 0xFFFFFFFF))
+
 
 def LL_Equal(val1, val2):
     if val1.high != val2.high:
@@ -311,6 +328,7 @@ def LL_Equal(val1, val2):
         return False
     return True
 
+
 def LL_Is0(val):
     if 0 != val.high:
         return False
@@ -318,25 +336,27 @@ def LL_Is0(val):
         return False
     return True
 
+
 def CreateTsValue(aaType, strVal):
-    
-    if   aaType == org.asam.ods.DT_BYTE:     return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BYTE(int(strVal))), 15)
-    elif aaType == org.asam.ods.DT_BOOLEAN:  return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BOOLEAN(int(strVal))), 15)
-    elif aaType == org.asam.ods.DT_SHORT:    return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_SHORT(int(strVal))), 15)
-    elif aaType == org.asam.ods.DT_LONG:     return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(strVal))), 15)
+
+    if aaType == org.asam.ods.DT_BYTE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BYTE(int(strVal))), 15)
+    elif aaType == org.asam.ods.DT_BOOLEAN: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BOOLEAN(int(strVal))), 15)
+    elif aaType == org.asam.ods.DT_SHORT: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_SHORT(int(strVal))), 15)
+    elif aaType == org.asam.ods.DT_LONG: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(strVal))), 15)
     elif aaType == org.asam.ods.DT_LONGLONG: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, Int2LL(long(strVal))), 15)
-    elif aaType == org.asam.ods.DT_FLOAT:    return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(strVal)), 15)
-    elif aaType == org.asam.ods.DT_DOUBLE:   return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(strVal)), 15)
-    elif aaType == org.asam.ods.DT_DATE:     return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, strVal.encode('utf-8')), 15)
-    elif aaType == org.asam.ods.DT_STRING:   return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, strVal.encode('utf-8')), 15)
-    elif aaType == org.asam.ods.DT_ENUM:     return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(strVal))), 15)
+    elif aaType == org.asam.ods.DT_FLOAT: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(strVal)), 15)
+    elif aaType == org.asam.ods.DT_DOUBLE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(strVal)), 15)
+    elif aaType == org.asam.ods.DT_DATE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, strVal.encode('utf-8')), 15)
+    elif aaType == org.asam.ods.DT_STRING: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, strVal.encode('utf-8')), 15)
+    elif aaType == org.asam.ods.DT_ENUM: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(strVal))), 15)
     #elif aaType == org.asam.ods.DT_COMPLEX:
     #elif aaType == org.asam.ods.DT_DCOMPLEX:
     #elif aaType == org.asam.ods.DT_EXTERNALREFERENCE:
     else:
         print "Unknown how to attach '" + strVal + "' does not exist as " + str(aaType) + " union."
         sys.exit(1)
-    
+
+
 def GetSession(objString, user, password):
     obj = Orb__().string_to_object(objString)
     if obj is None:
@@ -353,6 +373,7 @@ def GetSession(objString, user, password):
     print "Session retrieved"
     return session
 
+
 class CModel:
     model_ = None
     enums_ = None
@@ -362,18 +383,18 @@ class CModel:
         self.model_ = session.getApplicationStructureValue()
 
         try:
-          self.enums_ = session.getEnumerationStructure()
+            self.enums_ = session.getEnumerationStructure()
         except org.asam.ods.AoException, ex:
-          print ex 
+            print ex
         except CORBA.BAD_OPERATION, ex:
-          print ex 
-          
+            print ex
+
         try:
-          self.enumAttribs_ = session.getEnumerationAttributes()
+            self.enumAttribs_ = session.getEnumerationAttributes()
         except org.asam.ods.AoException, ex:
-          print ex 
+            print ex
         except CORBA.BAD_OPERATION, ex:
-          print ex 
+            print ex
 
     def GetEnumName(self, aid, aaName):
         for enumAttrib in self.enumAttribs_:
@@ -398,7 +419,7 @@ class CModel:
             if aeName == elem.aeName:
                 return elem
         return None
-    
+
     def GetElemB(self, beName):
         for elem in self.model_.applElems:
             if beName == elem.beName:
@@ -418,7 +439,7 @@ class CModel:
         rel = self.GetRelationEx(aeName, attribName)
         if not rel is None:
             return rel.arName
-        
+
         print "Attribute '" + aeName + "." + attribName + "' does not exist"
         sys.exit(1)
 
@@ -442,7 +463,7 @@ class CModel:
             rv = self.GetAttributeB(aeName, attributeName)
         if not rv is None:
             return rv
-            
+
         return None
 
     def GetRelationByAid(self, aid, arName):
@@ -450,11 +471,11 @@ class CModel:
             if LL_Equal(rel.elem1, aid) and rel.arName == arName:
                 return rel
         return None
-        
+
     def GetRelation(self, aeName, arName):
         aid = self.Aid(aeName)
         return self.GetRelationByAid(aid,  arName)
-    
+
     def GetRelationEx(self, aeName, relationName):
         rv = self.GetRelation(aeName, relationName)
         if rv is None:
@@ -463,10 +484,10 @@ class CModel:
             return rv
 
         return None
-    
+
     def FindInverseRelation(self,  relation):
         return self.GetRelationByAid(relation.elem2,  relation.invName)
-        
+
     def GetRelationB(self, aeName, brName):
         aid = self.Aid(aeName)
         for rel in self.model_.applRels:
@@ -482,12 +503,14 @@ class CModel:
                 rv.append(rel.arName)
         return rv
 
+
 class CSession:
     session_ = None
     # Model members
     model_ = None
     # access data
     aea_ = None
+
     def __init__(self, objString, user, password):
         self.session_ = GetSession(objString, user, password)
         if self.session_ is None:
@@ -501,7 +524,7 @@ class CSession:
 
     def Model(self):
         return self.model_
-        
+
     def Close(self):
         if not self.session_ is None:
             self.session_.close()
@@ -519,15 +542,14 @@ class CSession:
         iid = ie.getId()
         entity = ie.getApplicationElement().getName()
         return entity,  LL2Int(iid)
- 
 
     def GetInstancesEx_Ver2(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
-  
+
         if conditionArray is None: conditionArray = []
         if attributeArray is None: attributeArray = []
         if orderByArray is None: orderByArray = []
         if how_many is None: how_many = 0
-        
+
         applElem = self.Model().GetElem(aeName)
         aid = applElem.aid
 
@@ -538,16 +560,16 @@ class CSession:
         groupBySeq = []
 
         if(0 == len(attributeArray)):
-            anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*"), org.asam.ods.T_LONGLONG(0,0), org.asam.ods.NONE))
+            anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*"), org.asam.ods.T_LONGLONG(0, 0), org.asam.ods.NONE))
         else:
             for attributeItem in attributeArray:
                 if("*" == attributeItem):
-                    anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*"), org.asam.ods.T_LONGLONG(0,0), org.asam.ods.NONE))
+                    anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*"), org.asam.ods.T_LONGLONG(0, 0), org.asam.ods.NONE))
                 else:
                     attribPath, aAggrType = ExtractAttributeNameFromColumnName(attributeItem)
                     aaType, aaName, aaApplElem = ParsePathAndAddJoins(self.Model(), applElem, attribPath, joinSeq)
-                    anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aaApplElem.aid, aaName), org.asam.ods.T_LONGLONG(0,0), aAggrType))
-        
+                    anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aaApplElem.aid, aaName), org.asam.ods.T_LONGLONG(0, 0), aAggrType))
+
         for orderByItem in orderByArray:
             attribPath, ascending = ExtractAttributeNameFromOrderByName(orderByItem)
             aaType, aaName, aaApplElem = ParsePathAndAddJoins(self.Model(), applElem, attribPath, joinSeq)
@@ -561,23 +583,23 @@ class CSession:
             expressionParser = re.compile(r'\s*(?P<attribute>.*?)\s*?(?P<operator>([!<>=][=]|[<>=]))\s*(?P<operand>.*)')
             caseSensitive = 1
             for part in conditionArray:
-                if    '$cs' == part:
+                if '$cs' == part:
                     caseSensitive = 1
-                elif '$ci' == part: 
+                elif '$ci' == part:
                     caseSensitive = 0
-                elif '$open' == part: 
+                elif '$open' == part:
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.OPEN)
                     condSeq.append(selItem)
-                elif '$close' == part: 
+                elif '$close' == part:
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.CLOSE)
                     condSeq.append(selItem)
-                elif '$or' == part: 
+                elif '$or' == part:
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.OR)
                     condSeq.append(selItem)
-                elif '$and' == part: 
+                elif '$and' == part:
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.AND)
                     condSeq.append(selItem)
-                elif '$not' == part: 
+                elif '$not' == part:
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.NOT)
                     condSeq.append(selItem)
                 else:
@@ -586,37 +608,37 @@ class CSession:
                     attribPath = m.group("attribute")
                     operatorStr = m.group("operator")
                     operandStr = m.group("operand")
-                    
+
                     aaType, aaName, aaApplElem = ParsePathAndAddJoins(self.Model(), applElem, attribPath, joinSeq)
 
                     operator = None
-                    if   '='  == operatorStr: 
+                    if '=' == operatorStr:
                         if (org.asam.ods.DT_STRING == aaType or org.asam.ods.DS_STRING == aaType):
-                            operator = org.asam.ods.LIKE  if 1 == caseSensitive else org.asam.ods.CI_LIKE
+                            operator = org.asam.ods.LIKE if 1 == caseSensitive else org.asam.ods.CI_LIKE
                         else:
                             operator = org.asam.ods.EQ
-                    elif '<>' == operatorStr: 
+                    elif '<>' == operatorStr:
                         if (org.asam.ods.DT_STRING == aaType or org.asam.ods.DS_STRING == aaType):
-                            operator = org.asam.ods.NLIKE  if 1 == caseSensitive else org.asam.ods.CI_NLIKE
+                            operator = org.asam.ods.NLIKE if 1 == caseSensitive else org.asam.ods.CI_NLIKE
                         else:
                             operator = org.asam.ods.NEQ
-                    elif '==' == operatorStr: operator = org.asam.ods.EQ    if ((org.asam.ods.DT_STRING == aaType or org.asam.ods.DS_STRING == aaType)) and 1 == caseSensitive else org.asam.ods.CI_EQ
-                    elif '!=' == operatorStr: operator = org.asam.ods.NEQ   if ((org.asam.ods.DT_STRING == aaType or org.asam.ods.DS_STRING == aaType)) and 1 == caseSensitive else org.asam.ods.CI_NEQ
-                    elif '<'  == operatorStr: operator = org.asam.ods.LT
-                    elif '>'  == operatorStr: operator = org.asam.ods.GT
+                    elif '==' == operatorStr: operator = org.asam.ods.EQ if ((org.asam.ods.DT_STRING == aaType or org.asam.ods.DS_STRING == aaType)) and 1 == caseSensitive else org.asam.ods.CI_EQ
+                    elif '!=' == operatorStr: operator = org.asam.ods.NEQ if ((org.asam.ods.DT_STRING == aaType or org.asam.ods.DS_STRING == aaType)) and 1 == caseSensitive else org.asam.ods.CI_NEQ
+                    elif '<' == operatorStr: operator = org.asam.ods.LT
+                    elif '>' == operatorStr: operator = org.asam.ods.GT
                     elif '<=' == operatorStr: operator = org.asam.ods.LTE
                     elif '>=' == operatorStr: operator = org.asam.ods.GTE
                     else:
                         print "Unknown operator '" + operatorStr + "'"
                         sys.exit(1)
-                                
+
                     tsValue = CreateTsValue(aaType, operandStr)
                     selValExt = org.asam.ods.SelValueExt(org.asam.ods.AIDNameUnitId(org.asam.ods.AIDName(aaApplElem.aid, aaName), LL0()), operator, tsValue)
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_VALUE_TYPE, selValExt)
                     condSeq.append(selItem)
-        
+
         qse = org.asam.ods.QueryStructureExt(anuSeq, condSeq, joinSeq, orderBySeq, groupBySeq)
-        
+
         logging.info('Call ApplElemAccess.getInstancesExt(aoq="' + str(qse) + '", how_many=' + str(how_many) + '")')
         rs = self.aea_.getInstancesExt(qse, how_many)
         for r in rs:
@@ -633,4 +655,3 @@ class CSession:
             if LL_Equal(rse.aid, aid):
                 return rse
         return None
-        

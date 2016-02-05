@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 """
-Access ASAM Ods python using omniorb and wrap it using swagger
+Access ASAM Ods python using omniorb and wrap it using swagger.
 
 Copyright (c) 2015, Andreas Krantz
 License: Apache 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+
 """
+
 __author__ = "Andreas Krantz"
 __license__ = "Apache 2.0"
 __version__ = "0.0.1"
@@ -15,7 +17,7 @@ __status__ = "Prototype"
 import logging
 import sys
 import org
-import OdsLib
+import odslib
 import connexion
 
 # from flask import Flask
@@ -25,23 +27,26 @@ from connexion import NoContent
 
 app = connexion.App(__name__)
 
-class CEnv:
+
+class _CEnv:
     context_vars_ = {}
     session_obj_ = None
 
     def __init__(self, context_vars):
         self.context_vars_ = context_vars
-    
+
 _envs = {}
 
-_envs['e1'] =  CEnv({u'URL':u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER':'System', u'PASSWORD':u'puma'})
-_envs['e2'] =  CEnv({u'URL':u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER':'test', u'PASSWORD':u'test'})
-_envs['e3'] =  CEnv({u'URL':u'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', u'USER':'', u'PASSWORD':u''})
-_envs['e4'] =  CEnv({u'URL':u'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', u'USER':'', u'PASSWORD':u''})
+_envs['e1'] = _CEnv({u'URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'})
+_envs['e2'] = _CEnv({u'URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
+_envs['e3'] = _CEnv({u'URL': u'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_envs['e4'] = _CEnv({u'URL': u'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
 
-def _RequestWantsJson():
+
+def _request_wants_json():
     best = request.accept_mimetypes.best_match(['application/json', 'text/html'])
     return best == 'application/json' and request.accept_mimetypes[best] > request.accept_mimetypes['text/html']
+
 
 def _GetDiscriminatorArrayName(arrayType):
     if arrayType == org.asam.ods.DT_UNKNOWN:
@@ -108,38 +113,46 @@ def _Session(envI):
         sUrl = _envs[envI].context_vars_['URL']
         sUsr = _envs[envI].context_vars_['USER']
         sPwd = _envs[envI].context_vars_['PASSWORD']
-        _envs[envI].session_obj_ = OdsLib.CSession(sUrl, sUsr, sPwd)
+        _envs[envI].session_obj_ = odslib.CSession(sUrl, sUsr, sPwd)
 
     return _envs[envI].session_obj_
 
+
 def _SessionClose(envI):
     global session_obj__
-    
+
     if not _envs[envI].session_obj_ is None:
         _envs[envI].session_obj_.Close()
         _envs[envI].session_obj_ = None
+
 
 def data_post(envI, data_matrix):
     logging.info('create instances')
     return jsonify({}), 200
 
+
 def data_modify_post(envI, data_matrix):
     return data_post(envI, data_matrix)
+
 
 def data_put(envI, data_matrix):
     logging.info('update instances')
     return NoContent, 200
 
+
 def data_modify_put(envI, data_matrix):
     return data_put(envI, data_matrix)
+
 
 def data_delete(envI, data_matrix):
     logging.info('delete instances')
 
     return NoContent, 200
 
+
 def data_modify_delete(envI, data_matrix):
     return data_delete(envI, data_matrix)
+
 
 def data_get(envI,  query_struct):
     logging.info('retrieve data')
@@ -158,14 +171,14 @@ def data_get(envI,  query_struct):
     model = so.Model()
     elem = model.GetElemEx(entityStr)
     result = so.GetInstancesEx_Ver2(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
-    
+
     rv = {}
-    rv['tables']=[]
+    rv['tables'] = []
 
     for table in result:
-        
+
         tableElem = model.GetElemByAid(table.aid)
-    
+
         tableObj = {}
         tableObj['name'] = tableElem.aeName
         tableObj['baseName'] = tableElem.beName
@@ -176,7 +189,7 @@ def data_get(envI,  query_struct):
 
         for column in table.values:
             columnObj = {}
-            columnValues = OdsLib.ColumnGetSeqEx(column)
+            columnValues = odslib.ColumnGetSeqEx(column)
             for rowIndex, row in enumerate(columnValues):
                 if isinstance(row, list):
                     # we should do this using value matrix but actually we are emulating it
@@ -186,19 +199,19 @@ def data_get(envI,  query_struct):
                             columnValues = []
                         else:
                             numtakeable = rowNumAvailable - vectorSkipCount
-                            if(numtakeable > vectorMaxCount): 
+                            if(numtakeable > vectorMaxCount):
                                 numtakeable = vectorMaxCount
                             columnValues[rowIndex] = row[vectorSkipCount:(vectorSkipCount + numtakeable)]
 
             columnFlags = column.value.flag
             columnFlagLength = len(columnFlags)
-            aName, aAggrType = OdsLib.ExtractAttributeNameFromColumnName(column.valName)
-            columnObj['aggregate'] = OdsLib.GetAggrTypeStr(aAggrType)
+            aName, aAggrType = odslib.ExtractAttributeNameFromColumnName(column.valName)
+            columnObj['aggregate'] = odslib.GetAggrTypeStr(aAggrType)
 
             attr = model.GetAttribute(tableElem.aeName, aName)
             valuesObj = {}
             if not attr is None:
-                valuesObj['dataType'] = OdsLib.GetDataTypeStr(attr.dType)
+                valuesObj['dataType'] = odslib.GetDataTypeStr(attr.dType)
                 columnObj['name'] = attr.aaName
                 columnObj['baseName'] = attr.baName
 
@@ -207,7 +220,7 @@ def data_get(envI,  query_struct):
                     for valIndex, columnValue in enumerate(columnValues):
                         valueValid = True
                         if valIndex < columnFlagLength:
-                            valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
+                            valueValid = odslib.ValidFlag(columnFlags[valIndex])
                         valArray.append(columnValue if(True == valueValid) else None)
 
                     valuesObj[_GetDiscriminatorArrayName(attr.dType)] = valArray
@@ -217,16 +230,16 @@ def data_get(envI,  query_struct):
                     for valIndex, columnValue in enumerate(columnValues):
                         valueValid = True
                         if valIndex < columnFlagLength:
-                            valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
+                            valueValid = odslib.ValidFlag(columnFlags[valIndex])
                         TypedValueVectorObj = {}
-                        TypedValueVectorObj['dataType'] = OdsLib.GetDataTypeStr(column.value.u._d)
+                        TypedValueVectorObj['dataType'] = odslib.GetDataTypeStr(column.value.u._d)
                         TypedValueVectorObj[_GetDiscriminatorArrayName(column.value.u._d)] = columnValue
                         unknownSeqArray.append(TypedValueVectorObj if(True == valueValid) else None)
-                    
+
                     valuesObj[_GetDiscriminatorArrayName(attr.dType)] = unknownSeqArray
             else:
                 relAttr = model.GetRelation(tableElem.aeName, aName)
-                valuesObj['dataType'] = OdsLib.GetDataTypeStr(org.asam.ods.DT_LONGLONG)
+                valuesObj['dataType'] = odslib.GetDataTypeStr(org.asam.ods.DT_LONGLONG)
                 columnObj['name'] = relAttr.arName
                 columnObj['baseName'] = relAttr.brName
 
@@ -234,7 +247,7 @@ def data_get(envI,  query_struct):
                 for valIndex, columnValue in enumerate(columnValues):
                     valueValid = True
                     if valIndex < columnFlagLength:
-                        valueValid = OdsLib.ValidFlag(columnFlags[valIndex])
+                        valueValid = odslib.ValidFlag(columnFlags[valIndex])
                     if 0 == columnValue:
                         valueValid = False
                     valArray.append(columnValue if(True == valueValid) else None)
@@ -242,29 +255,34 @@ def data_get(envI,  query_struct):
 
             columnObj['values'] = valuesObj
             columnsObj.append(columnObj)
-        
+
         tableObj['columns'] = columnsObj
         rv['tables'].append(tableObj)
 
-    if _RequestWantsJson():
+    if _request_wants_json():
         return jsonify(rv), 200
-    
+
     return render_template('datamatrix.html', datamatrices=rv),  200
- 
+
+
 def data_access_post(envI, query_struct):
     return data_get(envI, query_struct)
+
 
 def data_iteratorguid_get(envI,  iteratorGuid):
     logging.info('get additional results for ' + iteratorGuid)
     return jsonify({}), 200
 
+
 def transaction_put(envI):
     logging.info('commit transaction')
     return NoContent, 200
 
+
 def transaction_delete(envI):
     logging.info('abort transaction')
     return NoContent, 200
+
 
 def model_put(envI, model):
     logging.info('create or overwrite entity/attribute/enum in model')
@@ -277,12 +295,14 @@ def model_put(envI, model):
 
     return NoContent, 200
 
+
 def model_delete(envI, model):
     logging.info('delete entity/attribute/enum in model')
     for entity in model['entities']:
         logging.info('delete ' + entity['name'])
 
     return NoContent, 200
+
 
 def model_get(envI):
     logging.info('get the server model')
@@ -308,18 +328,18 @@ def model_get(envI):
         entityObj = {}
         entityObj['name'] = elem.aeName
         entityObj['baseName'] = elem.beName
-        entityObj['objecttype'] = OdsLib.LL2Int(elem.aid)
+        entityObj['objecttype'] = odslib.LL2Int(elem.aid)
         # add attributes
         attributes = []
         for attr in elem.attributes:
             attrObj = {}
             attrObj['name'] = attr.aaName
             attrObj['baseName'] = attr.baName
-            attrObj['dataType'] = OdsLib.GetDataTypeStr(attr.dType)
+            attrObj['dataType'] = odslib.GetDataTypeStr(attr.dType)
             attrObj['length'] = attr.length
             attrObj['obligatory'] = attr.isObligatory
             attrObj['unique'] = attr.isUnique
-            attrObj['unitId'] = OdsLib.LL2Int(attr.unitId)
+            attrObj['unitId'] = odslib.LL2Int(attr.unitId)
             if(org.asam.ods.DT_ENUM == attr.dType or org.asam.ods.DS_ENUM == attr.dType):
                 attrObj['enumeration'] = model.GetEnumName(elem.aid, attr.aaName)
             attributes.append(attrObj)
@@ -327,12 +347,12 @@ def model_get(envI):
         # add relations
         relations = []
         for applRel in model.model_.applRels:
-            if OdsLib.LL_Equal(applRel.elem1, elem.aid):
-                relType = "n-m" 
+            if odslib.LL_Equal(applRel.elem1, elem.aid):
+                relType = "n-m"
                 if (1 == applRel.arRelationRange.max and -1 == applRel.invRelationRange.max):
-                    relType = "1-n" 
+                    relType = "1-n"
                 elif (-1 == applRel.arRelationRange.max and 1 == applRel.invRelationRange.max):
-                    relType = "n-1" 
+                    relType = "n-1"
                 relEntity = model.GetElemByAid(applRel.elem2)
                 relObj = {}
                 relObj["name"] = applRel.arName
@@ -341,7 +361,7 @@ def model_get(envI):
                 relObj["inverseBaseName"] = applRel.invBrName
                 relObj["obligatory"] = (True if (0 != applRel.arRelationRange.min and -1 != applRel.arRelationRange.max) else False)
                 relObj["type"] = relType
-                relObj["kind"] = OdsLib.GetRelationType(applRel.arRelationType)
+                relObj["kind"] = odslib.GetRelationType(applRel.arRelationType)
                 relObj["relEntityName"] = relEntity.aeName
                 relObj["relEntityBaseName"] = relEntity.beName
                 relations.append(relObj)
@@ -349,6 +369,7 @@ def model_get(envI):
         entities.append(entityObj)
     rv['entities'] = entities
     return rv
+
 
 def context_get(envI):
     logging.info('get context variables')
@@ -361,11 +382,12 @@ def context_get(envI):
             rv.append(pObj)
     return rv
 
+
 def context_put(envI, parameters):
     logging.info('set context variables')
     # make sure we can use different context
     _SessionClose(envI)
-    
+
     for param in parameters:
         pName = param['name']
         pValue = param['value']
@@ -373,9 +395,10 @@ def context_put(envI, parameters):
 
     return NoContent, 200
 
+
 def utils_asampath_create_get(envI, params):
     logging.info('create an asam path')
-    
+
     entityStr = params['entity']
     iid = params['id']
 
@@ -386,14 +409,16 @@ def utils_asampath_create_get(envI, params):
     rv['path'] = so.AsamPathCreate(elem.aid,  iid)
     return rv
 
+
 def utils_asampath_create_post(envI, params):
     return utils_asampath_create_get(envI, params)
 
+
 def utils_asampath_resolve_get(envI, params):
     logging.info('resolve an asam path')
-    
+
     path = params['path']
- 
+
     so = _Session(envI)
     entity,  iid = so.AsamPathResolve(path)
     rv = {}
@@ -401,12 +426,15 @@ def utils_asampath_resolve_get(envI, params):
     rv['id'] = iid
     return rv
 
+
 def utils_asampath_resolve_post(envI, params):
     return utils_asampath_resolve_get(envI, params)
+
 
 @app.route('/')
 def index():
     return redirect('ui/')
+
 
 @app.route('/testdataget/')
 def testdataget():

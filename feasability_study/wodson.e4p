@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric5 project file for project wodson -->
-<!-- Saved: 2016-02-03, 14:26:27 -->
+<!-- Saved: 2016-02-05, 11:37:38 -->
 <!-- Copyright (C) 2016 Andreas Krantz, totonga@gmail.com -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -14,14 +14,13 @@
   <Email>totonga@gmail.com</Email>
   <Eol index="1"/>
   <Sources>
-    <Source>app.py</Source>
-    <Source>OdsLib.py</Source>
     <Source>README.MD</Source>
-    <Source>swagger.yaml</Source>
     <Source>requirements.txt</Source>
     <Source>test_scripts/simple1.sh</Source>
     <Source>templates/datamatrix.html</Source>
-    <Source>corbaserver.idl</Source>
+    <Source>app.py</Source>
+    <Source>odslib.py</Source>
+    <Source>static/testdataget.html</Source>
   </Sources>
   <Forms/>
   <Translations/>
@@ -30,15 +29,15 @@
     <Interface>corbaserver.idl</Interface>
   </Interfaces>
   <Others>
-    <Other>app.py</Other>
     <Other>doc</Other>
-    <Other>corbaserver_idl.py</Other>
     <Other>org__POA/asam/__init__.py</Other>
     <Other>org__POA/asam/ods/__init__.py</Other>
     <Other>org__POA/__init__.py</Other>
     <Other>org/asam/__init__.py</Other>
     <Other>org/asam/ods/__init__.py</Other>
     <Other>org/__init__.py</Other>
+    <Other>swagger.yaml</Other>
+    <Other>README.MD</Other>
   </Others>
   <MainScript>app.py</MainScript>
   <Vcs>
@@ -50,4 +49,77 @@
     <FiletypeAssociation pattern="*.py2" type="SOURCES"/>
     <FiletypeAssociation pattern="*.pyw2" type="SOURCES"/>
   </FiletypeAssociations>
+  <Checkers>
+    <CheckersParams>
+      <dict>
+        <key>
+          <string>Pep8Checker</string>
+        </key>
+        <value>
+          <dict>
+            <key>
+              <string>DocstringType</string>
+            </key>
+            <value>
+              <string>pep257</string>
+            </value>
+            <key>
+              <string>ExcludeFiles</string>
+            </key>
+            <value>
+              <string></string>
+            </value>
+            <key>
+              <string>ExcludeMessages</string>
+            </key>
+            <value>
+              <string>E123,E226,E24,N802,D105,D103,D,N,E501,E701</string>
+            </value>
+            <key>
+              <string>FixCodes</string>
+            </key>
+            <value>
+              <string></string>
+            </value>
+            <key>
+              <string>FixIssues</string>
+            </key>
+            <value>
+              <bool>False</bool>
+            </value>
+            <key>
+              <string>HangClosing</string>
+            </key>
+            <value>
+              <bool>False</bool>
+            </value>
+            <key>
+              <string>IncludeMessages</string>
+            </key>
+            <value>
+              <string></string>
+            </value>
+            <key>
+              <string>MaxLineLength</string>
+            </key>
+            <value>
+              <int>99</int>
+            </value>
+            <key>
+              <string>NoFixCodes</string>
+            </key>
+            <value>
+              <string>E501</string>
+            </value>
+            <key>
+              <string>RepeatMessages</string>
+            </key>
+            <value>
+              <bool>True</bool>
+            </value>
+          </dict>
+        </value>
+      </dict>
+    </CheckersParams>
+  </Checkers>
 </Project>
