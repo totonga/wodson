@@ -6,6 +6,9 @@
 ASAM ODS is about making measurement data persistent. So this is the most important chapter. Its is about writing and reading data (meta/bulk).
 ****
 
+include::datamatrix.adoc[]
+
+
 === Read meta data
 
 ----

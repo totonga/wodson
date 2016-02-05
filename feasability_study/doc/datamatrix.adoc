@@ -1,0 +1,8 @@
+=== DataMatrix
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+****
+The DataMatrix is the central element to read and write data (meta/bulk). It is important to be familiar with it.
+****
+
