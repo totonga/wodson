@@ -274,6 +274,11 @@ def data_iteratorguid_get(conI,  iteratorGuid):
     return jsonify({}), 200
 
 
+def transaction_post(conI):
+    logging.info('start transaction')
+    return NoContent, 200
+
+
 def transaction_put(conI):
     logging.info('commit transaction')
     return NoContent, 200

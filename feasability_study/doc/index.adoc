@@ -1,4 +1,4 @@
-= Wodson - Feasability Study
+= Wodson - Feasibility Study
 :Author:    Andreas Krantz
 :Email:     totonga@gmail.com
 :toc:

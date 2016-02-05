@@ -13,7 +13,26 @@ IMPORTANT: Try to do all changes in a single transaction.
            right sequence of write operations or bundle them 
            in one call but you get an rollback as a reward 
 
-=== Commit the Transaction
+=== Start Transaction
+
+----
+POST /con/{conI}/transaction
+----
+
+IMPORTANT: It should be made sure that the transaction is not started to early. The database needs lot of resources and
+            might even block some stuff while transaction hangs.
+
+.commit an open transaction
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1/transaction'
+----
+================================
+
+           
+=== Commit Transaction
 
 ----
 PUT /con/{conI}/transaction
@@ -29,7 +48,7 @@ curl -X PUT --header 'Accept: application/problem+json' 'http://localhost:8081/c
 ================================
 
 
-=== Abort the Transaction
+=== Abort Transaction
 
 ----
 DELETE /con/{conI}/transaction

@@ -288,6 +288,28 @@ paths:
         - session_auth:
           - modify_data  
   /con/{conI}/transaction:
+    post:
+      tags:
+        - API_Http
+        - API_Rest
+        - Transaction
+      description: start a transaction to be used a command that uses transaction
+      operationId: app.transaction_post
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected configuration
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful started transaction
+        '405':
+          description: Invalid input. Transaction was not opened
+      security:
+        - session_auth:
+          - modify_data
+          - modify_model
     put:
       tags:
         - API_Http

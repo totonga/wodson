@@ -19,7 +19,7 @@ Following entities do exist:
 | <<InitialRightsAt>> | ???
 |===========================================
 
-=== Attributes and Relations of Asam Security
+=== Attributes and Relations of ASAM Security
 
 .ACLI[[ACLI]]
 [options="header"]
