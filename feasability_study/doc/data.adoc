@@ -187,6 +187,39 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 ================================
 
+.get some measurementquantities and related info using a query
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+    "entity": "AoMeasurementQuantity",
+    "conditions": [
+        "measurement.measurement_begin > 20090101000000",
+        "$and",
+        "$open",
+        "name=Uctf_String",
+        "$or",
+        "name=Uctf_Time",
+        "$close"
+    ],
+    "attributes": [
+        "name",
+        "id",
+        "unit",
+        "measurement.name",
+        "measurement.id",
+        "measurement.test.name",
+        "measurement.test.id"
+    ]
+}' 'http://localhost:8081/env/e2/data/access'
+----
+.result
+[source,json]
+----
+----
+================================
+
 .get DISTINCT of all MeasurementQuantity names
 ================================
 .request
@@ -332,12 +365,12 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     "entity": "LocalColumn",
     "conditions": [
         "submatrix=8",
-        "and",
-        "(",
+        "$and",
+        "$open",
         "name=Time",
-        "or",
+        "$or",
         "name=Revs",
-        ")"
+        "$close"
     ],
     "attributes": [
         "id",

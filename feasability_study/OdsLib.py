@@ -561,23 +561,23 @@ class CSession:
             expressionParser = re.compile(r'\s*(?P<attribute>.*?)\s*?(?P<operator>([!<>=][=]|[<>=]))\s*(?P<operand>.*)')
             caseSensitive = 1
             for part in conditionArray:
-                if   'cs' == part:
+                if    '$cs' == part:
                     caseSensitive = 1
-                elif 'ci' == part: 
+                elif '$ci' == part: 
                     caseSensitive = 0
-                elif '(' == part: 
+                elif '$open' == part: 
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.OPEN)
                     condSeq.append(selItem)
-                elif ')' == part: 
+                elif '$close' == part: 
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.CLOSE)
                     condSeq.append(selItem)
-                elif 'or' == part: 
+                elif '$or' == part: 
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.OR)
                     condSeq.append(selItem)
-                elif 'and' == part: 
+                elif '$and' == part: 
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.AND)
                     condSeq.append(selItem)
-                elif 'not' == part: 
+                elif '$not' == part: 
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.NOT)
                     condSeq.append(selItem)
                 else:
