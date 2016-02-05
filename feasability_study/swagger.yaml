@@ -32,7 +32,7 @@ tags:
   - name: Utils
     description: Utilities to do special jobs
 paths:
-  /env/{envI}/data:
+  /con/{conI}/data:
     get:
       tags:
         - API_Rest
@@ -40,9 +40,9 @@ paths:
       description: get data from server by using query structure
       operationId: app.data_get
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: query_struct
@@ -71,9 +71,9 @@ paths:
       description: create instances
       operationId: app.data_post
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: data_matrix
@@ -99,9 +99,9 @@ paths:
       description: update instances
       operationId: app.data_put
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: data_matrix
@@ -125,9 +125,9 @@ paths:
       description: update instances
       operationId: app.data_delete
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: data_matrix
@@ -143,7 +143,7 @@ paths:
       security:
         - session_auth:
           - modify_data
-  /env/{envI}/data/iteratorguid/{iteratorGuid}:
+  /con/{conI}/data/iteratorguid/{iteratorGuid}:
     get:
       tags:
         - API_Http
@@ -152,9 +152,9 @@ paths:
       description: If a method was not able to return the complete result in a single DataMatrix it will add an iteratorguid that can be used to fetch the next chunk 
       operationId: app.data_iteratorguid_get
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: iteratorGuid
@@ -175,7 +175,7 @@ paths:
       security:
         - session_auth:
           - access_data
-  /env/{envI}/data/access:
+  /con/{conI}/data/access:
     post:
       tags:
         - API_Http
@@ -183,9 +183,9 @@ paths:
       description: Get data from server by using query structure
       operationId: app.data_access_post
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: query_struct
@@ -206,7 +206,7 @@ paths:
       security:
         - session_auth:
           - access_data
-  /env/{envI}/data/modify:
+  /con/{conI}/data/modify:
     post:
       tags:
         - API_Http
@@ -215,9 +215,9 @@ paths:
       description: create instances
       operationId: app.data_modify_post
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: data_matrix
@@ -243,9 +243,9 @@ paths:
       description: update instances
       operationId: app.data_modify_put
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: data_matrix
@@ -269,9 +269,9 @@ paths:
       description: update instances
       operationId: app.data_modify_delete
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: data_matrix
@@ -287,7 +287,7 @@ paths:
       security:
         - session_auth:
           - modify_data  
-  /env/{envI}/transaction:
+  /con/{conI}/transaction:
     put:
       tags:
         - API_Http
@@ -296,9 +296,9 @@ paths:
       description: commit transaction opened by a command that uses transaction
       operationId: app.transaction_put
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
       responses:
@@ -318,9 +318,9 @@ paths:
       description: rollback transaction opend by a command that uses transaction
       operationId: app.transaction_delete
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
       responses:
@@ -332,7 +332,7 @@ paths:
         - session_auth:
           - modify_model
           - modify_data
-  /env/{envI}/model:
+  /con/{conI}/model:
     get:
       tags:
         - API_Http
@@ -342,9 +342,9 @@ paths:
       description: get model information
       operationId: app.model_get
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
       responses:
@@ -366,9 +366,9 @@ paths:
       description: update or extend the model
       operationId: app.model_put
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: model
@@ -393,9 +393,9 @@ paths:
       description: delete elements in the model
       operationId: app.model_delete
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: model
@@ -411,7 +411,7 @@ paths:
       security:
         - session_auth:
           - modify_model
-  /env/{envI}/context:
+  /con/{conI}/context:
     get:
       tags:
         - API_Http
@@ -420,9 +420,9 @@ paths:
       description: get information about current context
       operationId: app.context_get
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
       responses:
@@ -442,9 +442,9 @@ paths:
         - Init
       operationId: app.context_put
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: parameters
@@ -460,7 +460,7 @@ paths:
       security:
         - session_auth:
           - modify_data
-  /env/{envI}/utils/asampath/create:
+  /con/{conI}/utils/asampath/create:
     get:
       tags:
         - API_Rest
@@ -468,9 +468,9 @@ paths:
       description: Create an ASAM path for a given instance
       operationId: app.utils_asampath_create_get
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: params
@@ -495,9 +495,9 @@ paths:
       description: Create an ASAM path for a given instance
       operationId: app.utils_asampath_create_post
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: params
@@ -515,7 +515,7 @@ paths:
       security:
         - session_auth:
           - access_data
-  /env/{envI}/utils/asampath/resolve:
+  /con/{conI}/utils/asampath/resolve:
     get:
       tags:
         - API_Rest
@@ -523,9 +523,9 @@ paths:
       description: Get instance for given ASAM path
       operationId: app.utils_asampath_resolve_post
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: params
@@ -550,9 +550,9 @@ paths:
       description: Get instance for given ASAM path
       operationId: app.utils_asampath_resolve_get
       parameters:
-        - name: envI
+        - name: conI
           in: path
-          description: string identify the selected environment
+          description: string identify the selected configuration
           required: true
           type: string
         - name: params

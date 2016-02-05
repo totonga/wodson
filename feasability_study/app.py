@@ -28,19 +28,19 @@ from connexion import NoContent
 app = connexion.App(__name__)
 
 
-class _CEnv:
+class _CCon:
     context_vars_ = {}
     session_obj_ = None
 
     def __init__(self, context_vars):
         self.context_vars_ = context_vars
 
-_envs = {}
+_cons = {}
 
-_envs['e1'] = _CEnv({u'URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'})
-_envs['e2'] = _CEnv({u'URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
-_envs['e3'] = _CEnv({u'URL': u'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
-_envs['e4'] = _CEnv({u'URL': u'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c1'] = _CCon({u'URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'})
+_cons['c2'] = _CCon({u'URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
+_cons['c3'] = _CCon({u'URL': u'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c4'] = _CCon({u'URL': u'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
 
 
 def _request_wants_json():
@@ -106,55 +106,55 @@ def _GetDiscriminatorArrayName(arrayType):
     return None
 
 
-def _Session(envI):
+def _Session(conI):
     global session_obj__
 
-    if _envs[envI].session_obj_ is None:
-        sUrl = _envs[envI].context_vars_['URL']
-        sUsr = _envs[envI].context_vars_['USER']
-        sPwd = _envs[envI].context_vars_['PASSWORD']
-        _envs[envI].session_obj_ = odslib.CSession(sUrl, sUsr, sPwd)
+    if _cons[conI].session_obj_ is None:
+        sUrl = _cons[conI].context_vars_['URL']
+        sUsr = _cons[conI].context_vars_['USER']
+        sPwd = _cons[conI].context_vars_['PASSWORD']
+        _cons[conI].session_obj_ = odslib.CSession(sUrl, sUsr, sPwd)
 
-    return _envs[envI].session_obj_
+    return _cons[conI].session_obj_
 
 
-def _SessionClose(envI):
+def _SessionClose(conI):
     global session_obj__
 
-    if not _envs[envI].session_obj_ is None:
-        _envs[envI].session_obj_.Close()
-        _envs[envI].session_obj_ = None
+    if not _cons[conI].session_obj_ is None:
+        _cons[conI].session_obj_.Close()
+        _cons[conI].session_obj_ = None
 
 
-def data_post(envI, data_matrix):
+def data_post(conI, data_matrix):
     logging.info('create instances')
     return jsonify({}), 200
 
 
-def data_modify_post(envI, data_matrix):
-    return data_post(envI, data_matrix)
+def data_modify_post(conI, data_matrix):
+    return data_post(conI, data_matrix)
 
 
-def data_put(envI, data_matrix):
+def data_put(conI, data_matrix):
     logging.info('update instances')
     return NoContent, 200
 
 
-def data_modify_put(envI, data_matrix):
-    return data_put(envI, data_matrix)
+def data_modify_put(conI, data_matrix):
+    return data_put(conI, data_matrix)
 
 
-def data_delete(envI, data_matrix):
+def data_delete(conI, data_matrix):
     logging.info('delete instances')
 
     return NoContent, 200
 
 
-def data_modify_delete(envI, data_matrix):
-    return data_delete(envI, data_matrix)
+def data_modify_delete(conI, data_matrix):
+    return data_delete(conI, data_matrix)
 
 
-def data_get(envI,  query_struct):
+def data_get(conI,  query_struct):
     logging.info('retrieve data')
 
     entityStr = query_struct['entity']
@@ -167,7 +167,7 @@ def data_get(envI,  query_struct):
     vectorSkipCount = query_struct['vectorSkipCount'] if 'vectorSkipCount' in query_struct else 0
     vectorMaxCount = query_struct['vectorMaxCount'] if 'vectorMaxCount' in query_struct else sys.maxsize
 
-    so = _Session(envI)
+    so = _Session(conI)
     model = so.Model()
     elem = model.GetElemEx(entityStr)
     result = so.GetInstancesEx_Ver2(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
@@ -265,26 +265,26 @@ def data_get(envI,  query_struct):
     return render_template('datamatrix.html', datamatrices=rv),  200
 
 
-def data_access_post(envI, query_struct):
-    return data_get(envI, query_struct)
+def data_access_post(conI, query_struct):
+    return data_get(conI, query_struct)
 
 
-def data_iteratorguid_get(envI,  iteratorGuid):
+def data_iteratorguid_get(conI,  iteratorGuid):
     logging.info('get additional results for ' + iteratorGuid)
     return jsonify({}), 200
 
 
-def transaction_put(envI):
+def transaction_put(conI):
     logging.info('commit transaction')
     return NoContent, 200
 
 
-def transaction_delete(envI):
+def transaction_delete(conI):
     logging.info('abort transaction')
     return NoContent, 200
 
 
-def model_put(envI, model):
+def model_put(conI, model):
     logging.info('create or overwrite entity/attribute/enum in model')
     for entity in model['entities']:
         logging.info('create ' + entity['name'])
@@ -296,7 +296,7 @@ def model_put(envI, model):
     return NoContent, 200
 
 
-def model_delete(envI, model):
+def model_delete(conI, model):
     logging.info('delete entity/attribute/enum in model')
     for entity in model['entities']:
         logging.info('delete ' + entity['name'])
@@ -304,10 +304,10 @@ def model_delete(envI, model):
     return NoContent, 200
 
 
-def model_get(envI):
+def model_get(conI):
     logging.info('get the server model')
     rv = {}
-    model = _Session(envI).Model()
+    model = _Session(conI).Model()
     # add enumerations
     enumsArray = []
     for enum in model.enums_:
@@ -371,38 +371,38 @@ def model_get(envI):
     return rv
 
 
-def context_get(envI):
+def context_get(conI):
     logging.info('get context variables')
     rv = []
-    for param in _envs[envI].context_vars_:
+    for param in _cons[conI].context_vars_:
         if 'PASSWORD' != param:
             pObj = {}
             pObj['name'] = param
-            pObj['value'] = _envs[envI].context_vars_[param]
+            pObj['value'] = _cons[conI].context_vars_[param]
             rv.append(pObj)
     return rv
 
 
-def context_put(envI, parameters):
+def context_put(conI, parameters):
     logging.info('set context variables')
     # make sure we can use different context
-    _SessionClose(envI)
+    _SessionClose(conI)
 
     for param in parameters:
         pName = param['name']
         pValue = param['value']
-        _envs[envI].context_vars_[pName] = pValue
+        _cons[conI].context_vars_[pName] = pValue
 
     return NoContent, 200
 
 
-def utils_asampath_create_get(envI, params):
+def utils_asampath_create_get(conI, params):
     logging.info('create an asam path')
 
     entityStr = params['entity']
     iid = params['id']
 
-    so = _Session(envI)
+    so = _Session(conI)
     model = so.Model()
     elem = model.GetElemEx(entityStr)
     rv = {}
@@ -410,16 +410,16 @@ def utils_asampath_create_get(envI, params):
     return rv
 
 
-def utils_asampath_create_post(envI, params):
-    return utils_asampath_create_get(envI, params)
+def utils_asampath_create_post(conI, params):
+    return utils_asampath_create_get(conI, params)
 
 
-def utils_asampath_resolve_get(envI, params):
+def utils_asampath_resolve_get(conI, params):
     logging.info('resolve an asam path')
 
     path = params['path']
 
-    so = _Session(envI)
+    so = _Session(conI)
     entity,  iid = so.AsamPathResolve(path)
     rv = {}
     rv['entity'] = entity
@@ -427,8 +427,8 @@ def utils_asampath_resolve_get(envI, params):
     return rv
 
 
-def utils_asampath_resolve_post(envI, params):
-    return utils_asampath_resolve_get(envI, params)
+def utils_asampath_resolve_post(conI, params):
+    return utils_asampath_resolve_get(conI, params)
 
 
 @app.route('/')

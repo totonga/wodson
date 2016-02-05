@@ -9,7 +9,7 @@ ASAM ODS is about making measurement data persistent. So this is the most import
 === Read meta data
 
 ----
-POST /env/{envI}/data/access
+POST /con/{conI}/data/access
 ----
 
 .get results from first entity derived from AoTest with all properties
@@ -24,7 +24,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 {
     "entity": "AoTest"
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -43,7 +43,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 {
     "entity": "1"
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -61,7 +61,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     "entity": "MeaQuantity",
     "maxCount": 50
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -84,7 +84,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "id"
     ]
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -108,7 +108,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "measurement.name"
     ]
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -129,7 +129,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "id=4"
     ]
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -153,7 +153,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "measurement=2"
     ]
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -179,7 +179,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "measurement.test=2"
     ]
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -212,7 +212,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "measurement.test.name",
         "measurement.test.id"
     ]
-}' 'http://localhost:8081/env/e2/data/access'
+}' 'http://localhost:8081/con/c2/data/access'
 ----
 .result
 [source,json]
@@ -232,7 +232,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "DISTINCT(name)"
     ]
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -255,7 +255,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "DESCENDING(name)"
     ]
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -279,7 +279,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     "groupBy": [
         "name"
     ]
-}' 'http://localhost:8081/env/e2/data/access'
+}' 'http://localhost:8081/con/c2/data/access'
 ----
 .result
 [source,json]
@@ -290,7 +290,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 === Read bulk data
 
 ----
-POST /env/{envI}/data/access
+POST /con/{conI}/data/access
 ----
 
 ****
@@ -316,7 +316,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "generation_parameters"
     ]
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -343,7 +343,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     ],
     "vectorMaxCount": 1000
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -371,7 +371,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     "vectorSkipCount": 1000,
     "vectorMaxCount": 1500
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -403,7 +403,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "generation_parameters"
     ]
 }' 
-'http://localhost:8081/env/e1/data/access'
+'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
@@ -415,32 +415,32 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 === Write meta data
 
 ----
-POST /env/{envI}/data/modify
-PUT /env/{envI}/data/modify
-DELETE /env/{envI}/data/modify
+POST /con/{conI}/data/modify
+PUT /con/{conI}/data/modify
+DELETE /con/{conI}/data/modify
 ----
 
 ==== Create new instances
 
 ----
-POST /env/{envI}/data/modify
+POST /con/{conI}/data/modify
 ----
 
 ==== Update instances
 
 ----
-PUT /env/{envI}/data/modify
+PUT /con/{conI}/data/modify
 ----
 
 ==== Delete Instances
 
 ----
-DELETE /env/{envI}/data/modify
+DELETE /con/{conI}/data/modify
 ----
 
 
 === Write bulk data
 
 ----
-PUT /env/{envI}/data/modify
+PUT /con/{conI}/data/modify
 ----

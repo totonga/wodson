@@ -10,7 +10,7 @@ The simplest context variables are those needed to establish the connection.
 === Read Context Variables 
 
 ----
-GET /env/{envI}/context
+GET /con/{conI}/context
 ----
 
 .read all context variables
@@ -18,7 +18,7 @@ GET /env/{envI}/context
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/env/e1/context'
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1/context'
 ----
 
 .result
@@ -41,7 +41,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 === Set Context Variables
 
 ----
-PUT /env/{envI}/context
+PUT /con/{conI}/context
 ----
 
 .set initialization context variables
@@ -62,6 +62,6 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
         "name": "PASSWORD",
         "value": "puma"
     }
-]' 'http://localhost:8081/env/e1/context'
+]' 'http://localhost:8081/con/c1/context'
 ----
 ================================

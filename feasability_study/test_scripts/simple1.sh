@@ -21,31 +21,31 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: text/htm
     "name": "PASSWORD",
     "value": "test"
   }
-]' 'http://localhost:8081/env/e1/context'
+]' 'http://localhost:8081/con/c1/context'
 
 pause 'Get Server Model [Press key to continue]'
-curl -X GET --header 'Accept: application/json' 'http://localhost:8081/env/e1/model'
+curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/model'
 
 pause 'Retrieve name and id from AoTests [Press key to continue]'
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
     "entity": "AoTest",
     "attributes": ["name","id"]
-}' 'http://localhost:8081/env/e1/data'
+}' 'http://localhost:8081/con/c1/data'
 
 pause 'Retrieve maximal 10 measurements with all query able attribute [Press key to continue]'
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
     "entity": "AoMeasurement",
     "maxCount": 50
-}' 'http://localhost:8081/env/e1/data'
+}' 'http://localhost:8081/con/c1/data'
 
 pause 'Create asam path for instance [Press key to continue]'
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
   "entity": "AoTest",
   "id": 1
-}' 'http://localhost:8081/env/e1/utils/asampath/create'
+}' 'http://localhost:8081/con/c1/utils/asampath/create'
 
 pause 'Retrieve name and id from AoTests using html [Press key to continue]'
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: text/html' -d '{
     "entity": "AoTest",
     "attributes": ["name","id"]
-}' 'http://localhost:8081/env/e1/data'
+}' 'http://localhost:8081/con/c1/data'
