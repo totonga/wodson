@@ -1,4 +1,6 @@
-== Simple Json Query
+=== Jaquel
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
 
 ****
 MongoDb uses a json based flexible query structure that allows a good learning 
@@ -11,7 +13,7 @@ IMPORTANT: It is always possible to use application or base names for entity, re
            This is important for writing generic code even without having to analyze the complete model.
            Be aware that application name can always be used to access any element or attribute.
 
-=== The json query structure
+==== Json Query Language
 
 .get all Aotests
 [source,json]
@@ -446,7 +448,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 -----------
 
 
-=== Special key values
+==== Special key values
 
 .top level
 |===========================================

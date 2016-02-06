@@ -3,6 +3,10 @@
 :Email:     totonga@gmail.com
 
 ****
-The DataMatrix is the central element to read and write data (meta/bulk). It is important to be familiar with it.
+The DataMatrix is the return structure of data access calls and the input of data modify calls.
+It is just a table with rows and lines. Each row has the same number of lines.
+Think of it like an return table of an SQL command. In addition it has the capabilities to store 
+vectors in the cells and there is even a row of type DT_UNKOWN.
 ****
 
+TIP: The DataMatrix is the central element to read and write data (meta/bulk). It is important to be familiar with it.

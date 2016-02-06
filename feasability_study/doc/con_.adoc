@@ -1,0 +1,15 @@
+== Con
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+****
+Con is hard to explain. It is a mixture of context, configuration, connection, factory and session.
+I like configuration the best because it defines how the current user will access the server by mean
+of what is configurable for this server.
+****
+
+=== Use Named Con
+
+=== Create new Con
+
+=== Delete Con
