@@ -336,6 +336,24 @@ def LL_Is0(val):
         return False
     return True
 
+def GetTsValue(tsVal):
+
+    if tsVal.u._d == org.asam.ods.DT_BYTE: return tsVal.u.byteVal
+    elif tsVal.u._d == org.asam.ods.DT_BOOLEAN: return tsVal.u.booleanVal
+    elif tsVal.u._d == org.asam.ods.DT_SHORT: return tsVal.u.shortVal
+    elif tsVal.u._d == org.asam.ods.DT_LONG: return tsVal.u.longVal
+    elif tsVal.u._d == org.asam.ods.DT_LONGLONG: return LL2Int(tsVal.u.longlongVal)
+    elif tsVal.u._d == org.asam.ods.DT_FLOAT: return tsVal.u.floatVal
+    elif tsVal.u._d == org.asam.ods.DT_DOUBLE: return tsVal.u.doubleVal
+    elif tsVal.u._d == org.asam.ods.DT_DATE: return tsVal.u.dateVal
+    elif tsVal.u._d == org.asam.ods.DT_STRING: return tsVal.u.stringVal
+    elif tsVal.u._d == org.asam.ods.DT_ENUM: return tsVal.u.enumVal
+    #elif aaType == org.asam.ods.DT_COMPLEX:
+    #elif aaType == org.asam.ods.DT_DCOMPLEX:
+    #elif aaType == org.asam.ods.DT_EXTERNALREFERENCE:
+    else:
+        print "Unable to read TS_Value."
+        sys.exit(1)
 
 def CreateTsValue(aaType, strVal):
 

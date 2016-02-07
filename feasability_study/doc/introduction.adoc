@@ -1,0 +1,7 @@
+== Introduction
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+****
+This document describes a HTTP based interface to offer the functionality of an ASAM ODS Corba interface.
+****

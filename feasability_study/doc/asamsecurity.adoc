@@ -1,4 +1,4 @@
-== Asam Security
+=== Asam Security
 :Author:    Andreas Krantz
 :Email:     totonga@gmail.com
 
@@ -19,7 +19,7 @@ Following entities do exist:
 | <<InitialRightsAt>> | ???
 |===========================================
 
-=== Attributes and Relations of ASAM Security
+==== Attributes and Relations of ASAM Security
 
 .ACLI[[ACLI]]
 [options="header"]

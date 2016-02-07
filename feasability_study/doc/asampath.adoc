@@ -1,4 +1,4 @@
-== AsamPath
+=== AsamPath
 :Author:    Andreas Krantz
 :Email:     totonga@gmail.com
 
@@ -10,7 +10,7 @@ readable or name based version is needed to identify an instance the human reada
 CAUTION: While creating the ASAM path is somehow cheap, resolving it might be expensive. Think about using *entityname/id* 
          to store elements in a shopping basket.
          
-=== Create AsamPath
+==== Create AsamPath
 
 ----
 POST /con/{conI}/utils/asampath/create
@@ -36,7 +36,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 ================================
 
-=== Resolve AsamPath
+==== Resolve AsamPath
 
 ----
 POST /con/{conI}/utils/asampath/resolve

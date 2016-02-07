@@ -29,11 +29,11 @@ app = connexion.App(__name__)
 
 
 class _CCon:
-    context_vars_ = {}
+    name_value_params_ = {}
     session_obj_ = None
 
     def __init__(self, context_vars):
-        self.context_vars_ = context_vars
+        self.name_value_params_ = context_vars
 
 _cons = {}
 
@@ -110,9 +110,9 @@ def _Session(conI):
     global session_obj__
 
     if _cons[conI].session_obj_ is None:
-        sUrl = _cons[conI].context_vars_['URL']
-        sUsr = _cons[conI].context_vars_['USER']
-        sPwd = _cons[conI].context_vars_['PASSWORD']
+        sUrl = _cons[conI].name_value_params_['URL']
+        sUsr = _cons[conI].name_value_params_['USER']
+        sPwd = _cons[conI].name_value_params_['PASSWORD']
         _cons[conI].session_obj_ = odslib.CSession(sUrl, sUsr, sPwd)
 
     return _cons[conI].session_obj_
@@ -375,28 +375,68 @@ def model_get(conI):
     rv['entities'] = entities
     return rv
 
-
-def context_get(conI):
+def context_get(conI,  pattern):
     logging.info('get context variables')
+    so = _Session(conI)
+    nvi = so.session_.getContext(pattern.encode('utf-8'))
     rv = []
-    for param in _cons[conI].context_vars_:
-        if 'PASSWORD' != param:
-            pObj = {}
-            pObj['name'] = param
-            pObj['value'] = _cons[conI].context_vars_[param]
-            rv.append(pObj)
-    return rv
-
+    nviCount = nvi.getCount()
+    nvs = nvi.nextN(nviCount)
+    for nv in nvs:
+        pObj = {}
+        pObj['name'] = nv.valName
+        pObj['value'] = str(odslib.GetTsValue(nv.value))
+        rv.append(pObj)
+    
+    return rv, 200
 
 def context_put(conI, parameters):
     logging.info('set context variables')
-    # make sure we can use different context
+    so = _Session(conI)
+    for param in parameters:
+        varName = param['name']
+        varValue = param['value']
+        so.session_.setContextString(varName.encode('utf-8'),  varValue.encode('utf-8'))
+
+    return NoContent, 200
+
+def con_get(conI):
+    logging.info('get con parameters')
+    rv = []
+    for param in _cons[conI].name_value_params_:
+        if 'PASSWORD' != param:
+            pObj = {}
+            pObj['name'] = param
+            pObj['value'] = _cons[conI].name_value_params_[param]
+            rv.append(pObj)
+    return rv
+
+def con_post(conI, parameters):
+    logging.info('Create a new con')
+    if conI in _cons:
+        return NoContent, 405
+
+    for param in parameters:
+        pName = param['name']
+        pValue = param['value']
+        _cons[conI].name_value_params_[pName] = pValue
+
+    return NoContent, 200
+
+def con_delete(conI):
+    logging.info('delete con and close session')
+    del _cons[conI]
+    return NoContent, 200
+
+def con_put(conI, parameters):
+    logging.info('set con parameters')
+    # make sure we can change configuration of session
     _SessionClose(conI)
 
     for param in parameters:
         pName = param['name']
         pValue = param['value']
-        _cons[conI].context_vars_[pName] = pValue
+        _cons[conI].name_value_params_[pName] = pValue
 
     return NoContent, 200
 

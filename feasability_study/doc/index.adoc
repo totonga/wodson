@@ -3,16 +3,19 @@
 :Email:     totonga@gmail.com
 :toc:
 
+include::introduction.adoc[]
+
+include::con_.adoc[]
 
 include::data.adoc[]
 
 include::model.adoc[]
 
-include::con_.adoc[]
+include::transaction.adoc[] 
+
+== Utils
 
 include::context.adoc[]
-
-include::transaction.adoc[] 
 
 include::asampath.adoc[]
 
@@ -20,10 +23,10 @@ include::file.adoc[]
 
 include::asamsecurity.adoc[]
 
-include::faq.adoc[]
+== Additional stuff
 
 include::setup.adoc[]
 
-== Additional stuff
+include::faq.adoc[]
 
 include::jaquel.adoc[]

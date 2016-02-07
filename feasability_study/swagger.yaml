@@ -447,6 +447,12 @@ paths:
           description: string identify the selected configuration
           required: true
           type: string
+        - in: query
+          name: pattern
+          description: Pattern of the context parameters to retrieve. Might contain asterics
+          required: false
+          type: string
+          default: '*'
       responses:
         '200':
           description: Successful response
@@ -461,7 +467,6 @@ paths:
       tags:
         - API_Http
         - API_Rest
-        - Init
       operationId: app.context_put
       parameters:
         - name: conI
@@ -592,6 +597,100 @@ paths:
       security:
         - session_auth:
           - access_data
+  /con/{conI}:
+    get:
+      tags:
+        - API_Http
+        - API_Rest
+        - Info
+      description: get parameter of con
+      operationId: app.con_get
+      parameters:
+        - name: conI
+          in: path
+          description: get paameters of current con
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/NameValuePairs'
+        '404':
+          description: not connected
+      security:
+        - session_auth:
+          - access_data
+    post:
+      tags:
+        - API_Http
+        - API_Rest
+        - Init
+      operationId: app.con_post
+      parameters:
+        - name: conI
+          in: path
+          description: create new Con with default parameters
+          required: true
+          type: string
+        - name: parameters
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NameValuePairs'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+          - modify_data
+    put:
+      tags:
+        - API_Http
+        - API_Rest
+        - Init
+      operationId: app.con_put
+      parameters:
+        - name: conI
+          in: path
+          description: set parameters of con
+          required: true
+          type: string
+        - name: parameters
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NameValuePairs'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+          - modify_data
+    delete:
+      tags:
+        - API_Http
+        - API_Rest
+        - Init
+      operationId: app.con_delete
+      parameters:
+        - name: conI
+          in: path
+          description: set parameters of con
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+          - modify_data
 securityDefinitions:
   session_auth:
     type: oauth2

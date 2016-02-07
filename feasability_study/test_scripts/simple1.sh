@@ -7,7 +7,7 @@ function pause(){
 
 # Run examples
 
-pause 'Send context variables [Press key to continue]'
+pause 'Send con parameters [Press key to continue]'
 curl -X PUT --header 'Content-Type: application/json' --header 'Accept: text/html' -d '[
   {
     "name": "URL",
@@ -21,7 +21,7 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: text/htm
     "name": "PASSWORD",
     "value": "test"
   }
-]' 'http://localhost:8081/con/c1/context'
+]' 'http://localhost:8081/con/c1'
 
 pause 'Get Server Model [Press key to continue]'
 curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/model'

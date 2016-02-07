@@ -1,4 +1,4 @@
-== File
+=== File
 :Author:    Andreas Krantz
 :Email:     totonga@gmail.com
 
@@ -7,7 +7,7 @@ ASAM Server can store two kind of binary data. DT_BLOB and AoFile.
 Becasue the conten is equal for the client side we can threat it as one.
 ****
 
-=== Read DT_BLOB 
+==== Read DT_BLOB 
 
 ----
 POST /con/{conI}/utils/binary
@@ -33,7 +33,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 
 ================================
 
-=== Read AoFile
+==== Read AoFile
 
 ----
 POST /con/{conI}/utils/binary

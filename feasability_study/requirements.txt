@@ -1,2 +1,2 @@
 flask
-connexion>=1.0.28
+connexion>=1.0.38

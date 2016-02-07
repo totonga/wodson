@@ -1,8 +1,8 @@
-== Setup System
+=== Setup System
 :Author:    Andreas Krantz
 :Email:     totonga@gmail.com
 
-=== Linux
+==== Linux (Debian/apt)
 
 Run the following commands in a terminal.
 
@@ -27,7 +27,7 @@ Visit http://localhost:8081/ui/ to see the integrated swagger UI.
 sudo apt-get install eric curl
 ----
 
-=== Windows
+==== Windows
 
 Download omniORBpy package from homepage http://sourceforge.net/projects/omniorb/files/omniORBpy/
 

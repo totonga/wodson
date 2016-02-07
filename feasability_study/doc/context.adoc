@@ -1,4 +1,4 @@
-== Context
+=== Context
 :Author:    Andreas Krantz
 :Email:     totonga@gmail.com
 
@@ -7,7 +7,7 @@ ASAM Server contains some context variables that influence its behavior.
 The simplest context variables are those needed to establish the connection. 
 ****
 
-=== Read Context Variables 
+==== Read Context Variables 
 
 ----
 GET /con/{conI}/context
@@ -18,7 +18,21 @@ GET /con/{conI}/context
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1/context'
+curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/context'
+----
+
+.result
+[source,json]
+----
+----
+================================
+
+.read a context variables by pattern
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/context?pattern=ODSVERSION'
 ----
 
 .result
@@ -26,41 +40,57 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 ----
 [
     {
-        "name": "URL",
-        "value": "corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
-    },
-    {
-        "name": "USER",
-        "value": "System"
+            "name": "ODSVERSION",
+            "value": "5.2"
     }
 ]
 ----
 ================================
 
+.read wildcards
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/context?pattern=WILD*'
+----
 
-=== Set Context Variables
+.result
+[source,json]
+----
+[
+  {
+    "name": "WILDALL",
+    "value": "%"
+  },
+  {
+    "name": "WILDESC",
+    "value": "\\"
+  },
+  {
+    "name": "WILDONE",
+    "value": "_"
+  }
+]
+----
+================================
+
+
+==== Set Context Variables
 
 ----
 PUT /con/{conI}/context
 ----
 
-.set initialization context variables
+.set context variables
 ================================
 .request
 [source,json]
 ----
 curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '[
     {
-        "name": "URL",
-        "value": "corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
-    },
-    {
-        "name": "USER",
-        "value": "System"
-    },
-    {
-        "name": "PASSWORD",
-        "value": "puma"
+        "name": "VALUEMATRIX_MODE",
+        "value": "CALCULATED"
     }
 ]' 'http://localhost:8081/con/c1/context'
 ----
