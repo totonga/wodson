@@ -26,9 +26,9 @@ tags:
   - name: Transaction
     description: Handle transactions, Open transactions
   - name: Info
-    description: Have a look at server configuration
+    description: Have a look at some server info
   - name: Init
-    description: Used to initialize server configuration
+    description: Used to initialize the server
   - name: Utils
     description: Utilities to do special jobs
 paths:
@@ -42,7 +42,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: query_struct
@@ -73,7 +73,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: data_matrix
@@ -101,7 +101,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: data_matrix
@@ -127,7 +127,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: data_matrix
@@ -154,7 +154,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: iteratorGuid
@@ -185,7 +185,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: query_struct
@@ -217,7 +217,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: data_matrix
@@ -245,7 +245,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: data_matrix
@@ -271,7 +271,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: data_matrix
@@ -298,7 +298,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
       responses:
@@ -320,7 +320,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
       responses:
@@ -342,7 +342,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
       responses:
@@ -366,7 +366,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
       responses:
@@ -390,7 +390,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: model
@@ -417,7 +417,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: model
@@ -444,7 +444,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - in: query
@@ -471,7 +471,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: parameters
@@ -497,7 +497,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: params
@@ -524,7 +524,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: params
@@ -552,7 +552,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: params
@@ -579,7 +579,7 @@ paths:
       parameters:
         - name: conI
           in: path
-          description: string identify the selected configuration
+          description: string identify the selected Con
           required: true
           type: string
         - name: params
@@ -750,19 +750,19 @@ definitions:
           type: string
           description: attribute path
           example: name
-      maxCount:
+      rowMaxCount:
         type: integer
         format: int64
         example: 1000
-      skipCount:
+      rowSkipCount:
         type: integer
         format: int64
         example: 0
-      vectorSkipCount:
+      seqSkipCount:
         type: integer
         format: int64
         example: 0
-      vectorMaxCount:
+      seqMaxCount:
         type: integer
         format: int64
         example: 10000
@@ -917,11 +917,11 @@ definitions:
       baseName:
         type: string
         example: AoAny
-      skipCount:
+      rowSkipCount:
         type: integer
         format: int64
         example: 0
-      vectorSkipCount:
+      seqSkipCount:
         type: integer
         format: int64
         example: 0

@@ -15,7 +15,6 @@ __email__ = "totonga@gmail.com"
 __status__ = "Prototype"
 
 import logging
-import sys
 import org
 import odslib
 import connexion
@@ -159,15 +158,15 @@ def data_get(conI,  query_struct):
     attributes = query_struct['attributes'] if 'attributes' in query_struct else []
     orderBy = query_struct['orderBy'] if 'orderBy' in query_struct else []
     groupBy = query_struct['groupBy'] if 'groupBy' in query_struct else []
-    maxCount = query_struct['maxCount'] if 'maxCount' in query_struct else 10000
-    skipCount = query_struct['skipCount'] if 'skipCount' in query_struct else 0
-    vectorSkipCount = query_struct['vectorSkipCount'] if 'vectorSkipCount' in query_struct else 0
-    vectorMaxCount = query_struct['vectorMaxCount'] if 'vectorMaxCount' in query_struct else sys.maxsize
+    rowMaxCount = query_struct['rowMaxCount'] if 'rowMaxCount' in query_struct else 10000
+    rowSkipCount = query_struct['rowSkipCount'] if 'rowSkipCount' in query_struct else 0
+    seqSkipCount = query_struct['seqSkipCount'] if 'seqSkipCount' in query_struct else 0
+    seqMaxCount = query_struct['seqMaxCount'] if 'seqMaxCount' in query_struct else 50
 
     so = _Session(conI)
     model = so.Model()
     elem = model.GetElemEx(entityStr)
-    result = so.GetInstancesEx(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
+    result = so.GetInstancesEx(elem.aeName, conditions, attributes, orderBy, groupBy, rowMaxCount)
 
     rv = {}
     rv['tables'] = []
@@ -179,8 +178,8 @@ def data_get(conI,  query_struct):
         tableObj = {}
         tableObj['name'] = tableElem.aeName
         tableObj['baseName'] = tableElem.beName
-        tableObj['skipCount'] = skipCount
-        tableObj['vectorSkipCount'] = vectorSkipCount
+        tableObj['rowSkipCount'] = rowSkipCount
+        tableObj['seqSkipCount'] = seqSkipCount
 
         columnsObj = []
 
@@ -191,14 +190,14 @@ def data_get(conI,  query_struct):
                 if isinstance(row, list):
                     # we should do this using value matrix but actually we are emulating it
                     rowNumAvailable = len(row)
-                    if(rowNumAvailable > 0 and (vectorSkipCount > 0 or vectorMaxCount < rowNumAvailable)):
-                        if(vectorSkipCount >= rowNumAvailable):
+                    if(rowNumAvailable > 0 and (seqSkipCount > 0 or seqMaxCount < rowNumAvailable)):
+                        if(seqSkipCount >= rowNumAvailable):
                             columnValues = []
                         else:
-                            numtakeable = rowNumAvailable - vectorSkipCount
-                            if(numtakeable > vectorMaxCount):
-                                numtakeable = vectorMaxCount
-                            columnValues[rowIndex] = row[vectorSkipCount:(vectorSkipCount + numtakeable)]
+                            numtakeable = rowNumAvailable - seqSkipCount
+                            if(numtakeable > seqMaxCount):
+                                numtakeable = seqMaxCount
+                            columnValues[rowIndex] = row[seqSkipCount:(seqSkipCount + numtakeable)]
 
             columnFlags = column.value.flag
             columnFlagLength = len(columnFlags)

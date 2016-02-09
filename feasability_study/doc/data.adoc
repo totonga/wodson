@@ -17,7 +17,7 @@ POST /con/{conI}/data/access
 
 .get results from first entity derived from AoTest with all properties
 ================================
-TIP: The server will have a default maxCount setting.
+TIP: The server will have a default rowMaxCount setting.
      He will potentially not return all AoTest if there are more of them.
      
 .request
@@ -62,7 +62,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
     "entity": "MeaQuantity",
-    "maxCount": 50
+    "rowMaxCount": 50
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -344,7 +344,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "flags",
         "generation_parameters"
     ],
-    "vectorMaxCount": 1000
+    "seqMaxCount": 1000
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -371,8 +371,8 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
         "flags",
         "generation_parameters"
     ],
-    "vectorSkipCount": 1000,
-    "vectorMaxCount": 1500
+    "seqSkipCount": 1000,
+    "seqMaxCount": 1500
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----

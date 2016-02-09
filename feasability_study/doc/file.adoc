@@ -10,7 +10,7 @@ Becasue the conten is equal for the client side we can threat it as one.
 ==== Read DT_BLOB 
 
 ----
-POST /con/{conI}/utils/binary
+POST /con/{conI}/utils/binary/access
 ----
 
 ****
@@ -26,8 +26,8 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     "entity": "Layout",
     "id": 2710,
     "attribute": "content1",
-    "vectorMaxCount": 1000,
-    "vectorSkipCount": 500
+    "seqMaxCount": 1000,
+    "seqSkipCount": 500
 }' 'http://localhost:8081/con/c1/utils/binary/access'
 ----
 
@@ -36,7 +36,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ==== Read AoFile
 
 ----
-POST /con/{conI}/utils/binary
+POST /con/{conI}/utils/binary/access
 ----
 
 .Read chunk
@@ -47,8 +47,8 @@ POST /con/{conI}/utils/binary
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
     "entity": "DataFile",
     "id": "2710",
-    "vectorMaxCount": 10000,
-    "vectorSkipCount": 700
+    "seqMaxCount": 10000,
+    "seqSkipCount": 700
 }' 'http://localhost:8081/con/c1/utils/binary/access'
 ----
 

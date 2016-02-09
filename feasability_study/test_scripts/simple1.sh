@@ -35,7 +35,7 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
 pause 'Retrieve maximal 10 measurements with all query able attribute [Press key to continue]'
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
     "entity": "AoMeasurement",
-    "maxCount": 50
+    "rowMaxCount": 50
 }' 'http://localhost:8081/con/c1/data'
 
 pause 'Create asam path for instance [Press key to continue]'
