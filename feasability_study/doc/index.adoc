@@ -1,7 +1,8 @@
 = Wodson - Feasibility Study
 :Author:    Andreas Krantz
 :Email:     totonga@gmail.com
-:toc:
+:toc: left
+:toclevels: 3
 
 include::introduction.adoc[]
 

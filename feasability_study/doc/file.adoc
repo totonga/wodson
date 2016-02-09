@@ -7,7 +7,7 @@ ASAM Server can store two kind of binary data. DT_BLOB and AoFile.
 Because the content is equal for the client side we can threat it as one.
 ****
 
-==== Read DT_BLOB 
+==== Read Blob
 
 ----
 POST /con/{conI}/utils/binary/access
@@ -81,6 +81,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     "seqSkipCount": 700
 }' 'http://localhost:8081/con/c1/utils/binary/access'
 ----
+================================
 
 .download file
 ================================
@@ -92,7 +93,6 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     "id": 2710
 }' 'http://localhost:8081/con/c1/utils/binary/download'
 ----
-
 ================================
 
 

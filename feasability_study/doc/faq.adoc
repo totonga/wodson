@@ -1,4 +1,4 @@
-=== FAQ (Frequency Asked Questions)
+=== FAQ
 :Author:    Andreas Krantz
 :Email:     totonga@gmail.com
 
