@@ -691,6 +691,95 @@ paths:
       security:
         - session_auth:
           - modify_data
+  /con/{conI}/utils/binary/access:
+    post:
+      tags:
+        - API_Http
+        - API_Rest
+        - Utils
+      description: Read binary chunk from Blob or AoFile
+      operationId: app.utils_binary_access_post
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+        - name: binary_identifier
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/BinaryIdentifier'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/DataMatrices'
+        '404':
+          description: not connected
+      security:
+        - session_auth:
+          - access_data
+  /con/{conI}/utils/binary/download:
+    post:
+      tags:
+        - API_Http
+        - API_Rest
+        - Utils
+      description: download Blob or AoFile
+      operationId: app.utils_binary_download_post
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+        - name: binary_identifier
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/BinaryIdentifier'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: file
+        '404':
+          description: not connected
+      produces:
+        - application/octet-stream
+      security:
+        - session_auth:
+          - access_data
+  /con/{conI}/utils/binary/getuploadurl:
+    post:
+      tags:
+        - API_Http
+        - API_Rest
+        - Utils
+      description: upload Blob or AoFile
+      operationId: app.utils_binary_getuploadurl_post
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+        - name: binary_identifier
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/BinaryIdentifier'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: string
+        '404':
+          description: not connected
+      security:
+        - session_auth:
+          - access_data
 securityDefinitions:
   session_auth:
     type: oauth2
@@ -1050,3 +1139,26 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/DataMatrix'
+  BinaryIdentifier:
+    type: object
+    properties:
+      entity:
+        type: string
+        description: name of the application element or base element or string version of the objecttype/aid. In case multiple elements are derived from this base element the first one is picked
+        example: Layout
+      id:
+        type: integer
+        format: int64
+        example: 4711
+      attribute:
+        type: string
+        description: name of a blob attribute or empty for AoFile
+        example: content1
+      seqSkipCount:
+        type: integer
+        format: int64
+        example: 0
+      seqMaxCount:
+        type: integer
+        format: int64
+        example: 10000

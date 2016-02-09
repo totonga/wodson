@@ -290,9 +290,9 @@ def _column_get_seq(column):
         return column.value.u.dcomplexSeq
     elif columnType == org.asam.ods.DS_EXTERNALREFERENCE:
         return column.value.u.extRefSeq
-    
+
     logging.error("_column_get_seq: Unknown column type " + str(columnType))
-    
+
     return None
 
 
@@ -335,6 +335,7 @@ def LL_Is0(val):
         return False
     return True
 
+
 def GetTsValue(tsVal):
 
     if tsVal.u._d == org.asam.ods.DT_BYTE: return tsVal.u.byteVal
@@ -374,7 +375,7 @@ def CreateTsValue(aaType, strVal):
 
 
 def _get_session(params):
-    
+
     objString = params['$URL']
 
     logging.info("ORB: resolve objecturl")
@@ -385,7 +386,7 @@ def _get_session(params):
     factory = obj._narrow(org.asam.ods.AoFactory)
     if (factory is None):
         return None
-        
+
     logging.info("ORB: Got factory")
 
     nvs = []
@@ -538,7 +539,7 @@ class CSession:
     aea_ = None
 
     def __init__(self, params):
-        
+
         self.session_ = _get_session(params)
         if self.session_ is None:
             raise Exception("Retrieving session failed!")

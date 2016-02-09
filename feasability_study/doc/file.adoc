@@ -4,13 +4,14 @@
 
 ****
 ASAM Server can store two kind of binary data. DT_BLOB and AoFile.
-Becasue the conten is equal for the client side we can threat it as one.
+Because the content is equal for the client side we can threat it as one.
 ****
 
 ==== Read DT_BLOB 
 
 ----
 POST /con/{conI}/utils/binary/access
+POST /con/{conI}/utils/binary/download
 ----
 
 ****
@@ -30,8 +31,37 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     "seqSkipCount": 500
 }' 'http://localhost:8081/con/c1/utils/binary/access'
 ----
-
 ================================
+
+.Download blob
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/octet-stream' -d '{
+    "entity": "Layout",
+    "id": 2710,
+    "attribute": "content1"
+}' 'http://localhost:8081/con/c1/utils/binary/download'
+----
+================================
+
+
+==== Write Blob
+
+.Determine upload URL for BLOB
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "attribute": "content1",
+    "entity": "Layout",
+    "id": 4711
+}' 'http://localhost:8081/con/c1/utils/binary/getuploadurl'
+----
+================================
+
 
 ==== Read AoFile
 
@@ -46,10 +76,36 @@ POST /con/{conI}/utils/binary/access
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
     "entity": "DataFile",
-    "id": "2710",
+    "id": 2710,
     "seqMaxCount": 10000,
     "seqSkipCount": 700
 }' 'http://localhost:8081/con/c1/utils/binary/access'
 ----
 
+.download file
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/octet-stream' -d '{
+    "entity": "DataFile",
+    "id": 2710
+}' 'http://localhost:8081/con/c1/utils/binary/download'
+----
+
+================================
+
+
+==== Write AoFile
+
+.Determine upload URL for File
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "entity": "DataFile",
+    "id": 2710
+}' 'http://localhost:8081/con/c1/utils/binary/getuploadurl'
+----
 ================================

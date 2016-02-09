@@ -23,6 +23,7 @@ import connexion
 from flask import render_template,  redirect,  jsonify
 from flask import request
 from connexion import NoContent
+from flask import make_response
 
 app = connexion.App(__name__)
 
@@ -371,6 +372,7 @@ def model_get(conI):
     rv['entities'] = entities
     return rv
 
+
 def context_get(conI,  pattern):
     logging.info('get context variables')
     so = _Session(conI)
@@ -383,8 +385,9 @@ def context_get(conI,  pattern):
         pObj['name'] = nv.valName
         pObj['value'] = str(odslib.GetTsValue(nv.value))
         rv.append(pObj)
-    
+
     return rv, 200
+
 
 def context_put(conI, parameters):
     logging.info('set context variables')
@@ -396,6 +399,7 @@ def context_put(conI, parameters):
 
     return NoContent, 200
 
+
 def con_get(conI):
     logging.info('get con parameters')
     rv = []
@@ -406,6 +410,7 @@ def con_get(conI):
             pObj['value'] = _cons[conI].name_value_params_[param]
             rv.append(pObj)
     return rv
+
 
 def con_post(conI, parameters):
     logging.info('Create a new con')
@@ -419,10 +424,12 @@ def con_post(conI, parameters):
 
     return NoContent, 200
 
+
 def con_delete(conI):
     logging.info('delete con and close session')
     del _cons[conI]
     return NoContent, 200
+
 
 def con_put(conI, parameters):
     logging.info('set con parameters')
@@ -471,6 +478,23 @@ def utils_asampath_resolve_get(conI, params):
 def utils_asampath_resolve_post(conI, params):
     return utils_asampath_resolve_get(conI, params)
 
+
+def utils_binary_access_post(conI,  binary_identifier):
+    logging.info('read binary chunk')
+    return jsonify({}),  200
+
+
+def utils_binary_download_post(conI,  binary_identifier):
+    logging.info('download file')
+
+    response = make_response("abc")
+    response.headers['content-type'] = 'application/octet-stream'
+    return response
+
+def utils_binary_getuploadurl_post(conI,  binary_identifier):
+    logging.info('determnine upload url')
+
+    return u"http://kjdfslakjdlkdjaslfj", 200
 
 @app.route('/')
 def index():
