@@ -10,7 +10,7 @@ function pause(){
 pause 'Send con parameters [Press key to continue]'
 curl -X PUT --header 'Content-Type: application/json' --header 'Accept: text/html' -d '[
   {
-    "name": "URL",
+    "name": "$URL",
     "value": "corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS"
   },
   {

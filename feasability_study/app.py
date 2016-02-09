@@ -37,10 +37,10 @@ class _CCon:
 
 _cons = {}
 
-_cons['c1'] = _CCon({u'URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'})
-_cons['c2'] = _CCon({u'URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
-_cons['c3'] = _CCon({u'URL': u'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
-_cons['c4'] = _CCon({u'URL': u'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c1'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'})
+_cons['c2'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
+_cons['c3'] = _CCon({u'$URL': u'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c4'] = _CCon({u'$URL': u'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
 
 
 def _request_wants_json():
@@ -110,10 +110,7 @@ def _Session(conI):
     global session_obj__
 
     if _cons[conI].session_obj_ is None:
-        sUrl = _cons[conI].name_value_params_['URL']
-        sUsr = _cons[conI].name_value_params_['USER']
-        sPwd = _cons[conI].name_value_params_['PASSWORD']
-        _cons[conI].session_obj_ = odslib.CSession(sUrl, sUsr, sPwd)
+        _cons[conI].session_obj_ = odslib.CSession(_cons[conI].name_value_params_)
 
     return _cons[conI].session_obj_
 

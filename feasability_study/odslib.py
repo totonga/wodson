@@ -375,7 +375,10 @@ def CreateTsValue(aaType, strVal):
         sys.exit(1)
 
 
-def GetSession(objString, user, password):
+def GetSession(params):
+    
+    objString = params['$URL']
+
     obj = Orb__().string_to_object(objString)
     if obj is None:
         return None
@@ -384,8 +387,13 @@ def GetSession(objString, user, password):
     if (factory is None):
         return None
     print "Got factory"
-    paramstring = "USER=" + user + ",PASSWORD=" + password
-    session = factory.newSession(paramstring.encode('utf-8'))
+
+    nvs = []
+    for paramName,  paramValue in params.iteritems():
+        if not paramName.startswith('$'):
+            nvs.append(org.asam.ods.NameValue(paramName.encode('utf-8'), org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DT_STRING, paramValue.encode('utf-8')), 15)))
+
+    session = factory.newSessionNameValue(nvs)
     if session is None:
         return None
     print "Session retrieved"
@@ -529,8 +537,9 @@ class CSession:
     # access data
     aea_ = None
 
-    def __init__(self, objString, user, password):
-        self.session_ = GetSession(objString, user, password)
+    def __init__(self, params):
+        
+        self.session_ = GetSession(params)
         if self.session_ is None:
             print "Retrieving session failed"
             sys.exit(1)
