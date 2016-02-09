@@ -167,7 +167,7 @@ def data_get(conI,  query_struct):
     so = _Session(conI)
     model = so.Model()
     elem = model.GetElemEx(entityStr)
-    result = so.GetInstancesEx_Ver2(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
+    result = so.GetInstancesEx(elem.aeName, conditions, attributes, orderBy, groupBy, maxCount)
 
     rv = {}
     rv['tables'] = []
@@ -186,7 +186,7 @@ def data_get(conI,  query_struct):
 
         for column in table.values:
             columnObj = {}
-            columnValues = odslib.ColumnGetSeqEx(column)
+            columnValues = odslib.ColumnGetSeq(column)
             for rowIndex, row in enumerate(columnValues):
                 if isinstance(row, list):
                     # we should do this using value matrix but actually we are emulating it

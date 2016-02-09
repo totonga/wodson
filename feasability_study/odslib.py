@@ -14,38 +14,37 @@ __maintainer__ = "Andreas Krantz"
 __email__ = "totonga@gmail.com"
 __status__ = "Prototype"
 
-import sys
 from omniORB import CORBA
 import org
 import re
 import logging
 
-orb_obj__ = None
+_orb_obj = None
 
 
-def Orb__():
-    global orb_obj__
+def _orb():
+    global _orb_obj
 
-    if orb_obj__ is None:
+    if _orb_obj is None:
         # Initialise the ORB
         orbStartParameter = []
         orbStartParameter.append("-ORBnativeCharCodeSet")
         orbStartParameter.append("UTF-8")
         orbStartParameter.append("-ORBgiopMaxMsgSize")
         orbStartParameter.append("268435456")  # 256 MB
-        orb_obj__ = CORBA.ORB_init(orbStartParameter, CORBA.ORB_ID)
+        _orb_obj = CORBA.ORB_init(orbStartParameter, CORBA.ORB_ID)
 
-    return orb_obj__
+    return _orb_obj
 
-attributeParser__ = re.compile(r'\s*((?P<aggregate>(NONE)|(COUNT)|(DCOUNT)|(MIN)|(MAX)|(AVG)|(STDDEV)|(SUM)|(DISTINCT)|(POINT))\()?\s*?(?P<attribute>.*)')
-orderByParser__ = re.compile(r'\s*((?P<order>(ASCENDING)|(DESCENDING))\()?\s*?(?P<attribute>.*)')
+_attribute_parser = re.compile(r'\s*((?P<aggregate>(NONE)|(COUNT)|(DCOUNT)|(MIN)|(MAX)|(AVG)|(STDDEV)|(SUM)|(DISTINCT)|(POINT))\()?\s*?(?P<attribute>.*)')
+_orderByParser = re.compile(r'\s*((?P<order>(ASCENDING)|(DESCENDING))\()?\s*?(?P<attribute>.*)')
 
 
 def ValidFlag(flagVal):
     return 9 == flagVal & 9
 
 
-def ParsePathAndAddJoins(model, applElem, attribPath, joinSeq):
+def _parse_path_and_add_joins(model, applElem, attribPath, joinSeq):
     aaType = org.asam.ods.DT_UNKNOWN
     aaName = ""
     aaApplElem = applElem
@@ -62,9 +61,9 @@ def ParsePathAndAddJoins(model, applElem, attribPath, joinSeq):
             # add join
             if (-1 == relation.arRelationRange.max) and (1 == relation.invRelationRange.max):
                 realRelation = model.FindInverseRelation(relation)
-                AddJoinToSeq(realRelation, joinSeq)
+                _add_join_to_seq(realRelation, joinSeq)
             else:
-                AddJoinToSeq(relation, joinSeq)
+                _add_join_to_seq(relation, joinSeq)
         else:
             # maybe relation or attribute
             attribute = model.GetAttributeEx(aaApplElem.aeName, pathPart)
@@ -78,7 +77,7 @@ def ParsePathAndAddJoins(model, applElem, attribPath, joinSeq):
     return aaType, aaName, aaApplElem
 
 
-def AddJoinToSeq(relation, joinSeq):
+def _add_join_to_seq(relation, joinSeq):
     for join in joinSeq:
         if LL_Equal(join.fromAID, relation.elem1) and LL_Equal(join.toAID, relation.elem2) and (join.refName == relation.arName):
             # already in sequence
@@ -183,7 +182,7 @@ def GetDataTypeStr(dataType):
 
 
 def ExtractAttributeNameFromOrderByName(strVal):
-    m = orderByParser__.search(strVal)
+    m = _orderByParser.search(strVal)
     aName = m.group("attribute")
     order = m.group("order")
     if not order is None:
@@ -194,7 +193,7 @@ def ExtractAttributeNameFromOrderByName(strVal):
 
 
 def ExtractAttributeNameFromColumnName(columnName):
-    m = attributeParser__.search(columnName)
+    m = _attribute_parser.search(columnName)
     aName = m.group("attribute")
     aAggrTypeStr = m.group("aggregate")
     aAggrType = org.asam.ods.NONE
@@ -212,8 +211,7 @@ def ExtractAttributeNameFromColumnName(columnName):
         elif 'DISTINCT' == aAggrTypeStr: aAggrType = org.asam.ods.DISTINCT
         elif 'POINT' == aAggrTypeStr: aAggrType = org.asam.ods.POINT
         else:
-            print "Unknown aggregate type in '" + columnName + "'"
-            sys.exit(1)
+            raise Exception("Unknown aggregate type in '" + columnName + "'")
 
     return aName.strip(), aAggrType
 
@@ -222,23 +220,23 @@ def ColumnType(column):
     return column.value.u._d
 
 
-def ColumnGetSeqEx(column):
+def ColumnGetSeq(column):
     if org.asam.ods.DT_LONGLONG == column.value.u._d:
-        rv = ColumnGetSeq(column)
+        rv = _column_get_seq(column)
         iSeq = []
         for val in rv:
             iSeq.append(LL2Int(val))
         return iSeq
     if org.asam.ods.DT_STRING == column.value.u._d:
-        rv = ColumnGetSeq(column)
+        rv = _column_get_seq(column)
         iSeq = []
         for val in rv:
             iSeq.append(val.decode('utf-8'))
         return iSeq
-    return ColumnGetSeq(column)
+    return _column_get_seq(column)
 
 
-def ColumnGetSeq(column):
+def _column_get_seq(column):
     columnType = column.value.u._d
     if columnType == org.asam.ods.DT_BYTE:
         return column.value.u.byteVal
@@ -292,13 +290,14 @@ def ColumnGetSeq(column):
         return column.value.u.dcomplexSeq
     elif columnType == org.asam.ods.DS_EXTERNALREFERENCE:
         return column.value.u.extRefSeq
-    print "Unknown column type " + str(columnType)
-#    assert(False)
+    
+    logging.error("_column_get_seq: Unknown column type " + str(columnType))
+    
     return None
 
 
 def ColumnCountRows(column):
-    seq = ColumnGetSeq(column)
+    seq = _column_get_seq(column)
     if seq is None:
         return 0
     return len(seq)
@@ -352,8 +351,8 @@ def GetTsValue(tsVal):
     #elif aaType == org.asam.ods.DT_DCOMPLEX:
     #elif aaType == org.asam.ods.DT_EXTERNALREFERENCE:
     else:
-        print "Unable to read TS_Value."
-        sys.exit(1)
+        raise Exception("Unable to read TS_Value.")
+
 
 def CreateTsValue(aaType, strVal):
 
@@ -371,32 +370,34 @@ def CreateTsValue(aaType, strVal):
     #elif aaType == org.asam.ods.DT_DCOMPLEX:
     #elif aaType == org.asam.ods.DT_EXTERNALREFERENCE:
     else:
-        print "Unknown how to attach '" + strVal + "' does not exist as " + str(aaType) + " union."
-        sys.exit(1)
+        raise Exception("Unknown how to attach '" + strVal + "' does not exist as " + str(aaType) + " union.")
 
 
-def GetSession(params):
+def _get_session(params):
     
     objString = params['$URL']
 
-    obj = Orb__().string_to_object(objString)
+    logging.info("ORB: resolve objecturl")
+    obj = _orb().string_to_object(objString)
     if obj is None:
         return None
-    print "object retrieved"
+    logging.info("ORB: object retrieved")
     factory = obj._narrow(org.asam.ods.AoFactory)
     if (factory is None):
         return None
-    print "Got factory"
+        
+    logging.info("ORB: Got factory")
 
     nvs = []
     for paramName,  paramValue in params.iteritems():
         if not paramName.startswith('$'):
             nvs.append(org.asam.ods.NameValue(paramName.encode('utf-8'), org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DT_STRING, paramValue.encode('utf-8')), 15)))
 
+    logging.info("AoFactory: Establish new session")
     session = factory.newSessionNameValue(nvs)
     if session is None:
         return None
-    print "Session retrieved"
+    logging.info("AoFactory: Session retrieved")
     return session
 
 
@@ -411,16 +412,16 @@ class CModel:
         try:
             self.enums_ = session.getEnumerationStructure()
         except org.asam.ods.AoException, ex:
-            print ex
+            logging.error('Unable to retrieve enum struct:' + ex)
         except CORBA.BAD_OPERATION, ex:
-            print ex
+            logging.error('Unable to retrieve enum struct:' + ex)
 
         try:
             self.enumAttribs_ = session.getEnumerationAttributes()
         except org.asam.ods.AoException, ex:
-            print ex
+            logging.error('Unable to retrieve enum attributes:' + ex)
         except CORBA.BAD_OPERATION, ex:
-            print ex
+            logging.error('Unable to retrieve enum attributes:' + ex)
 
     def GetEnumName(self, aid, aaName):
         for enumAttrib in self.enumAttribs_:
@@ -466,8 +467,7 @@ class CModel:
         if not rel is None:
             return rel.arName
 
-        print "Attribute '" + aeName + "." + attribName + "' does not exist"
-        sys.exit(1)
+        raise Exception("Attribute '" + aeName + "." + attribName + "' does not exist")
 
     def GetAttribute(self, aeName, aaName):
         elem = self.GetElem(aeName)
@@ -539,10 +539,10 @@ class CSession:
 
     def __init__(self, params):
         
-        self.session_ = GetSession(params)
+        self.session_ = _get_session(params)
         if self.session_ is None:
-            print "Retrieving session failed"
-            sys.exit(1)
+            raise Exception("Retrieving session failed!")
+
         self.model_ = CModel(self.session_)
         self.aea_ = self.session_.getApplElemAccess()
 
@@ -570,7 +570,7 @@ class CSession:
         entity = ie.getApplicationElement().getName()
         return entity,  LL2Int(iid)
 
-    def GetInstancesEx_Ver2(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
+    def GetInstancesEx(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
 
         if conditionArray is None: conditionArray = []
         if attributeArray is None: attributeArray = []
@@ -594,16 +594,16 @@ class CSession:
                     anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*"), org.asam.ods.T_LONGLONG(0, 0), org.asam.ods.NONE))
                 else:
                     attribPath, aAggrType = ExtractAttributeNameFromColumnName(attributeItem)
-                    aaType, aaName, aaApplElem = ParsePathAndAddJoins(self.Model(), applElem, attribPath, joinSeq)
+                    aaType, aaName, aaApplElem = _parse_path_and_add_joins(self.Model(), applElem, attribPath, joinSeq)
                     anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aaApplElem.aid, aaName), org.asam.ods.T_LONGLONG(0, 0), aAggrType))
 
         for orderByItem in orderByArray:
             attribPath, ascending = ExtractAttributeNameFromOrderByName(orderByItem)
-            aaType, aaName, aaApplElem = ParsePathAndAddJoins(self.Model(), applElem, attribPath, joinSeq)
+            aaType, aaName, aaApplElem = _parse_path_and_add_joins(self.Model(), applElem, attribPath, joinSeq)
             orderBySeq.append(org.asam.ods.SelOrder(org.asam.ods.AIDName(aaApplElem.aid, aaName), ascending))
 
         for attribPath in groupByArray:
-            aaType, aaName, aaApplElem = ParsePathAndAddJoins(self.Model(), applElem, attribPath, joinSeq)
+            aaType, aaName, aaApplElem = _parse_path_and_add_joins(self.Model(), applElem, attribPath, joinSeq)
             groupBySeq.append(org.asam.ods.AIDName(aaApplElem.aid, aaName))
 
         if(len(conditionArray) > 0):
@@ -636,7 +636,7 @@ class CSession:
                     operatorStr = m.group("operator")
                     operandStr = m.group("operand")
 
-                    aaType, aaName, aaApplElem = ParsePathAndAddJoins(self.Model(), applElem, attribPath, joinSeq)
+                    aaType, aaName, aaApplElem = _parse_path_and_add_joins(self.Model(), applElem, attribPath, joinSeq)
 
                     operator = None
                     if '=' == operatorStr:
@@ -656,8 +656,7 @@ class CSession:
                     elif '<=' == operatorStr: operator = org.asam.ods.LTE
                     elif '>=' == operatorStr: operator = org.asam.ods.GTE
                     else:
-                        print "Unknown operator '" + operatorStr + "'"
-                        sys.exit(1)
+                        raise Exception("Query contains unknown operator '" + operatorStr + "'")
 
                     tsValue = CreateTsValue(aaType, operandStr)
                     selValExt = org.asam.ods.SelValueExt(org.asam.ods.AIDNameUnitId(org.asam.ods.AIDName(aaApplElem.aid, aaName), LL0()), operator, tsValue)
@@ -671,14 +670,4 @@ class CSession:
         for r in rs:
             return r.firstElems
 
-        return None
-
-    def GetInstancesEx_Ver1(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
-
-        rv = self.GetInstancesEx_Ver2(aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many)
-
-        aid = self.Model().GetElem(aeName).aid
-        for rse in rv:
-            if LL_Equal(rse.aid, aid):
-                return rse
         return None
