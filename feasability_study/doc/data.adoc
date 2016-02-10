@@ -282,13 +282,35 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
     "groupBy": [
         "name"
     ]
-}' 'http://localhost:8081/con/c2/data/access'
+}' 'http://localhost:8081/con/c1/data/access'
 ----
 .result
 [source,json]
 ----
 ----
 ================================
+
+.Use outer joins for sparse keys
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+    "entity": "AoMeasurementQuantity",
+    "attributes": [
+        "name",
+        "OUTER(unit).name",
+        "OUTER(quantity).name"
+    ],
+    "rowMaxCount": 2000
+}' 'http://localhost:8081/con/c1/data/access'
+----
+.result
+[source,json]
+----
+----
+================================
+
 
 === Read bulk data
 

@@ -52,6 +52,11 @@ def _parse_path_and_add_joins(model, applElem, attribPath, joinSeq):
     nrOfPathParts = len(pathParts)
     for i in range(nrOfPathParts):
         pathPart = pathParts[i]
+        joinType = org.asam.ods.JTDEFAULT
+        if ( pathPart.startswith('OUTER(') and pathPart.endswith(')') ):
+            pathPart = pathPart[6:-1]
+            joinType = org.asam.ods.JTOUTER
+
         if(i != nrOfPathParts - 1):
             # Must be a relation
             relation = model.GetRelationEx(aaApplElem.aeName, pathPart)
@@ -61,9 +66,9 @@ def _parse_path_and_add_joins(model, applElem, attribPath, joinSeq):
             # add join
             if (-1 == relation.arRelationRange.max) and (1 == relation.invRelationRange.max):
                 realRelation = model.FindInverseRelation(relation)
-                _add_join_to_seq(realRelation, joinSeq)
+                _add_join_to_seq(realRelation, joinSeq,  joinType)
             else:
-                _add_join_to_seq(relation, joinSeq)
+                _add_join_to_seq(relation, joinSeq,  joinType)
         else:
             # maybe relation or attribute
             attribute = model.GetAttributeEx(aaApplElem.aeName, pathPart)
@@ -77,13 +82,13 @@ def _parse_path_and_add_joins(model, applElem, attribPath, joinSeq):
     return aaType, aaName, aaApplElem
 
 
-def _add_join_to_seq(relation, joinSeq):
+def _add_join_to_seq(relation, joinSeq,  joinType):
     for join in joinSeq:
         if LL_Equal(join.fromAID, relation.elem1) and LL_Equal(join.toAID, relation.elem2) and (join.refName == relation.arName):
             # already in sequence
             return
 
-    joinDef = org.asam.ods.JoinDef(relation.elem1, relation.elem2, relation.arName, org.asam.ods.JTDEFAULT)
+    joinDef = org.asam.ods.JoinDef(relation.elem1, relation.elem2, relation.arName, joinType)
     joinSeq.append(joinDef)
 
 
