@@ -130,7 +130,7 @@ def GetAggrTypeStr(aggrType):
 def GetDataTypeStr(dataType):
     columnType = dataType
     if columnType == org.asam.ods.DT_UNKNOWN:
-        return "DT_UNKONWN"
+        return "DT_UNKNOWN"
     if columnType == org.asam.ods.DT_BYTE:
         return "DT_BYTE"
     elif columnType == org.asam.ods.DT_BOOLEAN:

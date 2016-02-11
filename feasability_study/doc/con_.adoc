@@ -78,7 +78,7 @@ DELETE /con/{conI}
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1'
+curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1'
 ----
 
 .result
