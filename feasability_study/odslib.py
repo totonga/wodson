@@ -238,6 +238,20 @@ def ColumnGetSeq(column):
         for val in rv:
             iSeq.append(val.decode('utf-8'))
         return iSeq
+    if org.asam.ods.DT_DATE == column.value.u._d:
+        rv = _column_get_seq(column)
+        iSeq = []
+        for val in rv:
+            iSeq.append(val.decode('utf-8'))
+        return iSeq
+    if org.asam.ods.DT_EXTERNALREFERENCE == column.value.u._d:
+        rv = _column_get_seq(column)
+        iSeq = []
+        for val in rv:
+            iSeq.append(val.description.decode('utf-8'))
+            iSeq.append(val.mimeType.decode('utf-8'))
+            iSeq.append(val.location.decode('utf-8'))
+        return iSeq
     return _column_get_seq(column)
 
 
