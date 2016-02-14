@@ -21,23 +21,23 @@ data_matrices = wodson_pb2.DataMatrices()
 
 data_matrix = data_matrices.tables.add()
 data_matrix.name = "MyLocalColumn"
-data_matrix.basename = "AoLocalColumn"
+data_matrix.base_name = "AoLocalColumn"
 
 column = data_matrix.columns.add()
 column.name = "Name"
-column.basename = "name"
+column.base_name = "name"
 column.datatype = wodson_pb2.DT_STRING
 column.dt_string.values.extend(["Time", "Revs", "Description"])
 
 column = data_matrix.columns.add()
 column.name = "Id"
-column.basename = "id"
+column.base_name = "id"
 column.datatype = wodson_pb2.DT_LONGLONG
 column.dt_longlong.values.extend([4711, 4712, 4713])
 
 column = data_matrix.columns.add()
 column.name = "Flags"
-column.basename = "flags"
+column.base_name = "flags"
 column.datatype = wodson_pb2.DS_SHORT
 column.ds_long.values.add().values.extend([15,15,15,15,15])
 column.ds_long.values.add().values.extend([15,15,15,15,15])
@@ -45,7 +45,7 @@ column.ds_long.values.add().values.extend([15,15,15,15,15])
 
 column = data_matrix.columns.add()
 column.name = "Values"
-column.basename = "values"
+column.base_name = "values"
 column.datatype = wodson_pb2.DT_UNKNOWN
 
 get_time_stamp(time.time())
@@ -256,7 +256,7 @@ data_matrix.name = "UnkownTypes"
 
 column = data_matrix.columns.add()
 column.name = "Values"
-column.basename = "values"
+column.base_name = "values"
 column.datatype = wodson_pb2.DT_UNKNOWN
 
 unknownVals = column.dt_unknown.values.add()

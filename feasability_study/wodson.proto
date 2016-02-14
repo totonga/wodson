@@ -91,7 +91,7 @@ message DataMatrix {
     message UnknownArrays { repeated UnknownArray values = 1; };
 
     string name = 1;
-    string basename = 2;
+    string base_name = 2;
     AggregateEnum aggregate = 3;
     DatatypeEnum datatype = 4;
     repeated bool flags = 5;
@@ -121,13 +121,13 @@ message DataMatrix {
   }
 
   string name = 1;
-  string basename = 2;
-  int64 rowSkipCount = 3;
-  int64 seqSkipCount = 4;
+  string base_name = 2;
+  int64 row_skip_count = 3;
+  int64 seq_skip_count = 4;
   repeated Column columns = 5;
 }
 
 message DataMatrices{
   repeated DataMatrix tables = 1;
-  string iteratorGuid = 2;
+  string iterator_guid = 2;
 }
