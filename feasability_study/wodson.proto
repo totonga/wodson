@@ -1,6 +1,44 @@
 syntax = "proto3";
 package wodson;
 
+import "google/protobuf/timestamp.proto";
+
+enum DatatypeEnum {
+  DT_UNKNOWN = 0;
+  DT_STRING = 1;
+  DT_SHORT = 2;
+  DT_FLOAT = 3;
+  DT_BOOLEAN = 4;
+  DT_BYTE = 5;
+  DT_LONG = 6;
+  DT_DOUBLE = 7;
+  DT_LONGLONG = 8;
+  DT_ID = 9;
+  DT_DATE = 10;
+  DT_BYTESTR = 11;
+  DT_BLOB = 12;
+  DT_COMPLEX = 13;
+  DT_DCOMPLEX = 14;
+  DS_STRING = 15;
+  DS_SHORT = 16;
+  DS_FLOAT = 17;
+  DS_BOOLEAN = 18;
+  DS_BYTE = 19;
+  DS_LONG = 20;
+  DS_DOUBLE = 21;
+  DS_LONGLONG = 22;
+  DS_COMPLEX = 23;
+  DS_DCOMPLEX = 24;
+  DS_ID = 25; 
+  DS_DATE = 26;
+  DS_BYTESTR = 27;
+  DT_EXTERNALREFERENCE = 28;
+  DS_EXTERNALREFERENCE = 29;
+  DT_ENUM = 30;
+  DS_ENUM = 31;
+}
+
+
 message DataMatrix {
 
   message Column {
@@ -18,40 +56,6 @@ message DataMatrix {
       POINT = 9;
     }
 
-    enum DatatypeEnum {
-      DT_UNKNOWN = 0;
-      DT_STRING = 1;
-      DT_SHORT = 2;
-      DT_FLOAT = 3;
-      DT_BOOLEAN = 4;
-      DT_BYTE = 5;
-      DT_LONG = 6;
-      DT_DOUBLE = 7;
-      DT_LONGLONG = 8;
-      DT_ID = 9;
-      DT_DATE = 10;
-      DT_BYTESTR = 11;
-      DT_COMPLEX = 12;
-      DT_DCOMPLEX = 13;
-      DS_STRING = 14;
-      DS_SHORT = 15;
-      DS_FLOAT = 16;
-      DS_BOOLEAN = 17;
-      DS_BYTE = 18;
-      DS_LONG = 19;
-      DS_DOUBLE = 20;
-      DS_LONGLONG = 21;
-      DS_COMPLEX = 22;
-      DS_DCOMPLEX = 23;
-      DS_ID = 24; 
-      DS_DATE = 25;
-      DS_BYTESTR = 26;
-      DT_EXTERNALREFERENCE = 27;
-      DS_EXTERNALREFERENCE = 28;
-      DT_ENUM = 29;
-      DS_ENUM = 30;
-    }
-      
     message StringArray { repeated string values = 1; };
     message LongArray { repeated int32 values = 1; };
     message FloatArray { repeated float values = 1; };
@@ -59,50 +63,71 @@ message DataMatrix {
     message ByteArray { bytes values = 1; };
     message DoubleArray { repeated double values = 1; };
     message LongLongArray { repeated int64 values = 1; };
+    message DateArray { repeated google.protobuf.Timestamp values = 1; }
     message BytestrArray { repeated bytes values = 1; };
     message UnknownArray { 
       DatatypeEnum datatype = 1;
-      
-      StringArray   dtString = 2; // DT_STRING, DT_DATE, DT_EXTERNALREFERENCE
-      LongArray     dtLong = 3; // DT_SHORT, DT_LONG, DT_ENUM
-      FloatArray    dtFloat = 4; // DT_FLOAT, DT_COMPLEX
-      BooleanArray  dtBoolean = 5; // DT_BOOLEAN
-      ByteArray     dtByte = 6; // DT_BYTE
-      DoubleArray   dtDouble = 7; // DT_DOUBLE, DT_DCOMPLEX
-      LongLongArray dtLonglong = 8; // DT_LONGLONG, DT_ID
-      BytestrArray  dtBytestr = 9; // DT_BYTESTR
+      oneof UnkownUnion {
+        StringArray   dt_string = 2; // DT_STRING, DT_EXTERNALREFERENCE
+        LongArray     dt_long = 3; // DT_SHORT, DT_LONG, DT_ENUM
+        FloatArray    dt_float = 4; // DT_FLOAT, DT_COMPLEX
+        BooleanArray  dt_boolean = 5; // DT_BOOLEAN
+        ByteArray     dt_byte = 6; // DT_BYTE
+        DoubleArray   dt_double = 7; // DT_DOUBLE, DT_DCOMPLEX
+        LongLongArray dt_longlong = 8; // DT_LONGLONG, DT_ID
+        DateArray     dt_date = 9; // DT_DATE
+        BytestrArray  dt_bytestr = 10; // DT_BYTESTR
+      }
     };
+    message StringArrays { repeated StringArray values = 1; };
+    message LongArrays { repeated LongArray values = 1; };
+    message FloatArrays { repeated FloatArray values = 1; };
+    message BooleanArrays { repeated BooleanArray values = 1; };
+    message ByteArrays { repeated ByteArray values = 1; };
+    message DoubleArrays { repeated DoubleArray values = 1; };
+    message LongLongArrays { repeated LongLongArray values = 1; };
+    message DateArrays { repeated DateArray values = 1; };
+    message BytestrArrays { repeated BytestrArray values = 1; };
+    message UnknownArrays { repeated UnknownArray values = 1; };
 
     string name = 1;
-    string baseName = 2;
+    string basename = 2;
     AggregateEnum aggregate = 3;
     DatatypeEnum datatype = 4;
     repeated bool flags = 5;
-
-    StringArray   dtString = 6; // DT_STRING, DT_DATE, DT_EXTERNALREFERENCE
-    LongArray     dtLong = 7; // DT_SHORT, DT_LONG, DT_ENUM
-    FloatArray    dtFloat = 8; // DT_FLOAT, DT_COMPLEX
-    BooleanArray  dtBoolean = 9; // DT_BOOLEAN
-    ByteArray     dtByte = 10; // DT_BYTE
-    DoubleArray   dtDouble = 11; // DT_DOUBLE, DT_DCOMPLEX
-    LongLongArray dtLonglong = 12; // DT_LONGLONG, DT_ID
-    BytestrArray  dtBytestr = 13; // DT_BYTESTR
-
-    repeated StringArray    dsString = 14; // DS_STRING, DS_DATE, DS_EXTERNALREFERENCE
-    repeated LongArray      dsLong = 15; // DS_SHORT, DS_LONG, DS_ENUM
-    repeated FloatArray     dsFloat = 16; // DS_FLOAT, DS_COMPLEX
-    repeated BooleanArray   dsBoolean = 17; // DS_BOOLEAN
-    repeated ByteArray      dsByte = 18; // DS_BYTE
-    repeated DoubleArray    dsDouble = 19; // DS_DOUBLE, DS_DCOMPLEX
-    repeated LongLongArray  dsLonglong = 20; // DS_LONGLONG, DS_ID
-    repeated BytestrArray   dsBytestr = 21; // DS_BYTESTR
+    oneof ValuesUnion {
+      StringArray    dt_string = 6; // DT_STRING, DT_EXTERNALREFERENCE
+      LongArray      dt_long = 7; // DT_SHORT, DT_LONG, DT_ENUM
+      FloatArray     dt_float = 8; // DT_FLOAT, DT_COMPLEX
+      BooleanArray   dt_boolean = 9; // DT_BOOLEAN
+      ByteArray      dt_byte = 10; // DT_BYTE
+      DoubleArray    dt_double = 11; // DT_DOUBLE, DT_DCOMPLEX
+      LongLongArray  dt_longlong = 12; // DT_LONGLONG, DT_ID
+      DateArray      dt_date = 13; // DT_DATE
+      BytestrArray   dt_bytestr = 14; // DT_BYTESTR
       
-    repeated UnknownArray dtUnknown = 22; // DT_UNKNOW
+      StringArrays   ds_string = 15; // DS_STRING, DS_EXTERNALREFERENCE
+      LongArrays     ds_long = 16; // DS_SHORT, DS_LONG, DS_ENUM
+      FloatArrays    ds_float = 17; // DS_FLOAT, DS_COMPLEX
+      BooleanArrays  ds_boolean = 18; // DS_BOOLEAN
+      ByteArrays     ds_byte = 19; // DS_BYTE
+      DoubleArrays   ds_double = 20; // DS_DOUBLE, DS_DCOMPLEX
+      LongLongArrays ds_longlong = 21; // DS_LONGLONG, DS_ID
+      DateArrays     ds_date = 22; // DS_DATE
+      BytestrArrays  ds_bytestr = 23; // DS_BYTESTR
+      
+      UnknownArrays  dt_unknown = 24; // DT_UNKNOWN
+    }
   }
 
   string name = 1;
-  string baseName = 2;
+  string basename = 2;
   int64 rowSkipCount = 3;
   int64 seqSkipCount = 4;
   repeated Column columns = 5;
+}
+
+message DataMatrices{
+  repeated DataMatrix tables = 1;
+  string iteratorGuid = 2;
 }

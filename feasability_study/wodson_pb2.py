@@ -3,6 +3,7 @@
 
 import sys
 _b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
@@ -13,75 +14,21 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='wodson.proto',
   package='wodson',
   syntax='proto3',
-  serialized_pb=_b('\n\x0cwodson.proto\x12\x06wodson\"\xe9\x14\n\nDataMatrix\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61seName\x18\x02 \x01(\t\x12\x14\n\x0crowSkipCount\x18\x03 \x01(\x03\x12\x14\n\x0cseqSkipCount\x18\x04 \x01(\x03\x12*\n\x07\x63olumns\x18\x05 \x03(\x0b\x32\x19.wodson.DataMatrix.Column\x1a\xe2\x13\n\x06\x43olumn\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61seName\x18\x02 \x01(\t\x12:\n\taggregate\x18\x03 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12\x38\n\x08\x64\x61tatype\x18\x04 \x01(\x0e\x32&.wodson.DataMatrix.Column.DatatypeEnum\x12\r\n\x05\x66lags\x18\x05 \x03(\x08\x12\x37\n\x08\x64tString\x18\x06 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArray\x12\x33\n\x06\x64tLong\x18\x07 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArray\x12\x35\n\x07\x64tFloat\x18\x08 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArray\x12\x39\n\tdtBoolean\x18\t \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArray\x12\x33\n\x06\x64tByte\x18\n \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArray\x12\x37\n\x08\x64tDouble\x18\x0b \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArray\x12;\n\ndtLonglong\x18\x0c \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArray\x12\x39\n\tdtBytestr\x18\r \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArray\x12\x37\n\x08\x64sString\x18\x0e \x03(\x0b\x32%.wodson.DataMatrix.Column.StringArray\x12\x33\n\x06\x64sLong\x18\x0f \x03(\x0b\x32#.wodson.DataMatrix.Column.LongArray\x12\x35\n\x07\x64sFloat\x18\x10 \x03(\x0b\x32$.wodson.DataMatrix.Column.FloatArray\x12\x39\n\tdsBoolean\x18\x11 \x03(\x0b\x32&.wodson.DataMatrix.Column.BooleanArray\x12\x33\n\x06\x64sByte\x18\x12 \x03(\x0b\x32#.wodson.DataMatrix.Column.ByteArray\x12\x37\n\x08\x64sDouble\x18\x13 \x03(\x0b\x32%.wodson.DataMatrix.Column.DoubleArray\x12;\n\ndsLonglong\x18\x14 \x03(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArray\x12\x39\n\tdsBytestr\x18\x15 \x03(\x0b\x32&.wodson.DataMatrix.Column.BytestrArray\x12\x39\n\tdtUnknown\x18\x16 \x03(\x0b\x32&.wodson.DataMatrix.Column.UnknownArray\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\x1a\x8e\x04\n\x0cUnknownArray\x12\x38\n\x08\x64\x61tatype\x18\x01 \x01(\x0e\x32&.wodson.DataMatrix.Column.DatatypeEnum\x12\x37\n\x08\x64tString\x18\x02 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArray\x12\x33\n\x06\x64tLong\x18\x03 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArray\x12\x35\n\x07\x64tFloat\x18\x04 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArray\x12\x39\n\tdtBoolean\x18\x05 \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArray\x12\x33\n\x06\x64tByte\x18\x06 \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArray\x12\x37\n\x08\x64tDouble\x18\x07 \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArray\x12;\n\ndtLonglong\x18\x08 \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArray\x12\x39\n\tdtBytestr\x18\t \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArray\"y\n\rAggregateEnum\x12\x08\n\x04NONE\x10\x00\x12\t\n\x05\x43OUNT\x10\x01\x12\n\n\x06\x44\x43OUNT\x10\x02\x12\x07\n\x03MIN\x10\x03\x12\x07\n\x03MAX\x10\x04\x12\x07\n\x03\x41VG\x10\x05\x12\n\n\x06STDDEV\x10\x06\x12\x07\n\x03SUM\x10\x07\x12\x0c\n\x08\x44ISTINCT\x10\x08\x12\t\n\x05POINT\x10\t\"\xe8\x03\n\x0c\x44\x61tatypeEnum\x12\x0e\n\nDT_UNKNOWN\x10\x00\x12\r\n\tDT_STRING\x10\x01\x12\x0c\n\x08\x44T_SHORT\x10\x02\x12\x0c\n\x08\x44T_FLOAT\x10\x03\x12\x0e\n\nDT_BOOLEAN\x10\x04\x12\x0b\n\x07\x44T_BYTE\x10\x05\x12\x0b\n\x07\x44T_LONG\x10\x06\x12\r\n\tDT_DOUBLE\x10\x07\x12\x0f\n\x0b\x44T_LONGLONG\x10\x08\x12\t\n\x05\x44T_ID\x10\t\x12\x0b\n\x07\x44T_DATE\x10\n\x12\x0e\n\nDT_BYTESTR\x10\x0b\x12\x0e\n\nDT_COMPLEX\x10\x0c\x12\x0f\n\x0b\x44T_DCOMPLEX\x10\r\x12\r\n\tDS_STRING\x10\x0e\x12\x0c\n\x08\x44S_SHORT\x10\x0f\x12\x0c\n\x08\x44S_FLOAT\x10\x10\x12\x0e\n\nDS_BOOLEAN\x10\x11\x12\x0b\n\x07\x44S_BYTE\x10\x12\x12\x0b\n\x07\x44S_LONG\x10\x13\x12\r\n\tDS_DOUBLE\x10\x14\x12\x0f\n\x0b\x44S_LONGLONG\x10\x15\x12\x0e\n\nDS_COMPLEX\x10\x16\x12\x0f\n\x0b\x44S_DCOMPLEX\x10\x17\x12\t\n\x05\x44S_ID\x10\x18\x12\x0b\n\x07\x44S_DATE\x10\x19\x12\x0e\n\nDS_BYTESTR\x10\x1a\x12\x18\n\x14\x44T_EXTERNALREFERENCE\x10\x1b\x12\x18\n\x14\x44S_EXTERNALREFERENCE\x10\x1c\x12\x0b\n\x07\x44T_ENUM\x10\x1d\x12\x0b\n\x07\x44S_ENUM\x10\x1e\x62\x06proto3')
-)
+  serialized_pb=_b('\n\x0cwodson.proto\x12\x06wodson\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf0\x18\n\nDataMatrix\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61sename\x18\x02 \x01(\t\x12\x14\n\x0crowSkipCount\x18\x03 \x01(\x03\x12\x14\n\x0cseqSkipCount\x18\x04 \x01(\x03\x12*\n\x07\x63olumns\x18\x05 \x03(\x0b\x32\x19.wodson.DataMatrix.Column\x1a\xe9\x17\n\x06\x43olumn\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61sename\x18\x02 \x01(\t\x12:\n\taggregate\x18\x03 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12&\n\x08\x64\x61tatype\x18\x04 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12\r\n\x05\x66lags\x18\x05 \x03(\x08\x12:\n\tdt_string\x18\x06 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x07 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x08 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\t \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\n \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x0b \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x0c \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\r \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\x0e \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x12;\n\tds_string\x18\x0f \x01(\x0b\x32&.wodson.DataMatrix.Column.StringArraysH\x00\x12\x37\n\x07\x64s_long\x18\x10 \x01(\x0b\x32$.wodson.DataMatrix.Column.LongArraysH\x00\x12\x39\n\x08\x64s_float\x18\x11 \x01(\x0b\x32%.wodson.DataMatrix.Column.FloatArraysH\x00\x12=\n\nds_boolean\x18\x12 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BooleanArraysH\x00\x12\x37\n\x07\x64s_byte\x18\x13 \x01(\x0b\x32$.wodson.DataMatrix.Column.ByteArraysH\x00\x12;\n\tds_double\x18\x14 \x01(\x0b\x32&.wodson.DataMatrix.Column.DoubleArraysH\x00\x12?\n\x0b\x64s_longlong\x18\x15 \x01(\x0b\x32(.wodson.DataMatrix.Column.LongLongArraysH\x00\x12\x37\n\x07\x64s_date\x18\x16 \x01(\x0b\x32$.wodson.DataMatrix.Column.DateArraysH\x00\x12=\n\nds_bytestr\x18\x17 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BytestrArraysH\x00\x12=\n\ndt_unknown\x18\x18 \x01(\x0b\x32\'.wodson.DataMatrix.Column.UnknownArraysH\x00\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x37\n\tDateArray\x12*\n\x06values\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\x1a\xdb\x04\n\x0cUnknownArray\x12&\n\x08\x64\x61tatype\x18\x01 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12:\n\tdt_string\x18\x02 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x03 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x04 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\x05 \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\x06 \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x07 \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x08 \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\t \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\n \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x42\r\n\x0bUnkownUnion\x1a\x45\n\x0cStringArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.StringArray\x1a\x41\n\nLongArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.LongArray\x1a\x43\n\x0b\x46loatArrays\x12\x34\n\x06values\x18\x01 \x03(\x0b\x32$.wodson.DataMatrix.Column.FloatArray\x1aG\n\rBooleanArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BooleanArray\x1a\x41\n\nByteArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.ByteArray\x1a\x45\n\x0c\x44oubleArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.DoubleArray\x1aI\n\x0eLongLongArrays\x12\x37\n\x06values\x18\x01 \x03(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArray\x1a\x41\n\nDateArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.DateArray\x1aG\n\rBytestrArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BytestrArray\x1aG\n\rUnknownArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.UnknownArray\"y\n\rAggregateEnum\x12\x08\n\x04NONE\x10\x00\x12\t\n\x05\x43OUNT\x10\x01\x12\n\n\x06\x44\x43OUNT\x10\x02\x12\x07\n\x03MIN\x10\x03\x12\x07\n\x03MAX\x10\x04\x12\x07\n\x03\x41VG\x10\x05\x12\n\n\x06STDDEV\x10\x06\x12\x07\n\x03SUM\x10\x07\x12\x0c\n\x08\x44ISTINCT\x10\x08\x12\t\n\x05POINT\x10\tB\r\n\x0bValuesUnion\"H\n\x0c\x44\x61taMatrices\x12\"\n\x06tables\x18\x01 \x03(\x0b\x32\x12.wodson.DataMatrix\x12\x14\n\x0citeratorGuid\x18\x02 \x01(\t*\xf5\x03\n\x0c\x44\x61tatypeEnum\x12\x0e\n\nDT_UNKNOWN\x10\x00\x12\r\n\tDT_STRING\x10\x01\x12\x0c\n\x08\x44T_SHORT\x10\x02\x12\x0c\n\x08\x44T_FLOAT\x10\x03\x12\x0e\n\nDT_BOOLEAN\x10\x04\x12\x0b\n\x07\x44T_BYTE\x10\x05\x12\x0b\n\x07\x44T_LONG\x10\x06\x12\r\n\tDT_DOUBLE\x10\x07\x12\x0f\n\x0b\x44T_LONGLONG\x10\x08\x12\t\n\x05\x44T_ID\x10\t\x12\x0b\n\x07\x44T_DATE\x10\n\x12\x0e\n\nDT_BYTESTR\x10\x0b\x12\x0b\n\x07\x44T_BLOB\x10\x0c\x12\x0e\n\nDT_COMPLEX\x10\r\x12\x0f\n\x0b\x44T_DCOMPLEX\x10\x0e\x12\r\n\tDS_STRING\x10\x0f\x12\x0c\n\x08\x44S_SHORT\x10\x10\x12\x0c\n\x08\x44S_FLOAT\x10\x11\x12\x0e\n\nDS_BOOLEAN\x10\x12\x12\x0b\n\x07\x44S_BYTE\x10\x13\x12\x0b\n\x07\x44S_LONG\x10\x14\x12\r\n\tDS_DOUBLE\x10\x15\x12\x0f\n\x0b\x44S_LONGLONG\x10\x16\x12\x0e\n\nDS_COMPLEX\x10\x17\x12\x0f\n\x0b\x44S_DCOMPLEX\x10\x18\x12\t\n\x05\x44S_ID\x10\x19\x12\x0b\n\x07\x44S_DATE\x10\x1a\x12\x0e\n\nDS_BYTESTR\x10\x1b\x12\x18\n\x14\x44T_EXTERNALREFERENCE\x10\x1c\x12\x18\n\x14\x44S_EXTERNALREFERENCE\x10\x1d\x12\x0b\n\x07\x44T_ENUM\x10\x1e\x12\x0b\n\x07\x44S_ENUM\x10\x1f\x62\x06proto3')
+  ,
+  dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-
-
-_DATAMATRIX_COLUMN_AGGREGATEENUM = _descriptor.EnumDescriptor(
-  name='AggregateEnum',
-  full_name='wodson.DataMatrix.Column.AggregateEnum',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='NONE', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='COUNT', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DCOUNT', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MIN', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MAX', index=4, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AVG', index=5, number=5,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='STDDEV', index=6, number=6,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SUM', index=7, number=7,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='DISTINCT', index=8, number=8,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='POINT', index=9, number=9,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=2078,
-  serialized_end=2199,
-)
-_sym_db.RegisterEnumDescriptor(_DATAMATRIX_COLUMN_AGGREGATEENUM)
-
-_DATAMATRIX_COLUMN_DATATYPEENUM = _descriptor.EnumDescriptor(
+_DATATYPEENUM = _descriptor.EnumDescriptor(
   name='DatatypeEnum',
-  full_name='wodson.DataMatrix.Column.DatatypeEnum',
+  full_name='wodson.DatatypeEnum',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -134,88 +81,181 @@ _DATAMATRIX_COLUMN_DATATYPEENUM = _descriptor.EnumDescriptor(
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DT_COMPLEX', index=12, number=12,
+      name='DT_BLOB', index=12, number=12,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DT_DCOMPLEX', index=13, number=13,
+      name='DT_COMPLEX', index=13, number=13,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_STRING', index=14, number=14,
+      name='DT_DCOMPLEX', index=14, number=14,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_SHORT', index=15, number=15,
+      name='DS_STRING', index=15, number=15,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_FLOAT', index=16, number=16,
+      name='DS_SHORT', index=16, number=16,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_BOOLEAN', index=17, number=17,
+      name='DS_FLOAT', index=17, number=17,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_BYTE', index=18, number=18,
+      name='DS_BOOLEAN', index=18, number=18,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_LONG', index=19, number=19,
+      name='DS_BYTE', index=19, number=19,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_DOUBLE', index=20, number=20,
+      name='DS_LONG', index=20, number=20,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_LONGLONG', index=21, number=21,
+      name='DS_DOUBLE', index=21, number=21,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_COMPLEX', index=22, number=22,
+      name='DS_LONGLONG', index=22, number=22,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_DCOMPLEX', index=23, number=23,
+      name='DS_COMPLEX', index=23, number=23,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_ID', index=24, number=24,
+      name='DS_DCOMPLEX', index=24, number=24,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_DATE', index=25, number=25,
+      name='DS_ID', index=25, number=25,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_BYTESTR', index=26, number=26,
+      name='DS_DATE', index=26, number=26,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DT_EXTERNALREFERENCE', index=27, number=27,
+      name='DS_BYTESTR', index=27, number=27,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_EXTERNALREFERENCE', index=28, number=28,
+      name='DT_EXTERNALREFERENCE', index=28, number=28,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DT_ENUM', index=29, number=29,
+      name='DS_EXTERNALREFERENCE', index=29, number=29,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='DS_ENUM', index=30, number=30,
+      name='DT_ENUM', index=30, number=30,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='DS_ENUM', index=31, number=31,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=2202,
-  serialized_end=2690,
+  serialized_start=3319,
+  serialized_end=3820,
 )
-_sym_db.RegisterEnumDescriptor(_DATAMATRIX_COLUMN_DATATYPEENUM)
+_sym_db.RegisterEnumDescriptor(_DATATYPEENUM)
+
+DatatypeEnum = enum_type_wrapper.EnumTypeWrapper(_DATATYPEENUM)
+DT_UNKNOWN = 0
+DT_STRING = 1
+DT_SHORT = 2
+DT_FLOAT = 3
+DT_BOOLEAN = 4
+DT_BYTE = 5
+DT_LONG = 6
+DT_DOUBLE = 7
+DT_LONGLONG = 8
+DT_ID = 9
+DT_DATE = 10
+DT_BYTESTR = 11
+DT_BLOB = 12
+DT_COMPLEX = 13
+DT_DCOMPLEX = 14
+DS_STRING = 15
+DS_SHORT = 16
+DS_FLOAT = 17
+DS_BOOLEAN = 18
+DS_BYTE = 19
+DS_LONG = 20
+DS_DOUBLE = 21
+DS_LONGLONG = 22
+DS_COMPLEX = 23
+DS_DCOMPLEX = 24
+DS_ID = 25
+DS_DATE = 26
+DS_BYTESTR = 27
+DT_EXTERNALREFERENCE = 28
+DS_EXTERNALREFERENCE = 29
+DT_ENUM = 30
+DS_ENUM = 31
+
+
+_DATAMATRIX_COLUMN_AGGREGATEENUM = _descriptor.EnumDescriptor(
+  name='AggregateEnum',
+  full_name='wodson.DataMatrix.Column.AggregateEnum',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='NONE', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='COUNT', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='DCOUNT', index=2, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='MIN', index=3, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='MAX', index=4, number=4,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='AVG', index=5, number=5,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='STDDEV', index=6, number=6,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='SUM', index=7, number=7,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='DISTINCT', index=8, number=8,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='POINT', index=9, number=9,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=3106,
+  serialized_end=3227,
+)
+_sym_db.RegisterEnumDescriptor(_DATAMATRIX_COLUMN_AGGREGATEENUM)
 
 
 _DATAMATRIX_COLUMN_STRINGARRAY = _descriptor.Descriptor(
@@ -244,8 +284,8 @@ _DATAMATRIX_COLUMN_STRINGARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1302,
-  serialized_end=1331,
+  serialized_start=1490,
+  serialized_end=1519,
 )
 
 _DATAMATRIX_COLUMN_LONGARRAY = _descriptor.Descriptor(
@@ -274,8 +314,8 @@ _DATAMATRIX_COLUMN_LONGARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1333,
-  serialized_end=1360,
+  serialized_start=1521,
+  serialized_end=1548,
 )
 
 _DATAMATRIX_COLUMN_FLOATARRAY = _descriptor.Descriptor(
@@ -304,8 +344,8 @@ _DATAMATRIX_COLUMN_FLOATARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1362,
-  serialized_end=1390,
+  serialized_start=1550,
+  serialized_end=1578,
 )
 
 _DATAMATRIX_COLUMN_BOOLEANARRAY = _descriptor.Descriptor(
@@ -334,8 +374,8 @@ _DATAMATRIX_COLUMN_BOOLEANARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1392,
-  serialized_end=1422,
+  serialized_start=1580,
+  serialized_end=1610,
 )
 
 _DATAMATRIX_COLUMN_BYTEARRAY = _descriptor.Descriptor(
@@ -364,8 +404,8 @@ _DATAMATRIX_COLUMN_BYTEARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1424,
-  serialized_end=1451,
+  serialized_start=1612,
+  serialized_end=1639,
 )
 
 _DATAMATRIX_COLUMN_DOUBLEARRAY = _descriptor.Descriptor(
@@ -394,8 +434,8 @@ _DATAMATRIX_COLUMN_DOUBLEARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1453,
-  serialized_end=1482,
+  serialized_start=1641,
+  serialized_end=1670,
 )
 
 _DATAMATRIX_COLUMN_LONGLONGARRAY = _descriptor.Descriptor(
@@ -424,8 +464,38 @@ _DATAMATRIX_COLUMN_LONGLONGARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1484,
-  serialized_end=1515,
+  serialized_start=1672,
+  serialized_end=1703,
+)
+
+_DATAMATRIX_COLUMN_DATEARRAY = _descriptor.Descriptor(
+  name='DateArray',
+  full_name='wodson.DataMatrix.Column.DateArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.DateArray.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1705,
+  serialized_end=1760,
 )
 
 _DATAMATRIX_COLUMN_BYTESTRARRAY = _descriptor.Descriptor(
@@ -454,8 +524,8 @@ _DATAMATRIX_COLUMN_BYTESTRARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1517,
-  serialized_end=1547,
+  serialized_start=1762,
+  serialized_end=1792,
 )
 
 _DATAMATRIX_COLUMN_UNKNOWNARRAY = _descriptor.Descriptor(
@@ -473,57 +543,64 @@ _DATAMATRIX_COLUMN_UNKNOWNARRAY = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtString', full_name='wodson.DataMatrix.Column.UnknownArray.dtString', index=1,
+      name='dt_string', full_name='wodson.DataMatrix.Column.UnknownArray.dt_string', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtLong', full_name='wodson.DataMatrix.Column.UnknownArray.dtLong', index=2,
+      name='dt_long', full_name='wodson.DataMatrix.Column.UnknownArray.dt_long', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtFloat', full_name='wodson.DataMatrix.Column.UnknownArray.dtFloat', index=3,
+      name='dt_float', full_name='wodson.DataMatrix.Column.UnknownArray.dt_float', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtBoolean', full_name='wodson.DataMatrix.Column.UnknownArray.dtBoolean', index=4,
+      name='dt_boolean', full_name='wodson.DataMatrix.Column.UnknownArray.dt_boolean', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtByte', full_name='wodson.DataMatrix.Column.UnknownArray.dtByte', index=5,
+      name='dt_byte', full_name='wodson.DataMatrix.Column.UnknownArray.dt_byte', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtDouble', full_name='wodson.DataMatrix.Column.UnknownArray.dtDouble', index=6,
+      name='dt_double', full_name='wodson.DataMatrix.Column.UnknownArray.dt_double', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtLonglong', full_name='wodson.DataMatrix.Column.UnknownArray.dtLonglong', index=7,
+      name='dt_longlong', full_name='wodson.DataMatrix.Column.UnknownArray.dt_longlong', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtBytestr', full_name='wodson.DataMatrix.Column.UnknownArray.dtBytestr', index=8,
+      name='dt_date', full_name='wodson.DataMatrix.Column.UnknownArray.dt_date', index=8,
       number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dt_bytestr', full_name='wodson.DataMatrix.Column.UnknownArray.dt_bytestr', index=9,
+      number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -539,9 +616,312 @@ _DATAMATRIX_COLUMN_UNKNOWNARRAY = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='UnkownUnion', full_name='wodson.DataMatrix.Column.UnknownArray.UnkownUnion',
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1550,
-  serialized_end=2076,
+  serialized_start=1795,
+  serialized_end=2398,
+)
+
+_DATAMATRIX_COLUMN_STRINGARRAYS = _descriptor.Descriptor(
+  name='StringArrays',
+  full_name='wodson.DataMatrix.Column.StringArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.StringArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2400,
+  serialized_end=2469,
+)
+
+_DATAMATRIX_COLUMN_LONGARRAYS = _descriptor.Descriptor(
+  name='LongArrays',
+  full_name='wodson.DataMatrix.Column.LongArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.LongArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2471,
+  serialized_end=2536,
+)
+
+_DATAMATRIX_COLUMN_FLOATARRAYS = _descriptor.Descriptor(
+  name='FloatArrays',
+  full_name='wodson.DataMatrix.Column.FloatArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.FloatArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2538,
+  serialized_end=2605,
+)
+
+_DATAMATRIX_COLUMN_BOOLEANARRAYS = _descriptor.Descriptor(
+  name='BooleanArrays',
+  full_name='wodson.DataMatrix.Column.BooleanArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.BooleanArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2607,
+  serialized_end=2678,
+)
+
+_DATAMATRIX_COLUMN_BYTEARRAYS = _descriptor.Descriptor(
+  name='ByteArrays',
+  full_name='wodson.DataMatrix.Column.ByteArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.ByteArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2680,
+  serialized_end=2745,
+)
+
+_DATAMATRIX_COLUMN_DOUBLEARRAYS = _descriptor.Descriptor(
+  name='DoubleArrays',
+  full_name='wodson.DataMatrix.Column.DoubleArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.DoubleArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2747,
+  serialized_end=2816,
+)
+
+_DATAMATRIX_COLUMN_LONGLONGARRAYS = _descriptor.Descriptor(
+  name='LongLongArrays',
+  full_name='wodson.DataMatrix.Column.LongLongArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.LongLongArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2818,
+  serialized_end=2891,
+)
+
+_DATAMATRIX_COLUMN_DATEARRAYS = _descriptor.Descriptor(
+  name='DateArrays',
+  full_name='wodson.DataMatrix.Column.DateArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.DateArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2893,
+  serialized_end=2958,
+)
+
+_DATAMATRIX_COLUMN_BYTESTRARRAYS = _descriptor.Descriptor(
+  name='BytestrArrays',
+  full_name='wodson.DataMatrix.Column.BytestrArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.BytestrArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2960,
+  serialized_end=3031,
+)
+
+_DATAMATRIX_COLUMN_UNKNOWNARRAYS = _descriptor.Descriptor(
+  name='UnknownArrays',
+  full_name='wodson.DataMatrix.Column.UnknownArrays',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.DataMatrix.Column.UnknownArrays.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3033,
+  serialized_end=3104,
 )
 
 _DATAMATRIX_COLUMN = _descriptor.Descriptor(
@@ -559,7 +939,7 @@ _DATAMATRIX_COLUMN = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='baseName', full_name='wodson.DataMatrix.Column.baseName', index=1,
+      name='basename', full_name='wodson.DataMatrix.Column.basename', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -587,140 +967,156 @@ _DATAMATRIX_COLUMN = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtString', full_name='wodson.DataMatrix.Column.dtString', index=5,
+      name='dt_string', full_name='wodson.DataMatrix.Column.dt_string', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtLong', full_name='wodson.DataMatrix.Column.dtLong', index=6,
+      name='dt_long', full_name='wodson.DataMatrix.Column.dt_long', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtFloat', full_name='wodson.DataMatrix.Column.dtFloat', index=7,
+      name='dt_float', full_name='wodson.DataMatrix.Column.dt_float', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtBoolean', full_name='wodson.DataMatrix.Column.dtBoolean', index=8,
+      name='dt_boolean', full_name='wodson.DataMatrix.Column.dt_boolean', index=8,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtByte', full_name='wodson.DataMatrix.Column.dtByte', index=9,
+      name='dt_byte', full_name='wodson.DataMatrix.Column.dt_byte', index=9,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtDouble', full_name='wodson.DataMatrix.Column.dtDouble', index=10,
+      name='dt_double', full_name='wodson.DataMatrix.Column.dt_double', index=10,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtLonglong', full_name='wodson.DataMatrix.Column.dtLonglong', index=11,
+      name='dt_longlong', full_name='wodson.DataMatrix.Column.dt_longlong', index=11,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtBytestr', full_name='wodson.DataMatrix.Column.dtBytestr', index=12,
+      name='dt_date', full_name='wodson.DataMatrix.Column.dt_date', index=12,
       number=13, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dsString', full_name='wodson.DataMatrix.Column.dsString', index=13,
-      number=14, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='dt_bytestr', full_name='wodson.DataMatrix.Column.dt_bytestr', index=13,
+      number=14, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dsLong', full_name='wodson.DataMatrix.Column.dsLong', index=14,
-      number=15, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='ds_string', full_name='wodson.DataMatrix.Column.ds_string', index=14,
+      number=15, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dsFloat', full_name='wodson.DataMatrix.Column.dsFloat', index=15,
-      number=16, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='ds_long', full_name='wodson.DataMatrix.Column.ds_long', index=15,
+      number=16, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dsBoolean', full_name='wodson.DataMatrix.Column.dsBoolean', index=16,
-      number=17, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='ds_float', full_name='wodson.DataMatrix.Column.ds_float', index=16,
+      number=17, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dsByte', full_name='wodson.DataMatrix.Column.dsByte', index=17,
-      number=18, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='ds_boolean', full_name='wodson.DataMatrix.Column.ds_boolean', index=17,
+      number=18, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dsDouble', full_name='wodson.DataMatrix.Column.dsDouble', index=18,
-      number=19, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='ds_byte', full_name='wodson.DataMatrix.Column.ds_byte', index=18,
+      number=19, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dsLonglong', full_name='wodson.DataMatrix.Column.dsLonglong', index=19,
-      number=20, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='ds_double', full_name='wodson.DataMatrix.Column.ds_double', index=19,
+      number=20, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dsBytestr', full_name='wodson.DataMatrix.Column.dsBytestr', index=20,
-      number=21, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='ds_longlong', full_name='wodson.DataMatrix.Column.ds_longlong', index=20,
+      number=21, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='dtUnknown', full_name='wodson.DataMatrix.Column.dtUnknown', index=21,
-      number=22, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='ds_date', full_name='wodson.DataMatrix.Column.ds_date', index=21,
+      number=22, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='ds_bytestr', full_name='wodson.DataMatrix.Column.ds_bytestr', index=22,
+      number=23, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dt_unknown', full_name='wodson.DataMatrix.Column.dt_unknown', index=23,
+      number=24, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
   ],
   extensions=[
   ],
-  nested_types=[_DATAMATRIX_COLUMN_STRINGARRAY, _DATAMATRIX_COLUMN_LONGARRAY, _DATAMATRIX_COLUMN_FLOATARRAY, _DATAMATRIX_COLUMN_BOOLEANARRAY, _DATAMATRIX_COLUMN_BYTEARRAY, _DATAMATRIX_COLUMN_DOUBLEARRAY, _DATAMATRIX_COLUMN_LONGLONGARRAY, _DATAMATRIX_COLUMN_BYTESTRARRAY, _DATAMATRIX_COLUMN_UNKNOWNARRAY, ],
+  nested_types=[_DATAMATRIX_COLUMN_STRINGARRAY, _DATAMATRIX_COLUMN_LONGARRAY, _DATAMATRIX_COLUMN_FLOATARRAY, _DATAMATRIX_COLUMN_BOOLEANARRAY, _DATAMATRIX_COLUMN_BYTEARRAY, _DATAMATRIX_COLUMN_DOUBLEARRAY, _DATAMATRIX_COLUMN_LONGLONGARRAY, _DATAMATRIX_COLUMN_DATEARRAY, _DATAMATRIX_COLUMN_BYTESTRARRAY, _DATAMATRIX_COLUMN_UNKNOWNARRAY, _DATAMATRIX_COLUMN_STRINGARRAYS, _DATAMATRIX_COLUMN_LONGARRAYS, _DATAMATRIX_COLUMN_FLOATARRAYS, _DATAMATRIX_COLUMN_BOOLEANARRAYS, _DATAMATRIX_COLUMN_BYTEARRAYS, _DATAMATRIX_COLUMN_DOUBLEARRAYS, _DATAMATRIX_COLUMN_LONGLONGARRAYS, _DATAMATRIX_COLUMN_DATEARRAYS, _DATAMATRIX_COLUMN_BYTESTRARRAYS, _DATAMATRIX_COLUMN_UNKNOWNARRAYS, ],
   enum_types=[
     _DATAMATRIX_COLUMN_AGGREGATEENUM,
-    _DATAMATRIX_COLUMN_DATATYPEENUM,
   ],
   options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='ValuesUnion', full_name='wodson.DataMatrix.Column.ValuesUnion',
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=160,
-  serialized_end=2690,
+  serialized_start=193,
+  serialized_end=3242,
 )
 
 _DATAMATRIX = _descriptor.Descriptor(
@@ -738,7 +1134,7 @@ _DATAMATRIX = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='baseName', full_name='wodson.DataMatrix.baseName', index=1,
+      name='basename', full_name='wodson.DataMatrix.basename', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -777,8 +1173,46 @@ _DATAMATRIX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=25,
-  serialized_end=2690,
+  serialized_start=58,
+  serialized_end=3242,
+)
+
+
+_DATAMATRICES = _descriptor.Descriptor(
+  name='DataMatrices',
+  full_name='wodson.DataMatrices',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='tables', full_name='wodson.DataMatrices.tables', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='iteratorGuid', full_name='wodson.DataMatrices.iteratorGuid', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3244,
+  serialized_end=3316,
 )
 
 _DATAMATRIX_COLUMN_STRINGARRAY.containing_type = _DATAMATRIX_COLUMN
@@ -788,41 +1222,152 @@ _DATAMATRIX_COLUMN_BOOLEANARRAY.containing_type = _DATAMATRIX_COLUMN
 _DATAMATRIX_COLUMN_BYTEARRAY.containing_type = _DATAMATRIX_COLUMN
 _DATAMATRIX_COLUMN_DOUBLEARRAY.containing_type = _DATAMATRIX_COLUMN
 _DATAMATRIX_COLUMN_LONGLONGARRAY.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_DATEARRAY.fields_by_name['values'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_DATAMATRIX_COLUMN_DATEARRAY.containing_type = _DATAMATRIX_COLUMN
 _DATAMATRIX_COLUMN_BYTESTRARRAY.containing_type = _DATAMATRIX_COLUMN
-_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['datatype'].enum_type = _DATAMATRIX_COLUMN_DATATYPEENUM
-_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dtString'].message_type = _DATAMATRIX_COLUMN_STRINGARRAY
-_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dtLong'].message_type = _DATAMATRIX_COLUMN_LONGARRAY
-_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dtFloat'].message_type = _DATAMATRIX_COLUMN_FLOATARRAY
-_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dtBoolean'].message_type = _DATAMATRIX_COLUMN_BOOLEANARRAY
-_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dtByte'].message_type = _DATAMATRIX_COLUMN_BYTEARRAY
-_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dtDouble'].message_type = _DATAMATRIX_COLUMN_DOUBLEARRAY
-_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dtLonglong'].message_type = _DATAMATRIX_COLUMN_LONGLONGARRAY
-_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dtBytestr'].message_type = _DATAMATRIX_COLUMN_BYTESTRARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['datatype'].enum_type = _DATATYPEENUM
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_string'].message_type = _DATAMATRIX_COLUMN_STRINGARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_long'].message_type = _DATAMATRIX_COLUMN_LONGARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_float'].message_type = _DATAMATRIX_COLUMN_FLOATARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_boolean'].message_type = _DATAMATRIX_COLUMN_BOOLEANARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_byte'].message_type = _DATAMATRIX_COLUMN_BYTEARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_double'].message_type = _DATAMATRIX_COLUMN_DOUBLEARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_longlong'].message_type = _DATAMATRIX_COLUMN_LONGLONGARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_date'].message_type = _DATAMATRIX_COLUMN_DATEARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_bytestr'].message_type = _DATAMATRIX_COLUMN_BYTESTRARRAY
 _DATAMATRIX_COLUMN_UNKNOWNARRAY.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion'].fields.append(
+  _DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_string'])
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_string'].containing_oneof = _DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion']
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion'].fields.append(
+  _DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_long'])
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_long'].containing_oneof = _DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion']
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion'].fields.append(
+  _DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_float'])
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_float'].containing_oneof = _DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion']
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion'].fields.append(
+  _DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_boolean'])
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_boolean'].containing_oneof = _DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion']
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion'].fields.append(
+  _DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_byte'])
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_byte'].containing_oneof = _DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion']
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion'].fields.append(
+  _DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_double'])
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_double'].containing_oneof = _DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion']
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion'].fields.append(
+  _DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_longlong'])
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_longlong'].containing_oneof = _DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion']
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion'].fields.append(
+  _DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_date'])
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_date'].containing_oneof = _DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion']
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion'].fields.append(
+  _DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_bytestr'])
+_DATAMATRIX_COLUMN_UNKNOWNARRAY.fields_by_name['dt_bytestr'].containing_oneof = _DATAMATRIX_COLUMN_UNKNOWNARRAY.oneofs_by_name['UnkownUnion']
+_DATAMATRIX_COLUMN_STRINGARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_STRINGARRAY
+_DATAMATRIX_COLUMN_STRINGARRAYS.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_LONGARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_LONGARRAY
+_DATAMATRIX_COLUMN_LONGARRAYS.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_FLOATARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_FLOATARRAY
+_DATAMATRIX_COLUMN_FLOATARRAYS.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_BOOLEANARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_BOOLEANARRAY
+_DATAMATRIX_COLUMN_BOOLEANARRAYS.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_BYTEARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_BYTEARRAY
+_DATAMATRIX_COLUMN_BYTEARRAYS.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_DOUBLEARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_DOUBLEARRAY
+_DATAMATRIX_COLUMN_DOUBLEARRAYS.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_LONGLONGARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_LONGLONGARRAY
+_DATAMATRIX_COLUMN_LONGLONGARRAYS.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_DATEARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_DATEARRAY
+_DATAMATRIX_COLUMN_DATEARRAYS.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_BYTESTRARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_BYTESTRARRAY
+_DATAMATRIX_COLUMN_BYTESTRARRAYS.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN_UNKNOWNARRAYS.fields_by_name['values'].message_type = _DATAMATRIX_COLUMN_UNKNOWNARRAY
+_DATAMATRIX_COLUMN_UNKNOWNARRAYS.containing_type = _DATAMATRIX_COLUMN
 _DATAMATRIX_COLUMN.fields_by_name['aggregate'].enum_type = _DATAMATRIX_COLUMN_AGGREGATEENUM
-_DATAMATRIX_COLUMN.fields_by_name['datatype'].enum_type = _DATAMATRIX_COLUMN_DATATYPEENUM
-_DATAMATRIX_COLUMN.fields_by_name['dtString'].message_type = _DATAMATRIX_COLUMN_STRINGARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dtLong'].message_type = _DATAMATRIX_COLUMN_LONGARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dtFloat'].message_type = _DATAMATRIX_COLUMN_FLOATARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dtBoolean'].message_type = _DATAMATRIX_COLUMN_BOOLEANARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dtByte'].message_type = _DATAMATRIX_COLUMN_BYTEARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dtDouble'].message_type = _DATAMATRIX_COLUMN_DOUBLEARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dtLonglong'].message_type = _DATAMATRIX_COLUMN_LONGLONGARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dtBytestr'].message_type = _DATAMATRIX_COLUMN_BYTESTRARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dsString'].message_type = _DATAMATRIX_COLUMN_STRINGARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dsLong'].message_type = _DATAMATRIX_COLUMN_LONGARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dsFloat'].message_type = _DATAMATRIX_COLUMN_FLOATARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dsBoolean'].message_type = _DATAMATRIX_COLUMN_BOOLEANARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dsByte'].message_type = _DATAMATRIX_COLUMN_BYTEARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dsDouble'].message_type = _DATAMATRIX_COLUMN_DOUBLEARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dsLonglong'].message_type = _DATAMATRIX_COLUMN_LONGLONGARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dsBytestr'].message_type = _DATAMATRIX_COLUMN_BYTESTRARRAY
-_DATAMATRIX_COLUMN.fields_by_name['dtUnknown'].message_type = _DATAMATRIX_COLUMN_UNKNOWNARRAY
+_DATAMATRIX_COLUMN.fields_by_name['datatype'].enum_type = _DATATYPEENUM
+_DATAMATRIX_COLUMN.fields_by_name['dt_string'].message_type = _DATAMATRIX_COLUMN_STRINGARRAY
+_DATAMATRIX_COLUMN.fields_by_name['dt_long'].message_type = _DATAMATRIX_COLUMN_LONGARRAY
+_DATAMATRIX_COLUMN.fields_by_name['dt_float'].message_type = _DATAMATRIX_COLUMN_FLOATARRAY
+_DATAMATRIX_COLUMN.fields_by_name['dt_boolean'].message_type = _DATAMATRIX_COLUMN_BOOLEANARRAY
+_DATAMATRIX_COLUMN.fields_by_name['dt_byte'].message_type = _DATAMATRIX_COLUMN_BYTEARRAY
+_DATAMATRIX_COLUMN.fields_by_name['dt_double'].message_type = _DATAMATRIX_COLUMN_DOUBLEARRAY
+_DATAMATRIX_COLUMN.fields_by_name['dt_longlong'].message_type = _DATAMATRIX_COLUMN_LONGLONGARRAY
+_DATAMATRIX_COLUMN.fields_by_name['dt_date'].message_type = _DATAMATRIX_COLUMN_DATEARRAY
+_DATAMATRIX_COLUMN.fields_by_name['dt_bytestr'].message_type = _DATAMATRIX_COLUMN_BYTESTRARRAY
+_DATAMATRIX_COLUMN.fields_by_name['ds_string'].message_type = _DATAMATRIX_COLUMN_STRINGARRAYS
+_DATAMATRIX_COLUMN.fields_by_name['ds_long'].message_type = _DATAMATRIX_COLUMN_LONGARRAYS
+_DATAMATRIX_COLUMN.fields_by_name['ds_float'].message_type = _DATAMATRIX_COLUMN_FLOATARRAYS
+_DATAMATRIX_COLUMN.fields_by_name['ds_boolean'].message_type = _DATAMATRIX_COLUMN_BOOLEANARRAYS
+_DATAMATRIX_COLUMN.fields_by_name['ds_byte'].message_type = _DATAMATRIX_COLUMN_BYTEARRAYS
+_DATAMATRIX_COLUMN.fields_by_name['ds_double'].message_type = _DATAMATRIX_COLUMN_DOUBLEARRAYS
+_DATAMATRIX_COLUMN.fields_by_name['ds_longlong'].message_type = _DATAMATRIX_COLUMN_LONGLONGARRAYS
+_DATAMATRIX_COLUMN.fields_by_name['ds_date'].message_type = _DATAMATRIX_COLUMN_DATEARRAYS
+_DATAMATRIX_COLUMN.fields_by_name['ds_bytestr'].message_type = _DATAMATRIX_COLUMN_BYTESTRARRAYS
+_DATAMATRIX_COLUMN.fields_by_name['dt_unknown'].message_type = _DATAMATRIX_COLUMN_UNKNOWNARRAYS
 _DATAMATRIX_COLUMN.containing_type = _DATAMATRIX
 _DATAMATRIX_COLUMN_AGGREGATEENUM.containing_type = _DATAMATRIX_COLUMN
-_DATAMATRIX_COLUMN_DATATYPEENUM.containing_type = _DATAMATRIX_COLUMN
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_string'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_string'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_long'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_long'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_float'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_float'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_boolean'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_boolean'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_byte'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_byte'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_double'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_double'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_longlong'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_longlong'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_date'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_date'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_bytestr'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_bytestr'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['ds_string'])
+_DATAMATRIX_COLUMN.fields_by_name['ds_string'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['ds_long'])
+_DATAMATRIX_COLUMN.fields_by_name['ds_long'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['ds_float'])
+_DATAMATRIX_COLUMN.fields_by_name['ds_float'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['ds_boolean'])
+_DATAMATRIX_COLUMN.fields_by_name['ds_boolean'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['ds_byte'])
+_DATAMATRIX_COLUMN.fields_by_name['ds_byte'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['ds_double'])
+_DATAMATRIX_COLUMN.fields_by_name['ds_double'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['ds_longlong'])
+_DATAMATRIX_COLUMN.fields_by_name['ds_longlong'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['ds_date'])
+_DATAMATRIX_COLUMN.fields_by_name['ds_date'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['ds_bytestr'])
+_DATAMATRIX_COLUMN.fields_by_name['ds_bytestr'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
+_DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
+  _DATAMATRIX_COLUMN.fields_by_name['dt_unknown'])
+_DATAMATRIX_COLUMN.fields_by_name['dt_unknown'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
 _DATAMATRIX.fields_by_name['columns'].message_type = _DATAMATRIX_COLUMN
+_DATAMATRICES.fields_by_name['tables'].message_type = _DATAMATRIX
 DESCRIPTOR.message_types_by_name['DataMatrix'] = _DATAMATRIX
+DESCRIPTOR.message_types_by_name['DataMatrices'] = _DATAMATRICES
+DESCRIPTOR.enum_types_by_name['DatatypeEnum'] = _DATATYPEENUM
 
 DataMatrix = _reflection.GeneratedProtocolMessageType('DataMatrix', (_message.Message,), dict(
 
@@ -877,6 +1422,13 @@ DataMatrix = _reflection.GeneratedProtocolMessageType('DataMatrix', (_message.Me
       ))
     ,
 
+    DateArray = _reflection.GeneratedProtocolMessageType('DateArray', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_DATEARRAY,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.DateArray)
+      ))
+    ,
+
     BytestrArray = _reflection.GeneratedProtocolMessageType('BytestrArray', (_message.Message,), dict(
       DESCRIPTOR = _DATAMATRIX_COLUMN_BYTESTRARRAY,
       __module__ = 'wodson_pb2'
@@ -888,6 +1440,76 @@ DataMatrix = _reflection.GeneratedProtocolMessageType('DataMatrix', (_message.Me
       DESCRIPTOR = _DATAMATRIX_COLUMN_UNKNOWNARRAY,
       __module__ = 'wodson_pb2'
       # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.UnknownArray)
+      ))
+    ,
+
+    StringArrays = _reflection.GeneratedProtocolMessageType('StringArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_STRINGARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.StringArrays)
+      ))
+    ,
+
+    LongArrays = _reflection.GeneratedProtocolMessageType('LongArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_LONGARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.LongArrays)
+      ))
+    ,
+
+    FloatArrays = _reflection.GeneratedProtocolMessageType('FloatArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_FLOATARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.FloatArrays)
+      ))
+    ,
+
+    BooleanArrays = _reflection.GeneratedProtocolMessageType('BooleanArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_BOOLEANARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.BooleanArrays)
+      ))
+    ,
+
+    ByteArrays = _reflection.GeneratedProtocolMessageType('ByteArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_BYTEARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.ByteArrays)
+      ))
+    ,
+
+    DoubleArrays = _reflection.GeneratedProtocolMessageType('DoubleArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_DOUBLEARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.DoubleArrays)
+      ))
+    ,
+
+    LongLongArrays = _reflection.GeneratedProtocolMessageType('LongLongArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_LONGLONGARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.LongLongArrays)
+      ))
+    ,
+
+    DateArrays = _reflection.GeneratedProtocolMessageType('DateArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_DATEARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.DateArrays)
+      ))
+    ,
+
+    BytestrArrays = _reflection.GeneratedProtocolMessageType('BytestrArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_BYTESTRARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.BytestrArrays)
+      ))
+    ,
+
+    UnknownArrays = _reflection.GeneratedProtocolMessageType('UnknownArrays', (_message.Message,), dict(
+      DESCRIPTOR = _DATAMATRIX_COLUMN_UNKNOWNARRAYS,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.DataMatrix.Column.UnknownArrays)
       ))
     ,
     DESCRIPTOR = _DATAMATRIX_COLUMN,
@@ -908,8 +1530,26 @@ _sym_db.RegisterMessage(DataMatrix.Column.BooleanArray)
 _sym_db.RegisterMessage(DataMatrix.Column.ByteArray)
 _sym_db.RegisterMessage(DataMatrix.Column.DoubleArray)
 _sym_db.RegisterMessage(DataMatrix.Column.LongLongArray)
+_sym_db.RegisterMessage(DataMatrix.Column.DateArray)
 _sym_db.RegisterMessage(DataMatrix.Column.BytestrArray)
 _sym_db.RegisterMessage(DataMatrix.Column.UnknownArray)
+_sym_db.RegisterMessage(DataMatrix.Column.StringArrays)
+_sym_db.RegisterMessage(DataMatrix.Column.LongArrays)
+_sym_db.RegisterMessage(DataMatrix.Column.FloatArrays)
+_sym_db.RegisterMessage(DataMatrix.Column.BooleanArrays)
+_sym_db.RegisterMessage(DataMatrix.Column.ByteArrays)
+_sym_db.RegisterMessage(DataMatrix.Column.DoubleArrays)
+_sym_db.RegisterMessage(DataMatrix.Column.LongLongArrays)
+_sym_db.RegisterMessage(DataMatrix.Column.DateArrays)
+_sym_db.RegisterMessage(DataMatrix.Column.BytestrArrays)
+_sym_db.RegisterMessage(DataMatrix.Column.UnknownArrays)
+
+DataMatrices = _reflection.GeneratedProtocolMessageType('DataMatrices', (_message.Message,), dict(
+  DESCRIPTOR = _DATAMATRICES,
+  __module__ = 'wodson_pb2'
+  # @@protoc_insertion_point(class_scope:wodson.DataMatrices)
+  ))
+_sym_db.RegisterMessage(DataMatrices)
 
 
 # @@protoc_insertion_point(module_scope)
