@@ -444,8 +444,10 @@ def data_get(conI,  query_struct):
     result = so.GetInstancesEx(elem.aeName, conditions, attributes, orderBy, groupBy, rowMaxCount)
 
     wantsProto, wantsProtoJson = _request_wants_protobuf()
-    if _request_wants_protobuf():
-        return _protobuf_convert_resultsetext_to_datamatrix(model, elem, result, rowSkipCount, seqSkipCount, wantsProtoJson), 200
+    if wantsProto:
+        response = make_response(_protobuf_convert_resultsetext_to_datamatrix(model, elem, result, rowSkipCount, seqSkipCount, wantsProtoJson))
+        response.headers['content-type'] = 'application/x-wodson-protobuf' if not wantsProtoJson else 'application/x-wodson-protobuf-json'
+        return response, 200
 
     rv = {}
     rv['tables'] = []
