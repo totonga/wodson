@@ -126,11 +126,43 @@ def GetAggrTypeStr(aggrType):
 
     return None
 
+def get_scalar_type(columnType):
+
+    if columnType == org.asam.ods.DS_BYTE:
+        return org.asam.ods.DT_BYTE
+    elif columnType == org.asam.ods.DS_BOOLEAN:
+        return org.asam.ods.DT_BOOLEAN
+    elif columnType == org.asam.ods.DS_SHORT:
+        return org.asam.ods.DT_SHORT
+    elif columnType == org.asam.ods.DS_LONG:
+        return org.asam.ods.DT_LONG
+    elif columnType == org.asam.ods.DS_LONGLONG:
+        return org.asam.ods.DT_LONGLONG
+    elif columnType == org.asam.ods.DS_FLOAT:
+        return org.asam.ods.DT_FLOAT
+    elif columnType == org.asam.ods.DS_DOUBLE:
+        return org.asam.ods.DT_DOUBLE
+    elif columnType == org.asam.ods.DS_DATE:
+        return org.asam.ods.DT_DATE
+    elif columnType == org.asam.ods.DS_STRING:
+        return org.asam.ods.DT_STRING
+    elif columnType == org.asam.ods.DS_ENUM:
+        return org.asam.ods.DT_ENUM
+    elif columnType == org.asam.ods.DS_COMPLEX:
+        return org.asam.ods.DT_COMPLEX
+    elif columnType == org.asam.ods.DS_DCOMPLEX:
+        return org.asam.ods.DT_DCOMPLEX
+    elif columnType == org.asam.ods.DS_EXTERNALREFERENCE:
+        return org.asam.ods.DT_EXTERNALREFERENCE
+    elif columnType == org.asam.ods.DS_ID:
+        return org.asam.ods.DT_ID
+    
+    return columnType
 
 def GetDataTypeStr(dataType):
     columnType = dataType
     if columnType == org.asam.ods.DT_UNKNOWN:
-        return "DT_UNKONWN"
+        return "DT_UNKNOWN"
     if columnType == org.asam.ods.DT_BYTE:
         return "DT_BYTE"
     elif columnType == org.asam.ods.DT_BOOLEAN:

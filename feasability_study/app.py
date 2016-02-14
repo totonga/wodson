@@ -45,8 +45,8 @@ _cons = {}
 
 _cons['c1'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'})
 _cons['c2'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
-_cons['c3'] = _CCon({u'$URL': u'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
-_cons['c4'] = _CCon({u'$URL': u'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c3'] = _CCon({u'$URL': u'corbaname::130.164.139.1#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c4'] = _CCon({u'$URL': u'corbaname::130.164.139.1#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
 
 
 def _request_wants_protobuf():
@@ -294,7 +294,7 @@ def _protobuf_convert_booleanseq(booleanSeq):
     return rv
 
 
-def _protobuf_convert_resultsetext_to_datamatrix(model, elem, result, rowSkipCount, seqSkipCount, wantsProtoJson):
+def _protobuf_convert_resultsetext_to_datamatrix(model, elem, result, rowSkipCount, seqSkipCount, seqMaxCount, wantsProtoJson):
 
     rv = wodson_pb2.DataMatrices()
 
@@ -404,8 +404,37 @@ def _protobuf_convert_resultsetext_to_datamatrix(model, elem, result, rowSkipCou
                 elif columnType == org.asam.ods.DS_EXTERNALREFERENCE:
                     for columnValue in columnValues:
                         destColumn.ds_string.values.add().values.extend(columnValue)
-                elif columnType == org.asam.ods.DT_UNKONW:
-                    logging.info('return not implemented')
+                elif columnType == org.asam.ods.DT_UNKNOWN:
+                    for columnValue in columnValues:
+                        columnValueDataType = odslib.get_scalar_type(column.value.u._d)
+                        unknownVals = destColumn.dt_unknown.values.add()
+                        unknownVals.datatype = _protobuf_convert_datatypeenum(columnValueDataType)
+                        if columnValueDataType == org.asam.ods.DT_BYTE:
+                            unknownVals.dt_byte.values = b''.join(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_BOOLEAN:
+                            unknownVals.dt_boolean.values.extend(_protobuf_convert_booleanseq(columnValue))
+                        elif columnValueDataType == org.asam.ods.DT_SHORT:
+                            unknownVals.dt_long.values.extend(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_LONG:
+                            unknownVals.dt_long.values.extend(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_LONGLONG:
+                            unknownVals.dt_longlong.values.extend(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_FLOAT:
+                            unknownVals.dt_float.values.extend(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_DOUBLE:
+                            unknownVals.dt_double.values.extend(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_DATE:
+                            unknownVals.dt_date.values.extend(_protobuf_convert_dateseq(columnValue))
+                        elif columnValueDataType == org.asam.ods.DT_STRING:
+                            unknownVals.dt_string.values.extend(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_ENUM:
+                            unknownVals.dt_long.values.extend(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_COMPLEX:
+                            unknownVals.dt_float.values.extend(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_DCOMPLEX:
+                            unknownVals.dt_double.values.extend(columnValue)
+                        elif columnValueDataType == org.asam.ods.DT_EXTERNALREFERENCE:
+                            unknownVals.dt_string.values.extend(columnValue)
             else:
                 # set relations
                 relAttr = model.GetRelation(tableElem.aeName, aName)
@@ -445,7 +474,7 @@ def data_get(conI,  query_struct):
 
     wantsProto, wantsProtoJson = _request_wants_protobuf()
     if wantsProto:
-        response = make_response(_protobuf_convert_resultsetext_to_datamatrix(model, elem, result, rowSkipCount, seqSkipCount, wantsProtoJson))
+        response = make_response(_protobuf_convert_resultsetext_to_datamatrix(model, elem, result, rowSkipCount, seqSkipCount, seqMaxCount, wantsProtoJson))
         response.headers['content-type'] = 'application/x-wodson-protobuf' if not wantsProtoJson else 'application/x-wodson-protobuf-json'
         return response, 200
 
