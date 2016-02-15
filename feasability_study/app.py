@@ -442,7 +442,7 @@ def con_coni_post(conI, parameters):
     if conI in _cons:
         return NoContent, 405
 
-    _cons[conI] = _CCon()
+    _cons[conI] = _CCon({})
 
     for param in parameters:
         pName = param['name']
