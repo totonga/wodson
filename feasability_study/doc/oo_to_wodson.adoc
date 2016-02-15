@@ -1,0 +1,80 @@
+=== Corba OO to URL
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+==== Read and Write Instances/Bulk
+
+.getInstancesExt, ValueMatrix::getValue
+----
+post   /con/{conI}/data/access
+----
+.insertInstances, ValueMatrix::setValue
+----
+post   /con/{conI}/data/modify
+----
+.updateInstances, ValueMatrix::setValue
+----
+put    /con/{conI}/data/modify
+----
+.deleteInstances
+----
+delete /con/{conI}/data/modify
+----
+
+.access data that exceeds max transport size
+----
+get    /con/{conI}/data/iteratorguid/{iteratorGuid}
+----
+
+==== Read and Modify Model
+
+.getApplicationStructureValue, getEnumerationAttributes, getEnumerationStructures, ...
+----
+get    /con/{conI}/model
+----
+.ApplicationStructure::createElement, ...
+----
+put    /con/{conI}/model
+----
+.ApplicationStructure::removeElement, ...
+----
+delete /con/{conI}/model
+----
+
+==== Administer Connection, Session, Factory, Configuration
+
+.AoFactory::newSessionNameValue, AoSession::close
+----
+get    /con
+get    /con/{conI}
+put    /con/{conI}
+post   /con/{conI}
+delete /con/{conI}
+----
+
+==== Etc
+.AoSession::startTransaction, AoSession::commitTransaction, AoSession::abortTransaction
+----
+post /con/{conI}/transaction
+put /con/{conI}/transaction
+delete /con/{conI}/transaction
+----
+
+.AoSession::getContext, AoSession::setContextString
+----
+get    /con/{conI}/context
+put    /con/{conI}/context
+----
+
+.InstanceElement::getAsamPath, ApplicationStructure::getInstanceByAsamPath
+----
+post /con/{conI}/utils/asampath/create
+post /con/{conI}/utils/asampath/resolve
+----
+
+.ODSFile and Blob
+----
+post /con/{conI}/utils/binary/access
+post /con/{conI}/utils/binary/download
+post /con/{conI}/utils/binary/getuploadurl
+----
