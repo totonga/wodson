@@ -8,7 +8,6 @@ I like configuration the best because it defines how the current user will acces
 of what is configurable for this server.
 ****
 
-
 === Create new Con
 
 ----
@@ -38,11 +37,13 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ================================
 
 
-=== Change Con Parameters
+=== Change/Update Con Parameters
 
 ----
 PUT /con/{conI}
 ----
+
+TIP: A PUT call to a Con with empty parameters will close an active session. Be aware that any open transaction will be aborted!
 
 .update Con parameters
 ================================
@@ -63,6 +64,15 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
         "value": "puma"
     }
 ]' 'http://localhost:8081/con/c1'
+----
+================================
+
+.close open AoSession on Con myCon without deleting myCon
+================================
+.request
+[source,json]
+----
+curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '[]' 'http://localhost:8081/con/myCon'
 ----
 ================================
 
@@ -115,5 +125,25 @@ curl -X GET --header 'Content-Type: application/json' --header 'Accept: applicat
         "value": "System"
     }
 ]
+----
+================================
+
+=== Get List of Con Entries
+
+----
+GET /con
+----
+
+.read all parameters
+================================
+.request
+[source,json]
+----
+curl -X GET --header 'Accept: application/problem+json' 'http://localhost:8081/con'
+----
+
+.result
+[source,json]
+----
 ----
 ================================

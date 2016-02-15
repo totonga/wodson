@@ -110,12 +110,10 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 -----------
 
 ===============================
-
 ==============================
-
 =============================
 
-
+.search for a AoTest by name and version
 [source,json]
 -----------
 {
@@ -192,6 +190,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.use $in operator
 [source,json]
 -----------
 {
@@ -207,6 +206,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.search for a time span
 [source,json]
 -----------
 {
@@ -219,6 +219,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.use between operator
 [source,json]
 -----------
 {
@@ -233,6 +234,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.simple $and example
 [source,json]
 -----------
 {
@@ -255,6 +257,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.simple or example
 [source,json]
 -----------
 {
@@ -283,6 +286,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.simple $not example
 [source,json]
 -----------
 {
@@ -324,6 +328,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.define unit for attribute to be retrieved
 [source,json]
 -----------
 {
@@ -338,6 +343,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.access $min and $max from minimum and maximum
 [source,json]
 -----------
 {
@@ -357,6 +363,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.do a full query filling some query elements
 [source,json]
 -----------
 {

@@ -201,6 +201,8 @@ paths:
         '404':
           description: not connected
       produces:
+        - application/x-wodson-protobuf
+        - application/x-wodson-protobuf-json
         - application/json
         - text/html
       security:
@@ -597,6 +599,47 @@ paths:
       security:
         - session_auth:
           - access_data
+  /con/{conI}/utils/basemodel:
+    get:
+      tags:
+        - API_Http
+        - Utils
+      description: get base model in xml
+      operationId: app.utils_basemodel_get
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: file
+      produces:
+        - text/xml
+      security:
+        - session_auth:
+          - access_data
+  /con:
+    get:
+      tags:
+        - API_Http
+        - API_Rest
+        - Info
+      description: get list of existing Con urls
+      operationId: app.con_get
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/ConList'
+        '404':
+          description: not connected
+      security:
+        - session_auth:
+          - access_data
   /con/{conI}:
     get:
       tags:
@@ -604,11 +647,11 @@ paths:
         - API_Rest
         - Info
       description: get parameter of con
-      operationId: app.con_get
+      operationId: app.con_coni_get
       parameters:
         - name: conI
           in: path
-          description: get paameters of current con
+          description: get parameters of current con
           required: true
           type: string
       responses:
@@ -626,7 +669,7 @@ paths:
         - API_Http
         - API_Rest
         - Init
-      operationId: app.con_post
+      operationId: app.con_coni_post
       parameters:
         - name: conI
           in: path
@@ -651,7 +694,7 @@ paths:
         - API_Http
         - API_Rest
         - Init
-      operationId: app.con_put
+      operationId: app.con_coni_put
       parameters:
         - name: conI
           in: path
@@ -676,7 +719,7 @@ paths:
         - API_Http
         - API_Rest
         - Init
-      operationId: app.con_delete
+      operationId: app.con_coni_delete
       parameters:
         - name: conI
           in: path
@@ -874,6 +917,17 @@ definitions:
           type: string
           description: value of the name-value pair
           example: system
+  ConList:
+    type: object
+    properties:
+      cons:
+        type: array
+        items:
+          title: Con
+          type: object
+          properties:
+            name:
+              type: string
   ServerModel:
     type: object
     properties:

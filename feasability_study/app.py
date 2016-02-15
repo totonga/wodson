@@ -20,10 +20,13 @@ import odslib
 import connexion
 
 # from flask import Flask
-from flask import render_template,  redirect,  jsonify
+from flask import render_template,  redirect,  jsonify, url_for
 from flask import request
 from connexion import NoContent
 from flask import make_response
+
+import ods_protobuf_convert
+
 
 app = connexion.App(__name__)
 
@@ -36,11 +39,15 @@ class _CCon:
         self.name_value_params_ = context_vars
 
 _cons = {}
-
 _cons['c1'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'})
 _cons['c2'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
-_cons['c3'] = _CCon({u'$URL': u'corbaname::130.164.139.4#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
-_cons['c4'] = _CCon({u'$URL': u'corbaname::130.164.139.4#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c3'] = _CCon({u'$URL': u'corbaname::130.164.139.1#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c4'] = _CCon({u'$URL': u'corbaname::130.164.139.1#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+
+
+def _request_wants_protobuf():
+    best = request.accept_mimetypes.best_match([ods_protobuf_convert.content_type_binary(), ods_protobuf_convert.content_type_json(), 'application/json', 'text/html'])
+    return best == ods_protobuf_convert.content_type_binary() or best == ods_protobuf_convert.content_type_json(), best == ods_protobuf_convert.content_type_json()
 
 
 def _request_wants_json():
@@ -151,7 +158,7 @@ def data_modify_delete(conI, data_matrix):
     return data_delete(conI, data_matrix)
 
 
-def data_get(conI,  query_struct):
+def data_access_post(conI,  query_struct):
     logging.info('retrieve data')
 
     entityStr = query_struct['entity']
@@ -168,6 +175,12 @@ def data_get(conI,  query_struct):
     model = so.Model()
     elem = model.GetElemEx(entityStr)
     result = so.GetInstancesEx(elem.aeName, conditions, attributes, orderBy, groupBy, rowMaxCount)
+
+    wantsProto, wantsProtoJson = _request_wants_protobuf()
+    if wantsProto:
+        response = make_response(ods_protobuf_convert.o2p_datamatrices(model, elem, result, rowSkipCount, seqSkipCount, seqMaxCount, wantsProtoJson))
+        response.headers['content-type'] = ods_protobuf_convert.content_type_binary() if not wantsProtoJson else ods_protobuf_convert.content_type_json()
+        return response, 200
 
     rv = {}
     rv['tables'] = []
@@ -262,8 +275,8 @@ def data_get(conI,  query_struct):
     return render_template('datamatrix.html', datamatrices=rv),  200
 
 
-def data_access_post(conI, query_struct):
-    return data_get(conI, query_struct)
+def data_get(conI, query_struct):
+    return data_access_post(conI, query_struct)
 
 
 def data_iteratorguid_get(conI,  iteratorGuid):
@@ -399,8 +412,20 @@ def context_put(conI, parameters):
 
     return NoContent, 200
 
+def con_get():
+    logging.info('get info from existing Con entries')
 
-def con_get(conI):
+    rv = {}
+    rv['cons'] = []
+
+    for con in _cons:
+        conObj = {}
+        conObj['name'] = con
+        rv['cons'].append(conObj)
+
+    return jsonify(rv), 200;
+
+def con_coni_get(conI):
     logging.info('get con parameters')
     rv = []
     for param in _cons[conI].name_value_params_:
@@ -412,10 +437,12 @@ def con_get(conI):
     return rv
 
 
-def con_post(conI, parameters):
+def con_coni_post(conI, parameters):
     logging.info('Create a new con')
     if conI in _cons:
         return NoContent, 405
+
+    _cons[conI] = _CCon({})
 
     for param in parameters:
         pName = param['name']
@@ -425,13 +452,13 @@ def con_post(conI, parameters):
     return NoContent, 200
 
 
-def con_delete(conI):
+def con_coni_delete(conI):
     logging.info('delete con and close session')
     del _cons[conI]
     return NoContent, 200
 
 
-def con_put(conI, parameters):
+def con_coni_put(conI, parameters):
     logging.info('set con parameters')
     # make sure we can change configuration of session
     _SessionClose(conI)
@@ -491,10 +518,17 @@ def utils_binary_download_post(conI,  binary_identifier):
     response.headers['content-type'] = 'application/octet-stream'
     return response
 
+
 def utils_binary_getuploadurl_post(conI,  binary_identifier):
     logging.info('determnine upload url')
 
     return u"http://kjdfslakjdlkdjaslfj", 200
+
+
+def utils_basemodel_get(conI):
+    logging.info('retrieve basemodel')
+    return app.app.send_static_file('basemodel_asamxx.xml')
+
 
 @app.route('/')
 def index():
