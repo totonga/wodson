@@ -20,7 +20,7 @@ import odslib
 import connexion
 
 # from flask import Flask
-from flask import render_template,  redirect,  jsonify
+from flask import render_template,  redirect,  jsonify, url_for
 from flask import request
 from connexion import NoContent
 from flask import make_response
@@ -412,8 +412,20 @@ def context_put(conI, parameters):
 
     return NoContent, 200
 
+def con_get():
+    logging.info('get info from existing Con entries')
 
-def con_get(conI):
+    rv = {}
+    rv['cons'] = []
+
+    for con in _cons:
+        conObj = {}
+        conObj['name'] = con
+        rv['cons'].append(conObj)
+
+    return jsonify(rv), 200;
+
+def con_coni_get(conI):
     logging.info('get con parameters')
     rv = []
     for param in _cons[conI].name_value_params_:
@@ -425,7 +437,7 @@ def con_get(conI):
     return rv
 
 
-def con_post(conI, parameters):
+def con_coni_post(conI, parameters):
     logging.info('Create a new con')
     if conI in _cons:
         return NoContent, 405
@@ -440,13 +452,13 @@ def con_post(conI, parameters):
     return NoContent, 200
 
 
-def con_delete(conI):
+def con_coni_delete(conI):
     logging.info('delete con and close session')
     del _cons[conI]
     return NoContent, 200
 
 
-def con_put(conI, parameters):
+def con_coni_put(conI, parameters):
     logging.info('set con parameters')
     # make sure we can change configuration of session
     _SessionClose(conI)
