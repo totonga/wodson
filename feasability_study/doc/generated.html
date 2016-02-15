@@ -1,0 +1,3060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="Asciidoctor 0.1.4">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wodson - Feasibility Study</title>
+<style>
+/* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary { display: block; }
+audio, canvas, video { display: inline-block; }
+audio:not([controls]) { display: none; height: 0; }
+[hidden] { display: none; }
+html { background: #fff; color: #000; font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+a:focus { outline: thin dotted; }
+a:active, a:hover { outline: 0; }
+h1 { font-size: 2em; margin: 0.67em 0; }
+abbr[title] { border-bottom: 1px dotted; }
+b, strong { font-weight: bold; }
+dfn { font-style: italic; }
+hr { -moz-box-sizing: content-box; box-sizing: content-box; height: 0; }
+mark { background: #ff0; color: #000; }
+code, kbd, pre, samp { font-family: monospace, serif; font-size: 1em; }
+pre { white-space: pre-wrap; }
+q { quotes: "\201C" "\201D" "\2018" "\2019"; }
+small { font-size: 80%; }
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+img { border: 0; }
+svg:not(:root) { overflow: hidden; }
+figure { margin: 0; }
+fieldset { border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; }
+legend { border: 0; padding: 0; }
+button, input, select, textarea { font-family: inherit; font-size: 100%; margin: 0; }
+button, input { line-height: normal; }
+button, select { text-transform: none; }
+button, html input[type="button"], input[type="reset"], input[type="submit"] { -webkit-appearance: button; cursor: pointer; }
+button[disabled], html input[disabled] { cursor: default; }
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; }
+input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+textarea { overflow: auto; vertical-align: top; }
+table { border-collapse: collapse; border-spacing: 0; }
+*, *:before, *:after { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+html, body { font-size: 100%; }
+body { background: white; color: #222222; padding: 0; margin: 0; font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-weight: normal; font-style: normal; line-height: 1; position: relative; cursor: auto; }
+a:hover { cursor: pointer; }
+a:focus { outline: none; }
+img, object, embed { max-width: 100%; height: auto; }
+object, embed { height: 100%; }
+img { -ms-interpolation-mode: bicubic; }
+#map_canvas img, #map_canvas embed, #map_canvas object, .map_canvas img, .map_canvas embed, .map_canvas object { max-width: none !important; }
+.left { float: left !important; }
+.right { float: right !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+.text-center { text-align: center !important; }
+.text-justify { text-align: justify !important; }
+.hide { display: none; }
+.antialiased, body { -webkit-font-smoothing: antialiased; }
+img { display: inline-block; vertical-align: middle; }
+textarea { height: auto; min-height: 50px; }
+select { width: 100%; }
+p.lead, .paragraph.lead > p, #preamble > .sectionbody > .paragraph:first-of-type p { font-size: 1.21875em; line-height: 1.6; }
+.subheader, #content #toctitle, .admonitionblock td.content > .title, .exampleblock > .title, .imageblock > .title, .videoblock > .title, .listingblock > .title, .literalblock > .title, .openblock > .title, .paragraph > .title, .quoteblock > .title, .sidebarblock > .title, .tableblock > .title, .verseblock > .title, .dlist > .title, .olist > .title, .ulist > .title, .qlist > .title, .hdlist > .title, .tableblock > caption { line-height: 1.4; color: #7a2518; font-weight: 300; margin-top: 0.2em; margin-bottom: 0.5em; }
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6, pre, form, p, blockquote, th, td { margin: 0; padding: 0; direction: ltr; }
+a { color: #005498; text-decoration: underline; line-height: inherit; }
+a:hover, a:focus { color: #00467f; }
+a img { border: none; }
+p { font-family: inherit; font-weight: normal; font-size: 1em; line-height: 1.6; margin-bottom: 1.25em; text-rendering: optimizeLegibility; }
+p aside { font-size: 0.875em; line-height: 1.35; font-style: italic; }
+h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 { font-family: Georgia, "URW Bookman L", Helvetica, Arial, sans-serif; font-weight: normal; font-style: normal; color: #ba3925; text-rendering: optimizeLegibility; margin-top: 1em; margin-bottom: 0.5em; line-height: 1.2125em; }
+h1 small, h2 small, h3 small, #toctitle small, .sidebarblock > .content > .title small, h4 small, h5 small, h6 small { font-size: 60%; color: #e99b8f; line-height: 0; }
+h1 { font-size: 2.125em; }
+h2 { font-size: 1.6875em; }
+h3, #toctitle, .sidebarblock > .content > .title { font-size: 1.375em; }
+h4 { font-size: 1.125em; }
+h5 { font-size: 1.125em; }
+h6 { font-size: 1em; }
+hr { border: solid #dddddd; border-width: 1px 0 0; clear: both; margin: 1.25em 0 1.1875em; height: 0; }
+em, i { font-style: italic; line-height: inherit; }
+strong, b { font-weight: bold; line-height: inherit; }
+small { font-size: 60%; line-height: inherit; }
+code { font-family: Consolas, "Liberation Mono", Courier, monospace; font-weight: normal; color: #6d180b; }
+ul, ol, dl { font-size: 1em; line-height: 1.6; margin-bottom: 1.25em; list-style-position: outside; font-family: inherit; }
+ul, ol { margin-left: 1.5em; }
+ul li ul, ul li ol { margin-left: 1.25em; margin-bottom: 0; font-size: 1em; }
+ul.square li ul, ul.circle li ul, ul.disc li ul { list-style: inherit; }
+ul.square { list-style-type: square; }
+ul.circle { list-style-type: circle; }
+ul.disc { list-style-type: disc; }
+ul.no-bullet { list-style: none; }
+ol li ul, ol li ol { margin-left: 1.25em; margin-bottom: 0; }
+dl dt { margin-bottom: 0.3125em; font-weight: bold; }
+dl dd { margin-bottom: 1.25em; }
+abbr, acronym { text-transform: uppercase; font-size: 90%; color: #222222; border-bottom: 1px dotted #dddddd; cursor: help; }
+abbr { text-transform: none; }
+blockquote { margin: 0 0 1.25em; padding: 0.5625em 1.25em 0 1.1875em; border-left: 1px solid #dddddd; }
+blockquote cite { display: block; font-size: inherit; color: #555555; }
+blockquote cite:before { content: "\2014 \0020"; }
+blockquote cite a, blockquote cite a:visited { color: #555555; }
+blockquote, blockquote p { line-height: 1.6; color: #6f6f6f; }
+.vcard { display: inline-block; margin: 0 0 1.25em 0; border: 1px solid #dddddd; padding: 0.625em 0.75em; }
+.vcard li { margin: 0; display: block; }
+.vcard .fn { font-weight: bold; font-size: 0.9375em; }
+.vevent .summary { font-weight: bold; }
+.vevent abbr { cursor: auto; text-decoration: none; font-weight: bold; border: none; padding: 0 0.0625em; }
+@media only screen and (min-width: 768px) { h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 { line-height: 1.4; }
+  h1 { font-size: 2.75em; }
+  h2 { font-size: 2.3125em; }
+  h3, #toctitle, .sidebarblock > .content > .title { font-size: 1.6875em; }
+  h4 { font-size: 1.4375em; } }
+.print-only { display: none !important; }
+@media print { * { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
+  a, a:visited { text-decoration: underline; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }
+  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page { margin: 0.5cm; }
+  p, h2, h3, #toctitle, .sidebarblock > .content > .title { orphans: 3; widows: 3; }
+  h2, h3, #toctitle, .sidebarblock > .content > .title { page-break-after: avoid; }
+  .hide-on-print { display: none !important; }
+  .print-only { display: block !important; }
+  .hide-for-print { display: none !important; }
+  .show-for-print { display: inherit !important; } }
+table { background: white; margin-bottom: 1.25em; border: solid 1px #dddddd; }
+table thead, table tfoot { background: whitesmoke; font-weight: bold; }
+table thead tr th, table thead tr td, table tfoot tr th, table tfoot tr td { padding: 0.5em 0.625em 0.625em; font-size: inherit; color: #222222; text-align: left; }
+table tr th, table tr td { padding: 0.5625em 0.625em; font-size: inherit; color: #222222; }
+table tr.even, table tr.alt, table tr:nth-of-type(even) { background: #f9f9f9; }
+table thead tr th, table tfoot tr th, table tbody tr td, table tr td, table tfoot tr td { display: table-cell; line-height: 1.6; }
+.clearfix:before, .clearfix:after, .float-group:before, .float-group:after { content: " "; display: table; }
+.clearfix:after, .float-group:after { clear: both; }
+*:not(pre) > code { font-size: 0.9375em; padding: 1px 3px 0; white-space: nowrap; background-color: #f2f2f2; border: 1px solid #cccccc; -webkit-border-radius: 4px; border-radius: 4px; text-shadow: none; }
+pre, pre > code { line-height: 1.4; color: inherit; font-family: Consolas, "Liberation Mono", Courier, monospace; font-weight: normal; }
+kbd.keyseq { color: #555555; }
+kbd:not(.keyseq) { display: inline-block; color: #222222; font-size: 0.75em; line-height: 1.4; background-color: #F7F7F7; border: 1px solid #ccc; -webkit-border-radius: 3px; border-radius: 3px; -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset; margin: -0.15em 0.15em 0 0.15em; padding: 0.2em 0.6em 0.2em 0.5em; vertical-align: middle; white-space: nowrap; }
+kbd kbd:first-child { margin-left: 0; }
+kbd kbd:last-child { margin-right: 0; }
+.menuseq, .menu { color: #090909; }
+p a > code:hover { color: #561309; }
+#header, #content, #footnotes, #footer { width: 100%; margin-left: auto; margin-right: auto; margin-top: 0; margin-bottom: 0; max-width: 62.5em; *zoom: 1; position: relative; padding-left: 0.9375em; padding-right: 0.9375em; }
+#header:before, #header:after, #content:before, #content:after, #footnotes:before, #footnotes:after, #footer:before, #footer:after { content: " "; display: table; }
+#header:after, #content:after, #footnotes:after, #footer:after { clear: both; }
+#header { margin-bottom: 2.5em; }
+#header > h1 { color: black; font-weight: normal; border-bottom: 1px solid #dddddd; margin-bottom: -28px; padding-bottom: 32px; }
+#header span { color: #6f6f6f; }
+#header #revnumber { text-transform: capitalize; }
+#header br { display: none; }
+#header br + span { padding-left: 3px; }
+#header br + span:before { content: "\2013 \0020"; }
+#header br + span.author { padding-left: 0; }
+#header br + span.author:before { content: ", "; }
+#toc { border-bottom: 3px double #ebebeb; padding-bottom: 1.25em; }
+#toc > ul { margin-left: 0.25em; }
+#toc ul.sectlevel0 > li > a { font-style: italic; }
+#toc ul.sectlevel0 ul.sectlevel1 { margin-left: 0; margin-top: 0.5em; margin-bottom: 0.5em; }
+#toc ul { list-style-type: none; }
+#toctitle { color: #7a2518; }
+@media only screen and (min-width: 1280px) { body.toc2 { padding-left: 20em; }
+  #toc.toc2 { position: fixed; width: 20em; left: 0; top: 0; border-right: 1px solid #ebebeb; border-bottom: 0; z-index: 1000; padding: 1em; height: 100%; overflow: auto; }
+  #toc.toc2 #toctitle { margin-top: 0; }
+  #toc.toc2 > ul { font-size: .95em; }
+  #toc.toc2 ul ul { margin-left: 0; padding-left: 1.25em; }
+  #toc.toc2 ul.sectlevel0 ul.sectlevel1 { padding-left: 0; margin-top: 0.5em; margin-bottom: 0.5em; }
+  body.toc2.toc-right { padding-left: 0; padding-right: 20em; }
+  body.toc2.toc-right #toc.toc2 { border-right: 0; border-left: 1px solid #ebebeb; left: auto; right: 0; } }
+#content #toc { border-style: solid; border-width: 1px; border-color: #d9d9d9; margin-bottom: 1.25em; padding: 1.25em; background: #f2f2f2; border-width: 0; -webkit-border-radius: 4px; border-radius: 4px; }
+#content #toc > :first-child { margin-top: 0; }
+#content #toc > :last-child { margin-bottom: 0; }
+#content #toc a { text-decoration: none; }
+#content #toctitle { font-weight: bold; font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-size: 1em; padding-left: 0.125em; }
+#footer { max-width: 100%; background-color: #222222; padding: 1.25em; }
+#footer-text { color: #dddddd; line-height: 1.44; }
+.sect1 { padding-bottom: 1.25em; }
+.sect1 + .sect1 { border-top: 3px double #ebebeb; }
+#content h1 > a.anchor, h2 > a.anchor, h3 > a.anchor, #toctitle > a.anchor, .sidebarblock > .content > .title > a.anchor, h4 > a.anchor, h5 > a.anchor, h6 > a.anchor { position: absolute; width: 1em; margin-left: -1em; display: block; text-decoration: none; visibility: hidden; text-align: center; font-weight: normal; }
+#content h1 > a.anchor:before, h2 > a.anchor:before, h3 > a.anchor:before, #toctitle > a.anchor:before, .sidebarblock > .content > .title > a.anchor:before, h4 > a.anchor:before, h5 > a.anchor:before, h6 > a.anchor:before { content: '\00A7'; font-size: .85em; vertical-align: text-top; display: block; margin-top: 0.05em; }
+#content h1:hover > a.anchor, #content h1 > a.anchor:hover, h2:hover > a.anchor, h2 > a.anchor:hover, h3:hover > a.anchor, #toctitle:hover > a.anchor, .sidebarblock > .content > .title:hover > a.anchor, h3 > a.anchor:hover, #toctitle > a.anchor:hover, .sidebarblock > .content > .title > a.anchor:hover, h4:hover > a.anchor, h4 > a.anchor:hover, h5:hover > a.anchor, h5 > a.anchor:hover, h6:hover > a.anchor, h6 > a.anchor:hover { visibility: visible; }
+#content h1 > a.link, h2 > a.link, h3 > a.link, #toctitle > a.link, .sidebarblock > .content > .title > a.link, h4 > a.link, h5 > a.link, h6 > a.link { color: #ba3925; text-decoration: none; }
+#content h1 > a.link:hover, h2 > a.link:hover, h3 > a.link:hover, #toctitle > a.link:hover, .sidebarblock > .content > .title > a.link:hover, h4 > a.link:hover, h5 > a.link:hover, h6 > a.link:hover { color: #a53221; }
+.imageblock, .literalblock, .listingblock, .verseblock, .videoblock { margin-bottom: 1.25em; }
+.admonitionblock td.content > .title, .exampleblock > .title, .imageblock > .title, .videoblock > .title, .listingblock > .title, .literalblock > .title, .openblock > .title, .paragraph > .title, .quoteblock > .title, .sidebarblock > .title, .tableblock > .title, .verseblock > .title, .dlist > .title, .olist > .title, .ulist > .title, .qlist > .title, .hdlist > .title { text-align: left; font-weight: bold; }
+.tableblock > caption { text-align: left; font-weight: bold; white-space: nowrap; overflow: visible; max-width: 0; }
+table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-size: inherit; }
+.admonitionblock > table { border: 0; background: none; width: 100%; }
+.admonitionblock > table td.icon { text-align: center; width: 80px; }
+.admonitionblock > table td.icon img { max-width: none; }
+.admonitionblock > table td.icon .title { font-weight: bold; text-transform: uppercase; }
+.admonitionblock > table td.content { padding-left: 1.125em; padding-right: 1.25em; border-left: 1px solid #dddddd; color: #6f6f6f; }
+.admonitionblock > table td.content > :last-child > :last-child { margin-bottom: 0; }
+.exampleblock > .content { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.25em; padding: 1.25em; background: white; -webkit-border-radius: 4px; border-radius: 4px; }
+.exampleblock > .content > :first-child { margin-top: 0; }
+.exampleblock > .content > :last-child { margin-bottom: 0; }
+.exampleblock > .content h1, .exampleblock > .content h2, .exampleblock > .content h3, .exampleblock > .content #toctitle, .sidebarblock.exampleblock > .content > .title, .exampleblock > .content h4, .exampleblock > .content h5, .exampleblock > .content h6, .exampleblock > .content p { color: #333333; }
+.exampleblock > .content h1, .exampleblock > .content h2, .exampleblock > .content h3, .exampleblock > .content #toctitle, .sidebarblock.exampleblock > .content > .title, .exampleblock > .content h4, .exampleblock > .content h5, .exampleblock > .content h6 { line-height: 1; margin-bottom: 0.625em; }
+.exampleblock > .content h1.subheader, .exampleblock > .content h2.subheader, .exampleblock > .content h3.subheader, .exampleblock > .content .subheader#toctitle, .sidebarblock.exampleblock > .content > .subheader.title, .exampleblock > .content h4.subheader, .exampleblock > .content h5.subheader, .exampleblock > .content h6.subheader { line-height: 1.4; }
+.exampleblock.result > .content { -webkit-box-shadow: 0 1px 8px #d9d9d9; box-shadow: 0 1px 8px #d9d9d9; }
+.sidebarblock { border-style: solid; border-width: 1px; border-color: #d9d9d9; margin-bottom: 1.25em; padding: 1.25em; background: #f2f2f2; -webkit-border-radius: 4px; border-radius: 4px; }
+.sidebarblock > :first-child { margin-top: 0; }
+.sidebarblock > :last-child { margin-bottom: 0; }
+.sidebarblock h1, .sidebarblock h2, .sidebarblock h3, .sidebarblock #toctitle, .sidebarblock > .content > .title, .sidebarblock h4, .sidebarblock h5, .sidebarblock h6, .sidebarblock p { color: #333333; }
+.sidebarblock h1, .sidebarblock h2, .sidebarblock h3, .sidebarblock #toctitle, .sidebarblock > .content > .title, .sidebarblock h4, .sidebarblock h5, .sidebarblock h6 { line-height: 1; margin-bottom: 0.625em; }
+.sidebarblock h1.subheader, .sidebarblock h2.subheader, .sidebarblock h3.subheader, .sidebarblock .subheader#toctitle, .sidebarblock > .content > .subheader.title, .sidebarblock h4.subheader, .sidebarblock h5.subheader, .sidebarblock h6.subheader { line-height: 1.4; }
+.sidebarblock > .content > .title { color: #7a2518; margin-top: 0; line-height: 1.6; }
+.exampleblock > .content > :last-child > :last-child, .exampleblock > .content .olist > ol > li:last-child > :last-child, .exampleblock > .content .ulist > ul > li:last-child > :last-child, .exampleblock > .content .qlist > ol > li:last-child > :last-child, .sidebarblock > .content > :last-child > :last-child, .sidebarblock > .content .olist > ol > li:last-child > :last-child, .sidebarblock > .content .ulist > ul > li:last-child > :last-child, .sidebarblock > .content .qlist > ol > li:last-child > :last-child { margin-bottom: 0; }
+.literalblock > .content pre, .listingblock > .content pre { background: none; border-width: 1px 0; border-style: dotted; border-color: #bfbfbf; -webkit-border-radius: 4px; border-radius: 4px; padding: 0.75em 0.75em 0.5em 0.75em; word-wrap: break-word; }
+.literalblock > .content pre.nowrap, .listingblock > .content pre.nowrap { overflow-x: auto; white-space: pre; word-wrap: normal; }
+.literalblock > .content pre > code, .listingblock > .content pre > code { display: block; }
+@media only screen { .literalblock > .content pre, .listingblock > .content pre { font-size: 0.8em; } }
+@media only screen and (min-width: 768px) { .literalblock > .content pre, .listingblock > .content pre { font-size: 0.9em; } }
+@media only screen and (min-width: 1280px) { .literalblock > .content pre, .listingblock > .content pre { font-size: 1em; } }
+.listingblock > .content { position: relative; }
+.listingblock:hover code[class*=" language-"]:before { text-transform: uppercase; font-size: 0.9em; color: #999; position: absolute; top: 0.375em; right: 0.375em; }
+.listingblock:hover code.asciidoc:before { content: "asciidoc"; }
+.listingblock:hover code.clojure:before { content: "clojure"; }
+.listingblock:hover code.css:before { content: "css"; }
+.listingblock:hover code.groovy:before { content: "groovy"; }
+.listingblock:hover code.html:before { content: "html"; }
+.listingblock:hover code.java:before { content: "java"; }
+.listingblock:hover code.javascript:before { content: "javascript"; }
+.listingblock:hover code.python:before { content: "python"; }
+.listingblock:hover code.ruby:before { content: "ruby"; }
+.listingblock:hover code.scss:before { content: "scss"; }
+.listingblock:hover code.xml:before { content: "xml"; }
+.listingblock:hover code.yaml:before { content: "yaml"; }
+.listingblock.terminal pre .command:before { content: attr(data-prompt); padding-right: 0.5em; color: #999; }
+.listingblock.terminal pre .command:not([data-prompt]):before { content: '$'; }
+table.pyhltable { border: 0; margin-bottom: 0; }
+table.pyhltable td { vertical-align: top; padding-top: 0; padding-bottom: 0; }
+table.pyhltable td.code { padding-left: .75em; padding-right: 0; }
+.highlight.pygments .lineno, table.pyhltable td:not(.code) { color: #999; padding-left: 0; padding-right: .5em; border-right: 1px solid #dddddd; }
+.highlight.pygments .lineno { display: inline-block; margin-right: .25em; }
+table.pyhltable .linenodiv { background-color: transparent !important; padding-right: 0 !important; }
+.quoteblock { margin: 0 0 1.25em; padding: 0.5625em 1.25em 0 1.1875em; border-left: 1px solid #dddddd; }
+.quoteblock blockquote { margin: 0 0 1.25em 0; padding: 0 0 0.5625em 0; border: 0; }
+.quoteblock blockquote > .paragraph:last-child p { margin-bottom: 0; }
+.quoteblock .attribution { margin-top: -.25em; padding-bottom: 0.5625em; font-size: inherit; color: #555555; }
+.quoteblock .attribution br { display: none; }
+.quoteblock .attribution cite { display: block; margin-bottom: 0.625em; }
+table thead th, table tfoot th { font-weight: bold; }
+table.tableblock.grid-all { border-collapse: separate; border-spacing: 1px; -webkit-border-radius: 4px; border-radius: 4px; border-top: 1px solid #dddddd; border-bottom: 1px solid #dddddd; }
+table.tableblock.frame-topbot, table.tableblock.frame-none { border-left: 0; border-right: 0; }
+table.tableblock.frame-sides, table.tableblock.frame-none { border-top: 0; border-bottom: 0; }
+table.tableblock td .paragraph:last-child p, table.tableblock td > p:last-child { margin-bottom: 0; }
+th.tableblock.halign-left, td.tableblock.halign-left { text-align: left; }
+th.tableblock.halign-right, td.tableblock.halign-right { text-align: right; }
+th.tableblock.halign-center, td.tableblock.halign-center { text-align: center; }
+th.tableblock.valign-top, td.tableblock.valign-top { vertical-align: top; }
+th.tableblock.valign-bottom, td.tableblock.valign-bottom { vertical-align: bottom; }
+th.tableblock.valign-middle, td.tableblock.valign-middle { vertical-align: middle; }
+p.tableblock.header { color: #222222; font-weight: bold; }
+td > div.verse { white-space: pre; }
+ol { margin-left: 1.75em; }
+ul li ol { margin-left: 1.5em; }
+dl dd { margin-left: 1.125em; }
+dl dd:last-child, dl dd:last-child > :last-child { margin-bottom: 0; }
+ol > li p, ul > li p, ul dd, ol dd, .olist .olist, .ulist .ulist, .ulist .olist, .olist .ulist { margin-bottom: 0.625em; }
+ul.unstyled, ol.unnumbered, ul.checklist, ul.none { list-style-type: none; }
+ul.unstyled, ol.unnumbered, ul.checklist { margin-left: 0.625em; }
+ul.checklist li > p:first-child > i[class^="icon-check"]:first-child, ul.checklist li > p:first-child > input[type="checkbox"]:first-child { margin-right: 0.25em; }
+ul.checklist li > p:first-child > input[type="checkbox"]:first-child { position: relative; top: 1px; }
+ul.inline { margin: 0 auto 0.625em auto; margin-left: -1.375em; margin-right: 0; padding: 0; list-style: none; overflow: hidden; }
+ul.inline > li { list-style: none; float: left; margin-left: 1.375em; display: block; }
+ul.inline > li > * { display: block; }
+.unstyled dl dt { font-weight: normal; font-style: normal; }
+ol.arabic { list-style-type: decimal; }
+ol.decimal { list-style-type: decimal-leading-zero; }
+ol.loweralpha { list-style-type: lower-alpha; }
+ol.upperalpha { list-style-type: upper-alpha; }
+ol.lowerroman { list-style-type: lower-roman; }
+ol.upperroman { list-style-type: upper-roman; }
+ol.lowergreek { list-style-type: lower-greek; }
+.hdlist > table, .colist > table { border: 0; background: none; }
+.hdlist > table > tbody > tr, .colist > table > tbody > tr { background: none; }
+td.hdlist1 { padding-right: .8em; font-weight: bold; }
+td.hdlist1, td.hdlist2 { vertical-align: top; }
+.literalblock + .colist, .listingblock + .colist { margin-top: -0.5em; }
+.colist > table tr > td:first-of-type { padding: 0 .8em; line-height: 1; }
+.colist > table tr > td:last-of-type { padding: 0.25em 0; }
+.qanda > ol > li > p > em:only-child { color: #00467f; }
+.thumb, .th { line-height: 0; display: inline-block; border: solid 4px white; -webkit-box-shadow: 0 0 0 1px #dddddd; box-shadow: 0 0 0 1px #dddddd; }
+.imageblock.left, .imageblock[style*="float: left"] { margin: 0.25em 0.625em 1.25em 0; }
+.imageblock.right, .imageblock[style*="float: right"] { margin: 0.25em 0 1.25em 0.625em; }
+.imageblock > .title { margin-bottom: 0; }
+.imageblock.thumb, .imageblock.th { border-width: 6px; }
+.imageblock.thumb > .title, .imageblock.th > .title { padding: 0 0.125em; }
+.image.left, .image.right { margin-top: 0.25em; margin-bottom: 0.25em; display: inline-block; line-height: 0; }
+.image.left { margin-right: 0.625em; }
+.image.right { margin-left: 0.625em; }
+a.image { text-decoration: none; }
+span.footnote, span.footnoteref { vertical-align: super; font-size: 0.875em; }
+span.footnote a, span.footnoteref a { text-decoration: none; }
+#footnotes { padding-top: 0.75em; padding-bottom: 0.75em; margin-bottom: 0.625em; }
+#footnotes hr { width: 20%; min-width: 6.25em; margin: -.25em 0 .75em 0; border-width: 1px 0 0 0; }
+#footnotes .footnote { padding: 0 0.375em; line-height: 1.3; font-size: 0.875em; margin-left: 1.2em; text-indent: -1.2em; margin-bottom: .2em; }
+#footnotes .footnote a:first-of-type { font-weight: bold; text-decoration: none; }
+#footnotes .footnote:last-of-type { margin-bottom: 0; }
+#content #footnotes { margin-top: -0.625em; margin-bottom: 0; padding: 0.75em 0; }
+.gist .file-data > table { border: none; background: #fff; width: 100%; margin-bottom: 0; }
+.gist .file-data > table td.line-data { width: 99%; }
+div.unbreakable { page-break-inside: avoid; }
+.big { font-size: larger; }
+.small { font-size: smaller; }
+.underline { text-decoration: underline; }
+.overline { text-decoration: overline; }
+.line-through { text-decoration: line-through; }
+.aqua { color: #00bfbf; }
+.aqua-background { background-color: #00fafa; }
+.black { color: black; }
+.black-background { background-color: black; }
+.blue { color: #0000bf; }
+.blue-background { background-color: #0000fa; }
+.fuchsia { color: #bf00bf; }
+.fuchsia-background { background-color: #fa00fa; }
+.gray { color: #606060; }
+.gray-background { background-color: #7d7d7d; }
+.green { color: #006000; }
+.green-background { background-color: #007d00; }
+.lime { color: #00bf00; }
+.lime-background { background-color: #00fa00; }
+.maroon { color: #600000; }
+.maroon-background { background-color: #7d0000; }
+.navy { color: #000060; }
+.navy-background { background-color: #00007d; }
+.olive { color: #606000; }
+.olive-background { background-color: #7d7d00; }
+.purple { color: #600060; }
+.purple-background { background-color: #7d007d; }
+.red { color: #bf0000; }
+.red-background { background-color: #fa0000; }
+.silver { color: #909090; }
+.silver-background { background-color: #bcbcbc; }
+.teal { color: #006060; }
+.teal-background { background-color: #007d7d; }
+.white { color: #bfbfbf; }
+.white-background { background-color: #fafafa; }
+.yellow { color: #bfbf00; }
+.yellow-background { background-color: #fafa00; }
+span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
+.admonitionblock td.icon [class^="icon-"]:before { font-size: 2.5em; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); cursor: default; }
+.admonitionblock td.icon .icon-note:before { content: "\f05a"; color: #005498; color: #003f72; }
+.admonitionblock td.icon .icon-tip:before { content: "\f0eb"; text-shadow: 1px 1px 2px rgba(155, 155, 0, 0.8); color: #111; }
+.admonitionblock td.icon .icon-warning:before { content: "\f071"; color: #bf6900; }
+.admonitionblock td.icon .icon-caution:before { content: "\f06d"; color: #bf3400; }
+.admonitionblock td.icon .icon-important:before { content: "\f06a"; color: #bf0000; }
+.conum { display: inline-block; color: white !important; background-color: #222222; -webkit-border-radius: 100px; border-radius: 100px; text-align: center; width: 20px; height: 20px; font-size: 12px; font-weight: bold; line-height: 20px; font-family: Arial, sans-serif; font-style: normal; position: relative; top: -2px; letter-spacing: -1px; }
+.conum * { color: white !important; }
+.conum + b { display: none; }
+.conum:after { content: attr(data-value); }
+.conum:not([data-value]):empty { display: none; }
+.literalblock > .content > pre, .listingblock > .content > pre { -webkit-border-radius: 0; border-radius: 0; }
+
+</style>
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>Wodson - Feasibility Study</h1>
+<span id="author" class="author">Andreas Krantz</span><br>
+<span id="email" class="email"><a href="mailto:totonga@gmail.com">totonga@gmail.com</a></span><br>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">1. Introduction</a></li>
+<li><a href="#_con">2. Con</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#_create_new_con">2.1. Create new Con</a></li>
+<li><a href="#_change_update_con_parameters">2.2. Change/Update Con Parameters</a></li>
+<li><a href="#_delete_con">2.3. Delete Con</a></li>
+<li><a href="#_read_con_parameters">2.4. Read Con Parameters</a></li>
+<li><a href="#_get_list_of_con_entries">2.5. Get List of Con Entries</a></li>
+</ul>
+</li>
+<li><a href="#_data">3. Data</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#_datamatrix">3.1. DataMatrix</a></li>
+<li><a href="#_read_meta_data">3.2. Read meta data</a></li>
+<li><a href="#_read_bulk_data">3.3. Read bulk data</a></li>
+<li><a href="#_write_meta_data">3.4. Write meta data</a></li>
+<li>
+<ul class="sectlevel3">
+<li><a href="#_create_new_instances">3.4.1. Create new instances</a></li>
+<li><a href="#_update_instances">3.4.2. Update instances</a></li>
+<li><a href="#_delete_instances">3.4.3. Delete Instances</a></li>
+</ul>
+</li>
+<li><a href="#_write_bulk_data">3.5. Write bulk data</a></li>
+</ul>
+</li>
+<li><a href="#_model">4. Model</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#_get_model">4.1. Get model</a></li>
+<li><a href="#_modify_model">4.2. Modify model</a></li>
+<li>
+<ul class="sectlevel3">
+<li><a href="#_add_components">4.2.1. Add components</a></li>
+<li><a href="#_remove_components">4.2.2. Remove components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_transaction">5. Transaction</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#_start_transaction">5.1. Start Transaction</a></li>
+<li><a href="#_commit_transaction">5.2. Commit Transaction</a></li>
+<li><a href="#_abort_transaction">5.3. Abort Transaction</a></li>
+</ul>
+</li>
+<li><a href="#_utils">6. Utils</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#_context">6.1. Context</a></li>
+<li>
+<ul class="sectlevel3">
+<li><a href="#_read_context_variables">6.1.1. Read Context Variables</a></li>
+<li><a href="#_set_context_variables">6.1.2. Set Context Variables</a></li>
+</ul>
+</li>
+<li><a href="#_asampath">6.2. AsamPath</a></li>
+<li>
+<ul class="sectlevel3">
+<li><a href="#_create_asampath">6.2.1. Create AsamPath</a></li>
+<li><a href="#_resolve_asampath">6.2.2. Resolve AsamPath</a></li>
+</ul>
+</li>
+<li><a href="#_file">6.3. File</a></li>
+<li>
+<ul class="sectlevel3">
+<li><a href="#_read_blob">6.3.1. Read Blob</a></li>
+<li><a href="#_write_blob">6.3.2. Write Blob</a></li>
+<li><a href="#_read_aofile">6.3.3. Read AoFile</a></li>
+<li><a href="#_write_aofile">6.3.4. Write AoFile</a></li>
+</ul>
+</li>
+<li><a href="#_asam_security">6.4. Asam Security</a></li>
+<li>
+<ul class="sectlevel3">
+<li><a href="#_attributes_and_relations">6.4.1. Attributes and Relations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_additional_stuff">7. Additional stuff</a></li>
+<li>
+<ul class="sectlevel2">
+<li><a href="#_setup_system">7.1. Setup System</a></li>
+<li>
+<ul class="sectlevel3">
+<li><a href="#_linux_debian_apt">7.1.1. Linux (Debian/apt)</a></li>
+<li><a href="#_windows">7.1.2. Windows</a></li>
+</ul>
+</li>
+<li><a href="#_faq">7.2. FAQ</a></li>
+<li><a href="#_corba_oo_to_url">7.3. Corba OO to URL</a></li>
+<li>
+<ul class="sectlevel3">
+<li><a href="#_read_and_write_instances_bulk">7.3.1. Read and Write Instances/Bulk</a></li>
+<li><a href="#_read_and_modify_model">7.3.2. Read and Modify Model</a></li>
+<li><a href="#_administer_connection_session_factory_configuration">7.3.3. Administer Connection, Session, Factory, Configuration</a></li>
+<li><a href="#_etc">7.3.4. Etc</a></li>
+</ul>
+</li>
+<li><a href="#_jaquel">7.4. Jaquel</a></li>
+<li>
+<ul class="sectlevel3">
+<li><a href="#_json_query_language">7.4.1. Json Query Language</a></li>
+<li><a href="#_special_key_values">7.4.2. Special key values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction">1. Introduction</h2>
+<div class="sectionbody">
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>This document describes a HTTP based interface to offer the functionality of an ASAM ODS Corba interface.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_con">2. Con</h2>
+<div class="sectionbody">
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Con is hard to explain. It is a mixture of context, configuration, connection, factory and session.
+I like configuration the best because it defines how the current user will access the server by mean
+of what is configurable for this server.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_new_con">2.1. Create new Con</h3>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. create new Con</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '[
+    {
+        "name": "$URL",
+        "value": "corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
+    },
+    {
+        "name": "USER",
+        "value": "System"
+    },
+    {
+        "name": "PASSWORD",
+        "value": "puma"
+    }
+]' 'http://localhost:8081/con/myCon'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_change_update_con_parameters">2.2. Change/Update Con Parameters</h3>
+<div class="listingblock">
+<div class="content">
+<pre>PUT /con/{conI}</pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+A PUT call to a Con with empty parameters will close an active session. Be aware that any open transaction will be aborted!
+</td>
+</tr>
+</table>
+</div>
+<div class="exampleblock">
+<div class="title">Example 2. update Con parameters</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '[
+    {
+        "name": "$URL",
+        "value": "corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
+    },
+    {
+        "name": "USER",
+        "value": "System"
+    },
+    {
+        "name": "PASSWORD",
+        "value": "puma"
+    }
+]' 'http://localhost:8081/con/c1'</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 3. close open AoSession on Con myCon without deleting myCon</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '[]' 'http://localhost:8081/con/myCon'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_delete_con">2.3. Delete Con</h3>
+<div class="listingblock">
+<div class="content">
+<pre>DELETE /con/{conI}</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 4. read all parameters</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_read_con_parameters">2.4. Read Con Parameters</h3>
+<div class="listingblock">
+<div class="content">
+<pre>GET /con/{conI}</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 5. read all parameters</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">[
+    {
+        "name": "$URL",
+        "value": "corbaname::localhost:2809/NameService#AtfxTest.ASAM-ODS"
+    },
+    {
+        "name": "USER",
+        "value": "System"
+    }
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_list_of_con_entries">2.5. Get List of Con Entries</h3>
+<div class="listingblock">
+<div class="content">
+<pre>GET /con</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 6. read all parameters</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X GET --header 'Accept: application/problem+json' 'http://localhost:8081/con'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_data">3. Data</h2>
+<div class="sectionbody">
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>ASAM ODS is about making measurement data persistent. So this is the most important chapter. Its is about writing and reading data (meta/bulk).</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_datamatrix">3.1. DataMatrix</h3>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>The DataMatrix is the return structure of data access calls and the input of data modify calls.
+It is just a table with rows and lines. Each row has the same number of lines.
+Think of it like an return table of an SQL command. In addition it has the capabilities to store
+vectors in the cells and there is even a row of type DT_UNKOWN.</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+The DataMatrix is the central element to read and write data (meta/bulk). It is important to be familiar with it.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_read_meta_data">3.2. Read meta data</h3>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}/data/access</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 7. get results from first entity derived from AoTest with all properties</div>
+<div class="content">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+The server will have a default rowMaxCount setting.
+     He will potentially not return all AoTest if there are more of them.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "AoTest"
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 8. get results from instances with objecttype 1 with all properties</div>
+<div class="content">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Using the objecttype will give no great speed improvement. It is not even readable.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "1"
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 9. get results of instances with objecttype MeaQuantity and define the maximal number of rows to return</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "MeaQuantity",
+    "rowMaxCount": 50
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 10. get id and name attribute of the given entity</div>
+<div class="content">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+if an instance should be shown in a tree it is sufficient to retrieve name and id
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "MeaQuantity",
+    "attributes": [
+        "name",
+        "id"
+    ]
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 11. get id and name attribute of the given entity and the name attribute of the related measurement</div>
+<div class="content">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+if an instance should shown it might be usefult to retrieve some parent/related attributes
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "MeaQuantity",
+    "attributes": [
+        "name",
+        "id",
+        "measurement.name"
+    ]
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 12. get all attributes if for a given instance</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "MeaQuantity",
+    "conditions": [
+        "id=4"
+    ]
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 13. get children MeasurementQuantities of the Measurement with id=2</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "MeaQuantity",
+    "attributes": [
+        "name",
+        "id"
+    ],
+    "conditions": [
+        "measurement=2"
+    ]
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 14. Get information about all MeasurementQuantities of a the SubTest with id=2</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "MeaQuantity",
+    "attributes": [
+        "name",
+        "id",
+        "measurement.name",
+        "measurement.id"
+    ],
+    "conditions": [
+        "measurement.test=2"
+    ]
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 15. get some measurementquantities and related info using a query</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+    "entity": "AoMeasurementQuantity",
+    "conditions": [
+        "measurement.measurement_begin &gt; 20090101000000",
+        "$and",
+        "$open",
+        "name=Uctf_String",
+        "$or",
+        "name=Uctf_Time",
+        "$close"
+    ],
+    "attributes": [
+        "name",
+        "id",
+        "unit",
+        "measurement.name",
+        "measurement.id",
+        "measurement.test.name",
+        "measurement.test.id"
+    ]
+}' 'http://localhost:8081/con/c2/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 16. get DISTINCT of all MeasurementQuantity names</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "MeaQuantity",
+    "attributes": [
+        "DISTINCT(name)"
+    ]
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 17. get names of given entity in descending order</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "MeaQuantity",
+    "attributes": [
+        "name"
+    ],
+    "orderBy": [
+        "DESCENDING(name)"
+    ]
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 18. get names of measurementquantities grouped and ordered by name</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+    "entity": "AoMeasurementQuantity",
+    "attributes": [
+        "name"
+    ],
+    "orderBy": [
+        "name"
+    ],
+    "groupBy": [
+        "name"
+    ]
+}' 'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 19. Use outer joins for sparse keys</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+    "entity": "AoMeasurementQuantity",
+    "attributes": [
+        "name",
+        "OUTER(unit).name",
+        "OUTER(quantity).name"
+    ],
+    "rowMaxCount": 2000
+}' 'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_read_bulk_data">3.3. Read bulk data</h3>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}/data/access</pre>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>When bulk data is returned the AoLocalColumn::values attribute is used. It has type DT_UNKNOWN. So the values
+will be returned in unkownSeq which allows different types for each result row.</p>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 20. Get values, flags and generation_parameters of the given localcolumn</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "AoLocalColumn",
+    "conditions": [
+        "id=12"
+    ],
+    "attributes": [
+        "id",
+        "values",
+        "flags",
+        "generation_parameters"
+    ]
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 21. Get id, values, flags and generation_parameters of all local columns of the Submatrix with id=8, but return maximal 1000 sequence rows</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "LocalColumn",
+    "conditions": [
+        "submatrix=8"
+    ],
+    "attributes": [
+        "id",
+        "values",
+        "flags",
+        "generation_parameters"
+    ],
+    "seqMaxCount": 1000
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 22. Get next chunk id, values and flags of all local columns of the Submatrix with id=8</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "LocalColumn",
+    "conditions": [
+        "submatrix=8"
+    ],
+    "attributes": [
+        "id",
+        "values",
+        "flags",
+        "generation_parameters"
+    ],
+    "seqSkipCount": 1000,
+    "seqMaxCount": 1500
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 23. Get id, values, flags and generation_parameters of all local column Time and Revs of the Submatrix with id=8</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "entity": "LocalColumn",
+    "conditions": [
+        "submatrix=8",
+        "$and",
+        "$open",
+        "name=Time",
+        "$or",
+        "name=Revs",
+        "$close"
+    ],
+    "attributes": [
+        "id",
+        "values",
+        "flags",
+        "generation_parameters"
+    ]
+}'
+'http://localhost:8081/con/c1/data/access'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_write_meta_data">3.4. Write meta data</h3>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}/data/modify
+PUT /con/{conI}/data/modify
+DELETE /con/{conI}/data/modify</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_new_instances">3.4.1. Create new instances</h4>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}/data/modify</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_update_instances">3.4.2. Update instances</h4>
+<div class="listingblock">
+<div class="content">
+<pre>PUT /con/{conI}/data/modify</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_instances">3.4.3. Delete Instances</h4>
+<div class="listingblock">
+<div class="content">
+<pre>DELETE /con/{conI}/data/modify</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_write_bulk_data">3.5. Write bulk data</h3>
+<div class="listingblock">
+<div class="content">
+<pre>PUT /con/{conI}/data/modify</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_model">4. Model</h2>
+<div class="sectionbody">
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>The physical storage of an ASAM ODS server is a relational database.
+The model contains the entity relationship definitions (ERM) needed to retrieve the stored data sensful.</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+The model is the schema of the ASAM ODS Server
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_get_model">4.1. Get model</h3>
+<div class="listingblock">
+<div class="content">
+<pre>GET /con/{conI}/shema</pre>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>If a client is not hard coded against a model, it should retrieve the model in
+one piece and use local source code to extract information from the model.</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+The model should be cached and not retrieved every time.
+</td>
+</tr>
+</table>
+</div>
+<div class="exampleblock">
+<div class="title">Example 24. retrieve the model</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1/shema'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+The content of the model needs to be known to fill later request to <strong>data</strong> resource.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_modify_model">4.2. Modify model</h3>
+<div class="listingblock">
+<div class="content">
+<pre>PUT /con/{conI}/shema
+DELETE /con/{conI}/shema</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_add_components">4.2.1. Add components</h4>
+<div class="listingblock">
+<div class="content">
+<pre>PUT /con/{conI}/shema</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 25. create entity <strong>MyAny</strong></div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "entities": [
+        {
+            "name": "MyAny",
+            "baseName": "AoAny",
+            "relations": [
+                {
+                    "name": "myMeasurment",
+                    "inverseName": "myInfoElement",
+                    "obligatory": false,
+                    "type": "n-1",
+                    "relEntityName": "Measurement"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "Id",
+                    "baseName": "id"
+                },
+                {
+                    "name": "Name",
+                    "baseName": "name"
+                },
+                {
+                    "name": "my_classification",
+                    "dataType": "DT_DOUBLE",
+                    "obligatory": true
+                }
+            ]
+        }
+    ]
+}' 'http://localhost:8081/con/c1/shema'</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 26. add attribute <strong>my_value</strong> to <strong>MyAny</strong></div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "entities": [
+        {
+            "name": "MyAny",
+            "attributes": [
+                {
+                    "name": "my_value",
+                    "dataType": "DT_DOUBLE",
+                    "obligatory": true
+                }
+            ]
+        }
+    ]
+}' 'http://localhost:8081/con/c1/shema'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_remove_components">4.2.2. Remove components</h4>
+<div class="listingblock">
+<div class="content">
+<pre>DELETE /con/{conI}/shema</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 27. delete attribute <strong>my_value</strong> at <strong>MyAny</strong></div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "entities": [
+        {
+            "name": "MyAny",
+            "attributes": [
+                {
+                    "name": "my_value"
+                }
+            ]
+        }
+    ]
+}' 'http://localhost:8081/con/c1/shema'</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 28. delete entity <strong>MyAny</strong></div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "entities": [
+        {
+            "name": "MyAny"
+        }
+    ]
+}' 'http://localhost:8081/con/c1/shema'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_transaction">5. Transaction</h2>
+<div class="sectionbody">
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Changing model or data(meta/bulk) will automatically open an transaction. This need to be aborted or committed. There is only one transaction level to be used.</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Because the physical storage of an ASAM ODS server is a relational database we need transaction handling
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Try to do all changes in a single transaction.
+           Might be hard because you have to care about the
+           right sequence of write operations or bundle them
+           in one call but you get an rollback as a reward
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_start_transaction">5.1. Start Transaction</h3>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}/transaction</pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+It should be made sure that the transaction is not started to early. The database needs lot of resources and
+            might even block some stuff while transaction hangs.
+</td>
+</tr>
+</table>
+</div>
+<div class="exampleblock">
+<div class="title">Example 29. commit an open transaction</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1/transaction'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_commit_transaction">5.2. Commit Transaction</h3>
+<div class="listingblock">
+<div class="content">
+<pre>PUT /con/{conI}/transaction</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 30. commit an open transaction</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X PUT --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1/transaction'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_abort_transaction">5.3. Abort Transaction</h3>
+<div class="listingblock">
+<div class="content">
+<pre>DELETE /con/{conI}/transaction</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 31. commit an open transaction</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X DELETE --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1/transaction'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_utils">6. Utils</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_context">6.1. Context</h3>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>ASAM Server contains some context variables that influence its behavior.
+The simplest context variables are those needed to establish the connection.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_read_context_variables">6.1.1. Read Context Variables</h4>
+<div class="listingblock">
+<div class="content">
+<pre>GET /con/{conI}/context</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 32. read all context variables</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/context'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 33. read a context variables by pattern</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/context?pattern=ODSVERSION'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">[
+    {
+            "name": "ODSVERSION",
+            "value": "5.2"
+    }
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 34. read wildcards</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/context?pattern=WILD*'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">[
+  {
+    "name": "WILDALL",
+    "value": "%"
+  },
+  {
+    "name": "WILDESC",
+    "value": "\\"
+  },
+  {
+    "name": "WILDONE",
+    "value": "_"
+  }
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_set_context_variables">6.1.2. Set Context Variables</h4>
+<div class="listingblock">
+<div class="content">
+<pre>PUT /con/{conI}/context</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 35. set context variables</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '[
+    {
+        "name": "VALUEMATRIX_MODE",
+        "value": "CALCULATED"
+    }
+]' 'http://localhost:8081/con/c1/context'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_asampath">6.2. AsamPath</h3>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Each instance of the asam server is uniquely identified by <strong>entityname/id</strong> if a more human
+readable or name based version is needed to identify an instance the human readable ASAM Path is used.</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+While creating the ASAM path is somehow cheap, resolving it might be expensive. Think about using <strong>entityname/id</strong>
+         to store elements in a shopping basket.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_create_asampath">6.2.1. Create AsamPath</h4>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}/utils/asampath/create</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 36. create an AsamPath for <strong>Projekt/1</strong></div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "entity": "Projekt",
+    "id": 1
+}' 'http://localhost:8081/con/c1/utils/asampath/create'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "path": "/[Environment]testenv;1/[Projekt]Project;V1"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_resolve_asampath">6.2.2. Resolve AsamPath</h4>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}/utils/asampath/resolve</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 37. resolve AsamPath <strong>/[Environment]testenv;1/[Projekt]Project;V1</strong></div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
+    "path": "/[Environment]testenv;1/[Projekt]Project;V1"
+}' 'http://localhost:8081/con/c1/utils/asampath/resolve'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">result</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "entity": "Projekt",
+    "id": 1
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file">6.3. File</h3>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>ASAM Server can store two kind of binary data. DT_BLOB and AoFile.
+Because the content is equal for the client side we can threat it as one.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_read_blob">6.3.1. Read Blob</h4>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}/utils/binary/access
+POST /con/{conI}/utils/binary/download</pre>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>The header of the blob is returned/written by the normal /data/access methods. It will be read/written using strVal.</p>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 38. Read chunk</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "entity": "Layout",
+    "id": 2710,
+    "attribute": "content1",
+    "seqMaxCount": 1000,
+    "seqSkipCount": 500
+}' 'http://localhost:8081/con/c1/utils/binary/access'</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 39. Download blob</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/octet-stream' -d '{
+    "entity": "Layout",
+    "id": 2710,
+    "attribute": "content1"
+}' 'http://localhost:8081/con/c1/utils/binary/download'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_write_blob">6.3.2. Write Blob</h4>
+<div class="exampleblock">
+<div class="title">Example 40. Determine upload URL for BLOB</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "attribute": "content1",
+    "entity": "Layout",
+    "id": 4711
+}' 'http://localhost:8081/con/c1/utils/binary/getuploadurl'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_read_aofile">6.3.3. Read AoFile</h4>
+<div class="listingblock">
+<div class="content">
+<pre>POST /con/{conI}/utils/binary/access</pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 41. Read chunk</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "entity": "DataFile",
+    "id": 2710,
+    "seqMaxCount": 10000,
+    "seqSkipCount": 700
+}' 'http://localhost:8081/con/c1/utils/binary/access'</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 42. download file</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/octet-stream' -d '{
+    "entity": "DataFile",
+    "id": 2710
+}' 'http://localhost:8081/con/c1/utils/binary/download'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_write_aofile">6.3.4. Write AoFile</h4>
+<div class="exampleblock">
+<div class="title">Example 43. Determine upload URL for File</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '{
+    "entity": "DataFile",
+    "id": 2710
+}' 'http://localhost:8081/con/c1/utils/binary/getuploadurl'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_asam_security">6.4. Asam Security</h3>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>Asam Ods allows security on entity, instance and attribute level.
+The information is stored in database tables and can be read and modified
+using the <strong>data</strong> resource.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Following entities do exist:</p>
+</div>
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 1. security entities</caption>
+<colgroup>
+<col style="width:50%;">
+<col style="width:50%;"> 
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ACLI">[ACLI]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">instance security</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ACLA">[ACLA]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">attribute security</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#ACLTemplate">[ACLTemplate]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">???</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#SecurityLevel">[SecurityLevel]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">???</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#InitialRightsAt">[InitialRightsAt]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">???</p></td>
+</tr>
+</tbody>
+</table>
+
+<div class="sect3">
+<h4 id="_attributes_and_relations">6.4.1. Attributes and Relations</h4>
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 2. ACLI<a id="ACLI"></a></caption>
+<colgroup>
+<col style="width:33%;">
+<col style="width:33%;">
+<col style="width:33%;"> 
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">attribute</th>
+<th class="tableblock halign-left valign-top">datatype</th>
+<th class="tableblock halign-left valign-top">reftype</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_LONGLONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AoUserGroup</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">appl_element_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_STRING</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rights</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_SHORT</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">instance_id</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_LONGLONG</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 3. ACLA<a id="ACLA"></a></caption>
+<colgroup>
+<col style="width:33%;">
+<col style="width:33%;">
+<col style="width:33%;"> 
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">attribute</th>
+<th class="tableblock halign-left valign-top">datatype</th>
+<th class="tableblock halign-left valign-top">reftype</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_LONGLONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AoUserGroup</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">appl_element_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_STRING</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rights</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_SHORT</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">attribute_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ST_STRING</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 4. ACLTemplate<a id="ACLTemplate"></a></caption>
+<colgroup>
+<col style="width:33%;">
+<col style="width:33%;">
+<col style="width:33%;"> 
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">attribute</th>
+<th class="tableblock halign-left valign-top">datatype</th>
+<th class="tableblock halign-left valign-top">reftype</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_LONGLONG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AoUserGroup</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">appl_element_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_STRING</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rights</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_SHORT</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">instance_id</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_LONGLONG</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ref_appl_elem_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ST_STRING</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 5. SecurityLevel<a id="SecurityLevel"></a></caption>
+<colgroup>
+<col style="width:33%;">
+<col style="width:33%;">
+<col style="width:33%;"> 
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">attribute</th>
+<th class="tableblock halign-left valign-top">datatype</th>
+<th class="tableblock halign-left valign-top">reftype</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">appl_element_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_STRING</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">level</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_SHORT</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 6. InitialRightsAt<a id="InitialRightsAt"></a></caption>
+<colgroup>
+<col style="width:33%;">
+<col style="width:33%;">
+<col style="width:33%;"> 
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">attribute</th>
+<th class="tableblock halign-left valign-top">datatype</th>
+<th class="tableblock halign-left valign-top">reftype</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">appl_element_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_STRING</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">attribute_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DT_STRING</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_additional_stuff">7. Additional stuff</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_setup_system">7.1. Setup System</h3>
+<div class="sect3">
+<h4 id="_linux_debian_apt">7.1.1. Linux (Debian/apt)</h4>
+<div class="paragraph">
+<p>Run the following commands in a terminal.</p>
+</div>
+<div class="listingblock">
+<div class="title">shell script to get server up and running</div>
+<div class="content">
+<pre class="highlight"><code class="sh language-sh">sudo apt-get install python omniidl-python python-pip git
+mkdir dev
+cd dev
+git clone https://github.com/totonga/wodson.git
+cd wodson/feasability_study/
+omniidl -bpython corbaserver.idl
+pip install --user -r requirements.txt
+python app.py</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Visit <a href="http://localhost:8081/ui/">http://localhost:8081/ui/</a> to see the integrated swagger UI.</p>
+</div>
+<div class="listingblock">
+<div class="title">some additional development tools</div>
+<div class="content">
+<pre class="highlight"><code class="sh language-sh">sudo apt-get install eric curl</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_windows">7.1.2. Windows</h4>
+<div class="paragraph">
+<p>Download omniORBpy package from homepage <a href="http://sourceforge.net/projects/omniorb/files/omniORBpy/">http://sourceforge.net/projects/omniorb/files/omniORBpy/</a></p>
+</div>
+<div class="listingblock">
+<div class="title">copy omniorb runtime or add it to PATH</div>
+<div class="content">
+<pre>set PATH=%PATH%;???\omniORBpy-4.2.1-win64-python27\lbin\x86_win32</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">add omniorb python components to PYTHONPATH</div>
+<div class="content">
+<pre>set PYTHONPATH=%PYTHONPATH%;???\omniORBpy-4.2.1-win64-python27\lib\python</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If Visual Studio 2015 is used the omniorb runtime can be copied to an environment</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>copy ???\omniORBpy-4.2.1-win64-python27\lib\x86_win32\*.* env\Scripts\.
+copy ???\omniORBpy-4.2.1-win64-python27\bin\x86_win32\*.* env\Scripts\.</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">create python stub</div>
+<div class="content">
+<pre>omniidl.exe -bpython corbaserver.IDL</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">include omiorb and stub into pythonpath</div>
+<div class="content">
+<pre>set PYTHONPATH=%PYTHONPATH%;???\omniORBpy-4.2.1-win64-python27\lib\python;???</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_faq">7.2. FAQ</h3>
+<div class="olist arabic">
+<div class="title">Questions</div>
+<ol class="arabic">
+<li>
+<p><strong>Where is the ValueMatrix?</strong> The Value matrix for submatrices is now handled by normal /data/access. If calculated should be used, set valuesType to CALCULATED. The ValueMatrix for Measurement is missing. This is done because it is assumed that there are not many customers for it. They might be added as a utility later on.</p>
+</li>
+<li>
+<p><strong>Where is the session?</strong> In the past the client needed to close the session. In fact every server has a timeout handling that closes the session. On the other hand the client wanted it to be automatically reopened. Because of this the session no longer exists but is replaced by an conI that is used to identify a configured connection configuration and use it to automatically establish a connection on request. /env can be used to close it from client side.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_corba_oo_to_url">7.3. Corba OO to URL</h3>
+<div class="sect3">
+<h4 id="_read_and_write_instances_bulk">7.3.1. Read and Write Instances/Bulk</h4>
+<div class="listingblock">
+<div class="title">getInstancesExt, ValueMatrix::getValue</div>
+<div class="content">
+<pre>post   /con/{conI}/data/access</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">insertInstances, ValueMatrix::setValue</div>
+<div class="content">
+<pre>post   /con/{conI}/data/modify</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">updateInstances, ValueMatrix::setValue</div>
+<div class="content">
+<pre>put    /con/{conI}/data/modify</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">deleteInstances</div>
+<div class="content">
+<pre>delete /con/{conI}/data/modify</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">access data that exceeds max transport size</div>
+<div class="content">
+<pre>get    /con/{conI}/data/iteratorguid/{iteratorGuid}</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_read_and_modify_model">7.3.2. Read and Modify Model</h4>
+<div class="listingblock">
+<div class="title">getApplicationStructureValue, getEnumerationAttributes, getEnumerationStructures, &#8230;</div>
+<div class="content">
+<pre>get    /con/{conI}/model</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">ApplicationStructure::createElement, &#8230;</div>
+<div class="content">
+<pre>put    /con/{conI}/model</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">ApplicationStructure::removeElement, &#8230;</div>
+<div class="content">
+<pre>delete /con/{conI}/model</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_administer_connection_session_factory_configuration">7.3.3. Administer Connection, Session, Factory, Configuration</h4>
+<div class="listingblock">
+<div class="title">AoFactory::newSessionNameValue, AoSession::close</div>
+<div class="content">
+<pre>get    /con
+get    /con/{conI}
+put    /con/{conI}
+post   /con/{conI}
+delete /con/{conI}</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_etc">7.3.4. Etc</h4>
+<div class="listingblock">
+<div class="title">AoSession::startTransaction, AoSession::commitTransaction, AoSession::abortTransaction</div>
+<div class="content">
+<pre>post /con/{conI}/transaction
+put /con/{conI}/transaction
+delete /con/{conI}/transaction</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">AoSession::getContext, AoSession::setContextString</div>
+<div class="content">
+<pre>get    /con/{conI}/context
+put    /con/{conI}/context</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">InstanceElement::getAsamPath, ApplicationStructure::getInstanceByAsamPath</div>
+<div class="content">
+<pre>post /con/{conI}/utils/asampath/create
+post /con/{conI}/utils/asampath/resolve</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">ODSFile and Blob</div>
+<div class="content">
+<pre>post /con/{conI}/utils/binary/access
+post /con/{conI}/utils/binary/download
+post /con/{conI}/utils/binary/getuploadurl</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jaquel">7.4. Jaquel</h3>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>MongoDb uses a json based flexible query structure that allows a good learning
+curve because of a simple form for every day jobs. Inspired by this, the idea for this
+approach came up.</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+It is always possible to use application or base names for entity, relations, attributes.
+           Order is 1.) application 2.) base. If base name is not uniquely assigned in the model one of the vector is picked.
+           This is important for writing generic code even without having to analyze the complete model.
+           Be aware that application name can always be used to access any element or attribute.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_json_query_language">7.4.1. Json Query Language</h4>
+<div class="listingblock">
+<div class="title">get all Aotests</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoTest": {}
+}</code></pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 44. access instances using id only</div>
+<div class="content">
+<div class="listingblock">
+<div class="title">get measurement with id 4711</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": 4711
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": "4711"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "id": "4711"
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "id": 4711
+    }
+}</code></pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 45. get children of a given subtest</div>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "test": 4611
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "test.id": 4611
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<code>test.id</code> is a duplicate because the id is also stored in test column
+</td>
+</tr>
+</table>
+</div>
+<div class="exampleblock">
+<div class="title">Example 46. use inverse to do the same job</div>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoSubTest": "4611",
+    "$attributes": {
+        "children.name": 1,
+        "children.id": 1
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoSubTest": "4611",
+    "$attributes": {
+        "children": {
+            "name": 1,
+            "id": 1
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">search for a AoTest by name and version</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoTest": {
+        "name": "MyTest",
+        "version": "V1"
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">case insensitive match</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoTest": {
+        "name": {
+            "$eq": "MyTest",
+            "$options": "i"
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">case insensitive match</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoTest": {
+        "name": {
+            "$like": "My*",
+            "$options": "i"
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">resolve asam path</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "name": "MyMea",
+        "version": "V1",
+        "test.name": "MySubTest2",
+        "test.version": "V1",
+        "test.parent_test.name": "MySubTest1",
+        "test.parent_test.version": "V1",
+        "test.parent_test.parent_test.name": "MyTest",
+        "test.parent_test.parent_test.version": "V1"
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">resolve asam path</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "name": "MyMea",
+        "version": "V1",
+        "test": {
+            "name": "MySubTest2",
+            "version": "V1",
+            "parent_test": {
+                "name": "MySubTest1",
+                "version": "V1",
+                "parent_test": {
+                    "name": "MyTest",
+                    "version": "V1"
+                }
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">use $in operator</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "id": {
+            "$in": [
+                4711,
+                4712,
+                4713
+            ]
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">search for a time span</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "measurement_begin": {
+            "$gte": "2012-04-23T00:00:00.000Z",
+            "$lt": "2012-04-24T00:00:00.000Z"
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">use between operator</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "measurement_begin": {
+            "$between": [
+                "2012-04-23T00:00:00.000Z",
+                "2012-04-24T00:00:00.000Z"
+            ]
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">simple $and example</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "$and": [
+            {
+                "measurement_begin": {
+                    "$gte": "2012-04-23T00:00:00.000Z",
+                    "$lt": "2012-04-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_end": {
+                    "$gte": "2012-04-23T00:00:00.000Z",
+                    "$lt": "2012-04-24T00:00:00.000Z"
+                }
+            }
+        ]
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">simple or example</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "$or": [
+            {
+                "measurement_begin": {
+                    "$gte": "2012-04-23T00:00:00.000Z",
+                    "$lt": "2012-04-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_begin": {
+                    "$gte": "2012-05-23T00:00:00.000Z",
+                    "$lt": "2012-05-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_begin": {
+                    "$gte": "2012-06-23T00:00:00.000Z",
+                    "$lt": "2012-06-24T00:00:00.000Z"
+                }
+            }
+        ]
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">simple $not example</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "$not": {
+            "$and": [
+                {
+                    "name": "MyMea"
+                },
+                {
+                    "version": "V1"
+                }
+            ]
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">mixed case sensitive/insensitive</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoTest": {
+        "$and": [
+            {
+                "name": {
+                    "$like": "My*",
+                    "$options": "i"
+                }
+            },
+            {
+                "name": {
+                    "$like": "??Test"
+                }
+            }
+        ]
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">define unit for attribute to be retrieved</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": 4711,
+    "$attributes": {
+        "name": 1,
+        "id": 1,
+        "scale": {
+            "$unit": 123
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">access $min and $max from minimum and maximum</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurementQuantity": {
+        "name": "Revs"
+    },
+    "$attributes": {
+        "minimum": {
+            "$min": 1,
+            "$max": 1
+        },
+        "maximum": {
+            "$min": 1,
+            "$max": 1
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">do a full query filling some query elements</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {
+        "$or": [
+            {
+                "measurement_begin": {
+                    "$gte": "2012-04-23T00:00:00.000Z",
+                    "$lt": "2012-04-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_begin": {
+                    "$gte": "2012-05-23T00:00:00.000Z",
+                    "$lt": "2012-05-24T00:00:00.000Z"
+                }
+            },
+            {
+                "measurement_begin": {
+                    "$gte": "2012-06-23T00:00:00.000Z",
+                    "$lt": "2012-06-24T00:00:00.000Z"
+                }
+            }
+        ]
+    },
+    "$options": {
+        "$rowlimit": 1000,
+        "$rowskip": 500
+    },
+    "$attributes": {
+        "name": 1,
+        "id": 1,
+        "test": {
+            "name": 1,
+            "id": 1
+        }
+    },
+    "$orderby": {
+        "test.name": 0,
+        "name": 1
+    },
+    "$groupby": {
+        "id": 1
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoMeasurement": {},
+    "$attributes": {
+        "name": {
+            "$distinct": 1
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">retrieve enumerations as strings instead of int</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+  "AoMeasurementQuantity": {},
+  "$attributes": {
+    "datatype": {
+      "$options": "e"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">retrieve AoParameters and fill results in unknownSeq instead of stringVal</div>
+<div class="content">
+<pre class="highlight"><code class="json language-json">{
+    "AoParameter": {},
+    "$attributes": {
+        "name": 1,
+        "parameter_datatype": 1,
+        "pvalue": {
+            "$options": "u"
+        }
+    },
+    "$options": {
+        "$rowlimit": 100
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_special_key_values">7.4.2. Special key values</h4>
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 7. top level</caption>
+<colgroup>
+<col style="width:50%;">
+<col style="width:50%;"> 
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$attributes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list of attributes to retrieve</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$orderby</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">order the results by this 1 ascending 0 decending</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$groupby</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">group the results by this</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$options</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">global options</p></td>
+</tr>
+</tbody>
+</table>
+
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 8. conjuctions</caption>
+<colgroup>
+<col style="width:50%;">
+<col style="width:50%;"> 
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$and</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">connect array elements with logical AND. Contains Array of expressions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$or</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">connect array elements with logical OR. Contains Array of expressions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$not</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">invert result of object. Contains single expression</p></td>
+</tr>
+</tbody>
+</table>
+
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 9. operators</caption>
+<colgroup>
+<col style="width:50%;">
+<col style="width:50%;"> 
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$eq</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">equal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$neq</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not equal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$lt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lesser than</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$gt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">greater than</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$lte</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lesser than equal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$gte</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">greater than equal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$in</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">contained in array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$notin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not contained in array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$like</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">equal using wildcards *?</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$notlike</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not equal using wildcards *?</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">is null value ("$null":1)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$notnull</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not is null value ("$notnull":1)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$between</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">two values in an array. Equal to a $gte $lt pair</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$options</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string containing letters: <code>i</code> for case insensitive</p></td>
+</tr>
+</tbody>
+</table>
+
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 10. aggregates</caption>
+<colgroup>
+<col style="width:50%;">
+<col style="width:50%;"> 
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$count</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">return int containing the number of rows</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$dcount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">return int containing the number of distincted rows</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">returns minimal value of the attribute</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$max</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">returns maximal value of the attribute</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$avg</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">returns average value of the attribute</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$stddev</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">returns standard derivation value of the attribute</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$sum</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">returns sum of all attribute values</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$distinct</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">distinct attribute values</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$point</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">used for query on bulk data. returning indices of local column values</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$options</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string containing letters: <code>e</code> enum values as string (json only), <code>u</code> fill pValue into unkownSeq instead of strVal, <code>n</code> return int64 as number instead of string (json only)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$unit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">define the unit by its id that should be used for the return values</p></td>
+</tr>
+</tbody>
+</table>
+
+<table class="tableblock frame-all grid-all" style="width:100%; ">
+<caption class="title">Table 11. global options</caption>
+<colgroup>
+<col style="width:50%;">
+<col style="width:50%;"> 
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$rowlimit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maximal number of rows to return</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$rowskip</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number of rows to be skipped</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$seqlimit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maximal number of entries in a single sequence</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$seqskip</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number of entries to be skipped in a single sequence</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">$calcoptions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>c</em> for expanding non explicit values. <em>f</em> to integrate flags into values (json only)</p></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2016-02-15 16:17:17 CET
+</div>
+</div>
+</body>
+</html>
