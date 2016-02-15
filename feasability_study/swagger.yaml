@@ -898,11 +898,6 @@ definitions:
         type: integer
         format: int64
         example: 10000
-      valuesType:
-        type: string
-        enum:
-          - STORAGE
-          - CALCULATED
   NameValuePairs:
     type: array
     items:
