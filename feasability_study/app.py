@@ -518,10 +518,17 @@ def utils_binary_download_post(conI,  binary_identifier):
     response.headers['content-type'] = 'application/octet-stream'
     return response
 
+
 def utils_binary_getuploadurl_post(conI,  binary_identifier):
     logging.info('determnine upload url')
 
     return u"http://kjdfslakjdlkdjaslfj", 200
+
+
+def utils_basemodel_get(conI):
+    logging.info('retrieve basemodel')
+    return app.app.send_static_file('basemodel_asamxx.xml')
+
 
 @app.route('/')
 def index():

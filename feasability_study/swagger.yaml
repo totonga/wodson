@@ -599,6 +599,29 @@ paths:
       security:
         - session_auth:
           - access_data
+  /con/{conI}/utils/basemodel:
+    get:
+      tags:
+        - API_Http
+        - Utils
+      description: get base model in xml
+      operationId: app.utils_basemodel_get
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: file
+      produces:
+        - text/xml
+      security:
+        - session_auth:
+          - access_data
   /con:
     get:
       tags:
