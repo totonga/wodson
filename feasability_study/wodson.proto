@@ -54,6 +54,7 @@ message DataMatrix {
       SUM = 7;
       DISTINCT = 8;
       POINT = 9;
+      CALCULATED = 10;
     }
 
     message StringArray { repeated string values = 1; };

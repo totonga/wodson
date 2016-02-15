@@ -502,6 +502,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 | $distinct  | distinct attribute values
 | $point     | used for query on bulk data. returning indices of local column values
 | $options   | string containing letters: `e` enum values as string (json only), `u` fill pValue into unkownSeq instead of strVal, `n` return int64 as number instead of string (json only)
+| $calculated| can only be used for AoLocalColumn.values to expand implicit and raw scaled channels
 | $unit      | define the unit by its id that should be used for the return values
 |===========================================
 
@@ -511,6 +512,5 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 | $rowskip     | number of rows to be skipped
 | $seqlimit    | maximal number of entries in a single sequence
 | $seqskip     | number of entries to be skipped in a single sequence
-| $calcoptions | 'c' for expanding non explicit values. 'f' to integrate flags into values (json only)
 |===========================================
 
