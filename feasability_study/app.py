@@ -43,6 +43,7 @@ _cons['c1'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'U
 _cons['c2'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
 _cons['c3'] = _CCon({u'$URL': u'corbaname::130.164.139.1#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
 _cons['c4'] = _CCon({u'$URL': u'corbaname::130.164.139.1#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c5'] = _CCon({u'$URL': u'corbaname::#AtfxDatabase.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
 
 
 def _request_wants_protobuf():

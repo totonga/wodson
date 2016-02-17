@@ -1,0 +1,85 @@
+=== Use Case 1
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+.URL
+----
+POST /con/c5/data/access
+----
+
+==== Queries
+
+----
+{
+  "entity": "AoTest"
+}
+----
+
+----
+{
+  "entity": "AoTest",
+  "attributes": ["name","id"]
+}
+----
+
+----
+{
+  "entity": "AoTest",
+  "attributes": ["children.name","children.id"]
+}
+----
+
+----
+{
+  "entity": "AoTest",
+  "attributes": ["children.name","children.id","children.parent_test"]
+}
+----
+
+----
+{
+  "entity": "AoTest",
+  "conditions": ["id=???"],
+  "attributes": ["children.name","children.id"]
+}
+----
+
+----
+{
+  "entity": "???",
+  "conditions": ["id=???"],
+  "attributes": ["children.name","children.id"]
+}
+----
+
+----
+{
+  "entity": "???",
+  "conditions": ["id=???"],
+  "attributes": ["children.name","children.id"]
+}
+----
+
+----
+{
+  "entity": "AoMeasurement",
+  "conditions": ["id=???"],
+  "attributes": ["measurement_quantities.name","measurement_quantities.id","measurement_quantities.datatype"]
+}
+----
+
+----
+{
+  "entity": "AoMeasurementQuantity",
+  "conditions": ["id=???"],
+  "attributes": ["local_columns.name","local_columns.id"]
+}
+----
+
+----
+{
+  "entity": "AoLocalColumn",
+  "conditions": ["id=???"],
+  "attributes": ["id", "generation_parameters","flags","values"]
+}
+----
