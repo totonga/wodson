@@ -583,44 +583,53 @@ class CModel:
 
 
 class CSession:
-    session_ = None
+    _aoSession = None
     # Model members
-    model_ = None
+    _cModel = None
     # access data
-    aea_ = None
+    _applElemAccess = None
 
     def __init__(self, params):
 
-        self.session_ = _get_session(params)
-        if self.session_ is None:
+        self._aoSession = _get_session(params)
+        if self._aoSession is None:
             raise Exception("Retrieving session failed!")
 
-        self.model_ = CModel(self.session_)
-        self.aea_ = self.session_.getApplElemAccess()
+        self._cModel = CModel(self._aoSession)
+        self._applElemAccess = self._aoSession.getApplElemAccess()
 
     def __del__(self):
-        self.Close()
+        try:
+            self.Close()
+        except:
+            logging.info("Exception occured when closing session")
 
     def Model(self):
-        return self.model_
+        return self._cModel
 
     def Close(self):
-        if not self.session_ is None:
-            self.session_.close()
-            self.session_ = None
+        if not self._aoSession is None:
+            self._aoSession.close()
+            self._aoSession = None
 
     def AsamPathCreate(self,  aid,  iid):
-        applStruct = self.session_.getApplicationStructure()
+        applStruct = self._aoSession.getApplicationStructure()
         ae = applStruct.getElementById(aid)
         ie = ae.getInstanceById(Int2LL(iid))
         return ie.getAsamPath()
 
     def AsamPathResolve(self,  path):
-        applStruct = self.session_.getApplicationStructure()
+        applStruct = self._aoSession.getApplicationStructure()
         ie = applStruct.getInstanceByAsamPath(path.encode('utf-8'))
         iid = ie.getId()
         entity = ie.getApplicationElement().getName()
         return entity,  LL2Int(iid)
+
+    def GetContext(self, pattern):
+       return self._aoSession.getContext(pattern.encode('utf-8'))
+
+    def SetContextString(self, varName, varValue):
+        self._aoSession.setContextString(varName.encode('utf-8'),  varValue.encode('utf-8'))
 
     def GetInstancesEx(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
 
@@ -718,8 +727,67 @@ class CSession:
         qse = org.asam.ods.QueryStructureExt(anuSeq, condSeq, joinSeq, orderBySeq, groupBySeq)
 
         logging.info('Call ApplElemAccess.getInstancesExt(aoq="' + str(qse) + '", how_many=' + str(how_many) + '")')
-        rs = self.aea_.getInstancesExt(qse, how_many)
+        rs = self._applElemAccess.getInstancesExt(qse, how_many)
         for r in rs:
             return r.firstElems
 
         return None
+
+class CSessionAutoReconnect:
+    _cSession = None
+    _params = {}
+
+    def __init__(self, params):
+        self._cSession = CSession(params)
+        self._params = params
+
+    def __del__(self):
+        self._cSession = None
+
+    def Close(self):
+        # no need to reconnect
+        self._cSession.Close()
+        self._cSession = None
+
+    def Model(self):
+        # no need to reconnect
+        return self._CSession().Model()
+
+    def AsamPathCreate(self,  aid,  iid):
+        try:
+            return self._CSession().AsamPathCreate(aid, iid)
+        except (CORBA.OBJECT_NOT_EXIST, CORBA.COMM_FAILURE, CORBA.TRANSIENT, CORBA.INV_OBJREF):
+            return self._CSessionReconnect().AsamPathCreate(aid, iid)
+
+    def AsamPathResolve(self,  path):
+        try:
+            return self._CSession().AsamPathResolve(path)
+        except (CORBA.OBJECT_NOT_EXIST, CORBA.COMM_FAILURE, CORBA.TRANSIENT, CORBA.INV_OBJREF):
+            return self._CSessionReconnect().AsamPathResolve(path)
+
+    def GetContext(self, pattern):
+        try:
+            return self._CSession().GetContext(pattern)
+        except (CORBA.OBJECT_NOT_EXIST, CORBA.COMM_FAILURE, CORBA.TRANSIENT, CORBA.INV_OBJREF):
+            return self._CSessionReconnect().GetContext(pattern)
+
+    def SetContextString(self, varName, varValue):
+        try:
+            self._CSession().SetContextString(varName,  varValue)
+        except (CORBA.OBJECT_NOT_EXIST, CORBA.COMM_FAILURE, CORBA.TRANSIENT, CORBA.INV_OBJREF):
+            self._CSessionReconnect().SetContextString(varName,  varValue)
+
+    def GetInstancesEx(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
+        try:
+            return self._CSession().GetInstancesEx(aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many)
+        except (CORBA.OBJECT_NOT_EXIST, CORBA.COMM_FAILURE, CORBA.TRANSIENT, CORBA.INV_OBJREF):
+            return self._CSessionReconnect().GetInstancesEx(aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many)
+
+    def _CSessionReconnect(self):
+        self._cSession = None
+        return self._CSession()
+
+    def _CSession(self):
+        if self._cSession is None:
+            self._cSession = CSession(self._params)
+        return self._cSession

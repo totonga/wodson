@@ -118,7 +118,7 @@ def _Session(conI):
     global session_obj__
 
     if _cons[conI].session_obj_ is None:
-        _cons[conI].session_obj_ = odslib.CSession(_cons[conI].name_value_params_)
+        _cons[conI].session_obj_ = odslib.CSessionAutoReconnect(_cons[conI].name_value_params_)
 
     return _cons[conI].session_obj_
 
@@ -390,7 +390,7 @@ def model_get(conI):
 def context_get(conI,  pattern):
     logging.info('get context variables')
     so = _Session(conI)
-    nvi = so.session_.getContext(pattern.encode('utf-8'))
+    nvi = so.GetContext(pattern)
     rv = []
     nviCount = nvi.getCount()
     nvs = nvi.nextN(nviCount)
@@ -409,9 +409,10 @@ def context_put(conI, parameters):
     for param in parameters:
         varName = param['name']
         varValue = param['value']
-        so.session_.setContextString(varName.encode('utf-8'),  varValue.encode('utf-8'))
+        so.setContextString(varName,  varValue)
 
     return NoContent, 200
+
 
 def con_get():
     logging.info('get info from existing Con entries')
@@ -425,6 +426,7 @@ def con_get():
         rv['cons'].append(conObj)
 
     return jsonify(rv), 200;
+
 
 def con_coni_get(conI):
     logging.info('get con parameters')
