@@ -39,10 +39,10 @@ curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/co
 [source,json]
 ----
 [
-    {
-            "name": "ODSVERSION",
-            "value": "5.2"
-    }
+  {
+    "name": "ODSVERSION",
+    "value": "5.3"
+  }
 ]
 ----
 ================================
@@ -52,7 +52,7 @@ curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/co
 .request
 [source,json]
 ----
-curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/context?pattern=WILD*'
+curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/context?pattern=WILDCARD_*'
 ----
 
 .result
@@ -60,16 +60,16 @@ curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/c1/co
 ----
 [
   {
-    "name": "WILDALL",
-    "value": "%"
+    "name": "WILDCARD_ALL",
+    "value": "*"
   },
   {
-    "name": "WILDESC",
+    "name": "WILDCARD_ESC",
     "value": "\\"
   },
   {
-    "name": "WILDONE",
-    "value": "_"
+    "name": "WILDCARD_ONE",
+    "value": "?"
   }
 ]
 ----
