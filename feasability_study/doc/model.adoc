@@ -12,7 +12,7 @@ TIP: The model is the schema of the ASAM ODS Server
 === Get model
 
 ----
-GET /con/{conI}/shema
+GET /con/{conI}/model
 ----
 
 ****
@@ -27,7 +27,7 @@ IMPORTANT: The model should be cached and not retrieved every time.
 .request
 [source,json]
 ----
-curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1/shema'
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/problem+json' 'http://localhost:8081/con/c1/model'
 ----
 
 .result
@@ -42,14 +42,14 @@ TIP: The content of the model needs to be known to fill later request to *data* 
 === Modify model
 
 ----
-PUT /con/{conI}/shema
-DELETE /con/{conI}/shema
+PUT /con/{conI}/model
+DELETE /con/{conI}/model
 ----
 
 ==== Add components
 
 ----
-PUT /con/{conI}/shema
+PUT /con/{conI}/model
 ----
 
 .create entity *MyAny*
@@ -88,7 +88,7 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
             ]
         }
     ]
-}' 'http://localhost:8081/con/c1/shema'
+}' 'http://localhost:8081/con/c1/model'
 ----
 ================================
 
@@ -110,7 +110,7 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
             ]
         }
     ]
-}' 'http://localhost:8081/con/c1/shema'
+}' 'http://localhost:8081/con/c1/model'
 ----
 ================================
 
@@ -118,7 +118,7 @@ curl -X PUT --header 'Content-Type: application/json' --header 'Accept: applicat
 ==== Remove components
 
 ----
-DELETE /con/{conI}/shema
+DELETE /con/{conI}/model
 ----
 
 .delete attribute *my_value* at *MyAny*
@@ -137,7 +137,7 @@ curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: appli
             ]
         }
     ]
-}' 'http://localhost:8081/con/c1/shema'
+}' 'http://localhost:8081/con/c1/model'
 ----
 ================================
 
@@ -153,6 +153,6 @@ curl -X DELETE --header 'Content-Type: application/json' --header 'Accept: appli
             "name": "MyAny"
         }
     ]
-}' 'http://localhost:8081/con/c1/shema'
+}' 'http://localhost:8081/con/c1/model'
 ----
 ================================
