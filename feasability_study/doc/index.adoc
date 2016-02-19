@@ -6,11 +6,11 @@
 
 include::introduction.adoc[]
 
-include::con_.adoc[]
-
 include::data.adoc[]
 
 include::model.adoc[]
+
+include::con_.adoc[]
 
 include::transaction.adoc[] 
 
