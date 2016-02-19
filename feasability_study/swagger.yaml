@@ -3,7 +3,7 @@ info:
   version: 0.0.2
   title: wodson feasibility study
   contact:
-    name: totonga@gmail,com
+    name: totonga@gmail.com
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -15,170 +15,30 @@ schemes:
   - http
   - https
 tags:
-  - name: API_Rest
-    description: All methods using Rest 
-  - name: API_Http
-    description: All methods using Http
+  - name: API_Methods
+    description: All API methods
+  - name: API_Core
+    description: Basic API methods to work with Server
   - name: Data
     description: meta and bulk data
   - name: Model
     description: Server model
   - name: Transaction
-    description: Handle transactions, Open transactions
+    description: Handle transactions
   - name: Info
     description: Have a look at some server info
   - name: Init
     description: Used to initialize the server
   - name: Utils
     description: Utilities to do special jobs
+  - name: Vestige_Rest
+    description: Relicts from pure Rest verbs
 paths:
-  /con/{conI}/data:
-    get:
-      tags:
-        - API_Rest
-        - Data
-      description: get data from server by using query structure
-      operationId: app.data_get
-      parameters:
-        - name: conI
-          in: path
-          description: string identify the selected Con
-          required: true
-          type: string
-        - name: query_struct
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/QueryStructureV1'
-      responses:
-        '200':
-          description: Successful response
-          schema:
-            $ref: '#/definitions/DataMatrices'
-        '404':
-          description: not conneted
-      produces:
-        - application/json
-        - text/html
-      security:
-        - session_auth:
-          - access_data
-    post:
-      tags:
-        - API_Rest
-        - Data
-        - Transaction
-      description: create instances
-      operationId: app.data_post
-      parameters:
-        - name: conI
-          in: path
-          description: string identify the selected Con
-          required: true
-          type: string
-        - name: data_matrix
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/DataMatrix'
-      responses:
-        '200':
-          description: Successful updated
-          schema:
-            $ref: '#/definitions/DataMatrix'
-        '405':
-          description: Invalid input
-      security:
-        - session_auth:
-          - modify_data
-    put:
-      tags:
-        - API_Rest
-        - Data
-        - Transaction
-      description: update instances
-      operationId: app.data_put
-      parameters:
-        - name: conI
-          in: path
-          description: string identify the selected Con
-          required: true
-          type: string
-        - name: data_matrix
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/DataMatrix'
-      responses:
-        '200':
-          description: Successful updated
-        '405':
-          description: Invalid input
-      security:
-        - session_auth:
-          - modify_data
-    delete:
-      tags:
-        - API_Rest
-        - Data
-        - Transaction
-      description: update instances
-      operationId: app.data_delete
-      parameters:
-        - name: conI
-          in: path
-          description: string identify the selected Con
-          required: true
-          type: string
-        - name: data_matrix
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/DataMatrix'
-      responses:
-        '200':
-          description: Successful deleted
-        '405':
-          description: Invalid input
-      security:
-        - session_auth:
-          - modify_data
-  /con/{conI}/data/iteratorguid/{iteratorGuid}:
-    get:
-      tags:
-        - API_Http
-        - API_Rest
-        - Data
-      description: If a method was not able to return the complete result in a single DataMatrix it will add an iteratorguid that can be used to fetch the next chunk 
-      operationId: app.data_iteratorguid_get
-      parameters:
-        - name: conI
-          in: path
-          description: string identify the selected Con
-          required: true
-          type: string
-        - name: iteratorGuid
-          in: path
-          description: guid to retrieve additional results
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Successful response
-          schema:
-            $ref: '#/definitions/DataMatrices'
-        '404':
-          description: not connected
-      produces:
-        - application/json
-        - text/html
-      security:
-        - session_auth:
-          - access_data
   /con/{conI}/data/access:
     post:
       tags:
-        - API_Http
+        - API_Methods
+        - API_Core
         - Data
       description: Get data from server by using query structure
       operationId: app.data_access_post
@@ -211,7 +71,8 @@ paths:
   /con/{conI}/data/modify:
     post:
       tags:
-        - API_Http
+        - API_Methods
+        - API_Core
         - Data
         - Transaction
       description: create instances
@@ -239,7 +100,8 @@ paths:
           - modify_data
     put:
       tags:
-        - API_Http
+        - API_Methods
+        - API_Core
         - Data
         - Transaction
       description: update instances
@@ -265,7 +127,8 @@ paths:
             - modify_data
     delete:
       tags:
-        - API_Http
+        - API_Methods
+        - API_Core
         - Data
         - Transaction
       description: update instances
@@ -289,11 +152,41 @@ paths:
       security:
         - session_auth:
           - modify_data  
+  /con/{conI}/data/iteratorguid/{iteratorGuid}:
+    get:
+      tags:
+        - API_Methods
+        - Data
+      description: If a method was not able to return the complete result in a single DataMatrix it will add an iteratorguid that can be used to fetch the next chunk 
+      operationId: app.data_iteratorguid_get
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+        - name: iteratorGuid
+          in: path
+          description: guid to retrieve additional results
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/DataMatrices'
+        '404':
+          description: not connected
+      produces:
+        - application/json
+        - text/html
+      security:
+        - session_auth:
+          - access_data
   /con/{conI}/transaction:
     post:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Transaction
       description: start a transaction to be used a command that uses transaction
       operationId: app.transaction_post
@@ -314,8 +207,8 @@ paths:
           - modify_model
     put:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
+        - API_Core
         - Transaction
       description: commit transaction opened by a command that uses transaction
       operationId: app.transaction_put
@@ -336,8 +229,7 @@ paths:
           - modify_model
     delete:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Transaction
       description: rollback transaction opend by a command that uses transaction
       operationId: app.transaction_delete
@@ -359,8 +251,8 @@ paths:
   /con/{conI}/model:
     get:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
+        - API_Core
         - Info
         - Model
       description: get model information
@@ -383,8 +275,7 @@ paths:
           - access_data
     put:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Model
         - Transaction
       description: update or extend the model
@@ -410,8 +301,7 @@ paths:
           - modify_model
     delete:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Model
         - Transaction
       description: delete elements in the model
@@ -438,8 +328,7 @@ paths:
   /con/{conI}/context:
     get:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Info
       description: get information about current context
       operationId: app.context_get
@@ -467,8 +356,7 @@ paths:
           - access_data
     put:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
       operationId: app.context_put
       parameters:
         - name: conI
@@ -492,8 +380,7 @@ paths:
   /con/{conI}/utils/asampath/create:
     get:
       tags:
-        - API_Rest
-        - Utils
+        - Vestige_Rest
       description: Create an ASAM path for a given instance
       operationId: app.utils_asampath_create_get
       parameters:
@@ -519,7 +406,7 @@ paths:
           - access_data
     post:
       tags:
-        - API_Http
+        - API_Methods
         - Utils
       description: Create an ASAM path for a given instance
       operationId: app.utils_asampath_create_post
@@ -547,8 +434,7 @@ paths:
   /con/{conI}/utils/asampath/resolve:
     get:
       tags:
-        - API_Rest
-        - Utils
+        - Vestige_Rest
       description: Get instance for given ASAM path
       operationId: app.utils_asampath_resolve_post
       parameters:
@@ -574,7 +460,7 @@ paths:
           - access_data
     post:
       tags:
-        - API_Http
+        - API_Methods
         - Utils
       description: Get instance for given ASAM path
       operationId: app.utils_asampath_resolve_get
@@ -602,7 +488,7 @@ paths:
   /con/{conI}/utils/basemodel:
     get:
       tags:
-        - API_Http
+        - API_Methods
         - Utils
       description: get base model in xml
       operationId: app.utils_basemodel_get
@@ -625,8 +511,7 @@ paths:
   /con:
     get:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Info
       description: get list of existing Con urls
       operationId: app.con_get
@@ -643,8 +528,7 @@ paths:
   /con/{conI}:
     get:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Info
       description: get parameter of con
       operationId: app.con_coni_get
@@ -666,8 +550,8 @@ paths:
           - access_data
     post:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
+        - API_Core
         - Init
       operationId: app.con_coni_post
       parameters:
@@ -691,8 +575,7 @@ paths:
           - modify_data
     put:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Init
       operationId: app.con_coni_put
       parameters:
@@ -716,8 +599,7 @@ paths:
           - modify_data
     delete:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Init
       operationId: app.con_coni_delete
       parameters:
@@ -737,8 +619,7 @@ paths:
   /con/{conI}/utils/binary/access:
     post:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Utils
       description: Read binary chunk from Blob or AoFile
       operationId: app.utils_binary_access_post
@@ -766,8 +647,7 @@ paths:
   /con/{conI}/utils/binary/download:
     post:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Utils
       description: download Blob or AoFile
       operationId: app.utils_binary_download_post
@@ -797,8 +677,7 @@ paths:
   /con/{conI}/utils/binary/getuploadurl:
     post:
       tags:
-        - API_Http
-        - API_Rest
+        - API_Methods
         - Utils
       description: upload Blob or AoFile
       operationId: app.utils_binary_getuploadurl_post
@@ -823,6 +702,110 @@ paths:
       security:
         - session_auth:
           - access_data
+  /con/{conI}/data:
+    get:
+      tags:
+        - Vestige_Rest
+      description: get data from server by using query structure
+      operationId: app.data_get
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+        - name: query_struct
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/QueryStructureV1'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/DataMatrices'
+        '404':
+          description: not conneted
+      produces:
+        - application/json
+        - text/html
+      security:
+        - session_auth:
+          - access_data
+    post:
+      tags:
+        - Vestige_Rest
+      description: create instances
+      operationId: app.data_post
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+        - name: data_matrix
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+          schema:
+            $ref: '#/definitions/DataMatrix'
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+          - modify_data
+    put:
+      tags:
+        - Vestige_Rest
+      description: update instances
+      operationId: app.data_put
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+        - name: data_matrix
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful updated
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+          - modify_data
+    delete:
+      tags:
+        - Vestige_Rest
+      description: update instances
+      operationId: app.data_delete
+      parameters:
+        - name: conI
+          in: path
+          description: string identify the selected Con
+          required: true
+          type: string
+        - name: data_matrix
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/DataMatrix'
+      responses:
+        '200':
+          description: Successful deleted
+        '405':
+          description: Invalid input
+      security:
+        - session_auth:
+          - modify_data
 securityDefinitions:
   session_auth:
     type: oauth2
