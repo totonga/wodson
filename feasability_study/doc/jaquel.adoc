@@ -492,6 +492,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 
 .aggregates
 |===========================================
+| $none      | no aggregate
 | $count     | return int containing the number of rows
 | $dcount    | return int containing the number of distincted rows
 | $min       | returns minimal value of the attribute
@@ -501,7 +502,6 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 | $sum       | returns sum of all attribute values
 | $distinct  | distinct attribute values
 | $point     | used for query on bulk data. returning indices of local column values
-| $options   | string containing letters: `e` enum values as string (json only), `u` fill pValue into unkownSeq instead of strVal, `n` return int64 as number instead of string (json only)
 | $calculated| can only be used for AoLocalColumn.values to expand implicit and raw scaled channels
 | $unit      | define the unit by its id that should be used for the return values
 |===========================================

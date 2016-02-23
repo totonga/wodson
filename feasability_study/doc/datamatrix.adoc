@@ -10,3 +10,27 @@ vectors in the cells and there is even a row of type DT_UNKOWN.
 ****
 
 TIP: The DataMatrix is the central element to read and write data (meta/bulk). It is important to be familiar with it.
+
+==== Some Examples to visualize content
+
+.Normal scalar results
+[cols="h,3*",width="60%",options="header"]
+|============================
+|          | id    | name      | description
+| datatype | DT_ID | DT_STRING | DT_STRING
+| row 1    | 4711  | Time      | time channel
+| row 2    | 4712  | Revs      | revs channel
+| row 3    | 4713  | Speed     | speed channel
+|============================
+
+.Some bulk data from local column
+[cols="h,4*",options="header"]
+|======================================
+|          | id    | generation_parameters | flags       | values
+| datatype | DT_ID | DS_DOUBLE             | DS_SHORT    | DT_UNKNOWN
+| row 1    | 4721  | []                    | []          | { DT_DOUBLE: [1.0, 1.1, 1.2, 1.4] }
+| row 2    | 4722  | [1.0, 0.1]            | []          | { DT_STRING: [a, b, c, d] }
+| row 3    | 4723  | []                    | [15,0,9,15] | { DT_LONG: [1, 2, 3, 4] }
+|======================================
+
+IMPORTANT: The DataMatrix message in 'wodson.proto' protobuf file shows the details about this structure.
