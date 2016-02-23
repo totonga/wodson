@@ -1,0 +1,54 @@
+=== HTTP Server
+:Author:    Andreas Krantz
+:Email:     totonga@gmail.com
+
+****
+wodson is implemented as a http server extension. Authentification and session handling is done using HTTP server middleware.
+****
+
+[ditaa]
+....
+     +-------------------------+
+     +       ods client        +
+     +-------------------------+
+     +      http library       +
+     +-------------------------+
+                 ^
+                 | Network
+                 v
+     +--------------------------+
+     +      http server         +
+     +--------------------------+
+     +  http server middleware  +
+     +--------------------------+
+     +       ods server         +
+     +--------------------------+
+....
+
+==== HTTP Middleware
+
+An http server normally contains functionallity that should be available for all requests independent of the module they belong too. 
+
+Things like this are:
+
+- Authentification
+- Session persistence
+- Logging
+- ...
+
+These things are made available for all server modules. 
+Wodson will also make use of this central services offered by the webserver itself.
+
+===== Authentification
+
+There are different kind of authentification mechanisms like basic auth or OAuth.
+The result for watson is only that it is possible to identify the current authentified
+user. The user can be used to bridge/map to ASAM security.
+
+===== Session
+
+There are different implementation of session middleware. They are used to 
+allow some kind of persistent configuration stored based on the configuration 
+of the middleware. Most of the implementations allow a lot of different 
+session storage, starting from memory over file to central database.
+Wodson will store its con settings persistent in such an session middleware.

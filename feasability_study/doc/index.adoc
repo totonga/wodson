@@ -32,4 +32,6 @@ include::faq.adoc[]
 
 include::oo_to_wodson.adoc[]
 
+include::http_server.adoc[]
+
 include::jaquel.adoc[]
