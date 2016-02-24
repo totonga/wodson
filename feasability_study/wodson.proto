@@ -129,6 +129,6 @@ message DataMatrix {
 }
 
 message DataMatrices{
-  repeated DataMatrix tables = 1;
+  repeated DataMatrix matrices = 1;
   string iterator_guid = 2;
 }

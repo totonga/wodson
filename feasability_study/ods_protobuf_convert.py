@@ -159,7 +159,7 @@ def o2p_datamatrices(model, elem, result, rowSkipCount, seqSkipCount, seqMaxCoun
 
         tableElem = model.GetElemByAid(table.aid)
 
-        data_matrix = rv.tables.add()
+        data_matrix = rv.matrices.add()
         data_matrix.name = tableElem.aeName
         data_matrix.base_name = tableElem.beName
         data_matrix.row_skip_count = rowSkipCount

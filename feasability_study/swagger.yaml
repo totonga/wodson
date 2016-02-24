@@ -1167,7 +1167,7 @@ definitions:
       iteratorGuid:
         type: string
         description: optional guid that will show up if the results have been chunked  
-      tables:
+      matrices:
         type: array
         items:
           $ref: '#/definitions/DataMatrix'

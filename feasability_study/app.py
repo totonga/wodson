@@ -41,9 +41,10 @@ class _CCon:
 _cons = {}
 _cons['c1'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'})
 _cons['c2'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
-_cons['c3'] = _CCon({u'$URL': u'corbaname::130.164.139.1#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
-_cons['c4'] = _CCon({u'$URL': u'corbaname::130.164.139.1#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c3'] = _CCon({u'$URL': u'corbaname::#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['c4'] = _CCon({u'$URL': u'corbaname::#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
 _cons['c5'] = _CCon({u'$URL': u'corbaname::#AtfxDatabase.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
+_cons['openatfx'] = _CCon({u'$URL': u'corbaname::localhost:900#ATFX.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma', u'FILENAME': u'Example_Simple.atfx'})
 
 
 def _request_wants_protobuf():
@@ -184,7 +185,7 @@ def data_access_post(conI,  query_struct):
         return response, 200
 
     rv = {}
-    rv['tables'] = []
+    rv['matrices'] = []
 
     for table in result:
 
@@ -268,7 +269,7 @@ def data_access_post(conI,  query_struct):
             columnsObj.append(columnObj)
 
         tableObj['columns'] = columnsObj
-        rv['tables'].append(tableObj)
+        rv['matrices'].append(tableObj)
 
     if _request_wants_json():
         return jsonify(rv), 200

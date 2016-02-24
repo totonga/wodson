@@ -19,7 +19,7 @@ if len(sys.argv) != 2:
 
 data_matrices = wodson_pb2.DataMatrices()
 
-data_matrix = data_matrices.tables.add()
+data_matrix = data_matrices.matrices.add()
 data_matrix.name = "MyLocalColumn"
 data_matrix.base_name = "AoLocalColumn"
 
@@ -63,7 +63,7 @@ desciptionVals.datatype = wodson_pb2.DT_STRING
 desciptionVals.dt_string.values.extend(["first", "second", "third", "forth", "fifth"])
 
 # Write all datatypes
-data_matrix = data_matrices.tables.add()
+data_matrix = data_matrices.matrices.add()
 data_matrix.name = "AllTypes"
 
 # DT types
@@ -251,7 +251,7 @@ column.ds_string.values.add().values.extend(["first picture", "image/jpg", "data
 
 # UNKNOWN
 
-data_matrix = data_matrices.tables.add()
+data_matrix = data_matrices.matrices.add()
 data_matrix.name = "UnkownTypes"
 
 column = data_matrix.columns.add()
