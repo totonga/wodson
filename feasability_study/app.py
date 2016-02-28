@@ -26,6 +26,7 @@ from connexion import NoContent
 from flask import make_response
 
 import ods_protobuf_convert
+import jaquel_to_ods_convert
 
 
 app = connexion.App(__name__)
@@ -163,20 +164,33 @@ def data_modify_delete(conI, data_matrix):
 def data_access_post(conI,  query_struct):
     logging.info('retrieve data')
 
-    entityStr = query_struct['entity']
-    conditions = query_struct['conditions'] if 'conditions' in query_struct else []
-    attributes = query_struct['attributes'] if 'attributes' in query_struct else []
-    orderBy = query_struct['orderBy'] if 'orderBy' in query_struct else []
-    groupBy = query_struct['groupBy'] if 'groupBy' in query_struct else []
-    rowMaxCount = query_struct['rowMaxCount'] if 'rowMaxCount' in query_struct else 10000
-    rowSkipCount = query_struct['rowSkipCount'] if 'rowSkipCount' in query_struct else 0
-    seqSkipCount = query_struct['seqSkipCount'] if 'seqSkipCount' in query_struct else 0
-    seqMaxCount = query_struct['seqMaxCount'] if 'seqMaxCount' in query_struct else 50
+    if 'entity' in query_struct:
+        # assume element list
+        entityStr = query_struct['entity']
+        conditions = query_struct['conditions'] if 'conditions' in query_struct else []
+        attributes = query_struct['attributes'] if 'attributes' in query_struct else []
+        orderBy = query_struct['orderBy'] if 'orderBy' in query_struct else []
+        groupBy = query_struct['groupBy'] if 'groupBy' in query_struct else []
+        rowMaxCount = query_struct['rowMaxCount'] if 'rowMaxCount' in query_struct else 10000
+        rowSkipCount = query_struct['rowSkipCount'] if 'rowSkipCount' in query_struct else 0
+        seqSkipCount = query_struct['seqSkipCount'] if 'seqSkipCount' in query_struct else 0
+        seqMaxCount = query_struct['seqMaxCount'] if 'seqMaxCount' in query_struct else 50
 
-    so = _Session(conI)
-    model = so.Model()
-    elem = model.GetElemEx(entityStr)
-    result = so.GetElementValues(elem.aeName, conditions, attributes, orderBy, groupBy, rowMaxCount)
+        so = _Session(conI)
+        model = so.Model()
+        elem = model.GetElemEx(entityStr)
+        result = so.GetElementValues(elem.aeName, conditions, attributes, orderBy, groupBy, rowMaxCount)
+    else:
+        # assume jaquel
+        so = _Session(conI)
+        model = so.Model()
+
+        elem, qse, options = jaquel_to_ods_convert.JaquelToQueryStructureExt(model, query_struct)
+        result = so.GetInstancesEx(qse, options['rowlimit'])
+        rowMaxCount  = options['rowlimit']
+        rowSkipCount = options['rowskip']
+        seqSkipCount = options['seqlimit']
+        seqMaxCount  = options['seqskip']
 
     wantsProto, wantsProtoJson = _request_wants_protobuf()
     if wantsProto:

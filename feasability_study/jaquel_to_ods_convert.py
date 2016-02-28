@@ -370,9 +370,12 @@ def _ParseConditions(model, applElem, target, elemDict, attrib):
             attrib['conjuctionCount'] = attrib['conjuctionCount'] + 1
 
 
-def JaquelToQueryStructureExt(model, jaquelQueryStr):
+def JaquelToQueryStructureExt(model, jaquelQuery):
     
-    query = json.loads(jaquelQueryStr)
+    if isinstance(jaquelQuery, dict):
+        query = jaquelQuery
+    else:
+        query = json.loads(jaquelQuery)
 
     applElem = None
     aid = None
@@ -411,4 +414,4 @@ def JaquelToQueryStructureExt(model, jaquelQueryStr):
     if 0 == len(qse.anuSeq):
         qse.anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*".encode('utf-8')), org.asam.ods.T_LONGLONG(0, 0), org.asam.ods.NONE))
 
-    return qse, globalOptions
+    return applElem, qse, globalOptions

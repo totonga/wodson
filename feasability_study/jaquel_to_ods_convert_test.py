@@ -103,9 +103,9 @@ _session = odslib.CSessionAutoReconnect({u'$URL': u'corbaname::10.89.2.24:900#Me
 _model = _session.Model()
 
 for testQuery in testQueries:
-    qse, options = jaquel_to_ods_convert.JaquelToQueryStructureExt(_model, testQuery)
+    applElem, qse, options = jaquel_to_ods_convert.JaquelToQueryStructureExt(_model, testQuery)
     print str(qse)
     print str(options)
     print '-----------------------------------------------------'
-    _session.GetInstancesEx(qse, options['rowlimit'])
+    result = _session.GetInstancesEx(qse, options['rowlimit'])
     print '+++++++++++++++++++++++++++++++++++++++++++++++++++++'
