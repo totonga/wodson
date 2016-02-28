@@ -6,108 +6,6 @@ import odslib
 
 from sys import maxsize
 
-
-jaquelQueryString = '''{
-                        "AoTest":{"name":{"$like":"abc","$options":"i"}},
-                        "$options":{"$seqskip":5}
-                       }'''
-
-jaquelQueryString7 = '''{
-                        "AoTest":{"name":{"$eq":"abc","$options":"i"}}
-                       }'''
-
-
-jaquelQueryString6 = '''{
-                        "AoTest":12
-                       }'''
-
-jaquelQueryString5 = '''{
-                        "AoTest":{},
-                        "$attributes":{"id":1,"name":1},
-                        "$orderby":{"name":1},
-                        "$groupby":{"id":1}
-                       }'''
-
-jaquelQueryString4 = '''{
-                        "AoTest":{},
-                        "$attributes":{"id":1,"name":1},
-                        "$orderby":{"name":1}
-                       }'''
-
-jaquelQueryString3 = '''{
-                        "AoTest":{},
-                        "$attributes":{"id":1,"name":1}
-                       }'''
-
-jaquelQueryString2 = '''{"AoTest":{}}'''
-
-jaquelQueryString1 = '''{
-    "AoMeasurement": {
-        "name": { "$inset":["a","b","c"] },
-        "$or": [
-            {
-                "measurement_begin": {
-                    "$gte": "2012-04-23T00:00:00.000Z",
-                    "$lt": "2012-04-24T00:00:00.000Z"
-                }
-            },
-            {
-                "measurement_begin": {
-                    "$gte": "2012-05-23T00:00:00.000Z",
-                    "$lt": "2012-05-24T00:00:00.000Z"
-                }
-            },
-            {
-                "measurement_begin": {
-                    "$gte": "2012-06-23T00:00:00.000Z",
-                    "$lt": "2012-06-24T00:00:00.000Z"
-                }
-            }
-        ]
-    },
-    "$options": {
-        "$rowlimit": 1000,
-        "$rowskip": 500,
-        "$seqlimit": 1000,
-        "$seqskip": 500
-    },
-    "$attributes": {
-        "name": 1,
-        "id": 1,
-        "test": {
-            "name": 1,
-            "id": 1
-        },
-        "minimum": {
-            "$min": 1,
-            "$max": 1
-        },
-        "maximum": {
-            "$min": 1,
-            "$max": 1
-        },
-        "val": {
-            "$none": { "$unit": 4711 }
-        },
-        "val2": {
-            "$unit": 4711
-        }
-    },
-    "$orderby": {
-        "test.name": 0,
-        "name": 1,
-        "unit_under_test": {
-            "name":1
-        } 
-    },
-    "$groupby": {
-        "test": {
-            "id": 1
-        }
-    }
-}'''
-
-
 _jo_aggregates = { '$none': org.asam.ods.NONE, '$count': org.asam.ods.COUNT, '$dcount': org.asam.ods.DCOUNT, '$min': org.asam.ods.MIN, '$max': org.asam.ods.MAX, '$avg': org.asam.ods.AVG, '$sum': org.asam.ods.SUM, '$distinct': org.asam.ods.DISTINCT, '$point': org.asam.ods.POINT}
 _jo_operators = { '$eq': org.asam.ods.EQ, '$neq': org.asam.ods.NEQ, '$lt': org.asam.ods.LT, '$gt': org.asam.ods.GT, '$lte': org.asam.ods.LTE, '$gte': org.asam.ods.GTE, '$inset': org.asam.ods.INSET, '$notinset': org.asam.ods.NOTINSET, '$like': org.asam.ods.LIKE, '$null': org.asam.ods.IS_NULL, '$notnull': org.asam.ods.IS_NOT_NULL, '$notlike': org.asam.ods.NOTLIKE, '$between': org.asam.ods.BETWEEN }
 _jo_operators_ci_map = { org.asam.ods.EQ: org.asam.ods.CI_EQ, org.asam.ods.NEQ: org.asam.ods.CI_NEQ, org.asam.ods.LT: org.asam.ods.CI_LT, org.asam.ods.GT: org.asam.ods.CI_GT, org.asam.ods.LTE: org.asam.ods.CI_LTE, org.asam.ods.GTE: org.asam.ods.CI_GTE, org.asam.ods.INSET: org.asam.ods.CI_INSET, org.asam.ods.NOTINSET: org.asam.ods.CI_NOTINSET, org.asam.ods.LIKE: org.asam.ods.CI_LIKE, org.asam.ods.NOTLIKE: org.asam.ods.CI_NOTLIKE }
@@ -136,9 +34,9 @@ def _parse_path_and_add_joins(model, applElem, attribPath, joinSeq):
             # add join
             if (-1 == relation.arRelationRange.max) and (1 == relation.invRelationRange.max):
                 realRelation = model.FindInverseRelation(relation)
-                _add_join_to_seq(realRelation, joinSeq,  joinType)
+                odslib._add_join_to_seq(realRelation, joinSeq,  joinType)
             else:
-                _add_join_to_seq(relation, joinSeq,  joinType)
+                odslib._add_join_to_seq(relation, joinSeq,  joinType)
         else:
             # maybe relation or attribute
             attribute = model.GetAttributeEx(aaApplElem.aeName, pathPart)
@@ -302,26 +200,106 @@ def _ParseConditionsNot(model, applElem, target, elemDict, attrib):
     _ParseConditions(model, applElem, target, elemDict, attrib)
     target.condSeq.append(org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.CLOSE))
 
-def _CreateTsValue(aaType, srcValue):
+def _CreateTsValue(aaType, srcValues):
 
-    if isinstance(srcValue, list):
-        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, str(srcValue).encode('utf-8')), 15)
+    if isinstance(srcValues, list):
+        if aaType == org.asam.ods.DT_COMPLEX and 2 == len(srcValues):
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_COMPLEX(float(srcValues[0]),float(srcValues[1]))), 15)
+        elif aaType == org.asam.ods.DT_DCOMPLEX and 2 == len(srcValues):
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_DCOMPLEX(float(srcValues[0]),float(srcValues[1]))), 15)
+        elif aaType == org.asam.ods.DT_EXTERNALREFERENCE and 3 == len(srcValues):
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_ExternalReference(srcValues[0].encode('utf-8'),srcValues[1].encode('utf-8'),srcValues[2].encode('utf-8'))), 15)
+        #go on with seq target
+        elif aaType == org.asam.ods.DT_BYTE or aaType == org.asam.ods.DS_BYTE:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(org.asam.ods.T_BYTE(int(srcVal)))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_BYTE, destVals), 15)
+        elif aaType == org.asam.ods.DT_BOOLEAN or aaType == org.asam.ods.DS_BOOLEAN:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(org.asam.ods.T_BOOLEAN(int(srcVal)))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_BOOLEAN, destVals), 15)
+        elif aaType == org.asam.ods.DT_SHORT or aaType == org.asam.ods.DS_SHORT:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(org.asam.ods.T_SHORT(int(srcVal)))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_SHORT, destVals), 15)
+        elif aaType == org.asam.ods.DT_LONG or aaType == org.asam.ods.DS_LONG:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(org.asam.ods.T_LONG(long(srcVal)))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_LONG, destVals), 15)
+        elif aaType == org.asam.ods.DT_LONGLONG or aaType == org.asam.ods.DS_LONGLONG:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(odslib.Int2LL(long(srcVal)))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_LONGLONG, destVals), 15)
+        elif aaType == org.asam.ods.DT_FLOAT or aaType == org.asam.ods.DS_FLOAT:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(org.asam.ods.T_FLOAT(float(srcVal)))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_FLOAT, destVals), 15)
+        elif aaType == org.asam.ods.DT_DOUBLE or aaType == org.asam.ods.DS_DOUBLE:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(org.asam.ods.T_DOUBLE(float(srcVal)))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_DOUBLE, destVals), 15)
+        elif aaType == org.asam.ods.DT_DATE or aaType == org.asam.ods.DS_DATE:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(str(srcVal).encode('utf-8'))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_DATE, destVals), 15)
+        elif aaType == org.asam.ods.DT_STRING or aaType == org.asam.ods.DS_STRING:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(str(srcVal).encode('utf-8'))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_STRING, destVals), 15)
+        elif aaType == org.asam.ods.DT_ENUM or aaType == org.asam.ods.DS_ENUM:
+            destVals = []
+            for srcVal in srcValues:
+                destVals.append(org.asam.ods.T_LONG(long(srcVal)))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_ENUM, destVals), 15)
+        elif aaType == org.asam.ods.DT_COMPLEX or aaType == org.asam.ods.DS_COMPLEX:
+            destVals = []
+            for srcIndex in range(0, len(srcValues), 2):
+                destVals.append(org.asam.ods.T_COMPLEX(float(srcValues[srcIndex * 2 + 0]),float(srcValues[srcIndex * 2 + 1])))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_COMPLEX, destVals), 15)
+        elif aaType == org.asam.ods.DT_DCOMPLEX or aaType == org.asam.ods.DS_DCOMPLEX:
+            destVals = []
+            for srcIndex in range(0, len(srcValues), 2):
+                destVals.append(org.asam.ods.T_DCOMPLEX(float(srcValues[srcIndex * 2 + 0]),float(srcValues[srcIndex * 2 + 1])))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_DCOMPLEX, destVals), 15)
+        elif aaType == org.asam.ods.DT_EXTERNALREFERENCE or aaType == org.asam.ods.DS_EXTERNALREFERENCE:
+            destVals = []
+            for srcIndex in range(0, len(srcValues), 3):
+                destVals.append(org.asam.ods.T_ExternalReference(srcValues[0].encode('utf-8'),srcValues[1].encode('utf-8'),srcValues[1].encode('utf-8')))
+            return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_DCOMPLEX, destVals), 15)
+        else:
+            raise Exception("Unknown how to attach array, does not exist as " + str(aaType) + " union.")
 
-    if aaType == org.asam.ods.DT_BYTE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BYTE(int(srcValue))), 15)
-    elif aaType == org.asam.ods.DT_BOOLEAN: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BOOLEAN(int(srcValue))), 15)
-    elif aaType == org.asam.ods.DT_SHORT: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_SHORT(int(srcValue))), 15)
-    elif aaType == org.asam.ods.DT_LONG: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(srcValue))), 15)
-    elif aaType == org.asam.ods.DT_LONGLONG: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, odslib.Int2LL(long(srcValue))), 15)
-    elif aaType == org.asam.ods.DT_FLOAT: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(srcValue)), 15)
-    elif aaType == org.asam.ods.DT_DOUBLE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(srcValue)), 15)
-    elif aaType == org.asam.ods.DT_DATE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, srcValue.encode('utf-8')), 15)
-    elif aaType == org.asam.ods.DT_STRING: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, srcValue.encode('utf-8')), 15)
-    elif aaType == org.asam.ods.DT_ENUM: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(srcValue))), 15)
-    #elif aaType == org.asam.ods.DT_COMPLEX:
-    #elif aaType == org.asam.ods.DT_DCOMPLEX:
-    #elif aaType == org.asam.ods.DT_EXTERNALREFERENCE:
+    if aaType == org.asam.ods.DT_BYTE:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BYTE(int(srcValues))), 15)
+    elif aaType == org.asam.ods.DT_BOOLEAN:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BOOLEAN(int(srcValues))), 15)
+    elif aaType == org.asam.ods.DT_SHORT:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_SHORT(int(srcValues))), 15)
+    elif aaType == org.asam.ods.DT_LONG:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(srcValues))), 15)
+    elif aaType == org.asam.ods.DT_LONGLONG:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, odslib.Int2LL(long(srcValues))), 15)
+    elif aaType == org.asam.ods.DT_FLOAT:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(srcValues)), 15)
+    elif aaType == org.asam.ods.DT_DOUBLE:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(srcValues)), 15)
+    elif aaType == org.asam.ods.DT_DATE:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, srcValues.encode('utf-8')), 15)
+    elif aaType == org.asam.ods.DT_STRING:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, srcValues.encode('utf-8')), 15)
+    elif aaType == org.asam.ods.DT_ENUM:
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(srcValues))), 15)
     else:
-        raise Exception("Unknown how to attach '" + srcValue + "' does not exist as " + str(aaType) + " union.")
+        raise Exception("Unknown how to attach '" + srcValues + "' does not exist as " + str(aaType) + " union.")
 
 def _GetOdsOperator(aaType, conditionOperator, conditionOptions):
     if org.asam.ods.DT_STRING == aaType or org.asam.ods.DS_STRING == aaType:
@@ -432,13 +410,3 @@ def JaquelToQueryStructureExt(model, jaquelQueryStr):
         qse.anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*".encode('utf-8')), org.asam.ods.T_LONGLONG(0, 0), org.asam.ods.NONE))
 
     return qse, globalOptions
-
-
-_session = odslib.CSessionAutoReconnect({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
-_model = _session.Model()
-
-target, options = JaquelToQueryStructureExt(_model, jaquelQueryString)
-print str(target)
-print str(options)
-
-
