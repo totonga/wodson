@@ -4,7 +4,15 @@ import logging
 import org
 import odslib
 
+from sys import maxsize
+
+
 jaquelQueryString = '''{
+                        "AoTest":{"name":{"$like":"abc","$options":"i"}},
+                        "$options":{"$seqskip":5}
+                       }'''
+
+jaquelQueryString7 = '''{
                         "AoTest":{"name":{"$eq":"abc","$options":"i"}}
                        }'''
 
@@ -143,17 +151,17 @@ def _parse_path_and_add_joins(model, applElem, attribPath, joinSeq):
                 aaType = org.asam.ods.DT_LONGLONG  # its an id
     return aaType, aaName, aaApplElem
 
-def _ParseOptions(target, elemDict):
+def _ParseOptions(elemDict, target):
     for elem in elemDict:
         if elem.startswith('$'):
             if "$rowlimit" == elem:
-                target.rowlimit = long(elemDict[elem])
+                target['rowlimit'] = long(elemDict[elem])
             elif "$rowskip" == elem:
-                target.rowskip = long(elemDict[elem])
+                target['rowskip'] = long(elemDict[elem])
             elif "$seqlimit" == elem:
-                target.seqlimit = long(elemDict[elem])
+                target['seqlimit'] = long(elemDict[elem])
             elif "$seqskip" == elem:
-                target.seqskip = long(elemDict[elem])
+                target['seqskip'] = long(elemDict[elem])
             else:
                 raise SyntaxError('Undefined options "' + elem + '"')
         else:
@@ -294,26 +302,26 @@ def _ParseConditionsNot(model, applElem, target, elemDict, attrib):
     _ParseConditions(model, applElem, target, elemDict, attrib)
     target.condSeq.append(org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.CLOSE))
 
-def _CreateTsValue(aaType, strVal):
+def _CreateTsValue(aaType, srcValue):
 
-    if isinstance(strVal, list):
-        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, str(strVal).encode('utf-8')), 15)
+    if isinstance(srcValue, list):
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, str(srcValue).encode('utf-8')), 15)
 
-    if aaType == org.asam.ods.DT_BYTE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BYTE(int(strVal))), 15)
-    elif aaType == org.asam.ods.DT_BOOLEAN: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BOOLEAN(int(strVal))), 15)
-    elif aaType == org.asam.ods.DT_SHORT: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_SHORT(int(strVal))), 15)
-    elif aaType == org.asam.ods.DT_LONG: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(strVal))), 15)
-    elif aaType == org.asam.ods.DT_LONGLONG: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, odslib.Int2LL(long(strVal))), 15)
-    elif aaType == org.asam.ods.DT_FLOAT: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(strVal)), 15)
-    elif aaType == org.asam.ods.DT_DOUBLE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(strVal)), 15)
-    elif aaType == org.asam.ods.DT_DATE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, strVal.encode('utf-8')), 15)
-    elif aaType == org.asam.ods.DT_STRING: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, strVal.encode('utf-8')), 15)
-    elif aaType == org.asam.ods.DT_ENUM: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(strVal))), 15)
+    if aaType == org.asam.ods.DT_BYTE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BYTE(int(srcValue))), 15)
+    elif aaType == org.asam.ods.DT_BOOLEAN: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BOOLEAN(int(srcValue))), 15)
+    elif aaType == org.asam.ods.DT_SHORT: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_SHORT(int(srcValue))), 15)
+    elif aaType == org.asam.ods.DT_LONG: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(srcValue))), 15)
+    elif aaType == org.asam.ods.DT_LONGLONG: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, odslib.Int2LL(long(srcValue))), 15)
+    elif aaType == org.asam.ods.DT_FLOAT: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(srcValue)), 15)
+    elif aaType == org.asam.ods.DT_DOUBLE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(srcValue)), 15)
+    elif aaType == org.asam.ods.DT_DATE: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, srcValue.encode('utf-8')), 15)
+    elif aaType == org.asam.ods.DT_STRING: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, srcValue.encode('utf-8')), 15)
+    elif aaType == org.asam.ods.DT_ENUM: return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(srcValue))), 15)
     #elif aaType == org.asam.ods.DT_COMPLEX:
     #elif aaType == org.asam.ods.DT_DCOMPLEX:
     #elif aaType == org.asam.ods.DT_EXTERNALREFERENCE:
     else:
-        raise Exception("Unknown how to attach '" + strVal + "' does not exist as " + str(aaType) + " union.")
+        raise Exception("Unknown how to attach '" + srcValue + "' does not exist as " + str(aaType) + " union.")
 
 def _GetOdsOperator(aaType, conditionOperator, conditionOptions):
     if org.asam.ods.DT_STRING == aaType or org.asam.ods.DS_STRING == aaType:
@@ -382,12 +390,15 @@ def _ParseConditions(model, applElem, target, elemDict, attrib):
             attrib['conjuctionCount'] = attrib['conjuctionCount'] + 1
 
 
-def JaquelToQueryStructureExt(model, jaquelQueryStr, qse):
+def JaquelToQueryStructureExt(model, jaquelQueryStr):
     
     query = json.loads(jaquelQueryStr)
 
     applElem = None
     aid = None
+
+    qse = org.asam.ods.QueryStructureExt([],[],[],[],[])
+    globalOptions = {'rowlimit': maxsize, 'rowskip': 0, 'seqlimit': maxsize, 'seqskip': 0 }
 
     # first parse conditions to get entity
     for elem in query:
@@ -410,24 +421,24 @@ def JaquelToQueryStructureExt(model, jaquelQueryStr, qse):
                 _ParseAttributes(model, applElem, qse, query[elem], {'path': '', 'aggr': org.asam.ods.NONE, 'unit': 0})
             elif '$orderby' == elem:
                 _ParseOrderBy(model, applElem, qse, query[elem],{'path': ''})
-            elif '$options' == elem:
-                continue
-                #            _ParseOptions(qse, query[elem])
             elif '$groupby' == elem:
                 _ParseGroupBy(model, applElem, qse, query[elem],{'path': ''})
+            elif '$options' == elem:
+                _ParseOptions(query[elem], globalOptions)
             else:
                 raise SyntaxError('unkonw first level define "' + elem + '"')
 
     if 0 == len(qse.anuSeq):
         qse.anuSeq.append(org.asam.ods.SelAIDNameUnitId(org.asam.ods.AIDName(aid, "*".encode('utf-8')), org.asam.ods.T_LONGLONG(0, 0), org.asam.ods.NONE))
 
+    return qse, globalOptions
 
 
 _session = odslib.CSessionAutoReconnect({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
 _model = _session.Model()
 
-target = org.asam.ods.QueryStructureExt([],[],[],[],[])
-JaquelToQueryStructureExt(_model, jaquelQueryString, target)
+target, options = JaquelToQueryStructureExt(_model, jaquelQueryString)
 print str(target)
+print str(options)
 
 
