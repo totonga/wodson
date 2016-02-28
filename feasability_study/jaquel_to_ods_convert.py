@@ -4,7 +4,7 @@ import logging
 import org
 import odslib
 
-from sys import maxsize
+from sys import maxsize, maxint
 
 _jo_aggregates = { '$none': org.asam.ods.NONE, '$count': org.asam.ods.COUNT, '$dcount': org.asam.ods.DCOUNT, '$min': org.asam.ods.MIN, '$max': org.asam.ods.MAX, '$avg': org.asam.ods.AVG, '$sum': org.asam.ods.SUM, '$distinct': org.asam.ods.DISTINCT, '$point': org.asam.ods.POINT}
 _jo_operators = { '$eq': org.asam.ods.EQ, '$neq': org.asam.ods.NEQ, '$lt': org.asam.ods.LT, '$gt': org.asam.ods.GT, '$lte': org.asam.ods.LTE, '$gte': org.asam.ods.GTE, '$inset': org.asam.ods.INSET, '$notinset': org.asam.ods.NOTINSET, '$like': org.asam.ods.LIKE, '$null': org.asam.ods.IS_NULL, '$notnull': org.asam.ods.IS_NOT_NULL, '$notlike': org.asam.ods.NOTLIKE, '$between': org.asam.ods.BETWEEN }
@@ -158,11 +158,6 @@ def _ParseConditionsConjuction(model, applElem, conjunction, target, elemDict, a
     if attrib['conjuctionCount'] > 0:
         target.condSeq.append(org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, attrib['conjuction']))
 
-    elemAttrib = attrib.copy()
-    elemAttrib['conjuctionCount'] = 0
-    elemAttrib['conjuction'] =  org.asam.ods.AND
-    elemAttrib['options'] = ''
-
     if len(elemDict) > 1:
         target.condSeq.append(org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.OPEN))
 
@@ -175,7 +170,11 @@ def _ParseConditionsConjuction(model, applElem, conjunction, target, elemDict, a
             target.condSeq.append(org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, conjunction))
 
         target.condSeq.append(org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.OPEN))
-        _ParseConditions(model, applElem, target, elem, attrib)
+        elemAttrib = attrib.copy()
+        elemAttrib['conjuctionCount'] = 0
+        elemAttrib['conjuction'] =  org.asam.ods.AND
+        elemAttrib['options'] = ''
+        _ParseConditions(model, applElem, target, elem, elemAttrib)
         target.condSeq.append(org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.CLOSE))
         firstTime = False
     
@@ -353,7 +352,10 @@ def _ParseConditions(model, applElem, target, elemDict, attrib):
             elemAttrib['path'] += elem
 
         if isinstance(elemDict[elem], dict):
+            oldConjuctionCount = elemAttrib['conjuctionCount']
             _ParseConditions(model, applElem, target, elemDict[elem], elemAttrib)
+            if(oldConjuctionCount != elemAttrib['conjuctionCount']):
+                attrib['conjuctionCount'] = attrib['conjuctionCount'] + 1
         else:
             if 0 != attrib['conjuctionCount']:
                 target.condSeq.append(org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, elemAttrib['conjuction']))
@@ -376,7 +378,7 @@ def JaquelToQueryStructureExt(model, jaquelQueryStr):
     aid = None
 
     qse = org.asam.ods.QueryStructureExt([],[],[],[],[])
-    globalOptions = {'rowlimit': maxsize, 'rowskip': 0, 'seqlimit': maxsize, 'seqskip': 0 }
+    globalOptions = {'rowlimit': maxint, 'rowskip': 0, 'seqlimit': maxint, 'seqskip': 0 }
 
     # first parse conditions to get entity
     for elem in query:

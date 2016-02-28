@@ -176,7 +176,7 @@ def data_access_post(conI,  query_struct):
     so = _Session(conI)
     model = so.Model()
     elem = model.GetElemEx(entityStr)
-    result = so.GetInstancesEx(elem.aeName, conditions, attributes, orderBy, groupBy, rowMaxCount)
+    result = so.GetElementValues(elem.aeName, conditions, attributes, orderBy, groupBy, rowMaxCount)
 
     wantsProto, wantsProtoJson = _request_wants_protobuf()
     if wantsProto:

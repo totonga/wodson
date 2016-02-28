@@ -33,8 +33,7 @@ testQueries.append('''{
 testQueries.append('''{
                         "AoTest":{},
                         "$attributes":{"id":1,"name":1},
-                        "$orderby":{"name":1},
-                        "$groupby":{"id":1}
+                        "$orderby":{"name":1}
                        }''')
 
 testQueries.append('''{
@@ -48,28 +47,34 @@ testQueries.append('''{
                         "$attributes":{"id":1,"name":1}
                        }''')
 
+
 testQueries.append('''{"AoTest":{}}''')
 
 testQueries.append('''{
+                        "AoTest":{},
+                        "$attributes":{"name":1},
+                        "$groupby":{"name":1}
+                       }''')
+
+testQueries.append('''{
     "AoMeasurement": {
-        "name": { "$inset":["a","b","c"] },
         "$or": [
             {
-                "measurement_begin": {
-                    "$gte": "2012-04-23T00:00:00.000Z",
-                    "$lt": "2012-04-24T00:00:00.000Z"
+                "measurement_quantities.maximum": {
+                    "$gte": 1,
+                    "$lt": 2
                 }
             },
             {
-                "measurement_begin": {
-                    "$gte": "2012-05-23T00:00:00.000Z",
-                    "$lt": "2012-05-24T00:00:00.000Z"
+                "measurement_quantities.maximum": {
+                    "$gte": 3,
+                    "$lt": 4
                 }
             },
             {
-                "measurement_begin": {
-                    "$gte": "2012-06-23T00:00:00.000Z",
-                    "$lt": "2012-06-24T00:00:00.000Z"
+                "measurement_quantities.maximum": {
+                    "$gte": 6,
+                    "$lt": 7
                 }
             }
         ]
@@ -86,27 +91,10 @@ testQueries.append('''{
         "test": {
             "name": 1,
             "id": 1
-        },
-        "measurement_quantities.minimum": {
-            "$min": 1,
-            "$max": 1
-        },
-        "measurement_quantities.maximum": {
-            "$min": 1,
-            "$max": 1
         }
     },
     "$orderby": {
-        "test.name": 0,
-        "name": 1,
-        "units_under_test": {
-            "name":1
-        } 
-    },
-    "$groupby": {
-        "test": {
-            "id": 1
-        }
+        "name": 1
     }
 }''')
 
@@ -115,8 +103,9 @@ _session = odslib.CSessionAutoReconnect({u'$URL': u'corbaname::10.89.2.24:900#Me
 _model = _session.Model()
 
 for testQuery in testQueries:
-    target, options = jaquel_to_ods_convert.JaquelToQueryStructureExt(_model, testQuery)
-    print str(target)
+    qse, options = jaquel_to_ods_convert.JaquelToQueryStructureExt(_model, testQuery)
+    print str(qse)
     print str(options)
     print '-----------------------------------------------------'
-
+    _session.GetInstancesEx(qse, options['rowlimit'])
+    print '+++++++++++++++++++++++++++++++++++++++++++++++++++++'

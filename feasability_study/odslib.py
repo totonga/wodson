@@ -631,7 +631,7 @@ class CSession:
     def SetContextString(self, varName, varValue):
         self._aoSession.setContextString(varName.encode('utf-8'),  varValue.encode('utf-8'))
 
-    def GetInstancesEx(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
+    def GetElementValues(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
 
         if conditionArray is None: conditionArray = []
         if attributeArray is None: attributeArray = []
@@ -724,7 +724,9 @@ class CSession:
                     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_VALUE_TYPE, selValExt)
                     condSeq.append(selItem)
 
-        qse = org.asam.ods.QueryStructureExt(anuSeq, condSeq, joinSeq, orderBySeq, groupBySeq)
+        return self.GetInstancesEx(org.asam.ods.QueryStructureExt(anuSeq, condSeq, joinSeq, orderBySeq, groupBySeq), how_many)
+
+    def GetInstancesEx(self, qse, how_many):
 
         logging.info('Call ApplElemAccess.getInstancesExt(aoq="' + str(qse) + '", how_many=' + str(how_many) + '")')
         rs = self._applElemAccess.getInstancesExt(qse, how_many)
@@ -777,11 +779,17 @@ class CSessionAutoReconnect:
         except (CORBA.OBJECT_NOT_EXIST, CORBA.COMM_FAILURE, CORBA.TRANSIENT, CORBA.INV_OBJREF):
             self._CSessionReconnect().SetContextString(varName,  varValue)
 
-    def GetInstancesEx(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
+    def GetElementValues(self, aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many):
         try:
-            return self._CSession().GetInstancesEx(aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many)
+            return self._CSession().GetElementValues(aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many)
         except (CORBA.OBJECT_NOT_EXIST, CORBA.COMM_FAILURE, CORBA.TRANSIENT, CORBA.INV_OBJREF):
-            return self._CSessionReconnect().GetInstancesEx(aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many)
+            return self._CSessionReconnect().GetElementValues(aeName, conditionArray, attributeArray, orderByArray, groupByArray, how_many)
+    
+    def GetInstancesEx(self, qse, how_many):
+        try:
+            return self._CSession().GetInstancesEx(qse, how_many)
+        except (CORBA.OBJECT_NOT_EXIST, CORBA.COMM_FAILURE, CORBA.TRANSIENT, CORBA.INV_OBJREF):
+            return self._CSessionReconnect().GetInstancesEx(qse, how_many)
 
     def _CSessionReconnect(self):
         self._cSession = None
