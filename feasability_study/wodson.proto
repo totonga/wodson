@@ -132,3 +132,101 @@ message DataMatrices{
   repeated DataMatrix matrices = 1;
   string iterator_guid = 2;
 }
+
+
+
+
+message  Request{
+
+  message ConditionArrayItem{
+    
+    enum ConjuctionEnum {
+      AND = 0;
+      OR = 1;
+      NOT = 2;
+      OPEN = 3;
+      CLOSE = 4;
+    }
+
+    message Condition{
+
+      enum OperatorEnum {
+        EQ = 0;
+        NEQ = 1;
+        LT = 2;
+        GT = 3;
+        LTE = 4;
+        GTE = 5;
+        INSET = 6;
+        NOTINSET = 7;
+        LIKE = 8;
+        ISNULL = 9;
+        ISNOTNULL = 10;
+        NOTLIKE = 11;
+        BETWEEN = 12;
+      }
+
+      message StringArray { repeated string values = 1; };
+      message LongArray { repeated int32 values = 1; };
+      message FloatArray { repeated float values = 1; };
+      message BooleanArray { repeated bool values = 1; };
+      message ByteArray { bytes values = 1; };
+      message DoubleArray { repeated double values = 1; };
+      message LongLongArray { repeated int64 values = 1; };
+      message DateArray { repeated google.protobuf.Timestamp values = 1; }
+      message BytestrArray { repeated bytes values = 1; };
+
+      string path = 1;
+      OperatorEnum operator = 2;
+      oneof ValueUnion {
+        StringArray    value_string = 3; // DS_STRING, DS_EXTERNALREFERENCE, DT_STRING, DT_EXTERNALREFERENCE
+        LongArray      value_long = 4; // DS_SHORT, DS_LONG, DS_ENUM, DT_SHORT, DT_LONG, DT_ENUM
+        FloatArray     value_float = 6; // DS_FLOAT, DS_COMPLEX, DT_COMPLEX, DT_FLOAT
+        BooleanArray   value_boolean = 7; // DS_BOOLEAN, DT_BOOLEAN
+        ByteArray      value_byte = 8; // DS_BYTE, DT_BYTE
+        DoubleArray    value_double = 9; // DS_DOUBLE, DS_DCOMPLEX, DT_DCOMPLEX, DT_DOUBLE
+        LongLongArray  value_longlong = 10; // DS_LONGLONG, DS_ID, DT_LONGLONG, DT_ID
+        DateArray      value_date = 11; // DS_DATE, DT_DATE
+        BytestrArray   value_bytestr = 12; // DS_BYTESTR, DT_BYTESTR
+      }
+    }
+
+    oneof ItemUnion{
+      ConjuctionEnum conjunction = 1;
+      Condition condition = 2;
+    }
+  }
+
+  message OrderbyItem{
+    
+    enum OrderEnum {
+      ASCENDING = 0;
+      DESCENDING = 1;
+    }
+
+    string path = 1;
+    OrderEnum order = 2;
+  }
+
+  message GroupbyItem{
+    string path = 1;
+  }
+  
+  message AttributeItem{
+    string path = 1;
+    DataMatrix.Column.AggregateEnum aggregate = 2;
+    int64 unit = 3;
+  }
+
+  string entity = 1;
+
+  repeated ConditionArrayItem conditions = 2;
+  repeated OrderbyItem orderby = 3;
+  repeated GroupbyItem groupby = 4;
+  repeated AttributeItem attributes = 5;
+  
+  int64 rowlimit = 6;
+  int64 rowskip = 7;
+  int64 seqlimit = 8;
+  int64 seqskip = 9;
+}

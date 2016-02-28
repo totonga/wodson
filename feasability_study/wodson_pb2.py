@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='wodson.proto',
   package='wodson',
   syntax='proto3',
-  serialized_pb=_b('\n\x0cwodson.proto\x12\x06wodson\x1a\x1fgoogle/protobuf/timestamp.proto\"\x87\x19\n\nDataMatrix\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tbase_name\x18\x02 \x01(\t\x12\x16\n\x0erow_skip_count\x18\x03 \x01(\x03\x12\x16\n\x0eseq_skip_count\x18\x04 \x01(\x03\x12*\n\x07\x63olumns\x18\x05 \x03(\x0b\x32\x19.wodson.DataMatrix.Column\x1a\xfb\x17\n\x06\x43olumn\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tbase_name\x18\x02 \x01(\t\x12:\n\taggregate\x18\x03 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12&\n\x08\x64\x61tatype\x18\x04 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12\r\n\x05\x66lags\x18\x05 \x03(\x08\x12:\n\tdt_string\x18\x06 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x07 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x08 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\t \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\n \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x0b \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x0c \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\r \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\x0e \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x12;\n\tds_string\x18\x0f \x01(\x0b\x32&.wodson.DataMatrix.Column.StringArraysH\x00\x12\x37\n\x07\x64s_long\x18\x10 \x01(\x0b\x32$.wodson.DataMatrix.Column.LongArraysH\x00\x12\x39\n\x08\x64s_float\x18\x11 \x01(\x0b\x32%.wodson.DataMatrix.Column.FloatArraysH\x00\x12=\n\nds_boolean\x18\x12 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BooleanArraysH\x00\x12\x37\n\x07\x64s_byte\x18\x13 \x01(\x0b\x32$.wodson.DataMatrix.Column.ByteArraysH\x00\x12;\n\tds_double\x18\x14 \x01(\x0b\x32&.wodson.DataMatrix.Column.DoubleArraysH\x00\x12?\n\x0b\x64s_longlong\x18\x15 \x01(\x0b\x32(.wodson.DataMatrix.Column.LongLongArraysH\x00\x12\x37\n\x07\x64s_date\x18\x16 \x01(\x0b\x32$.wodson.DataMatrix.Column.DateArraysH\x00\x12=\n\nds_bytestr\x18\x17 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BytestrArraysH\x00\x12=\n\ndt_unknown\x18\x18 \x01(\x0b\x32\'.wodson.DataMatrix.Column.UnknownArraysH\x00\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x37\n\tDateArray\x12*\n\x06values\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\x1a\xdb\x04\n\x0cUnknownArray\x12&\n\x08\x64\x61tatype\x18\x01 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12:\n\tdt_string\x18\x02 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x03 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x04 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\x05 \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\x06 \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x07 \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x08 \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\t \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\n \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x42\r\n\x0bUnkownUnion\x1a\x45\n\x0cStringArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.StringArray\x1a\x41\n\nLongArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.LongArray\x1a\x43\n\x0b\x46loatArrays\x12\x34\n\x06values\x18\x01 \x03(\x0b\x32$.wodson.DataMatrix.Column.FloatArray\x1aG\n\rBooleanArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BooleanArray\x1a\x41\n\nByteArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.ByteArray\x1a\x45\n\x0c\x44oubleArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.DoubleArray\x1aI\n\x0eLongLongArrays\x12\x37\n\x06values\x18\x01 \x03(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArray\x1a\x41\n\nDateArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.DateArray\x1aG\n\rBytestrArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BytestrArray\x1aG\n\rUnknownArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.UnknownArray\"\x89\x01\n\rAggregateEnum\x12\x08\n\x04NONE\x10\x00\x12\t\n\x05\x43OUNT\x10\x01\x12\n\n\x06\x44\x43OUNT\x10\x02\x12\x07\n\x03MIN\x10\x03\x12\x07\n\x03MAX\x10\x04\x12\x07\n\x03\x41VG\x10\x05\x12\n\n\x06STDDEV\x10\x06\x12\x07\n\x03SUM\x10\x07\x12\x0c\n\x08\x44ISTINCT\x10\x08\x12\t\n\x05POINT\x10\t\x12\x0e\n\nCALCULATED\x10\nB\r\n\x0bValuesUnion\"K\n\x0c\x44\x61taMatrices\x12$\n\x08matrices\x18\x01 \x03(\x0b\x32\x12.wodson.DataMatrix\x12\x15\n\riterator_guid\x18\x02 \x01(\t*\xf5\x03\n\x0c\x44\x61tatypeEnum\x12\x0e\n\nDT_UNKNOWN\x10\x00\x12\r\n\tDT_STRING\x10\x01\x12\x0c\n\x08\x44T_SHORT\x10\x02\x12\x0c\n\x08\x44T_FLOAT\x10\x03\x12\x0e\n\nDT_BOOLEAN\x10\x04\x12\x0b\n\x07\x44T_BYTE\x10\x05\x12\x0b\n\x07\x44T_LONG\x10\x06\x12\r\n\tDT_DOUBLE\x10\x07\x12\x0f\n\x0b\x44T_LONGLONG\x10\x08\x12\t\n\x05\x44T_ID\x10\t\x12\x0b\n\x07\x44T_DATE\x10\n\x12\x0e\n\nDT_BYTESTR\x10\x0b\x12\x0b\n\x07\x44T_BLOB\x10\x0c\x12\x0e\n\nDT_COMPLEX\x10\r\x12\x0f\n\x0b\x44T_DCOMPLEX\x10\x0e\x12\r\n\tDS_STRING\x10\x0f\x12\x0c\n\x08\x44S_SHORT\x10\x10\x12\x0c\n\x08\x44S_FLOAT\x10\x11\x12\x0e\n\nDS_BOOLEAN\x10\x12\x12\x0b\n\x07\x44S_BYTE\x10\x13\x12\x0b\n\x07\x44S_LONG\x10\x14\x12\r\n\tDS_DOUBLE\x10\x15\x12\x0f\n\x0b\x44S_LONGLONG\x10\x16\x12\x0e\n\nDS_COMPLEX\x10\x17\x12\x0f\n\x0b\x44S_DCOMPLEX\x10\x18\x12\t\n\x05\x44S_ID\x10\x19\x12\x0b\n\x07\x44S_DATE\x10\x1a\x12\x0e\n\nDS_BYTESTR\x10\x1b\x12\x18\n\x14\x44T_EXTERNALREFERENCE\x10\x1c\x12\x18\n\x14\x44S_EXTERNALREFERENCE\x10\x1d\x12\x0b\n\x07\x44T_ENUM\x10\x1e\x12\x0b\n\x07\x44S_ENUM\x10\x1f\x62\x06proto3')
+  serialized_pb=_b('\n\x0cwodson.proto\x12\x06wodson\x1a\x1fgoogle/protobuf/timestamp.proto\"\x87\x19\n\nDataMatrix\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tbase_name\x18\x02 \x01(\t\x12\x16\n\x0erow_skip_count\x18\x03 \x01(\x03\x12\x16\n\x0eseq_skip_count\x18\x04 \x01(\x03\x12*\n\x07\x63olumns\x18\x05 \x03(\x0b\x32\x19.wodson.DataMatrix.Column\x1a\xfb\x17\n\x06\x43olumn\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tbase_name\x18\x02 \x01(\t\x12:\n\taggregate\x18\x03 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12&\n\x08\x64\x61tatype\x18\x04 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12\r\n\x05\x66lags\x18\x05 \x03(\x08\x12:\n\tdt_string\x18\x06 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x07 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x08 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\t \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\n \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x0b \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x0c \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\r \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\x0e \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x12;\n\tds_string\x18\x0f \x01(\x0b\x32&.wodson.DataMatrix.Column.StringArraysH\x00\x12\x37\n\x07\x64s_long\x18\x10 \x01(\x0b\x32$.wodson.DataMatrix.Column.LongArraysH\x00\x12\x39\n\x08\x64s_float\x18\x11 \x01(\x0b\x32%.wodson.DataMatrix.Column.FloatArraysH\x00\x12=\n\nds_boolean\x18\x12 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BooleanArraysH\x00\x12\x37\n\x07\x64s_byte\x18\x13 \x01(\x0b\x32$.wodson.DataMatrix.Column.ByteArraysH\x00\x12;\n\tds_double\x18\x14 \x01(\x0b\x32&.wodson.DataMatrix.Column.DoubleArraysH\x00\x12?\n\x0b\x64s_longlong\x18\x15 \x01(\x0b\x32(.wodson.DataMatrix.Column.LongLongArraysH\x00\x12\x37\n\x07\x64s_date\x18\x16 \x01(\x0b\x32$.wodson.DataMatrix.Column.DateArraysH\x00\x12=\n\nds_bytestr\x18\x17 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BytestrArraysH\x00\x12=\n\ndt_unknown\x18\x18 \x01(\x0b\x32\'.wodson.DataMatrix.Column.UnknownArraysH\x00\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x37\n\tDateArray\x12*\n\x06values\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\x1a\xdb\x04\n\x0cUnknownArray\x12&\n\x08\x64\x61tatype\x18\x01 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12:\n\tdt_string\x18\x02 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x03 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x04 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\x05 \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\x06 \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x07 \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x08 \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\t \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\n \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x42\r\n\x0bUnkownUnion\x1a\x45\n\x0cStringArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.StringArray\x1a\x41\n\nLongArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.LongArray\x1a\x43\n\x0b\x46loatArrays\x12\x34\n\x06values\x18\x01 \x03(\x0b\x32$.wodson.DataMatrix.Column.FloatArray\x1aG\n\rBooleanArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BooleanArray\x1a\x41\n\nByteArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.ByteArray\x1a\x45\n\x0c\x44oubleArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.DoubleArray\x1aI\n\x0eLongLongArrays\x12\x37\n\x06values\x18\x01 \x03(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArray\x1a\x41\n\nDateArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.DateArray\x1aG\n\rBytestrArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BytestrArray\x1aG\n\rUnknownArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.UnknownArray\"\x89\x01\n\rAggregateEnum\x12\x08\n\x04NONE\x10\x00\x12\t\n\x05\x43OUNT\x10\x01\x12\n\n\x06\x44\x43OUNT\x10\x02\x12\x07\n\x03MIN\x10\x03\x12\x07\n\x03MAX\x10\x04\x12\x07\n\x03\x41VG\x10\x05\x12\n\n\x06STDDEV\x10\x06\x12\x07\n\x03SUM\x10\x07\x12\x0c\n\x08\x44ISTINCT\x10\x08\x12\t\n\x05POINT\x10\t\x12\x0e\n\nCALCULATED\x10\nB\r\n\x0bValuesUnion\"K\n\x0c\x44\x61taMatrices\x12$\n\x08matrices\x18\x01 \x03(\x0b\x32\x12.wodson.DataMatrix\x12\x15\n\riterator_guid\x18\x02 \x01(\t\"\xbc\x10\n\x07Request\x12\x0e\n\x06\x65ntity\x18\x01 \x01(\t\x12\x36\n\nconditions\x18\x02 \x03(\x0b\x32\".wodson.Request.ConditionArrayItem\x12,\n\x07orderby\x18\x03 \x03(\x0b\x32\x1b.wodson.Request.OrderbyItem\x12,\n\x07groupby\x18\x04 \x03(\x0b\x32\x1b.wodson.Request.GroupbyItem\x12\x31\n\nattributes\x18\x05 \x03(\x0b\x32\x1d.wodson.Request.AttributeItem\x12\x10\n\x08rowlimit\x18\x06 \x01(\x03\x12\x0f\n\x07rowskip\x18\x07 \x01(\x03\x12\x10\n\x08seqlimit\x18\x08 \x01(\x03\x12\x0f\n\x07seqskip\x18\t \x01(\x03\x1a\x8e\x0c\n\x12\x43onditionArrayItem\x12H\n\x0b\x63onjunction\x18\x01 \x01(\x0e\x32\x31.wodson.Request.ConditionArrayItem.ConjuctionEnumH\x00\x12\x41\n\tcondition\x18\x02 \x01(\x0b\x32,.wodson.Request.ConditionArrayItem.ConditionH\x00\x1a\x9c\n\n\tCondition\x12\x0c\n\x04path\x18\x01 \x01(\t\x12K\n\x08operator\x18\x02 \x01(\x0e\x32\x39.wodson.Request.ConditionArrayItem.Condition.OperatorEnum\x12P\n\x0cvalue_string\x18\x03 \x01(\x0b\x32\x38.wodson.Request.ConditionArrayItem.Condition.StringArrayH\x00\x12L\n\nvalue_long\x18\x04 \x01(\x0b\x32\x36.wodson.Request.ConditionArrayItem.Condition.LongArrayH\x00\x12N\n\x0bvalue_float\x18\x06 \x01(\x0b\x32\x37.wodson.Request.ConditionArrayItem.Condition.FloatArrayH\x00\x12R\n\rvalue_boolean\x18\x07 \x01(\x0b\x32\x39.wodson.Request.ConditionArrayItem.Condition.BooleanArrayH\x00\x12L\n\nvalue_byte\x18\x08 \x01(\x0b\x32\x36.wodson.Request.ConditionArrayItem.Condition.ByteArrayH\x00\x12P\n\x0cvalue_double\x18\t \x01(\x0b\x32\x38.wodson.Request.ConditionArrayItem.Condition.DoubleArrayH\x00\x12T\n\x0evalue_longlong\x18\n \x01(\x0b\x32:.wodson.Request.ConditionArrayItem.Condition.LongLongArrayH\x00\x12L\n\nvalue_date\x18\x0b \x01(\x0b\x32\x36.wodson.Request.ConditionArrayItem.Condition.DateArrayH\x00\x12R\n\rvalue_bytestr\x18\x0c \x01(\x0b\x32\x39.wodson.Request.ConditionArrayItem.Condition.BytestrArrayH\x00\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x37\n\tDateArray\x12*\n\x06values\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\"\x99\x01\n\x0cOperatorEnum\x12\x06\n\x02\x45Q\x10\x00\x12\x07\n\x03NEQ\x10\x01\x12\x06\n\x02LT\x10\x02\x12\x06\n\x02GT\x10\x03\x12\x07\n\x03LTE\x10\x04\x12\x07\n\x03GTE\x10\x05\x12\t\n\x05INSET\x10\x06\x12\x0c\n\x08NOTINSET\x10\x07\x12\x08\n\x04LIKE\x10\x08\x12\n\n\x06ISNULL\x10\t\x12\r\n\tISNOTNULL\x10\n\x12\x0b\n\x07NOTLIKE\x10\x0b\x12\x0b\n\x07\x42\x45TWEEN\x10\x0c\x42\x0c\n\nValueUnion\"?\n\x0e\x43onjuctionEnum\x12\x07\n\x03\x41ND\x10\x00\x12\x06\n\x02OR\x10\x01\x12\x07\n\x03NOT\x10\x02\x12\x08\n\x04OPEN\x10\x03\x12\t\n\x05\x43LOSE\x10\x04\x42\x0b\n\tItemUnion\x1a}\n\x0bOrderbyItem\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x34\n\x05order\x18\x02 \x01(\x0e\x32%.wodson.Request.OrderbyItem.OrderEnum\"*\n\tOrderEnum\x12\r\n\tASCENDING\x10\x00\x12\x0e\n\nDESCENDING\x10\x01\x1a\x1b\n\x0bGroupbyItem\x12\x0c\n\x04path\x18\x01 \x01(\t\x1ag\n\rAttributeItem\x12\x0c\n\x04path\x18\x01 \x01(\t\x12:\n\taggregate\x18\x02 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12\x0c\n\x04unit\x18\x03 \x01(\x03*\xf5\x03\n\x0c\x44\x61tatypeEnum\x12\x0e\n\nDT_UNKNOWN\x10\x00\x12\r\n\tDT_STRING\x10\x01\x12\x0c\n\x08\x44T_SHORT\x10\x02\x12\x0c\n\x08\x44T_FLOAT\x10\x03\x12\x0e\n\nDT_BOOLEAN\x10\x04\x12\x0b\n\x07\x44T_BYTE\x10\x05\x12\x0b\n\x07\x44T_LONG\x10\x06\x12\r\n\tDT_DOUBLE\x10\x07\x12\x0f\n\x0b\x44T_LONGLONG\x10\x08\x12\t\n\x05\x44T_ID\x10\t\x12\x0b\n\x07\x44T_DATE\x10\n\x12\x0e\n\nDT_BYTESTR\x10\x0b\x12\x0b\n\x07\x44T_BLOB\x10\x0c\x12\x0e\n\nDT_COMPLEX\x10\r\x12\x0f\n\x0b\x44T_DCOMPLEX\x10\x0e\x12\r\n\tDS_STRING\x10\x0f\x12\x0c\n\x08\x44S_SHORT\x10\x10\x12\x0c\n\x08\x44S_FLOAT\x10\x11\x12\x0e\n\nDS_BOOLEAN\x10\x12\x12\x0b\n\x07\x44S_BYTE\x10\x13\x12\x0b\n\x07\x44S_LONG\x10\x14\x12\r\n\tDS_DOUBLE\x10\x15\x12\x0f\n\x0b\x44S_LONGLONG\x10\x16\x12\x0e\n\nDS_COMPLEX\x10\x17\x12\x0f\n\x0b\x44S_DCOMPLEX\x10\x18\x12\t\n\x05\x44S_ID\x10\x19\x12\x0b\n\x07\x44S_DATE\x10\x1a\x12\x0e\n\nDS_BYTESTR\x10\x1b\x12\x18\n\x14\x44T_EXTERNALREFERENCE\x10\x1c\x12\x18\n\x14\x44S_EXTERNALREFERENCE\x10\x1d\x12\x0b\n\x07\x44T_ENUM\x10\x1e\x12\x0b\n\x07\x44S_ENUM\x10\x1f\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -163,8 +163,8 @@ _DATATYPEENUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3345,
-  serialized_end=3846,
+  serialized_start=5456,
+  serialized_end=5957,
 )
 _sym_db.RegisterEnumDescriptor(_DATATYPEENUM)
 
@@ -260,6 +260,128 @@ _DATAMATRIX_COLUMN_AGGREGATEENUM = _descriptor.EnumDescriptor(
   serialized_end=3250,
 )
 _sym_db.RegisterEnumDescriptor(_DATAMATRIX_COLUMN_AGGREGATEENUM)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_OPERATORENUM = _descriptor.EnumDescriptor(
+  name='OperatorEnum',
+  full_name='wodson.Request.ConditionArrayItem.Condition.OperatorEnum',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='EQ', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NEQ', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='LT', index=2, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GT', index=3, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='LTE', index=4, number=4,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GTE', index=5, number=5,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='INSET', index=6, number=6,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NOTINSET', index=7, number=7,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='LIKE', index=8, number=8,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ISNULL', index=9, number=9,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='ISNOTNULL', index=10, number=10,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NOTLIKE', index=11, number=11,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='BETWEEN', index=12, number=12,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=4947,
+  serialized_end=5100,
+)
+_sym_db.RegisterEnumDescriptor(_REQUEST_CONDITIONARRAYITEM_CONDITION_OPERATORENUM)
+
+_REQUEST_CONDITIONARRAYITEM_CONJUCTIONENUM = _descriptor.EnumDescriptor(
+  name='ConjuctionEnum',
+  full_name='wodson.Request.ConditionArrayItem.ConjuctionEnum',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='AND', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='OR', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NOT', index=2, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='OPEN', index=3, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CLOSE', index=4, number=4,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=5116,
+  serialized_end=5179,
+)
+_sym_db.RegisterEnumDescriptor(_REQUEST_CONDITIONARRAYITEM_CONJUCTIONENUM)
+
+_REQUEST_ORDERBYITEM_ORDERENUM = _descriptor.EnumDescriptor(
+  name='OrderEnum',
+  full_name='wodson.Request.OrderbyItem.OrderEnum',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='ASCENDING', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='DESCENDING', index=1, number=1,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=5277,
+  serialized_end=5319,
+)
+_sym_db.RegisterEnumDescriptor(_REQUEST_ORDERBYITEM_ORDERENUM)
 
 
 _DATAMATRIX_COLUMN_STRINGARRAY = _descriptor.Descriptor(
@@ -1219,6 +1341,620 @@ _DATAMATRICES = _descriptor.Descriptor(
   serialized_end=3342,
 )
 
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_STRINGARRAY = _descriptor.Descriptor(
+  name='StringArray',
+  full_name='wodson.Request.ConditionArrayItem.Condition.StringArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.Request.ConditionArrayItem.Condition.StringArray.values', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1496,
+  serialized_end=1525,
+)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_LONGARRAY = _descriptor.Descriptor(
+  name='LongArray',
+  full_name='wodson.Request.ConditionArrayItem.Condition.LongArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.Request.ConditionArrayItem.Condition.LongArray.values', index=0,
+      number=1, type=5, cpp_type=1, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1527,
+  serialized_end=1554,
+)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_FLOATARRAY = _descriptor.Descriptor(
+  name='FloatArray',
+  full_name='wodson.Request.ConditionArrayItem.Condition.FloatArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.Request.ConditionArrayItem.Condition.FloatArray.values', index=0,
+      number=1, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1556,
+  serialized_end=1584,
+)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY = _descriptor.Descriptor(
+  name='BooleanArray',
+  full_name='wodson.Request.ConditionArrayItem.Condition.BooleanArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.Request.ConditionArrayItem.Condition.BooleanArray.values', index=0,
+      number=1, type=8, cpp_type=7, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1586,
+  serialized_end=1616,
+)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_BYTEARRAY = _descriptor.Descriptor(
+  name='ByteArray',
+  full_name='wodson.Request.ConditionArrayItem.Condition.ByteArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.Request.ConditionArrayItem.Condition.ByteArray.values', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1618,
+  serialized_end=1645,
+)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY = _descriptor.Descriptor(
+  name='DoubleArray',
+  full_name='wodson.Request.ConditionArrayItem.Condition.DoubleArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.Request.ConditionArrayItem.Condition.DoubleArray.values', index=0,
+      number=1, type=1, cpp_type=5, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1647,
+  serialized_end=1676,
+)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY = _descriptor.Descriptor(
+  name='LongLongArray',
+  full_name='wodson.Request.ConditionArrayItem.Condition.LongLongArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.Request.ConditionArrayItem.Condition.LongLongArray.values', index=0,
+      number=1, type=3, cpp_type=2, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1678,
+  serialized_end=1709,
+)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_DATEARRAY = _descriptor.Descriptor(
+  name='DateArray',
+  full_name='wodson.Request.ConditionArrayItem.Condition.DateArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.Request.ConditionArrayItem.Condition.DateArray.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1711,
+  serialized_end=1766,
+)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY = _descriptor.Descriptor(
+  name='BytestrArray',
+  full_name='wodson.Request.ConditionArrayItem.Condition.BytestrArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.Request.ConditionArrayItem.Condition.BytestrArray.values', index=0,
+      number=1, type=12, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1768,
+  serialized_end=1798,
+)
+
+_REQUEST_CONDITIONARRAYITEM_CONDITION = _descriptor.Descriptor(
+  name='Condition',
+  full_name='wodson.Request.ConditionArrayItem.Condition',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='path', full_name='wodson.Request.ConditionArrayItem.Condition.path', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='operator', full_name='wodson.Request.ConditionArrayItem.Condition.operator', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_string', full_name='wodson.Request.ConditionArrayItem.Condition.value_string', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_long', full_name='wodson.Request.ConditionArrayItem.Condition.value_long', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_float', full_name='wodson.Request.ConditionArrayItem.Condition.value_float', index=4,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_boolean', full_name='wodson.Request.ConditionArrayItem.Condition.value_boolean', index=5,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_byte', full_name='wodson.Request.ConditionArrayItem.Condition.value_byte', index=6,
+      number=8, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_double', full_name='wodson.Request.ConditionArrayItem.Condition.value_double', index=7,
+      number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_longlong', full_name='wodson.Request.ConditionArrayItem.Condition.value_longlong', index=8,
+      number=10, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_date', full_name='wodson.Request.ConditionArrayItem.Condition.value_date', index=9,
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_bytestr', full_name='wodson.Request.ConditionArrayItem.Condition.value_bytestr', index=10,
+      number=12, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_REQUEST_CONDITIONARRAYITEM_CONDITION_STRINGARRAY, _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGARRAY, _REQUEST_CONDITIONARRAYITEM_CONDITION_FLOATARRAY, _REQUEST_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY, _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTEARRAY, _REQUEST_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY, _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY, _REQUEST_CONDITIONARRAYITEM_CONDITION_DATEARRAY, _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY, ],
+  enum_types=[
+    _REQUEST_CONDITIONARRAYITEM_CONDITION_OPERATORENUM,
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='ValueUnion', full_name='wodson.Request.ConditionArrayItem.Condition.ValueUnion',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=3806,
+  serialized_end=5114,
+)
+
+_REQUEST_CONDITIONARRAYITEM = _descriptor.Descriptor(
+  name='ConditionArrayItem',
+  full_name='wodson.Request.ConditionArrayItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='conjunction', full_name='wodson.Request.ConditionArrayItem.conjunction', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='condition', full_name='wodson.Request.ConditionArrayItem.condition', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_REQUEST_CONDITIONARRAYITEM_CONDITION, ],
+  enum_types=[
+    _REQUEST_CONDITIONARRAYITEM_CONJUCTIONENUM,
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='ItemUnion', full_name='wodson.Request.ConditionArrayItem.ItemUnion',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=3642,
+  serialized_end=5192,
+)
+
+_REQUEST_ORDERBYITEM = _descriptor.Descriptor(
+  name='OrderbyItem',
+  full_name='wodson.Request.OrderbyItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='path', full_name='wodson.Request.OrderbyItem.path', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='order', full_name='wodson.Request.OrderbyItem.order', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _REQUEST_ORDERBYITEM_ORDERENUM,
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5194,
+  serialized_end=5319,
+)
+
+_REQUEST_GROUPBYITEM = _descriptor.Descriptor(
+  name='GroupbyItem',
+  full_name='wodson.Request.GroupbyItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='path', full_name='wodson.Request.GroupbyItem.path', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5321,
+  serialized_end=5348,
+)
+
+_REQUEST_ATTRIBUTEITEM = _descriptor.Descriptor(
+  name='AttributeItem',
+  full_name='wodson.Request.AttributeItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='path', full_name='wodson.Request.AttributeItem.path', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='aggregate', full_name='wodson.Request.AttributeItem.aggregate', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='unit', full_name='wodson.Request.AttributeItem.unit', index=2,
+      number=3, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5350,
+  serialized_end=5453,
+)
+
+_REQUEST = _descriptor.Descriptor(
+  name='Request',
+  full_name='wodson.Request',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='entity', full_name='wodson.Request.entity', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='conditions', full_name='wodson.Request.conditions', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='orderby', full_name='wodson.Request.orderby', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='groupby', full_name='wodson.Request.groupby', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='attributes', full_name='wodson.Request.attributes', index=4,
+      number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='rowlimit', full_name='wodson.Request.rowlimit', index=5,
+      number=6, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='rowskip', full_name='wodson.Request.rowskip', index=6,
+      number=7, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='seqlimit', full_name='wodson.Request.seqlimit', index=7,
+      number=8, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='seqskip', full_name='wodson.Request.seqskip', index=8,
+      number=9, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_REQUEST_CONDITIONARRAYITEM, _REQUEST_ORDERBYITEM, _REQUEST_GROUPBYITEM, _REQUEST_ATTRIBUTEITEM, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3345,
+  serialized_end=5453,
+)
+
 _DATAMATRIX_COLUMN_STRINGARRAY.containing_type = _DATAMATRIX_COLUMN
 _DATAMATRIX_COLUMN_LONGARRAY.containing_type = _DATAMATRIX_COLUMN
 _DATAMATRIX_COLUMN_FLOATARRAY.containing_type = _DATAMATRIX_COLUMN
@@ -1369,8 +2105,78 @@ _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion'].fields.append(
 _DATAMATRIX_COLUMN.fields_by_name['dt_unknown'].containing_oneof = _DATAMATRIX_COLUMN.oneofs_by_name['ValuesUnion']
 _DATAMATRIX.fields_by_name['columns'].message_type = _DATAMATRIX_COLUMN
 _DATAMATRICES.fields_by_name['matrices'].message_type = _DATAMATRIX
+_REQUEST_CONDITIONARRAYITEM_CONDITION_STRINGARRAY.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION_LONGARRAY.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION_FLOATARRAY.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION_BYTEARRAY.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION_DATEARRAY.fields_by_name['values'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_REQUEST_CONDITIONARRAYITEM_CONDITION_DATEARRAY.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['operator'].enum_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_OPERATORENUM
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_string'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_STRINGARRAY
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_long'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGARRAY
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_float'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_FLOATARRAY
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_boolean'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_byte'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTEARRAY
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_double'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_longlong'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_date'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_DATEARRAY
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_bytestr'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY
+_REQUEST_CONDITIONARRAYITEM_CONDITION.containing_type = _REQUEST_CONDITIONARRAYITEM
+_REQUEST_CONDITIONARRAYITEM_CONDITION_OPERATORENUM.containing_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_string'])
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_string'].containing_oneof = _REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_long'])
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_long'].containing_oneof = _REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_float'])
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_float'].containing_oneof = _REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_boolean'])
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_boolean'].containing_oneof = _REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_byte'])
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_byte'].containing_oneof = _REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_double'])
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_double'].containing_oneof = _REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_longlong'])
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_longlong'].containing_oneof = _REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_date'])
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_date'].containing_oneof = _REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_bytestr'])
+_REQUEST_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_bytestr'].containing_oneof = _REQUEST_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_REQUEST_CONDITIONARRAYITEM.fields_by_name['conjunction'].enum_type = _REQUEST_CONDITIONARRAYITEM_CONJUCTIONENUM
+_REQUEST_CONDITIONARRAYITEM.fields_by_name['condition'].message_type = _REQUEST_CONDITIONARRAYITEM_CONDITION
+_REQUEST_CONDITIONARRAYITEM.containing_type = _REQUEST
+_REQUEST_CONDITIONARRAYITEM_CONJUCTIONENUM.containing_type = _REQUEST_CONDITIONARRAYITEM
+_REQUEST_CONDITIONARRAYITEM.oneofs_by_name['ItemUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM.fields_by_name['conjunction'])
+_REQUEST_CONDITIONARRAYITEM.fields_by_name['conjunction'].containing_oneof = _REQUEST_CONDITIONARRAYITEM.oneofs_by_name['ItemUnion']
+_REQUEST_CONDITIONARRAYITEM.oneofs_by_name['ItemUnion'].fields.append(
+  _REQUEST_CONDITIONARRAYITEM.fields_by_name['condition'])
+_REQUEST_CONDITIONARRAYITEM.fields_by_name['condition'].containing_oneof = _REQUEST_CONDITIONARRAYITEM.oneofs_by_name['ItemUnion']
+_REQUEST_ORDERBYITEM.fields_by_name['order'].enum_type = _REQUEST_ORDERBYITEM_ORDERENUM
+_REQUEST_ORDERBYITEM.containing_type = _REQUEST
+_REQUEST_ORDERBYITEM_ORDERENUM.containing_type = _REQUEST_ORDERBYITEM
+_REQUEST_GROUPBYITEM.containing_type = _REQUEST
+_REQUEST_ATTRIBUTEITEM.fields_by_name['aggregate'].enum_type = _DATAMATRIX_COLUMN_AGGREGATEENUM
+_REQUEST_ATTRIBUTEITEM.containing_type = _REQUEST
+_REQUEST.fields_by_name['conditions'].message_type = _REQUEST_CONDITIONARRAYITEM
+_REQUEST.fields_by_name['orderby'].message_type = _REQUEST_ORDERBYITEM
+_REQUEST.fields_by_name['groupby'].message_type = _REQUEST_GROUPBYITEM
+_REQUEST.fields_by_name['attributes'].message_type = _REQUEST_ATTRIBUTEITEM
 DESCRIPTOR.message_types_by_name['DataMatrix'] = _DATAMATRIX
 DESCRIPTOR.message_types_by_name['DataMatrices'] = _DATAMATRICES
+DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
 DESCRIPTOR.enum_types_by_name['DatatypeEnum'] = _DATATYPEENUM
 
 DataMatrix = _reflection.GeneratedProtocolMessageType('DataMatrix', (_message.Message,), dict(
@@ -1554,6 +2360,125 @@ DataMatrices = _reflection.GeneratedProtocolMessageType('DataMatrices', (_messag
   # @@protoc_insertion_point(class_scope:wodson.DataMatrices)
   ))
 _sym_db.RegisterMessage(DataMatrices)
+
+Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), dict(
+
+  ConditionArrayItem = _reflection.GeneratedProtocolMessageType('ConditionArrayItem', (_message.Message,), dict(
+
+    Condition = _reflection.GeneratedProtocolMessageType('Condition', (_message.Message,), dict(
+
+      StringArray = _reflection.GeneratedProtocolMessageType('StringArray', (_message.Message,), dict(
+        DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION_STRINGARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition.StringArray)
+        ))
+      ,
+
+      LongArray = _reflection.GeneratedProtocolMessageType('LongArray', (_message.Message,), dict(
+        DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition.LongArray)
+        ))
+      ,
+
+      FloatArray = _reflection.GeneratedProtocolMessageType('FloatArray', (_message.Message,), dict(
+        DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION_FLOATARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition.FloatArray)
+        ))
+      ,
+
+      BooleanArray = _reflection.GeneratedProtocolMessageType('BooleanArray', (_message.Message,), dict(
+        DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition.BooleanArray)
+        ))
+      ,
+
+      ByteArray = _reflection.GeneratedProtocolMessageType('ByteArray', (_message.Message,), dict(
+        DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTEARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition.ByteArray)
+        ))
+      ,
+
+      DoubleArray = _reflection.GeneratedProtocolMessageType('DoubleArray', (_message.Message,), dict(
+        DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition.DoubleArray)
+        ))
+      ,
+
+      LongLongArray = _reflection.GeneratedProtocolMessageType('LongLongArray', (_message.Message,), dict(
+        DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition.LongLongArray)
+        ))
+      ,
+
+      DateArray = _reflection.GeneratedProtocolMessageType('DateArray', (_message.Message,), dict(
+        DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION_DATEARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition.DateArray)
+        ))
+      ,
+
+      BytestrArray = _reflection.GeneratedProtocolMessageType('BytestrArray', (_message.Message,), dict(
+        DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition.BytestrArray)
+        ))
+      ,
+      DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM_CONDITION,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem.Condition)
+      ))
+    ,
+    DESCRIPTOR = _REQUEST_CONDITIONARRAYITEM,
+    __module__ = 'wodson_pb2'
+    # @@protoc_insertion_point(class_scope:wodson.Request.ConditionArrayItem)
+    ))
+  ,
+
+  OrderbyItem = _reflection.GeneratedProtocolMessageType('OrderbyItem', (_message.Message,), dict(
+    DESCRIPTOR = _REQUEST_ORDERBYITEM,
+    __module__ = 'wodson_pb2'
+    # @@protoc_insertion_point(class_scope:wodson.Request.OrderbyItem)
+    ))
+  ,
+
+  GroupbyItem = _reflection.GeneratedProtocolMessageType('GroupbyItem', (_message.Message,), dict(
+    DESCRIPTOR = _REQUEST_GROUPBYITEM,
+    __module__ = 'wodson_pb2'
+    # @@protoc_insertion_point(class_scope:wodson.Request.GroupbyItem)
+    ))
+  ,
+
+  AttributeItem = _reflection.GeneratedProtocolMessageType('AttributeItem', (_message.Message,), dict(
+    DESCRIPTOR = _REQUEST_ATTRIBUTEITEM,
+    __module__ = 'wodson_pb2'
+    # @@protoc_insertion_point(class_scope:wodson.Request.AttributeItem)
+    ))
+  ,
+  DESCRIPTOR = _REQUEST,
+  __module__ = 'wodson_pb2'
+  # @@protoc_insertion_point(class_scope:wodson.Request)
+  ))
+_sym_db.RegisterMessage(Request)
+_sym_db.RegisterMessage(Request.ConditionArrayItem)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition.StringArray)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition.LongArray)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition.FloatArray)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition.BooleanArray)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition.ByteArray)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition.DoubleArray)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition.LongLongArray)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition.DateArray)
+_sym_db.RegisterMessage(Request.ConditionArrayItem.Condition.BytestrArray)
+_sym_db.RegisterMessage(Request.OrderbyItem)
+_sym_db.RegisterMessage(Request.GroupbyItem)
+_sym_db.RegisterMessage(Request.AttributeItem)
 
 
 # @@protoc_insertion_point(module_scope)
