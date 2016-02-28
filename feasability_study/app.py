@@ -189,8 +189,8 @@ def data_access_post(conI,  query_struct):
         result = so.GetInstancesEx(qse, options['rowlimit'])
         rowMaxCount  = options['rowlimit']
         rowSkipCount = options['rowskip']
-        seqSkipCount = options['seqlimit']
-        seqMaxCount  = options['seqskip']
+        seqMaxCount  = options['seqlimit']
+        seqSkipCount = options['seqskip']
 
     wantsProto, wantsProtoJson = _request_wants_protobuf()
     if wantsProto:
