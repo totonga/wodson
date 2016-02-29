@@ -135,7 +135,6 @@ message DataMatrices{
 
 
 
-
 message  Request{
 
   message ConditionArrayItem{
@@ -229,4 +228,86 @@ message  Request{
   int64 rowskip = 7;
   int64 seqlimit = 8;
   int64 seqskip = 9;
+}
+
+
+
+message Instance{
+  string entity = 1;
+  int64 id = 2;
+}
+
+message BinaryIdentifier{
+  Instance instance = 1;
+  string attribute = 2;
+  int64 seqlimit = 3;
+  int64 seqskip = 4;
+}
+
+message ConList{
+  message Con{
+    string name = 1;
+  }
+  
+  repeated Con cons = 1;
+}
+
+message NameValuePairs{
+  map<string, string> parameters = 1;
+}
+
+message AsamPath{
+  string path = 1;
+}
+
+message Model{
+  message Enumeration{
+    string name = 1;
+    map<string, int32> items = 2;
+  }
+
+  message Attribute{
+    string name = 1;
+    string basename = 2;
+    DatatypeEnum datatype = 3;
+    int64 length = 4;
+    bool obligatory = 5;
+    bool unique = 6;
+    int64 unitid = 7;
+    string enumeration = 8;
+  }
+  
+  enum RelationTypeEnum{
+    RT_1_N = 0;
+    RT_N_1 = 1;
+    RT_N_M = 2;
+  }
+
+  enum RelationKindEnum{
+    RK_FATHER_CHILD = 0;
+    RK_INFO = 1;
+  }
+
+  message Relation{
+    string name = 1;
+    string basename = 2;
+    string inverse_name = 3;
+    string inverse_basename = 4;
+    bool obligatory = 5;
+    RelationTypeEnum type = 6;
+    RelationKindEnum kind = 7;
+    string entity_name = 8;
+    string entity_basename = 9;
+  }
+
+  message Entity{
+    string name = 1;
+    string basename = 2;
+    int64 objecttype = 3;
+    map<string, Attribute> attributes = 4;
+    map<string, Relation> relations = 5;
+  }
+
+  map<string, Enumeration> enumerations = 1;
+  map<string, Enumeration> entities = 2;
 }
