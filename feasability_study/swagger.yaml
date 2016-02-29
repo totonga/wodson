@@ -125,14 +125,15 @@ paths:
       security:
         - session_auth:
             - modify_data
-    delete:
+  /con/{conI}/data/delete:
+    post:
       tags:
         - API_Methods
         - API_Core
         - Data
         - Transaction
       description: update instances
-      operationId: app.data_modify_delete
+      operationId: app.data_delete_post
       parameters:
         - name: conI
           in: path
@@ -248,7 +249,7 @@ paths:
         - session_auth:
           - modify_model
           - modify_data
-  /con/{conI}/model:
+  /con/{conI}/model/access:
     get:
       tags:
         - API_Methods
@@ -256,7 +257,7 @@ paths:
         - Info
         - Model
       description: get model information
-      operationId: app.model_get
+      operationId: app.model_access_get
       parameters:
         - name: conI
           in: path
@@ -273,13 +274,14 @@ paths:
       security:
         - session_auth:
           - access_data
+  /con/{conI}/model/modify:
     put:
       tags:
         - API_Methods
         - Model
         - Transaction
       description: update or extend the model
-      operationId: app.model_put
+      operationId: app.model_modify_put
       parameters:
         - name: conI
           in: path
@@ -299,13 +301,14 @@ paths:
       security:
         - session_auth:
           - modify_model
-    delete:
+  /con/{conI}/model/delete:
+    post:
       tags:
         - API_Methods
         - Model
         - Transaction
       description: delete elements in the model
-      operationId: app.model_delete
+      operationId: app.model_delete_post
       parameters:
         - name: conI
           in: path

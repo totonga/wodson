@@ -157,7 +157,7 @@ def data_delete(conI, data_matrix):
     return NoContent, 200
 
 
-def data_modify_delete(conI, data_matrix):
+def data_delete_post(conI, data_matrix):
     return data_delete(conI, data_matrix)
 
 
@@ -315,7 +315,7 @@ def transaction_delete(conI):
     return NoContent, 200
 
 
-def model_put(conI, model):
+def model_modify_put(conI, model):
     logging.info('create or overwrite entity/attribute/enum in model')
     for entity in model['entities']:
         logging.info('create ' + entity['name'])
@@ -327,7 +327,7 @@ def model_put(conI, model):
     return NoContent, 200
 
 
-def model_delete(conI, model):
+def model_delete_post(conI, model):
     logging.info('delete entity/attribute/enum in model')
     for entity in model['entities']:
         logging.info('delete ' + entity['name'])
@@ -335,7 +335,7 @@ def model_delete(conI, model):
     return NoContent, 200
 
 
-def model_get(conI):
+def model_access_get(conI):
     logging.info('get the server model')
     rv = {}
     model = _Session(conI).Model()
