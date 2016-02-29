@@ -728,7 +728,7 @@ class CSession:
 
     def GetInstancesEx(self, qse, how_many):
 
-        logging.info('Call ApplElemAccess.getInstancesExt(aoq="' + str(qse) + '", how_many=' + str(how_many) + '")')
+        logging.info('Call ApplElemAccess.getInstancesExt(aoq="' + str(qse).replace('org.asam.ods.','') + '", how_many=' + str(how_many) + '")')
         rs = self._applElemAccess.getInstancesExt(qse, how_many)
         for r in rs:
             return r.firstElems
