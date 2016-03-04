@@ -6,8 +6,21 @@ import org
 from google.protobuf import json_format
 from google.protobuf import timestamp_pb2
 
-_op_aggregates = { org.asam.ods.NONE: wodson_pb2.DataMatrix.Column.NONE , org.asam.ods.COUNT: wodson_pb2.DataMatrix.Column.COUNT , org.asam.ods.DCOUNT: wodson_pb2.DataMatrix.Column.DCOUNT , org.asam.ods.MIN: wodson_pb2.DataMatrix.Column.MIN , org.asam.ods.MAX: wodson_pb2.DataMatrix.Column.MAX , org.asam.ods.AVG: wodson_pb2.DataMatrix.Column.AVG , org.asam.ods.SUM: wodson_pb2.DataMatrix.Column.SUM , org.asam.ods.DISTINCT: wodson_pb2.DataMatrix.Column.DISTINCT , org.asam.ods.POINT: wodson_pb2.DataMatrix.Column.POINT}
-_op_seloperator = { org.asam.ods.AND: wodson_pb2.SelectStruct.ConditionArrayItem.AND , org.asam.ods.OR: wodson_pb2.SelectStruct.ConditionArrayItem.OR , org.asam.ods.NOT: wodson_pb2.SelectStruct.ConditionArrayItem.NOT , org.asam.ods.OPEN: wodson_pb2.SelectStruct.ConditionArrayItem.OPEN , org.asam.ods.CLOSE: wodson_pb2.SelectStruct.ConditionArrayItem.CLOSE}
+_op_aggregates = { org.asam.ods.NONE: wodson_pb2.DataMatrix.Column.NONE , 
+                   org.asam.ods.COUNT: wodson_pb2.DataMatrix.Column.COUNT , 
+                   org.asam.ods.DCOUNT: wodson_pb2.DataMatrix.Column.DCOUNT , 
+                   org.asam.ods.MIN: wodson_pb2.DataMatrix.Column.MIN , 
+                   org.asam.ods.MAX: wodson_pb2.DataMatrix.Column.MAX , 
+                   org.asam.ods.AVG: wodson_pb2.DataMatrix.Column.AVG , 
+                   org.asam.ods.SUM: wodson_pb2.DataMatrix.Column.SUM , 
+                   org.asam.ods.DISTINCT: wodson_pb2.DataMatrix.Column.DISTINCT , 
+                   org.asam.ods.POINT: wodson_pb2.DataMatrix.Column.POINT }
+
+_op_seloperator = { org.asam.ods.AND: wodson_pb2.SelectStruct.ConditionArrayItem.AND , 
+                    org.asam.ods.OR: wodson_pb2.SelectStruct.ConditionArrayItem.OR , 
+                    org.asam.ods.NOT: wodson_pb2.SelectStruct.ConditionArrayItem.NOT , 
+                    org.asam.ods.OPEN: wodson_pb2.SelectStruct.ConditionArrayItem.OPEN , 
+                    org.asam.ods.CLOSE: wodson_pb2.SelectStruct.ConditionArrayItem.CLOSE}
 
 _op_selopcode = {   org.asam.ods.EQ                  :  wodson_pb2.SelectStruct.ConditionArrayItem.Condition.EQ            ,
                     org.asam.ods.NEQ                 :  wodson_pb2.SelectStruct.ConditionArrayItem.Condition.NEQ           ,
@@ -32,6 +45,9 @@ _op_selopcode = {   org.asam.ods.EQ                  :  wodson_pb2.SelectStruct.
                     org.asam.ods.NOTLIKE             :  wodson_pb2.SelectStruct.ConditionArrayItem.Condition.NOTLIKE       ,
                     org.asam.ods.CI_NOTLIKE          :  wodson_pb2.SelectStruct.ConditionArrayItem.Condition.CI_NOTLIKE    ,
                     org.asam.ods.BETWEEN             :  wodson_pb2.SelectStruct.ConditionArrayItem.Condition.BETWEEN }
+
+_op_jointype = { org.asam.ods.JTDEFAULT : wodson_pb2.SelectStruct.JoinItem.JT_DEFAULT, 
+                 org.asam.ods.JTOUTER   : wodson_pb2.SelectStruct.JoinItem.JT_OUTER }
 
 def _aidToWrite(aid, default):
     rv = odslib.LL2Int(aid)
@@ -137,6 +153,13 @@ def ods_to_protobuf_select_json(model, qse, options):
 
         elif org.asam.ods.SEL_OPERATOR_TYPE == cond._d:
             rv.where.add().conjunction = _op_seloperator[cond._v]
+
+    for join in qse.joinSeq:
+        targetJoin = rv.joins.add()
+        targetJoin.objecttype_from = odslib.LL2Int(join.fromAID)
+        targetJoin.objecttype_to = odslib.LL2Int(join.toAID)
+        targetJoin.relation = join.refName.encode('utf-8')
+        targetJoin.type = _op_jointype[join.joiningType]
 
     for orderBy in qse.orderBy:
         targetOrderby = rv.orderby.add()

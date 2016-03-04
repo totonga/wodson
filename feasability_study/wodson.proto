@@ -413,14 +413,28 @@ message  SelectStruct{
     int64 unit = 4;
   }
 
+  message JoinItem{
+
+    enum TypeEnum {
+      JT_DEFAULT = 0;
+      JT_OUTER = 1;
+    }
+
+    int64 objecttype_from = 1;
+    int64 objecttype_to = 2;
+    string relation = 3;
+    TypeEnum type = 4;
+  }
+
   int64 default_objecttype = 1;
   repeated AttributeItem attributes = 2;
   repeated ConditionArrayItem where = 3;
-  repeated OrderbyItem orderby = 4;
-  repeated GroupbyItem groupby = 5;
+  repeated JoinItem joins = 4;
+  repeated OrderbyItem orderby = 5;
+  repeated GroupbyItem groupby = 6;
   
-  int64 rowlimit = 6;
-  int64 rowskip = 7;
-  int64 seqlimit = 8;
-  int64 seqskip = 9;
+  int64 rowlimit = 7;
+  int64 rowskip = 8;
+  int64 seqlimit = 9;
+  int64 seqskip = 10;
 }
