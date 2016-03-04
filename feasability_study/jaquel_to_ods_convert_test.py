@@ -1,4 +1,5 @@
 import jaquel_to_ods_convert
+import ods_to_protobuf_select
 
 import odslib
 
@@ -98,6 +99,14 @@ testQueries.append('''{
     }
 }''')
 
+testQueries.append('''{
+                        "AoMeasurement":{"measurement_begin":"20091223111111001"}
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurement":{"measurement_begin":{"$between":[20091223000000, 20091224000000]}}
+                       }''')
+
 
 _session = odslib.CSessionAutoReconnect({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
 _model = _session.Model()
@@ -106,6 +115,9 @@ for testQuery in testQueries:
     applElem, qse, options = jaquel_to_ods_convert.JaquelToQueryStructureExt(_model, testQuery)
     print str(qse)
     print str(options)
+    print '-----------------------------------------------------'
+    protoSelect = ods_to_protobuf_select.ods_to_protobuf_select_json(_model, qse, options)
+    print str(protoSelect)
     print '-----------------------------------------------------'
     result = _session.GetInstancesEx(qse, options['rowlimit'])
     print '+++++++++++++++++++++++++++++++++++++++++++++++++++++'

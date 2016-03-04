@@ -129,7 +129,7 @@ def o2p_date(timeStr):
         seconds = int(time.mktime(tStruct))
         nanos = 0
         if timeStrLen > 14:
-            nanos = int(timeStr[15:].ljust(6,'0'))
+            nanos = int(timeStr[14:].ljust(9,'0'))
 
         return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
     except:
@@ -162,6 +162,7 @@ def o2p_datamatrices(model, elem, result, rowSkipCount, seqSkipCount, seqMaxCoun
         data_matrix = rv.matrices.add()
         data_matrix.name = tableElem.aeName
         data_matrix.base_name = tableElem.beName
+        data_matrix.objecttype = table.aid
         data_matrix.row_skip_count = rowSkipCount
         data_matrix.seq_skip_count = seqSkipCount
 
@@ -245,7 +246,7 @@ def o2p_datamatrices(model, elem, result, rowSkipCount, seqSkipCount, seqMaxCoun
                         destColumn.ds_double.values.add().values.extend(columnValue)
                 elif columnType == org.asam.ods.DS_DATE:
                     for columnValue in columnValues:
-                        destColumn.ds_date.values.add().values.extend(o2p_dateSeq(columnValue))
+                        destColumn.ds_date.values.add().values.extend(o2p_dateseq(columnValue))
                 elif columnType == org.asam.ods.DS_STRING:
                     for columnValue in columnValues:
                         destColumn.ds_string.values.add().values.extend(columnValue)

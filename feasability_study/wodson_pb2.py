@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='wodson.proto',
   package='wodson',
   syntax='proto3',
-  serialized_pb=_b('\n\x0cwodson.proto\x12\x06wodson\x1a\x1fgoogle/protobuf/timestamp.proto\"\x87\x19\n\nDataMatrix\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tbase_name\x18\x02 \x01(\t\x12\x16\n\x0erow_skip_count\x18\x03 \x01(\x03\x12\x16\n\x0eseq_skip_count\x18\x04 \x01(\x03\x12*\n\x07\x63olumns\x18\x05 \x03(\x0b\x32\x19.wodson.DataMatrix.Column\x1a\xfb\x17\n\x06\x43olumn\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tbase_name\x18\x02 \x01(\t\x12:\n\taggregate\x18\x03 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12&\n\x08\x64\x61tatype\x18\x04 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12\r\n\x05\x66lags\x18\x05 \x03(\x08\x12:\n\tdt_string\x18\x06 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x07 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x08 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\t \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\n \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x0b \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x0c \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\r \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\x0e \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x12;\n\tds_string\x18\x0f \x01(\x0b\x32&.wodson.DataMatrix.Column.StringArraysH\x00\x12\x37\n\x07\x64s_long\x18\x10 \x01(\x0b\x32$.wodson.DataMatrix.Column.LongArraysH\x00\x12\x39\n\x08\x64s_float\x18\x11 \x01(\x0b\x32%.wodson.DataMatrix.Column.FloatArraysH\x00\x12=\n\nds_boolean\x18\x12 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BooleanArraysH\x00\x12\x37\n\x07\x64s_byte\x18\x13 \x01(\x0b\x32$.wodson.DataMatrix.Column.ByteArraysH\x00\x12;\n\tds_double\x18\x14 \x01(\x0b\x32&.wodson.DataMatrix.Column.DoubleArraysH\x00\x12?\n\x0b\x64s_longlong\x18\x15 \x01(\x0b\x32(.wodson.DataMatrix.Column.LongLongArraysH\x00\x12\x37\n\x07\x64s_date\x18\x16 \x01(\x0b\x32$.wodson.DataMatrix.Column.DateArraysH\x00\x12=\n\nds_bytestr\x18\x17 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BytestrArraysH\x00\x12=\n\ndt_unknown\x18\x18 \x01(\x0b\x32\'.wodson.DataMatrix.Column.UnknownArraysH\x00\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x37\n\tDateArray\x12*\n\x06values\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\x1a\xdb\x04\n\x0cUnknownArray\x12&\n\x08\x64\x61tatype\x18\x01 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12:\n\tdt_string\x18\x02 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x03 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x04 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\x05 \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\x06 \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x07 \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x08 \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\t \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\n \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x42\r\n\x0bUnkownUnion\x1a\x45\n\x0cStringArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.StringArray\x1a\x41\n\nLongArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.LongArray\x1a\x43\n\x0b\x46loatArrays\x12\x34\n\x06values\x18\x01 \x03(\x0b\x32$.wodson.DataMatrix.Column.FloatArray\x1aG\n\rBooleanArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BooleanArray\x1a\x41\n\nByteArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.ByteArray\x1a\x45\n\x0c\x44oubleArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.DoubleArray\x1aI\n\x0eLongLongArrays\x12\x37\n\x06values\x18\x01 \x03(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArray\x1a\x41\n\nDateArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.DateArray\x1aG\n\rBytestrArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BytestrArray\x1aG\n\rUnknownArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.UnknownArray\"\x89\x01\n\rAggregateEnum\x12\x08\n\x04NONE\x10\x00\x12\t\n\x05\x43OUNT\x10\x01\x12\n\n\x06\x44\x43OUNT\x10\x02\x12\x07\n\x03MIN\x10\x03\x12\x07\n\x03MAX\x10\x04\x12\x07\n\x03\x41VG\x10\x05\x12\n\n\x06STDDEV\x10\x06\x12\x07\n\x03SUM\x10\x07\x12\x0c\n\x08\x44ISTINCT\x10\x08\x12\t\n\x05POINT\x10\t\x12\x0e\n\nCALCULATED\x10\nB\r\n\x0bValuesUnion\"K\n\x0c\x44\x61taMatrices\x12$\n\x08matrices\x18\x01 \x03(\x0b\x32\x12.wodson.DataMatrix\x12\x15\n\riterator_guid\x18\x02 \x01(\t\"\xbc\x10\n\x07Request\x12\x0e\n\x06\x65ntity\x18\x01 \x01(\t\x12\x36\n\nconditions\x18\x02 \x03(\x0b\x32\".wodson.Request.ConditionArrayItem\x12,\n\x07orderby\x18\x03 \x03(\x0b\x32\x1b.wodson.Request.OrderbyItem\x12,\n\x07groupby\x18\x04 \x03(\x0b\x32\x1b.wodson.Request.GroupbyItem\x12\x31\n\nattributes\x18\x05 \x03(\x0b\x32\x1d.wodson.Request.AttributeItem\x12\x10\n\x08rowlimit\x18\x06 \x01(\x03\x12\x0f\n\x07rowskip\x18\x07 \x01(\x03\x12\x10\n\x08seqlimit\x18\x08 \x01(\x03\x12\x0f\n\x07seqskip\x18\t \x01(\x03\x1a\x8e\x0c\n\x12\x43onditionArrayItem\x12H\n\x0b\x63onjunction\x18\x01 \x01(\x0e\x32\x31.wodson.Request.ConditionArrayItem.ConjuctionEnumH\x00\x12\x41\n\tcondition\x18\x02 \x01(\x0b\x32,.wodson.Request.ConditionArrayItem.ConditionH\x00\x1a\x9c\n\n\tCondition\x12\x0c\n\x04path\x18\x01 \x01(\t\x12K\n\x08operator\x18\x02 \x01(\x0e\x32\x39.wodson.Request.ConditionArrayItem.Condition.OperatorEnum\x12P\n\x0cvalue_string\x18\x03 \x01(\x0b\x32\x38.wodson.Request.ConditionArrayItem.Condition.StringArrayH\x00\x12L\n\nvalue_long\x18\x04 \x01(\x0b\x32\x36.wodson.Request.ConditionArrayItem.Condition.LongArrayH\x00\x12N\n\x0bvalue_float\x18\x06 \x01(\x0b\x32\x37.wodson.Request.ConditionArrayItem.Condition.FloatArrayH\x00\x12R\n\rvalue_boolean\x18\x07 \x01(\x0b\x32\x39.wodson.Request.ConditionArrayItem.Condition.BooleanArrayH\x00\x12L\n\nvalue_byte\x18\x08 \x01(\x0b\x32\x36.wodson.Request.ConditionArrayItem.Condition.ByteArrayH\x00\x12P\n\x0cvalue_double\x18\t \x01(\x0b\x32\x38.wodson.Request.ConditionArrayItem.Condition.DoubleArrayH\x00\x12T\n\x0evalue_longlong\x18\n \x01(\x0b\x32:.wodson.Request.ConditionArrayItem.Condition.LongLongArrayH\x00\x12L\n\nvalue_date\x18\x0b \x01(\x0b\x32\x36.wodson.Request.ConditionArrayItem.Condition.DateArrayH\x00\x12R\n\rvalue_bytestr\x18\x0c \x01(\x0b\x32\x39.wodson.Request.ConditionArrayItem.Condition.BytestrArrayH\x00\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x37\n\tDateArray\x12*\n\x06values\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\"\x99\x01\n\x0cOperatorEnum\x12\x06\n\x02\x45Q\x10\x00\x12\x07\n\x03NEQ\x10\x01\x12\x06\n\x02LT\x10\x02\x12\x06\n\x02GT\x10\x03\x12\x07\n\x03LTE\x10\x04\x12\x07\n\x03GTE\x10\x05\x12\t\n\x05INSET\x10\x06\x12\x0c\n\x08NOTINSET\x10\x07\x12\x08\n\x04LIKE\x10\x08\x12\n\n\x06ISNULL\x10\t\x12\r\n\tISNOTNULL\x10\n\x12\x0b\n\x07NOTLIKE\x10\x0b\x12\x0b\n\x07\x42\x45TWEEN\x10\x0c\x42\x0c\n\nValueUnion\"?\n\x0e\x43onjuctionEnum\x12\x07\n\x03\x41ND\x10\x00\x12\x06\n\x02OR\x10\x01\x12\x07\n\x03NOT\x10\x02\x12\x08\n\x04OPEN\x10\x03\x12\t\n\x05\x43LOSE\x10\x04\x42\x0b\n\tItemUnion\x1a}\n\x0bOrderbyItem\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x34\n\x05order\x18\x02 \x01(\x0e\x32%.wodson.Request.OrderbyItem.OrderEnum\"*\n\tOrderEnum\x12\r\n\tASCENDING\x10\x00\x12\x0e\n\nDESCENDING\x10\x01\x1a\x1b\n\x0bGroupbyItem\x12\x0c\n\x04path\x18\x01 \x01(\t\x1ag\n\rAttributeItem\x12\x0c\n\x04path\x18\x01 \x01(\t\x12:\n\taggregate\x18\x02 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12\x0c\n\x04unit\x18\x03 \x01(\x03\"&\n\x08Instance\x12\x0e\n\x06\x65ntity\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\x03\"l\n\x10\x42inaryIdentifier\x12\"\n\x08instance\x18\x01 \x01(\x0b\x32\x10.wodson.Instance\x12\x11\n\tattribute\x18\x02 \x01(\t\x12\x10\n\x08seqlimit\x18\x03 \x01(\x03\x12\x0f\n\x07seqskip\x18\x04 \x01(\x03\"A\n\x07\x43onList\x12!\n\x04\x63ons\x18\x01 \x03(\x0b\x32\x13.wodson.ConList.Con\x1a\x13\n\x03\x43on\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x7f\n\x0eNameValuePairs\x12:\n\nparameters\x18\x01 \x03(\x0b\x32&.wodson.NameValuePairs.ParametersEntry\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x18\n\x08\x41samPath\x12\x0c\n\x04path\x18\x01 \x01(\t\"\xe8\t\n\x05Model\x12\x35\n\x0c\x65numerations\x18\x01 \x03(\x0b\x32\x1f.wodson.Model.EnumerationsEntry\x12-\n\x08\x65ntities\x18\x02 \x03(\x0b\x32\x1b.wodson.Model.EntitiesEntry\x1a~\n\x0b\x45numeration\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x33\n\x05items\x18\x02 \x03(\x0b\x32$.wodson.Model.Enumeration.ItemsEntry\x1a,\n\nItemsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1a\xac\x01\n\tAttribute\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61sename\x18\x02 \x01(\t\x12&\n\x08\x64\x61tatype\x18\x03 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12\x0e\n\x06length\x18\x04 \x01(\x03\x12\x12\n\nobligatory\x18\x05 \x01(\x08\x12\x0e\n\x06unique\x18\x06 \x01(\x08\x12\x0e\n\x06unitid\x18\x07 \x01(\x03\x12\x13\n\x0b\x65numeration\x18\x08 \x01(\t\x1a\xf8\x01\n\x08Relation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61sename\x18\x02 \x01(\t\x12\x14\n\x0cinverse_name\x18\x03 \x01(\t\x12\x18\n\x10inverse_basename\x18\x04 \x01(\t\x12\x12\n\nobligatory\x18\x05 \x01(\x08\x12,\n\x04type\x18\x06 \x01(\x0e\x32\x1e.wodson.Model.RelationTypeEnum\x12,\n\x04kind\x18\x07 \x01(\x0e\x32\x1e.wodson.Model.RelationKindEnum\x12\x13\n\x0b\x65ntity_name\x18\x08 \x01(\t\x12\x17\n\x0f\x65ntity_basename\x18\t \x01(\t\x1a\xc4\x02\n\x06\x45ntity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61sename\x18\x02 \x01(\t\x12\x12\n\nobjecttype\x18\x03 \x01(\x03\x12\x38\n\nattributes\x18\x04 \x03(\x0b\x32$.wodson.Model.Entity.AttributesEntry\x12\x36\n\trelations\x18\x05 \x03(\x0b\x32#.wodson.Model.Entity.RelationsEntry\x1aJ\n\x0f\x41ttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.wodson.Model.Attribute:\x02\x38\x01\x1aH\n\x0eRelationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.wodson.Model.Relation:\x02\x38\x01\x1aN\n\x11\x45numerationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12(\n\x05value\x18\x02 \x01(\x0b\x32\x19.wodson.Model.Enumeration:\x02\x38\x01\x1aJ\n\rEntitiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12(\n\x05value\x18\x02 \x01(\x0b\x32\x19.wodson.Model.Enumeration:\x02\x38\x01\"6\n\x10RelationTypeEnum\x12\n\n\x06RT_1_N\x10\x00\x12\n\n\x06RT_N_1\x10\x01\x12\n\n\x06RT_N_M\x10\x02\"4\n\x10RelationKindEnum\x12\x13\n\x0fRK_FATHER_CHILD\x10\x00\x12\x0b\n\x07RK_INFO\x10\x01*\xf5\x03\n\x0c\x44\x61tatypeEnum\x12\x0e\n\nDT_UNKNOWN\x10\x00\x12\r\n\tDT_STRING\x10\x01\x12\x0c\n\x08\x44T_SHORT\x10\x02\x12\x0c\n\x08\x44T_FLOAT\x10\x03\x12\x0e\n\nDT_BOOLEAN\x10\x04\x12\x0b\n\x07\x44T_BYTE\x10\x05\x12\x0b\n\x07\x44T_LONG\x10\x06\x12\r\n\tDT_DOUBLE\x10\x07\x12\x0f\n\x0b\x44T_LONGLONG\x10\x08\x12\t\n\x05\x44T_ID\x10\t\x12\x0b\n\x07\x44T_DATE\x10\n\x12\x0e\n\nDT_BYTESTR\x10\x0b\x12\x0b\n\x07\x44T_BLOB\x10\x0c\x12\x0e\n\nDT_COMPLEX\x10\r\x12\x0f\n\x0b\x44T_DCOMPLEX\x10\x0e\x12\r\n\tDS_STRING\x10\x0f\x12\x0c\n\x08\x44S_SHORT\x10\x10\x12\x0c\n\x08\x44S_FLOAT\x10\x11\x12\x0e\n\nDS_BOOLEAN\x10\x12\x12\x0b\n\x07\x44S_BYTE\x10\x13\x12\x0b\n\x07\x44S_LONG\x10\x14\x12\r\n\tDS_DOUBLE\x10\x15\x12\x0f\n\x0b\x44S_LONGLONG\x10\x16\x12\x0e\n\nDS_COMPLEX\x10\x17\x12\x0f\n\x0b\x44S_DCOMPLEX\x10\x18\x12\t\n\x05\x44S_ID\x10\x19\x12\x0b\n\x07\x44S_DATE\x10\x1a\x12\x0e\n\nDS_BYTESTR\x10\x1b\x12\x18\n\x14\x44T_EXTERNALREFERENCE\x10\x1c\x12\x18\n\x14\x44S_EXTERNALREFERENCE\x10\x1d\x12\x0b\n\x07\x44T_ENUM\x10\x1e\x12\x0b\n\x07\x44S_ENUM\x10\x1f\x62\x06proto3')
+  serialized_pb=_b('\n\x0cwodson.proto\x12\x06wodson\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9b\x19\n\nDataMatrix\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tbase_name\x18\x02 \x01(\t\x12\x12\n\nobjecttype\x18\x03 \x01(\x03\x12*\n\x07\x63olumns\x18\x04 \x03(\x0b\x32\x19.wodson.DataMatrix.Column\x12\x16\n\x0erow_skip_count\x18\x05 \x01(\x03\x12\x16\n\x0eseq_skip_count\x18\x06 \x01(\x03\x1a\xfb\x17\n\x06\x43olumn\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tbase_name\x18\x02 \x01(\t\x12:\n\taggregate\x18\x03 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12&\n\x08\x64\x61tatype\x18\x04 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12\r\n\x05\x66lags\x18\x05 \x03(\x08\x12:\n\tdt_string\x18\x06 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x07 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x08 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\t \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\n \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x0b \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x0c \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\r \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\x0e \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x12;\n\tds_string\x18\x0f \x01(\x0b\x32&.wodson.DataMatrix.Column.StringArraysH\x00\x12\x37\n\x07\x64s_long\x18\x10 \x01(\x0b\x32$.wodson.DataMatrix.Column.LongArraysH\x00\x12\x39\n\x08\x64s_float\x18\x11 \x01(\x0b\x32%.wodson.DataMatrix.Column.FloatArraysH\x00\x12=\n\nds_boolean\x18\x12 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BooleanArraysH\x00\x12\x37\n\x07\x64s_byte\x18\x13 \x01(\x0b\x32$.wodson.DataMatrix.Column.ByteArraysH\x00\x12;\n\tds_double\x18\x14 \x01(\x0b\x32&.wodson.DataMatrix.Column.DoubleArraysH\x00\x12?\n\x0b\x64s_longlong\x18\x15 \x01(\x0b\x32(.wodson.DataMatrix.Column.LongLongArraysH\x00\x12\x37\n\x07\x64s_date\x18\x16 \x01(\x0b\x32$.wodson.DataMatrix.Column.DateArraysH\x00\x12=\n\nds_bytestr\x18\x17 \x01(\x0b\x32\'.wodson.DataMatrix.Column.BytestrArraysH\x00\x12=\n\ndt_unknown\x18\x18 \x01(\x0b\x32\'.wodson.DataMatrix.Column.UnknownArraysH\x00\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x37\n\tDateArray\x12*\n\x06values\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\x1a\xdb\x04\n\x0cUnknownArray\x12&\n\x08\x64\x61tatype\x18\x01 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12:\n\tdt_string\x18\x02 \x01(\x0b\x32%.wodson.DataMatrix.Column.StringArrayH\x00\x12\x36\n\x07\x64t_long\x18\x03 \x01(\x0b\x32#.wodson.DataMatrix.Column.LongArrayH\x00\x12\x38\n\x08\x64t_float\x18\x04 \x01(\x0b\x32$.wodson.DataMatrix.Column.FloatArrayH\x00\x12<\n\ndt_boolean\x18\x05 \x01(\x0b\x32&.wodson.DataMatrix.Column.BooleanArrayH\x00\x12\x36\n\x07\x64t_byte\x18\x06 \x01(\x0b\x32#.wodson.DataMatrix.Column.ByteArrayH\x00\x12:\n\tdt_double\x18\x07 \x01(\x0b\x32%.wodson.DataMatrix.Column.DoubleArrayH\x00\x12>\n\x0b\x64t_longlong\x18\x08 \x01(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArrayH\x00\x12\x36\n\x07\x64t_date\x18\t \x01(\x0b\x32#.wodson.DataMatrix.Column.DateArrayH\x00\x12<\n\ndt_bytestr\x18\n \x01(\x0b\x32&.wodson.DataMatrix.Column.BytestrArrayH\x00\x42\r\n\x0bUnkownUnion\x1a\x45\n\x0cStringArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.StringArray\x1a\x41\n\nLongArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.LongArray\x1a\x43\n\x0b\x46loatArrays\x12\x34\n\x06values\x18\x01 \x03(\x0b\x32$.wodson.DataMatrix.Column.FloatArray\x1aG\n\rBooleanArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BooleanArray\x1a\x41\n\nByteArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.ByteArray\x1a\x45\n\x0c\x44oubleArrays\x12\x35\n\x06values\x18\x01 \x03(\x0b\x32%.wodson.DataMatrix.Column.DoubleArray\x1aI\n\x0eLongLongArrays\x12\x37\n\x06values\x18\x01 \x03(\x0b\x32\'.wodson.DataMatrix.Column.LongLongArray\x1a\x41\n\nDateArrays\x12\x33\n\x06values\x18\x01 \x03(\x0b\x32#.wodson.DataMatrix.Column.DateArray\x1aG\n\rBytestrArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.BytestrArray\x1aG\n\rUnknownArrays\x12\x36\n\x06values\x18\x01 \x03(\x0b\x32&.wodson.DataMatrix.Column.UnknownArray\"\x89\x01\n\rAggregateEnum\x12\x08\n\x04NONE\x10\x00\x12\t\n\x05\x43OUNT\x10\x01\x12\n\n\x06\x44\x43OUNT\x10\x02\x12\x07\n\x03MIN\x10\x03\x12\x07\n\x03MAX\x10\x04\x12\x07\n\x03\x41VG\x10\x05\x12\n\n\x06STDDEV\x10\x06\x12\x07\n\x03SUM\x10\x07\x12\x0c\n\x08\x44ISTINCT\x10\x08\x12\t\n\x05POINT\x10\t\x12\x0e\n\nCALCULATED\x10\nB\r\n\x0bValuesUnion\"K\n\x0c\x44\x61taMatrices\x12$\n\x08matrices\x18\x01 \x03(\x0b\x32\x12.wodson.DataMatrix\x12\x15\n\riterator_guid\x18\x02 \x01(\t\"\xbc\x10\n\x07Request\x12\x0e\n\x06\x65ntity\x18\x01 \x01(\t\x12\x36\n\nconditions\x18\x02 \x03(\x0b\x32\".wodson.Request.ConditionArrayItem\x12,\n\x07orderby\x18\x03 \x03(\x0b\x32\x1b.wodson.Request.OrderbyItem\x12,\n\x07groupby\x18\x04 \x03(\x0b\x32\x1b.wodson.Request.GroupbyItem\x12\x31\n\nattributes\x18\x05 \x03(\x0b\x32\x1d.wodson.Request.AttributeItem\x12\x10\n\x08rowlimit\x18\x06 \x01(\x03\x12\x0f\n\x07rowskip\x18\x07 \x01(\x03\x12\x10\n\x08seqlimit\x18\x08 \x01(\x03\x12\x0f\n\x07seqskip\x18\t \x01(\x03\x1a\x8e\x0c\n\x12\x43onditionArrayItem\x12H\n\x0b\x63onjunction\x18\x01 \x01(\x0e\x32\x31.wodson.Request.ConditionArrayItem.ConjuctionEnumH\x00\x12\x41\n\tcondition\x18\x02 \x01(\x0b\x32,.wodson.Request.ConditionArrayItem.ConditionH\x00\x1a\x9c\n\n\tCondition\x12\x0c\n\x04path\x18\x01 \x01(\t\x12K\n\x08operator\x18\x02 \x01(\x0e\x32\x39.wodson.Request.ConditionArrayItem.Condition.OperatorEnum\x12P\n\x0cvalue_string\x18\x03 \x01(\x0b\x32\x38.wodson.Request.ConditionArrayItem.Condition.StringArrayH\x00\x12L\n\nvalue_long\x18\x04 \x01(\x0b\x32\x36.wodson.Request.ConditionArrayItem.Condition.LongArrayH\x00\x12N\n\x0bvalue_float\x18\x06 \x01(\x0b\x32\x37.wodson.Request.ConditionArrayItem.Condition.FloatArrayH\x00\x12R\n\rvalue_boolean\x18\x07 \x01(\x0b\x32\x39.wodson.Request.ConditionArrayItem.Condition.BooleanArrayH\x00\x12L\n\nvalue_byte\x18\x08 \x01(\x0b\x32\x36.wodson.Request.ConditionArrayItem.Condition.ByteArrayH\x00\x12P\n\x0cvalue_double\x18\t \x01(\x0b\x32\x38.wodson.Request.ConditionArrayItem.Condition.DoubleArrayH\x00\x12T\n\x0evalue_longlong\x18\n \x01(\x0b\x32:.wodson.Request.ConditionArrayItem.Condition.LongLongArrayH\x00\x12L\n\nvalue_date\x18\x0b \x01(\x0b\x32\x36.wodson.Request.ConditionArrayItem.Condition.DateArrayH\x00\x12R\n\rvalue_bytestr\x18\x0c \x01(\x0b\x32\x39.wodson.Request.ConditionArrayItem.Condition.BytestrArrayH\x00\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x37\n\tDateArray\x12*\n\x06values\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\"\x99\x01\n\x0cOperatorEnum\x12\x06\n\x02\x45Q\x10\x00\x12\x07\n\x03NEQ\x10\x01\x12\x06\n\x02LT\x10\x02\x12\x06\n\x02GT\x10\x03\x12\x07\n\x03LTE\x10\x04\x12\x07\n\x03GTE\x10\x05\x12\t\n\x05INSET\x10\x06\x12\x0c\n\x08NOTINSET\x10\x07\x12\x08\n\x04LIKE\x10\x08\x12\n\n\x06ISNULL\x10\t\x12\r\n\tISNOTNULL\x10\n\x12\x0b\n\x07NOTLIKE\x10\x0b\x12\x0b\n\x07\x42\x45TWEEN\x10\x0c\x42\x0c\n\nValueUnion\"?\n\x0e\x43onjuctionEnum\x12\x07\n\x03\x41ND\x10\x00\x12\x06\n\x02OR\x10\x01\x12\x07\n\x03NOT\x10\x02\x12\x08\n\x04OPEN\x10\x03\x12\t\n\x05\x43LOSE\x10\x04\x42\x0b\n\tItemUnion\x1a}\n\x0bOrderbyItem\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x34\n\x05order\x18\x02 \x01(\x0e\x32%.wodson.Request.OrderbyItem.OrderEnum\"*\n\tOrderEnum\x12\r\n\tASCENDING\x10\x00\x12\x0e\n\nDESCENDING\x10\x01\x1a\x1b\n\x0bGroupbyItem\x12\x0c\n\x04path\x18\x01 \x01(\t\x1ag\n\rAttributeItem\x12\x0c\n\x04path\x18\x01 \x01(\t\x12:\n\taggregate\x18\x02 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12\x0c\n\x04unit\x18\x03 \x01(\x03\"&\n\x08Instance\x12\x0e\n\x06\x65ntity\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\x03\"l\n\x10\x42inaryIdentifier\x12\"\n\x08instance\x18\x01 \x01(\x0b\x32\x10.wodson.Instance\x12\x11\n\tattribute\x18\x02 \x01(\t\x12\x10\n\x08seqlimit\x18\x03 \x01(\x03\x12\x0f\n\x07seqskip\x18\x04 \x01(\x03\"A\n\x07\x43onList\x12!\n\x04\x63ons\x18\x01 \x03(\x0b\x32\x13.wodson.ConList.Con\x1a\x13\n\x03\x43on\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x7f\n\x0eNameValuePairs\x12:\n\nparameters\x18\x01 \x03(\x0b\x32&.wodson.NameValuePairs.ParametersEntry\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x18\n\x08\x41samPath\x12\x0c\n\x04path\x18\x01 \x01(\t\"\xe8\t\n\x05Model\x12\x35\n\x0c\x65numerations\x18\x01 \x03(\x0b\x32\x1f.wodson.Model.EnumerationsEntry\x12-\n\x08\x65ntities\x18\x02 \x03(\x0b\x32\x1b.wodson.Model.EntitiesEntry\x1a~\n\x0b\x45numeration\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x33\n\x05items\x18\x02 \x03(\x0b\x32$.wodson.Model.Enumeration.ItemsEntry\x1a,\n\nItemsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1a\xac\x01\n\tAttribute\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61sename\x18\x02 \x01(\t\x12&\n\x08\x64\x61tatype\x18\x03 \x01(\x0e\x32\x14.wodson.DatatypeEnum\x12\x0e\n\x06length\x18\x04 \x01(\x03\x12\x12\n\nobligatory\x18\x05 \x01(\x08\x12\x0e\n\x06unique\x18\x06 \x01(\x08\x12\x0e\n\x06unitid\x18\x07 \x01(\x03\x12\x13\n\x0b\x65numeration\x18\x08 \x01(\t\x1a\xf8\x01\n\x08Relation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61sename\x18\x02 \x01(\t\x12\x14\n\x0cinverse_name\x18\x03 \x01(\t\x12\x18\n\x10inverse_basename\x18\x04 \x01(\t\x12\x12\n\nobligatory\x18\x05 \x01(\x08\x12,\n\x04type\x18\x06 \x01(\x0e\x32\x1e.wodson.Model.RelationTypeEnum\x12,\n\x04kind\x18\x07 \x01(\x0e\x32\x1e.wodson.Model.RelationKindEnum\x12\x13\n\x0b\x65ntity_name\x18\x08 \x01(\t\x12\x17\n\x0f\x65ntity_basename\x18\t \x01(\t\x1a\xc4\x02\n\x06\x45ntity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x62\x61sename\x18\x02 \x01(\t\x12\x12\n\nobjecttype\x18\x03 \x01(\x03\x12\x38\n\nattributes\x18\x04 \x03(\x0b\x32$.wodson.Model.Entity.AttributesEntry\x12\x36\n\trelations\x18\x05 \x03(\x0b\x32#.wodson.Model.Entity.RelationsEntry\x1aJ\n\x0f\x41ttributesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12&\n\x05value\x18\x02 \x01(\x0b\x32\x17.wodson.Model.Attribute:\x02\x38\x01\x1aH\n\x0eRelationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.wodson.Model.Relation:\x02\x38\x01\x1aN\n\x11\x45numerationsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12(\n\x05value\x18\x02 \x01(\x0b\x32\x19.wodson.Model.Enumeration:\x02\x38\x01\x1aJ\n\rEntitiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12(\n\x05value\x18\x02 \x01(\x0b\x32\x19.wodson.Model.Enumeration:\x02\x38\x01\"6\n\x10RelationTypeEnum\x12\n\n\x06RT_1_N\x10\x00\x12\n\n\x06RT_N_1\x10\x01\x12\n\n\x06RT_N_M\x10\x02\"4\n\x10RelationKindEnum\x12\x13\n\x0fRK_FATHER_CHILD\x10\x00\x12\x0b\n\x07RK_INFO\x10\x01\"\xd7\x13\n\x0cSelectStruct\x12\x1a\n\x12\x64\x65\x66\x61ult_objecttype\x18\x01 \x01(\x03\x12\x36\n\nattributes\x18\x02 \x03(\x0b\x32\".wodson.SelectStruct.AttributeItem\x12\x36\n\x05where\x18\x03 \x03(\x0b\x32\'.wodson.SelectStruct.ConditionArrayItem\x12\x31\n\x07orderby\x18\x04 \x03(\x0b\x32 .wodson.SelectStruct.OrderbyItem\x12\x31\n\x07groupby\x18\x05 \x03(\x0b\x32 .wodson.SelectStruct.GroupbyItem\x12\x10\n\x08rowlimit\x18\x06 \x01(\x03\x12\x0f\n\x07rowskip\x18\x07 \x01(\x03\x12\x10\n\x08seqlimit\x18\x08 \x01(\x03\x12\x0f\n\x07seqskip\x18\t \x01(\x03\x1a\xbb\x0e\n\x12\x43onditionArrayItem\x12M\n\x0b\x63onjunction\x18\x01 \x01(\x0e\x32\x36.wodson.SelectStruct.ConditionArrayItem.ConjuctionEnumH\x00\x12\x46\n\tcondition\x18\x02 \x01(\x0b\x32\x31.wodson.SelectStruct.ConditionArrayItem.ConditionH\x00\x1a\xa6\x0c\n\tCondition\x12\x12\n\nobjecttype\x18\x01 \x01(\x03\x12\x10\n\x08\x61tribute\x18\x02 \x01(\t\x12\x0c\n\x04unit\x18\x03 \x01(\x03\x12P\n\x08operator\x18\x04 \x01(\x0e\x32>.wodson.SelectStruct.ConditionArrayItem.Condition.OperatorEnum\x12U\n\x0cvalue_string\x18\x05 \x01(\x0b\x32=.wodson.SelectStruct.ConditionArrayItem.Condition.StringArrayH\x00\x12Q\n\nvalue_long\x18\x06 \x01(\x0b\x32;.wodson.SelectStruct.ConditionArrayItem.Condition.LongArrayH\x00\x12S\n\x0bvalue_float\x18\x07 \x01(\x0b\x32<.wodson.SelectStruct.ConditionArrayItem.Condition.FloatArrayH\x00\x12W\n\rvalue_boolean\x18\x08 \x01(\x0b\x32>.wodson.SelectStruct.ConditionArrayItem.Condition.BooleanArrayH\x00\x12Q\n\nvalue_byte\x18\t \x01(\x0b\x32;.wodson.SelectStruct.ConditionArrayItem.Condition.ByteArrayH\x00\x12U\n\x0cvalue_double\x18\n \x01(\x0b\x32=.wodson.SelectStruct.ConditionArrayItem.Condition.DoubleArrayH\x00\x12Y\n\x0evalue_longlong\x18\x0b \x01(\x0b\x32?.wodson.SelectStruct.ConditionArrayItem.Condition.LongLongArrayH\x00\x12Q\n\nvalue_date\x18\x0c \x01(\x0b\x32;.wodson.SelectStruct.ConditionArrayItem.Condition.DateArrayH\x00\x12W\n\rvalue_bytestr\x18\r \x01(\x0b\x32>.wodson.SelectStruct.ConditionArrayItem.Condition.BytestrArrayH\x00\x12,\n\x0cvalue_nested\x18\x0e \x01(\x0b\x32\x14.wodson.SelectStructH\x00\x1a\x1d\n\x0bStringArray\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x1b\n\tLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x05\x1a\x1c\n\nFloatArray\x12\x0e\n\x06values\x18\x01 \x03(\x02\x1a\x1e\n\x0c\x42ooleanArray\x12\x0e\n\x06values\x18\x01 \x03(\x08\x1a\x1b\n\tByteArray\x12\x0e\n\x06values\x18\x01 \x01(\x0c\x1a\x1d\n\x0b\x44oubleArray\x12\x0e\n\x06values\x18\x01 \x03(\x01\x1a\x1f\n\rLongLongArray\x12\x0e\n\x06values\x18\x01 \x03(\x03\x1a\x37\n\tDateArray\x12*\n\x06values\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x1e\n\x0c\x42ytestrArray\x12\x0e\n\x06values\x18\x01 \x03(\x0c\"\x9d\x02\n\x0cOperatorEnum\x12\x06\n\x02\x45Q\x10\x00\x12\x07\n\x03NEQ\x10\x01\x12\x06\n\x02LT\x10\x02\x12\x06\n\x02GT\x10\x03\x12\x07\n\x03LTE\x10\x04\x12\x07\n\x03GTE\x10\x05\x12\t\n\x05INSET\x10\x06\x12\x0c\n\x08NOTINSET\x10\x07\x12\x08\n\x04LIKE\x10\x08\x12\t\n\x05\x43I_EQ\x10\t\x12\n\n\x06\x43I_NEQ\x10\n\x12\t\n\x05\x43I_LT\x10\x0b\x12\t\n\x05\x43I_GT\x10\x0c\x12\n\n\x06\x43I_LTE\x10\r\x12\n\n\x06\x43I_GTE\x10\x0e\x12\x0c\n\x08\x43I_INSET\x10\x0f\x12\x0f\n\x0b\x43I_NOTINSET\x10\x10\x12\x0b\n\x07\x43I_LIKE\x10\x11\x12\x0b\n\x07IS_NULL\x10\x12\x12\x0f\n\x0bIS_NOT_NULL\x10\x13\x12\x0b\n\x07NOTLIKE\x10\x14\x12\x0e\n\nCI_NOTLIKE\x10\x15\x12\x0b\n\x07\x42\x45TWEEN\x10\x16\x42\x0c\n\nValueUnion\"X\n\x0e\x43onjuctionEnum\x12\x17\n\x13INVALID_CONJUNCTION\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x12\x06\n\x02OR\x10\x02\x12\x07\n\x03NOT\x10\x03\x12\x08\n\x04OPEN\x10\x04\x12\t\n\x05\x43LOSE\x10\x05\x42\x0b\n\tItemUnion\x1a\x9a\x01\n\x0bOrderbyItem\x12\x12\n\nobjecttype\x18\x01 \x01(\x03\x12\x10\n\x08\x61tribute\x18\x02 \x01(\t\x12\x39\n\x05order\x18\x03 \x01(\x0e\x32*.wodson.SelectStruct.OrderbyItem.OrderEnum\"*\n\tOrderEnum\x12\r\n\tASCENDING\x10\x00\x12\x0e\n\nDESCENDING\x10\x01\x1a\x33\n\x0bGroupbyItem\x12\x12\n\nobjecttype\x18\x01 \x01(\x03\x12\x10\n\x08\x61tribute\x18\x02 \x01(\t\x1a\x7f\n\rAttributeItem\x12\x12\n\nobjecttype\x18\x01 \x01(\x03\x12\x10\n\x08\x61tribute\x18\x02 \x01(\t\x12:\n\taggregate\x18\x03 \x01(\x0e\x32\'.wodson.DataMatrix.Column.AggregateEnum\x12\x0c\n\x04unit\x18\x04 \x01(\x03*\xf5\x03\n\x0c\x44\x61tatypeEnum\x12\x0e\n\nDT_UNKNOWN\x10\x00\x12\r\n\tDT_STRING\x10\x01\x12\x0c\n\x08\x44T_SHORT\x10\x02\x12\x0c\n\x08\x44T_FLOAT\x10\x03\x12\x0e\n\nDT_BOOLEAN\x10\x04\x12\x0b\n\x07\x44T_BYTE\x10\x05\x12\x0b\n\x07\x44T_LONG\x10\x06\x12\r\n\tDT_DOUBLE\x10\x07\x12\x0f\n\x0b\x44T_LONGLONG\x10\x08\x12\t\n\x05\x44T_ID\x10\t\x12\x0b\n\x07\x44T_DATE\x10\n\x12\x0e\n\nDT_BYTESTR\x10\x0b\x12\x0b\n\x07\x44T_BLOB\x10\x0c\x12\x0e\n\nDT_COMPLEX\x10\r\x12\x0f\n\x0b\x44T_DCOMPLEX\x10\x0e\x12\r\n\tDS_STRING\x10\x0f\x12\x0c\n\x08\x44S_SHORT\x10\x10\x12\x0c\n\x08\x44S_FLOAT\x10\x11\x12\x0e\n\nDS_BOOLEAN\x10\x12\x12\x0b\n\x07\x44S_BYTE\x10\x13\x12\x0b\n\x07\x44S_LONG\x10\x14\x12\r\n\tDS_DOUBLE\x10\x15\x12\x0f\n\x0b\x44S_LONGLONG\x10\x16\x12\x0e\n\nDS_COMPLEX\x10\x17\x12\x0f\n\x0b\x44S_DCOMPLEX\x10\x18\x12\t\n\x05\x44S_ID\x10\x19\x12\x0b\n\x07\x44S_DATE\x10\x1a\x12\x0e\n\nDS_BYTESTR\x10\x1b\x12\x18\n\x14\x44T_EXTERNALREFERENCE\x10\x1c\x12\x18\n\x14\x44S_EXTERNALREFERENCE\x10\x1d\x12\x0b\n\x07\x44T_ENUM\x10\x1e\x12\x0b\n\x07\x44S_ENUM\x10\x1f\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -163,8 +163,8 @@ _DATATYPEENUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=7087,
-  serialized_end=7588,
+  serialized_start=9629,
+  serialized_end=10130,
 )
 _sym_db.RegisterEnumDescriptor(_DATATYPEENUM)
 
@@ -256,8 +256,8 @@ _DATAMATRIX_COLUMN_AGGREGATEENUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3113,
-  serialized_end=3250,
+  serialized_start=3133,
+  serialized_end=3270,
 )
 _sym_db.RegisterEnumDescriptor(_DATAMATRIX_COLUMN_AGGREGATEENUM)
 
@@ -322,8 +322,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_OPERATORENUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=4947,
-  serialized_end=5100,
+  serialized_start=4967,
+  serialized_end=5120,
 )
 _sym_db.RegisterEnumDescriptor(_REQUEST_CONDITIONARRAYITEM_CONDITION_OPERATORENUM)
 
@@ -356,8 +356,8 @@ _REQUEST_CONDITIONARRAYITEM_CONJUCTIONENUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=5116,
-  serialized_end=5179,
+  serialized_start=5136,
+  serialized_end=5199,
 )
 _sym_db.RegisterEnumDescriptor(_REQUEST_CONDITIONARRAYITEM_CONJUCTIONENUM)
 
@@ -378,8 +378,8 @@ _REQUEST_ORDERBYITEM_ORDERENUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=5277,
-  serialized_end=5319,
+  serialized_start=5297,
+  serialized_end=5339,
 )
 _sym_db.RegisterEnumDescriptor(_REQUEST_ORDERBYITEM_ORDERENUM)
 
@@ -404,8 +404,8 @@ _MODEL_RELATIONTYPEENUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=6976,
-  serialized_end=7030,
+  serialized_start=6996,
+  serialized_end=7050,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_RELATIONTYPEENUM)
 
@@ -426,10 +426,176 @@ _MODEL_RELATIONKINDENUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=7032,
-  serialized_end=7084,
+  serialized_start=7052,
+  serialized_end=7104,
 )
 _sym_db.RegisterEnumDescriptor(_MODEL_RELATIONKINDENUM)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_OPERATORENUM = _descriptor.EnumDescriptor(
+  name='OperatorEnum',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.OperatorEnum',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='EQ', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NEQ', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='LT', index=2, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GT', index=3, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='LTE', index=4, number=4,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GTE', index=5, number=5,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='INSET', index=6, number=6,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NOTINSET', index=7, number=7,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='LIKE', index=8, number=8,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_EQ', index=9, number=9,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_NEQ', index=10, number=10,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_LT', index=11, number=11,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_GT', index=12, number=12,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_LTE', index=13, number=13,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_GTE', index=14, number=14,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_INSET', index=15, number=15,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_NOTINSET', index=16, number=16,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_LIKE', index=17, number=17,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='IS_NULL', index=18, number=18,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='IS_NOT_NULL', index=19, number=19,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NOTLIKE', index=20, number=20,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CI_NOTLIKE', index=21, number=21,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='BETWEEN', index=22, number=22,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=8885,
+  serialized_end=9170,
+)
+_sym_db.RegisterEnumDescriptor(_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_OPERATORENUM)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONJUCTIONENUM = _descriptor.EnumDescriptor(
+  name='ConjuctionEnum',
+  full_name='wodson.SelectStruct.ConditionArrayItem.ConjuctionEnum',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='INVALID_CONJUNCTION', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='AND', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='OR', index=2, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NOT', index=3, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='OPEN', index=4, number=4,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CLOSE', index=5, number=5,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=9186,
+  serialized_end=9274,
+)
+_sym_db.RegisterEnumDescriptor(_SELECTSTRUCT_CONDITIONARRAYITEM_CONJUCTIONENUM)
+
+_SELECTSTRUCT_ORDERBYITEM_ORDERENUM = _descriptor.EnumDescriptor(
+  name='OrderEnum',
+  full_name='wodson.SelectStruct.OrderbyItem.OrderEnum',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='ASCENDING', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='DESCENDING', index=1, number=1,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=5297,
+  serialized_end=5339,
+)
+_sym_db.RegisterEnumDescriptor(_SELECTSTRUCT_ORDERBYITEM_ORDERENUM)
 
 
 _DATAMATRIX_COLUMN_STRINGARRAY = _descriptor.Descriptor(
@@ -458,8 +624,8 @@ _DATAMATRIX_COLUMN_STRINGARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1496,
-  serialized_end=1525,
+  serialized_start=1516,
+  serialized_end=1545,
 )
 
 _DATAMATRIX_COLUMN_LONGARRAY = _descriptor.Descriptor(
@@ -488,8 +654,8 @@ _DATAMATRIX_COLUMN_LONGARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1527,
-  serialized_end=1554,
+  serialized_start=1547,
+  serialized_end=1574,
 )
 
 _DATAMATRIX_COLUMN_FLOATARRAY = _descriptor.Descriptor(
@@ -518,8 +684,8 @@ _DATAMATRIX_COLUMN_FLOATARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1556,
-  serialized_end=1584,
+  serialized_start=1576,
+  serialized_end=1604,
 )
 
 _DATAMATRIX_COLUMN_BOOLEANARRAY = _descriptor.Descriptor(
@@ -548,8 +714,8 @@ _DATAMATRIX_COLUMN_BOOLEANARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1586,
-  serialized_end=1616,
+  serialized_start=1606,
+  serialized_end=1636,
 )
 
 _DATAMATRIX_COLUMN_BYTEARRAY = _descriptor.Descriptor(
@@ -578,8 +744,8 @@ _DATAMATRIX_COLUMN_BYTEARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1618,
-  serialized_end=1645,
+  serialized_start=1638,
+  serialized_end=1665,
 )
 
 _DATAMATRIX_COLUMN_DOUBLEARRAY = _descriptor.Descriptor(
@@ -608,8 +774,8 @@ _DATAMATRIX_COLUMN_DOUBLEARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1647,
-  serialized_end=1676,
+  serialized_start=1667,
+  serialized_end=1696,
 )
 
 _DATAMATRIX_COLUMN_LONGLONGARRAY = _descriptor.Descriptor(
@@ -638,8 +804,8 @@ _DATAMATRIX_COLUMN_LONGLONGARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1678,
-  serialized_end=1709,
+  serialized_start=1698,
+  serialized_end=1729,
 )
 
 _DATAMATRIX_COLUMN_DATEARRAY = _descriptor.Descriptor(
@@ -668,8 +834,8 @@ _DATAMATRIX_COLUMN_DATEARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1711,
-  serialized_end=1766,
+  serialized_start=1731,
+  serialized_end=1786,
 )
 
 _DATAMATRIX_COLUMN_BYTESTRARRAY = _descriptor.Descriptor(
@@ -698,8 +864,8 @@ _DATAMATRIX_COLUMN_BYTESTRARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1768,
-  serialized_end=1798,
+  serialized_start=1788,
+  serialized_end=1818,
 )
 
 _DATAMATRIX_COLUMN_UNKNOWNARRAY = _descriptor.Descriptor(
@@ -794,8 +960,8 @@ _DATAMATRIX_COLUMN_UNKNOWNARRAY = _descriptor.Descriptor(
       name='UnkownUnion', full_name='wodson.DataMatrix.Column.UnknownArray.UnkownUnion',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1801,
-  serialized_end=2404,
+  serialized_start=1821,
+  serialized_end=2424,
 )
 
 _DATAMATRIX_COLUMN_STRINGARRAYS = _descriptor.Descriptor(
@@ -824,8 +990,8 @@ _DATAMATRIX_COLUMN_STRINGARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2406,
-  serialized_end=2475,
+  serialized_start=2426,
+  serialized_end=2495,
 )
 
 _DATAMATRIX_COLUMN_LONGARRAYS = _descriptor.Descriptor(
@@ -854,8 +1020,8 @@ _DATAMATRIX_COLUMN_LONGARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2477,
-  serialized_end=2542,
+  serialized_start=2497,
+  serialized_end=2562,
 )
 
 _DATAMATRIX_COLUMN_FLOATARRAYS = _descriptor.Descriptor(
@@ -884,8 +1050,8 @@ _DATAMATRIX_COLUMN_FLOATARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2544,
-  serialized_end=2611,
+  serialized_start=2564,
+  serialized_end=2631,
 )
 
 _DATAMATRIX_COLUMN_BOOLEANARRAYS = _descriptor.Descriptor(
@@ -914,8 +1080,8 @@ _DATAMATRIX_COLUMN_BOOLEANARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2613,
-  serialized_end=2684,
+  serialized_start=2633,
+  serialized_end=2704,
 )
 
 _DATAMATRIX_COLUMN_BYTEARRAYS = _descriptor.Descriptor(
@@ -944,8 +1110,8 @@ _DATAMATRIX_COLUMN_BYTEARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2686,
-  serialized_end=2751,
+  serialized_start=2706,
+  serialized_end=2771,
 )
 
 _DATAMATRIX_COLUMN_DOUBLEARRAYS = _descriptor.Descriptor(
@@ -974,8 +1140,8 @@ _DATAMATRIX_COLUMN_DOUBLEARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2753,
-  serialized_end=2822,
+  serialized_start=2773,
+  serialized_end=2842,
 )
 
 _DATAMATRIX_COLUMN_LONGLONGARRAYS = _descriptor.Descriptor(
@@ -1004,8 +1170,8 @@ _DATAMATRIX_COLUMN_LONGLONGARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2824,
-  serialized_end=2897,
+  serialized_start=2844,
+  serialized_end=2917,
 )
 
 _DATAMATRIX_COLUMN_DATEARRAYS = _descriptor.Descriptor(
@@ -1034,8 +1200,8 @@ _DATAMATRIX_COLUMN_DATEARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2899,
-  serialized_end=2964,
+  serialized_start=2919,
+  serialized_end=2984,
 )
 
 _DATAMATRIX_COLUMN_BYTESTRARRAYS = _descriptor.Descriptor(
@@ -1064,8 +1230,8 @@ _DATAMATRIX_COLUMN_BYTESTRARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2966,
-  serialized_end=3037,
+  serialized_start=2986,
+  serialized_end=3057,
 )
 
 _DATAMATRIX_COLUMN_UNKNOWNARRAYS = _descriptor.Descriptor(
@@ -1094,8 +1260,8 @@ _DATAMATRIX_COLUMN_UNKNOWNARRAYS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3039,
-  serialized_end=3110,
+  serialized_start=3059,
+  serialized_end=3130,
 )
 
 _DATAMATRIX_COLUMN = _descriptor.Descriptor(
@@ -1289,8 +1455,8 @@ _DATAMATRIX_COLUMN = _descriptor.Descriptor(
       name='ValuesUnion', full_name='wodson.DataMatrix.Column.ValuesUnion',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=198,
-  serialized_end=3265,
+  serialized_start=218,
+  serialized_end=3285,
 )
 
 _DATAMATRIX = _descriptor.Descriptor(
@@ -1315,23 +1481,30 @@ _DATAMATRIX = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='row_skip_count', full_name='wodson.DataMatrix.row_skip_count', index=2,
+      name='objecttype', full_name='wodson.DataMatrix.objecttype', index=2,
       number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='seq_skip_count', full_name='wodson.DataMatrix.seq_skip_count', index=3,
-      number=4, type=3, cpp_type=2, label=1,
+      name='columns', full_name='wodson.DataMatrix.columns', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='row_skip_count', full_name='wodson.DataMatrix.row_skip_count', index=4,
+      number=5, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='columns', full_name='wodson.DataMatrix.columns', index=4,
-      number=5, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='seq_skip_count', full_name='wodson.DataMatrix.seq_skip_count', index=5,
+      number=6, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1348,7 +1521,7 @@ _DATAMATRIX = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=58,
-  serialized_end=3265,
+  serialized_end=3285,
 )
 
 
@@ -1385,8 +1558,8 @@ _DATAMATRICES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3267,
-  serialized_end=3342,
+  serialized_start=3287,
+  serialized_end=3362,
 )
 
 
@@ -1416,8 +1589,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_STRINGARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1496,
-  serialized_end=1525,
+  serialized_start=1516,
+  serialized_end=1545,
 )
 
 _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGARRAY = _descriptor.Descriptor(
@@ -1446,8 +1619,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1527,
-  serialized_end=1554,
+  serialized_start=1547,
+  serialized_end=1574,
 )
 
 _REQUEST_CONDITIONARRAYITEM_CONDITION_FLOATARRAY = _descriptor.Descriptor(
@@ -1476,8 +1649,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_FLOATARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1556,
-  serialized_end=1584,
+  serialized_start=1576,
+  serialized_end=1604,
 )
 
 _REQUEST_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY = _descriptor.Descriptor(
@@ -1506,8 +1679,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1586,
-  serialized_end=1616,
+  serialized_start=1606,
+  serialized_end=1636,
 )
 
 _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTEARRAY = _descriptor.Descriptor(
@@ -1536,8 +1709,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTEARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1618,
-  serialized_end=1645,
+  serialized_start=1638,
+  serialized_end=1665,
 )
 
 _REQUEST_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY = _descriptor.Descriptor(
@@ -1566,8 +1739,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1647,
-  serialized_end=1676,
+  serialized_start=1667,
+  serialized_end=1696,
 )
 
 _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY = _descriptor.Descriptor(
@@ -1596,8 +1769,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1678,
-  serialized_end=1709,
+  serialized_start=1698,
+  serialized_end=1729,
 )
 
 _REQUEST_CONDITIONARRAYITEM_CONDITION_DATEARRAY = _descriptor.Descriptor(
@@ -1626,8 +1799,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_DATEARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1711,
-  serialized_end=1766,
+  serialized_start=1731,
+  serialized_end=1786,
 )
 
 _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY = _descriptor.Descriptor(
@@ -1656,8 +1829,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1768,
-  serialized_end=1798,
+  serialized_start=1788,
+  serialized_end=1818,
 )
 
 _REQUEST_CONDITIONARRAYITEM_CONDITION = _descriptor.Descriptor(
@@ -1760,8 +1933,8 @@ _REQUEST_CONDITIONARRAYITEM_CONDITION = _descriptor.Descriptor(
       name='ValueUnion', full_name='wodson.Request.ConditionArrayItem.Condition.ValueUnion',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3806,
-  serialized_end=5114,
+  serialized_start=3826,
+  serialized_end=5134,
 )
 
 _REQUEST_CONDITIONARRAYITEM = _descriptor.Descriptor(
@@ -1801,8 +1974,8 @@ _REQUEST_CONDITIONARRAYITEM = _descriptor.Descriptor(
       name='ItemUnion', full_name='wodson.Request.ConditionArrayItem.ItemUnion',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3642,
-  serialized_end=5192,
+  serialized_start=3662,
+  serialized_end=5212,
 )
 
 _REQUEST_ORDERBYITEM = _descriptor.Descriptor(
@@ -1839,8 +2012,8 @@ _REQUEST_ORDERBYITEM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5194,
-  serialized_end=5319,
+  serialized_start=5214,
+  serialized_end=5339,
 )
 
 _REQUEST_GROUPBYITEM = _descriptor.Descriptor(
@@ -1869,8 +2042,8 @@ _REQUEST_GROUPBYITEM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5321,
-  serialized_end=5348,
+  serialized_start=5341,
+  serialized_end=5368,
 )
 
 _REQUEST_ATTRIBUTEITEM = _descriptor.Descriptor(
@@ -1913,8 +2086,8 @@ _REQUEST_ATTRIBUTEITEM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5350,
-  serialized_end=5453,
+  serialized_start=5370,
+  serialized_end=5473,
 )
 
 _REQUEST = _descriptor.Descriptor(
@@ -1999,8 +2172,8 @@ _REQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3345,
-  serialized_end=5453,
+  serialized_start=3365,
+  serialized_end=5473,
 )
 
 
@@ -2037,8 +2210,8 @@ _INSTANCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5455,
-  serialized_end=5493,
+  serialized_start=5475,
+  serialized_end=5513,
 )
 
 
@@ -2089,8 +2262,8 @@ _BINARYIDENTIFIER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5495,
-  serialized_end=5603,
+  serialized_start=5515,
+  serialized_end=5623,
 )
 
 
@@ -2120,8 +2293,8 @@ _CONLIST_CON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5651,
-  serialized_end=5670,
+  serialized_start=5671,
+  serialized_end=5690,
 )
 
 _CONLIST = _descriptor.Descriptor(
@@ -2150,8 +2323,8 @@ _CONLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5605,
-  serialized_end=5670,
+  serialized_start=5625,
+  serialized_end=5690,
 )
 
 
@@ -2188,8 +2361,8 @@ _NAMEVALUEPAIRS_PARAMETERSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5750,
-  serialized_end=5799,
+  serialized_start=5770,
+  serialized_end=5819,
 )
 
 _NAMEVALUEPAIRS = _descriptor.Descriptor(
@@ -2218,8 +2391,8 @@ _NAMEVALUEPAIRS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5672,
-  serialized_end=5799,
+  serialized_start=5692,
+  serialized_end=5819,
 )
 
 
@@ -2249,8 +2422,8 @@ _ASAMPATH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5801,
-  serialized_end=5825,
+  serialized_start=5821,
+  serialized_end=5845,
 )
 
 
@@ -2287,8 +2460,8 @@ _MODEL_ENUMERATION_ITEMSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6021,
-  serialized_end=6065,
+  serialized_start=6041,
+  serialized_end=6085,
 )
 
 _MODEL_ENUMERATION = _descriptor.Descriptor(
@@ -2324,8 +2497,8 @@ _MODEL_ENUMERATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5939,
-  serialized_end=6065,
+  serialized_start=5959,
+  serialized_end=6085,
 )
 
 _MODEL_ATTRIBUTE = _descriptor.Descriptor(
@@ -2403,8 +2576,8 @@ _MODEL_ATTRIBUTE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6068,
-  serialized_end=6240,
+  serialized_start=6088,
+  serialized_end=6260,
 )
 
 _MODEL_RELATION = _descriptor.Descriptor(
@@ -2489,8 +2662,8 @@ _MODEL_RELATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6243,
-  serialized_end=6491,
+  serialized_start=6263,
+  serialized_end=6511,
 )
 
 _MODEL_ENTITY_ATTRIBUTESENTRY = _descriptor.Descriptor(
@@ -2526,8 +2699,8 @@ _MODEL_ENTITY_ATTRIBUTESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6670,
-  serialized_end=6744,
+  serialized_start=6690,
+  serialized_end=6764,
 )
 
 _MODEL_ENTITY_RELATIONSENTRY = _descriptor.Descriptor(
@@ -2563,8 +2736,8 @@ _MODEL_ENTITY_RELATIONSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6746,
-  serialized_end=6818,
+  serialized_start=6766,
+  serialized_end=6838,
 )
 
 _MODEL_ENTITY = _descriptor.Descriptor(
@@ -2621,8 +2794,8 @@ _MODEL_ENTITY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6494,
-  serialized_end=6818,
+  serialized_start=6514,
+  serialized_end=6838,
 )
 
 _MODEL_ENUMERATIONSENTRY = _descriptor.Descriptor(
@@ -2658,8 +2831,8 @@ _MODEL_ENUMERATIONSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6820,
-  serialized_end=6898,
+  serialized_start=6840,
+  serialized_end=6918,
 )
 
 _MODEL_ENTITIESENTRY = _descriptor.Descriptor(
@@ -2695,8 +2868,8 @@ _MODEL_ENTITIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6900,
-  serialized_end=6974,
+  serialized_start=6920,
+  serialized_end=6994,
 )
 
 _MODEL = _descriptor.Descriptor(
@@ -2734,8 +2907,664 @@ _MODEL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5828,
-  serialized_end=7084,
+  serialized_start=5848,
+  serialized_end=7104,
+)
+
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_STRINGARRAY = _descriptor.Descriptor(
+  name='StringArray',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.StringArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.StringArray.values', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1516,
+  serialized_end=1545,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGARRAY = _descriptor.Descriptor(
+  name='LongArray',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.LongArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.LongArray.values', index=0,
+      number=1, type=5, cpp_type=1, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1547,
+  serialized_end=1574,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_FLOATARRAY = _descriptor.Descriptor(
+  name='FloatArray',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.FloatArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.FloatArray.values', index=0,
+      number=1, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1576,
+  serialized_end=1604,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY = _descriptor.Descriptor(
+  name='BooleanArray',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.BooleanArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.BooleanArray.values', index=0,
+      number=1, type=8, cpp_type=7, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1606,
+  serialized_end=1636,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTEARRAY = _descriptor.Descriptor(
+  name='ByteArray',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.ByteArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.ByteArray.values', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1638,
+  serialized_end=1665,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY = _descriptor.Descriptor(
+  name='DoubleArray',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.DoubleArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.DoubleArray.values', index=0,
+      number=1, type=1, cpp_type=5, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1667,
+  serialized_end=1696,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY = _descriptor.Descriptor(
+  name='LongLongArray',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.LongLongArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.LongLongArray.values', index=0,
+      number=1, type=3, cpp_type=2, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1698,
+  serialized_end=1729,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DATEARRAY = _descriptor.Descriptor(
+  name='DateArray',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.DateArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.DateArray.values', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1731,
+  serialized_end=1786,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY = _descriptor.Descriptor(
+  name='BytestrArray',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition.BytestrArray',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='values', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.BytestrArray.values', index=0,
+      number=1, type=12, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1788,
+  serialized_end=1818,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION = _descriptor.Descriptor(
+  name='Condition',
+  full_name='wodson.SelectStruct.ConditionArrayItem.Condition',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='objecttype', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.objecttype', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='atribute', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.atribute', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='unit', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.unit', index=2,
+      number=3, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='operator', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.operator', index=3,
+      number=4, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_string', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_string', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_long', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_long', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_float', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_float', index=6,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_boolean', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_boolean', index=7,
+      number=8, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_byte', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_byte', index=8,
+      number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_double', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_double', index=9,
+      number=10, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_longlong', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_longlong', index=10,
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_date', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_date', index=11,
+      number=12, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_bytestr', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_bytestr', index=12,
+      number=13, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value_nested', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.value_nested', index=13,
+      number=14, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_STRINGARRAY, _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGARRAY, _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_FLOATARRAY, _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY, _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTEARRAY, _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY, _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY, _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DATEARRAY, _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY, ],
+  enum_types=[
+    _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_OPERATORENUM,
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='ValueUnion', full_name='wodson.SelectStruct.ConditionArrayItem.Condition.ValueUnion',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=7610,
+  serialized_end=9184,
+)
+
+_SELECTSTRUCT_CONDITIONARRAYITEM = _descriptor.Descriptor(
+  name='ConditionArrayItem',
+  full_name='wodson.SelectStruct.ConditionArrayItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='conjunction', full_name='wodson.SelectStruct.ConditionArrayItem.conjunction', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='condition', full_name='wodson.SelectStruct.ConditionArrayItem.condition', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION, ],
+  enum_types=[
+    _SELECTSTRUCT_CONDITIONARRAYITEM_CONJUCTIONENUM,
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='ItemUnion', full_name='wodson.SelectStruct.ConditionArrayItem.ItemUnion',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=7436,
+  serialized_end=9287,
+)
+
+_SELECTSTRUCT_ORDERBYITEM = _descriptor.Descriptor(
+  name='OrderbyItem',
+  full_name='wodson.SelectStruct.OrderbyItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='objecttype', full_name='wodson.SelectStruct.OrderbyItem.objecttype', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='atribute', full_name='wodson.SelectStruct.OrderbyItem.atribute', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='order', full_name='wodson.SelectStruct.OrderbyItem.order', index=2,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _SELECTSTRUCT_ORDERBYITEM_ORDERENUM,
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=9290,
+  serialized_end=9444,
+)
+
+_SELECTSTRUCT_GROUPBYITEM = _descriptor.Descriptor(
+  name='GroupbyItem',
+  full_name='wodson.SelectStruct.GroupbyItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='objecttype', full_name='wodson.SelectStruct.GroupbyItem.objecttype', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='atribute', full_name='wodson.SelectStruct.GroupbyItem.atribute', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=9446,
+  serialized_end=9497,
+)
+
+_SELECTSTRUCT_ATTRIBUTEITEM = _descriptor.Descriptor(
+  name='AttributeItem',
+  full_name='wodson.SelectStruct.AttributeItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='objecttype', full_name='wodson.SelectStruct.AttributeItem.objecttype', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='atribute', full_name='wodson.SelectStruct.AttributeItem.atribute', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='aggregate', full_name='wodson.SelectStruct.AttributeItem.aggregate', index=2,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='unit', full_name='wodson.SelectStruct.AttributeItem.unit', index=3,
+      number=4, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=9499,
+  serialized_end=9626,
+)
+
+_SELECTSTRUCT = _descriptor.Descriptor(
+  name='SelectStruct',
+  full_name='wodson.SelectStruct',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='default_objecttype', full_name='wodson.SelectStruct.default_objecttype', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='attributes', full_name='wodson.SelectStruct.attributes', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='where', full_name='wodson.SelectStruct.where', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='orderby', full_name='wodson.SelectStruct.orderby', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='groupby', full_name='wodson.SelectStruct.groupby', index=4,
+      number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='rowlimit', full_name='wodson.SelectStruct.rowlimit', index=5,
+      number=6, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='rowskip', full_name='wodson.SelectStruct.rowskip', index=6,
+      number=7, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='seqlimit', full_name='wodson.SelectStruct.seqlimit', index=7,
+      number=8, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='seqskip', full_name='wodson.SelectStruct.seqskip', index=8,
+      number=9, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_SELECTSTRUCT_CONDITIONARRAYITEM, _SELECTSTRUCT_ORDERBYITEM, _SELECTSTRUCT_GROUPBYITEM, _SELECTSTRUCT_ATTRIBUTEITEM, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=7107,
+  serialized_end=9626,
 )
 
 _DATAMATRIX_COLUMN_STRINGARRAY.containing_type = _DATAMATRIX_COLUMN
@@ -2985,6 +3814,79 @@ _MODEL.fields_by_name['enumerations'].message_type = _MODEL_ENUMERATIONSENTRY
 _MODEL.fields_by_name['entities'].message_type = _MODEL_ENTITIESENTRY
 _MODEL_RELATIONTYPEENUM.containing_type = _MODEL
 _MODEL_RELATIONKINDENUM.containing_type = _MODEL
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_STRINGARRAY.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGARRAY.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_FLOATARRAY.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTEARRAY.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DATEARRAY.fields_by_name['values'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DATEARRAY.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['operator'].enum_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_OPERATORENUM
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_string'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_STRINGARRAY
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_long'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGARRAY
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_float'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_FLOATARRAY
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_boolean'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_byte'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTEARRAY
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_double'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_longlong'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_date'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DATEARRAY
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_bytestr'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_nested'].message_type = _SELECTSTRUCT
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_OPERATORENUM.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_string'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_string'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_long'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_long'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_float'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_float'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_boolean'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_boolean'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_byte'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_byte'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_double'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_double'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_longlong'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_longlong'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_date'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_date'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_bytestr'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_bytestr'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_nested'])
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.fields_by_name['value_nested'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION.oneofs_by_name['ValueUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM.fields_by_name['conjunction'].enum_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONJUCTIONENUM
+_SELECTSTRUCT_CONDITIONARRAYITEM.fields_by_name['condition'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION
+_SELECTSTRUCT_CONDITIONARRAYITEM.containing_type = _SELECTSTRUCT
+_SELECTSTRUCT_CONDITIONARRAYITEM_CONJUCTIONENUM.containing_type = _SELECTSTRUCT_CONDITIONARRAYITEM
+_SELECTSTRUCT_CONDITIONARRAYITEM.oneofs_by_name['ItemUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM.fields_by_name['conjunction'])
+_SELECTSTRUCT_CONDITIONARRAYITEM.fields_by_name['conjunction'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM.oneofs_by_name['ItemUnion']
+_SELECTSTRUCT_CONDITIONARRAYITEM.oneofs_by_name['ItemUnion'].fields.append(
+  _SELECTSTRUCT_CONDITIONARRAYITEM.fields_by_name['condition'])
+_SELECTSTRUCT_CONDITIONARRAYITEM.fields_by_name['condition'].containing_oneof = _SELECTSTRUCT_CONDITIONARRAYITEM.oneofs_by_name['ItemUnion']
+_SELECTSTRUCT_ORDERBYITEM.fields_by_name['order'].enum_type = _SELECTSTRUCT_ORDERBYITEM_ORDERENUM
+_SELECTSTRUCT_ORDERBYITEM.containing_type = _SELECTSTRUCT
+_SELECTSTRUCT_ORDERBYITEM_ORDERENUM.containing_type = _SELECTSTRUCT_ORDERBYITEM
+_SELECTSTRUCT_GROUPBYITEM.containing_type = _SELECTSTRUCT
+_SELECTSTRUCT_ATTRIBUTEITEM.fields_by_name['aggregate'].enum_type = _DATAMATRIX_COLUMN_AGGREGATEENUM
+_SELECTSTRUCT_ATTRIBUTEITEM.containing_type = _SELECTSTRUCT
+_SELECTSTRUCT.fields_by_name['attributes'].message_type = _SELECTSTRUCT_ATTRIBUTEITEM
+_SELECTSTRUCT.fields_by_name['where'].message_type = _SELECTSTRUCT_CONDITIONARRAYITEM
+_SELECTSTRUCT.fields_by_name['orderby'].message_type = _SELECTSTRUCT_ORDERBYITEM
+_SELECTSTRUCT.fields_by_name['groupby'].message_type = _SELECTSTRUCT_GROUPBYITEM
 DESCRIPTOR.message_types_by_name['DataMatrix'] = _DATAMATRIX
 DESCRIPTOR.message_types_by_name['DataMatrices'] = _DATAMATRICES
 DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
@@ -2994,6 +3896,7 @@ DESCRIPTOR.message_types_by_name['ConList'] = _CONLIST
 DESCRIPTOR.message_types_by_name['NameValuePairs'] = _NAMEVALUEPAIRS
 DESCRIPTOR.message_types_by_name['AsamPath'] = _ASAMPATH
 DESCRIPTOR.message_types_by_name['Model'] = _MODEL
+DESCRIPTOR.message_types_by_name['SelectStruct'] = _SELECTSTRUCT
 DESCRIPTOR.enum_types_by_name['DatatypeEnum'] = _DATATYPEENUM
 
 DataMatrix = _reflection.GeneratedProtocolMessageType('DataMatrix', (_message.Message,), dict(
@@ -3426,6 +4329,125 @@ _sym_db.RegisterMessage(Model.Entity.AttributesEntry)
 _sym_db.RegisterMessage(Model.Entity.RelationsEntry)
 _sym_db.RegisterMessage(Model.EnumerationsEntry)
 _sym_db.RegisterMessage(Model.EntitiesEntry)
+
+SelectStruct = _reflection.GeneratedProtocolMessageType('SelectStruct', (_message.Message,), dict(
+
+  ConditionArrayItem = _reflection.GeneratedProtocolMessageType('ConditionArrayItem', (_message.Message,), dict(
+
+    Condition = _reflection.GeneratedProtocolMessageType('Condition', (_message.Message,), dict(
+
+      StringArray = _reflection.GeneratedProtocolMessageType('StringArray', (_message.Message,), dict(
+        DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_STRINGARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition.StringArray)
+        ))
+      ,
+
+      LongArray = _reflection.GeneratedProtocolMessageType('LongArray', (_message.Message,), dict(
+        DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition.LongArray)
+        ))
+      ,
+
+      FloatArray = _reflection.GeneratedProtocolMessageType('FloatArray', (_message.Message,), dict(
+        DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_FLOATARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition.FloatArray)
+        ))
+      ,
+
+      BooleanArray = _reflection.GeneratedProtocolMessageType('BooleanArray', (_message.Message,), dict(
+        DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BOOLEANARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition.BooleanArray)
+        ))
+      ,
+
+      ByteArray = _reflection.GeneratedProtocolMessageType('ByteArray', (_message.Message,), dict(
+        DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTEARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition.ByteArray)
+        ))
+      ,
+
+      DoubleArray = _reflection.GeneratedProtocolMessageType('DoubleArray', (_message.Message,), dict(
+        DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DOUBLEARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition.DoubleArray)
+        ))
+      ,
+
+      LongLongArray = _reflection.GeneratedProtocolMessageType('LongLongArray', (_message.Message,), dict(
+        DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_LONGLONGARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition.LongLongArray)
+        ))
+      ,
+
+      DateArray = _reflection.GeneratedProtocolMessageType('DateArray', (_message.Message,), dict(
+        DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_DATEARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition.DateArray)
+        ))
+      ,
+
+      BytestrArray = _reflection.GeneratedProtocolMessageType('BytestrArray', (_message.Message,), dict(
+        DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION_BYTESTRARRAY,
+        __module__ = 'wodson_pb2'
+        # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition.BytestrArray)
+        ))
+      ,
+      DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM_CONDITION,
+      __module__ = 'wodson_pb2'
+      # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem.Condition)
+      ))
+    ,
+    DESCRIPTOR = _SELECTSTRUCT_CONDITIONARRAYITEM,
+    __module__ = 'wodson_pb2'
+    # @@protoc_insertion_point(class_scope:wodson.SelectStruct.ConditionArrayItem)
+    ))
+  ,
+
+  OrderbyItem = _reflection.GeneratedProtocolMessageType('OrderbyItem', (_message.Message,), dict(
+    DESCRIPTOR = _SELECTSTRUCT_ORDERBYITEM,
+    __module__ = 'wodson_pb2'
+    # @@protoc_insertion_point(class_scope:wodson.SelectStruct.OrderbyItem)
+    ))
+  ,
+
+  GroupbyItem = _reflection.GeneratedProtocolMessageType('GroupbyItem', (_message.Message,), dict(
+    DESCRIPTOR = _SELECTSTRUCT_GROUPBYITEM,
+    __module__ = 'wodson_pb2'
+    # @@protoc_insertion_point(class_scope:wodson.SelectStruct.GroupbyItem)
+    ))
+  ,
+
+  AttributeItem = _reflection.GeneratedProtocolMessageType('AttributeItem', (_message.Message,), dict(
+    DESCRIPTOR = _SELECTSTRUCT_ATTRIBUTEITEM,
+    __module__ = 'wodson_pb2'
+    # @@protoc_insertion_point(class_scope:wodson.SelectStruct.AttributeItem)
+    ))
+  ,
+  DESCRIPTOR = _SELECTSTRUCT,
+  __module__ = 'wodson_pb2'
+  # @@protoc_insertion_point(class_scope:wodson.SelectStruct)
+  ))
+_sym_db.RegisterMessage(SelectStruct)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition.StringArray)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition.LongArray)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition.FloatArray)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition.BooleanArray)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition.ByteArray)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition.DoubleArray)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition.LongLongArray)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition.DateArray)
+_sym_db.RegisterMessage(SelectStruct.ConditionArrayItem.Condition.BytestrArray)
+_sym_db.RegisterMessage(SelectStruct.OrderbyItem)
+_sym_db.RegisterMessage(SelectStruct.GroupbyItem)
+_sym_db.RegisterMessage(SelectStruct.AttributeItem)
 
 
 _NAMEVALUEPAIRS_PARAMETERSENTRY.has_options = True

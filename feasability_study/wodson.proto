@@ -123,9 +123,11 @@ message DataMatrix {
 
   string name = 1;
   string base_name = 2;
-  int64 row_skip_count = 3;
-  int64 seq_skip_count = 4;
-  repeated Column columns = 5;
+  int64 objecttype = 3;
+  repeated Column columns = 4;
+
+  int64 row_skip_count = 5;
+  int64 seq_skip_count = 6;
 }
 
 message DataMatrices{
@@ -165,15 +167,15 @@ message  Request{
         BETWEEN = 12;
       }
 
-      message StringArray { repeated string values = 1; };
-      message LongArray { repeated int32 values = 1; };
-      message FloatArray { repeated float values = 1; };
-      message BooleanArray { repeated bool values = 1; };
-      message ByteArray { bytes values = 1; };
-      message DoubleArray { repeated double values = 1; };
-      message LongLongArray { repeated int64 values = 1; };
+      message StringArray { repeated string values = 1; }
+      message LongArray { repeated int32 values = 1; }
+      message FloatArray { repeated float values = 1; }
+      message BooleanArray { repeated bool values = 1; }
+      message ByteArray { bytes values = 1; }
+      message DoubleArray { repeated double values = 1; }
+      message LongLongArray { repeated int64 values = 1; }
       message DateArray { repeated google.protobuf.Timestamp values = 1; }
-      message BytestrArray { repeated bytes values = 1; };
+      message BytestrArray { repeated bytes values = 1; }
 
       string path = 1;
       OperatorEnum operator = 2;
@@ -310,4 +312,115 @@ message Model{
 
   map<string, Enumeration> enumerations = 1;
   map<string, Enumeration> entities = 2;
+}
+
+message  SelectStruct{
+
+  message ConditionArrayItem{
+    
+    enum ConjuctionEnum {
+      INVALID_CONJUNCTION = 0;
+      AND = 1;
+      OR = 2;
+      NOT = 3;
+      OPEN = 4;
+      CLOSE = 5;
+    }
+
+    message Condition{
+
+      enum OperatorEnum {
+        EQ = 0;
+        NEQ = 1 ;
+        LT = 2;
+        GT = 3;
+        LTE = 4;
+        GTE = 5;
+        INSET = 6;
+        NOTINSET = 7;
+        LIKE = 8;
+        CI_EQ = 9;
+        CI_NEQ = 10;
+        CI_LT = 11;
+        CI_GT = 12;
+        CI_LTE = 13;
+        CI_GTE = 14;
+        CI_INSET = 15;
+        CI_NOTINSET = 16;
+        CI_LIKE = 17;
+        IS_NULL = 18;
+        IS_NOT_NULL = 19;
+        NOTLIKE = 20;
+        CI_NOTLIKE = 21;
+        BETWEEN = 22;
+      }
+
+      message StringArray { repeated string values = 1; }
+      message LongArray { repeated int32 values = 1; }
+      message FloatArray { repeated float values = 1; }
+      message BooleanArray { repeated bool values = 1; }
+      message ByteArray { bytes values = 1; }
+      message DoubleArray { repeated double values = 1; }
+      message LongLongArray { repeated int64 values = 1; }
+      message DateArray { repeated google.protobuf.Timestamp values = 1; }
+      message BytestrArray { repeated bytes values = 1; }
+
+      int64 objecttype = 1;
+      string atribute = 2;
+      int64 unit = 3;
+      OperatorEnum operator = 4;
+      oneof ValueUnion {
+        StringArray    value_string = 5; // DS_STRING, DS_EXTERNALREFERENCE, DT_STRING, DT_EXTERNALREFERENCE
+        LongArray      value_long = 6; // DS_SHORT, DS_LONG, DS_ENUM, DT_SHORT, DT_LONG, DT_ENUM
+        FloatArray     value_float = 7; // DS_FLOAT, DS_COMPLEX, DT_COMPLEX, DT_FLOAT
+        BooleanArray   value_boolean = 8; // DS_BOOLEAN, DT_BOOLEAN
+        ByteArray      value_byte = 9; // DS_BYTE, DT_BYTE
+        DoubleArray    value_double = 10; // DS_DOUBLE, DS_DCOMPLEX, DT_DCOMPLEX, DT_DOUBLE
+        LongLongArray  value_longlong = 11; // DS_LONGLONG, DS_ID, DT_LONGLONG, DT_ID
+        DateArray      value_date = 12; // DS_DATE, DT_DATE
+        BytestrArray   value_bytestr = 13; // DS_BYTESTR, DT_BYTESTR
+        SelectStruct   value_nested = 14;
+      }
+    }
+
+    oneof ItemUnion{
+      ConjuctionEnum conjunction = 1;
+      Condition condition = 2;
+    }
+  }
+
+  message OrderbyItem{
+    
+    enum OrderEnum {
+      ASCENDING = 0;
+      DESCENDING = 1;
+    }
+
+    int64 objecttype = 1;
+    string atribute = 2;
+    OrderEnum order = 3;
+  }
+
+  message GroupbyItem{
+    int64 objecttype = 1;
+    string atribute = 2;
+  }
+  
+  message AttributeItem{
+    int64 objecttype = 1;
+    string atribute = 2;
+    DataMatrix.Column.AggregateEnum aggregate = 3;
+    int64 unit = 4;
+  }
+
+  int64 default_objecttype = 1;
+  repeated AttributeItem attributes = 2;
+  repeated ConditionArrayItem where = 3;
+  repeated OrderbyItem orderby = 4;
+  repeated GroupbyItem groupby = 5;
+  
+  int64 rowlimit = 6;
+  int64 rowskip = 7;
+  int64 seqlimit = 8;
+  int64 seqskip = 9;
 }
