@@ -475,6 +475,17 @@ class CModel:
         except CORBA.BAD_OPERATION, ex:
             logging.error('Unable to retrieve enum attributes:' + ex)
 
+    def GetEnumIndex(self, elem, aaName, name):
+        enumName = self.GetEnumName(elem.aid, aaName)
+        for enum in self.enums_:
+            if enumName == enum.enumName:
+                for enumItem in enum.items:
+                    if name == enumItem.itemName:
+                        return enumItem.index
+                raise Exception("Enum '" + enumName + "' does not contain item named '" + name + "'")
+        raise Exception("Enum not resolvable")
+
+
     def GetEnumName(self, aid, aaName):
         for enumAttrib in self.enumAttribs_:
             if aaName == enumAttrib.aaName and LL_Equal(aid, enumAttrib.aid):

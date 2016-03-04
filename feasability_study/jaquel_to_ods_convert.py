@@ -1,5 +1,7 @@
 import json
 
+import datetime
+import time
 import logging
 import org
 import odslib
@@ -10,6 +12,18 @@ _jo_aggregates = { '$none': org.asam.ods.NONE, '$count': org.asam.ods.COUNT, '$d
 _jo_operators = { '$eq': org.asam.ods.EQ, '$neq': org.asam.ods.NEQ, '$lt': org.asam.ods.LT, '$gt': org.asam.ods.GT, '$lte': org.asam.ods.LTE, '$gte': org.asam.ods.GTE, '$inset': org.asam.ods.INSET, '$notinset': org.asam.ods.NOTINSET, '$like': org.asam.ods.LIKE, '$null': org.asam.ods.IS_NULL, '$notnull': org.asam.ods.IS_NOT_NULL, '$notlike': org.asam.ods.NOTLIKE, '$between': org.asam.ods.BETWEEN }
 _jo_operators_ci_map = { org.asam.ods.EQ: org.asam.ods.CI_EQ, org.asam.ods.NEQ: org.asam.ods.CI_NEQ, org.asam.ods.LT: org.asam.ods.CI_LT, org.asam.ods.GT: org.asam.ods.CI_GT, org.asam.ods.LTE: org.asam.ods.CI_LTE, org.asam.ods.GTE: org.asam.ods.CI_GTE, org.asam.ods.INSET: org.asam.ods.CI_INSET, org.asam.ods.NOTINSET: org.asam.ods.CI_NOTINSET, org.asam.ods.LIKE: org.asam.ods.CI_LIKE, org.asam.ods.NOTLIKE: org.asam.ods.CI_NOTLIKE }
 
+def jo_enum(model, aaApplElem, aaName, nameOrIndex):
+    if isinstance(nameOrIndex, basestring):
+        return long(model.GetEnumIndex(aaApplElem, aaName, nameOrIndex))
+
+    return long(nameOrIndex)
+
+def jo_date(dateVal):
+    if dateVal.endswith('Z'):
+        tv = datetime.datetime.strptime(dateVal, '%Y-%m-%dT%H:%M:%S.%fZ')
+        return tv.strftime("%Y%I%d%H%M%S%f").rstrip('0')
+
+    return dateVal.encode('utf-8')
 
 
 def _parse_path_and_add_joins(model, applElem, attribPath, joinSeq):
@@ -199,7 +213,7 @@ def _ParseConditionsNot(model, applElem, target, elemDict, attrib):
     _ParseConditions(model, applElem, target, elemDict, attrib)
     target.condSeq.append(org.asam.ods.SelItem(org.asam.ods.SEL_OPERATOR_TYPE, org.asam.ods.CLOSE))
 
-def _CreateTsValue(aaType, srcValues):
+def _CreateTsValue(model, aaApplElem, aaName, aaType, srcValues):
 
     if isinstance(srcValues, list):
         if aaType == org.asam.ods.DT_COMPLEX and 2 == len(srcValues):
@@ -212,7 +226,7 @@ def _CreateTsValue(aaType, srcValues):
         elif aaType == org.asam.ods.DT_BYTE or aaType == org.asam.ods.DS_BYTE:
             destVals = []
             for srcVal in srcValues:
-                destVals.append(org.asam.ods.T_BYTE(int(srcVal)))
+                destVals.append(int(srcVal))
             return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_BYTE, destVals), 15)
         elif aaType == org.asam.ods.DT_BOOLEAN or aaType == org.asam.ods.DS_BOOLEAN:
             destVals = []
@@ -222,12 +236,12 @@ def _CreateTsValue(aaType, srcValues):
         elif aaType == org.asam.ods.DT_SHORT or aaType == org.asam.ods.DS_SHORT:
             destVals = []
             for srcVal in srcValues:
-                destVals.append(org.asam.ods.T_SHORT(int(srcVal)))
+                destVals.append(int(srcVal))
             return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_SHORT, destVals), 15)
         elif aaType == org.asam.ods.DT_LONG or aaType == org.asam.ods.DS_LONG:
             destVals = []
             for srcVal in srcValues:
-                destVals.append(org.asam.ods.T_LONG(long(srcVal)))
+                destVals.append(long(srcVal))
             return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_LONG, destVals), 15)
         elif aaType == org.asam.ods.DT_LONGLONG or aaType == org.asam.ods.DS_LONGLONG:
             destVals = []
@@ -237,17 +251,17 @@ def _CreateTsValue(aaType, srcValues):
         elif aaType == org.asam.ods.DT_FLOAT or aaType == org.asam.ods.DS_FLOAT:
             destVals = []
             for srcVal in srcValues:
-                destVals.append(org.asam.ods.T_FLOAT(float(srcVal)))
+                destVals.append(float(srcVal))
             return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_FLOAT, destVals), 15)
         elif aaType == org.asam.ods.DT_DOUBLE or aaType == org.asam.ods.DS_DOUBLE:
             destVals = []
             for srcVal in srcValues:
-                destVals.append(org.asam.ods.T_DOUBLE(float(srcVal)))
+                destVals.append(float(srcVal))
             return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_DOUBLE, destVals), 15)
         elif aaType == org.asam.ods.DT_DATE or aaType == org.asam.ods.DS_DATE:
             destVals = []
             for srcVal in srcValues:
-                destVals.append(str(srcVal).encode('utf-8'))
+                destVals.append(jo_date(srcVal))
             return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_DATE, destVals), 15)
         elif aaType == org.asam.ods.DT_STRING or aaType == org.asam.ods.DS_STRING:
             destVals = []
@@ -257,7 +271,7 @@ def _CreateTsValue(aaType, srcValues):
         elif aaType == org.asam.ods.DT_ENUM or aaType == org.asam.ods.DS_ENUM:
             destVals = []
             for srcVal in srcValues:
-                destVals.append(org.asam.ods.T_LONG(long(srcVal)))
+                destVals.append(jo_enum(model, aaApplElem, aaName, srcVal))
             return org.asam.ods.TS_Value(org.asam.ods.TS_Union(org.asam.ods.DS_ENUM, destVals), 15)
         elif aaType == org.asam.ods.DT_COMPLEX or aaType == org.asam.ods.DS_COMPLEX:
             destVals = []
@@ -282,9 +296,9 @@ def _CreateTsValue(aaType, srcValues):
     elif aaType == org.asam.ods.DT_BOOLEAN:
         return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_BOOLEAN(int(srcValues))), 15)
     elif aaType == org.asam.ods.DT_SHORT:
-        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_SHORT(int(srcValues))), 15)
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, int(srcValues)), 15)
     elif aaType == org.asam.ods.DT_LONG:
-        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(srcValues))), 15)
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, long(srcValues)), 15)
     elif aaType == org.asam.ods.DT_LONGLONG:
         return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, odslib.Int2LL(long(srcValues))), 15)
     elif aaType == org.asam.ods.DT_FLOAT:
@@ -292,11 +306,11 @@ def _CreateTsValue(aaType, srcValues):
     elif aaType == org.asam.ods.DT_DOUBLE:
         return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, float(srcValues)), 15)
     elif aaType == org.asam.ods.DT_DATE:
-        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, srcValues.encode('utf-8')), 15)
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, jo_date(srcValues)), 15)
     elif aaType == org.asam.ods.DT_STRING:
         return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, srcValues.encode('utf-8')), 15)
     elif aaType == org.asam.ods.DT_ENUM:
-        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, org.asam.ods.T_LONG(long(srcValues))), 15)
+        return org.asam.ods.TS_Value(org.asam.ods.TS_Union(aaType, jo_enum(model, aaApplElem, aaName, srcValues)), 15)
     else:
         raise Exception("Unknown how to attach '" + srcValues + "' does not exist as " + str(aaType) + " union.")
 
@@ -312,7 +326,7 @@ def _GetOdsOperator(aaType, conditionOperator, conditionOptions):
 def _AddCondition(model, applElem, target, conditionPath, conditionOperator, conditionOperandValue, conditionUnitId, conditionOptions):
     aaType, aaName, aaApplElem = _parse_path_and_add_joins(model, applElem, conditionPath, target.joinSeq)
     oper = _GetOdsOperator(aaType, conditionOperator, conditionOptions)
-    tsValue = _CreateTsValue(aaType, conditionOperandValue)
+    tsValue = _CreateTsValue(model, aaApplElem, aaName, aaType, conditionOperandValue)
     selValExt = org.asam.ods.SelValueExt(org.asam.ods.AIDNameUnitId(org.asam.ods.AIDName(aaApplElem.aid, aaName), odslib.Int2LL(conditionUnitId)), oper, tsValue)
     selItem = org.asam.ods.SelItem(org.asam.ods.SEL_VALUE_TYPE, selValExt)
     target.condSeq.append(selItem)

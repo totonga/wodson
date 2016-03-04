@@ -3,6 +3,9 @@ import ods_to_protobuf_select
 
 import odslib
 
+import json
+
+
 testQueries = []
 
 testQueries.append('''{
@@ -104,7 +107,65 @@ testQueries.append('''{
                        }''')
 
 testQueries.append('''{
-                        "AoMeasurement":{"measurement_begin":{"$between":[20091223000000, 20091224000000]}}
+                        "AoMeasurement":{"measurement_begin":{"$between":["20091223000000", "20091224000000"]}}
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurement":{"measurement_begin":"2012-04-22T00:00:00.004Z"}
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurement":{"measurement_begin":{"$between":["2012-04-22T00:00:00.001Z", "2012-04-23T00:00:00.002Z"]}}
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurementQuantity":{"datatype":8}
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurementQuantity":{"datatype":"DT_LONGLONG"}
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurementQuantity":{"datatype":{"$inset":[8, 11]}}
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurementQuantity":{"datatype":{"$inset":["DT_LONGLONG", "DT_BYTESTR"]}}
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurementQuantity":{"maximum":{"$lt":-1245.8}}
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurementQuantity":{"maximum":{"$between":[1.2, 2.3]}}
+                       }''')
+
+testQueries.append('''{
+                        "AoPhysicalDimension":{ "length_exp":1 },
+                        "$options": { "$rowlimit": 10 }
+                       }''')
+
+testQueries.append('''{
+                        "AoPhysicalDimension":{ "length_exp":{"$inset":[1, 2]} },
+                        "$options": { "$rowlimit": 10 }
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurement":{ "name":"abc" },
+                        "$options": { "$rowlimit": 10 }
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurement":{ "name":{"$inset":["abc", "def"]} },
+                        "$options": { "$rowlimit": 10 }
+                       }''')
+
+
+testQueries.append('''{
+                        "AoLocalColumn":{ "independent":1,"sequence_representation":"implicit_saw" },
+                        "$options": { "$rowlimit": 10 }
                        }''')
 
 
@@ -112,8 +173,10 @@ _session = odslib.CSessionAutoReconnect({u'$URL': u'corbaname::10.89.2.24:900#Me
 _model = _session.Model()
 
 for testQuery in testQueries:
+    print json.dumps(json.loads(testQuery), indent=4)
+    print '-----------------------------------------------------'
     applElem, qse, options = jaquel_to_ods_convert.JaquelToQueryStructureExt(_model, testQuery)
-    print str(qse)
+    print str(qse).replace('org.asam.ods.', '')
     print str(options)
     print '-----------------------------------------------------'
     protoSelect = ods_to_protobuf_select.ods_to_protobuf_select_json(_model, qse, options)
