@@ -337,11 +337,28 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
         "name": 1,
         "id": 1,
         "scale": {
-            "$unit": 123
+            "$unit": 1234
         }
     }
 }
 -----------
+
+.define unit for attribute value in condition
+[source,json]
+-----------
+{
+    "AoMeasurement": {
+        "scale": {
+            "$unit": 1234,
+            "$between": [
+                1.2,
+                2.3
+            ]
+        }
+    }
+}
+-----------
+
 
 .access $min and $max from minimum and maximum
 [source,json]
@@ -454,6 +471,21 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 }
 -----------
 
+.use outer join to retrieve sparese set unit names
+[source,json]
+-----------
+{
+    "AoMeasurementQuantity": {
+        "measurement": 4712
+    },
+    "$attributes": {
+        "name": 1,
+        "id": 1,
+        "datatype": 1,
+        "unit:OUTER.name": 1
+    }
+}
+-----------
 
 ==== Special key values
 
@@ -488,6 +520,7 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 | $notnull     | not is null value ("$notnull":1)
 | $between     | two values in an array. Equal to a $gte $lt pair
 | $options     | string containing letters: `i` for case insensitive
+| $unit        | define the unit the condition value is given in. If 0 it assumed its the default unit
 |===========================================
 
 .aggregates
@@ -514,3 +547,8 @@ TIP: `test.id` is a duplicate because the id is also stored in test column
 | $seqskip     | number of entries to be skipped in a single sequence
 |===========================================
 
+==== Remarks
+
+* enum values can be given as string or number. Be aware that the string is case sensitiv
+* longlong values can be given as string or number because not all longlong values can be represented as a number in json
+* outer joins are given by adding `:OUTER` to the end of a relation name before the next dot

@@ -162,11 +162,21 @@ testQueries.append('''{
                         "$options": { "$rowlimit": 10 }
                        }''')
 
+testQueries.append('''{
+                        "AoMeasurementQuantity":{"maximum":{"$between":[1.2, 2.3]}},
+                        "$attributes": { "name": 1, "id": 1, "unit.name":1 }
+                       }''')
+
+testQueries.append('''{
+                        "AoMeasurementQuantity":{"maximum":{"$between":[1.2, 2.3]}},
+                        "$attributes": { "name": 1, "id": 1, "unit:OUTER.name":1 }
+                       }''')
 
 testQueries.append('''{
                         "AoLocalColumn":{ "independent":1,"sequence_representation":"implicit_saw" },
                         "$options": { "$rowlimit": 10 }
                        }''')
+
 
 def _writeLine(f, line):
     print line
