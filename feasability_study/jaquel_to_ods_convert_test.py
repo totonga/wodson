@@ -168,19 +168,37 @@ testQueries.append('''{
                         "$options": { "$rowlimit": 10 }
                        }''')
 
+def _writeLine(f, line):
+    print line
+    f.write(line + "\n")
+
 
 _session = odslib.CSessionAutoReconnect({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
 _model = _session.Model()
 
-for testQuery in testQueries:
-    print json.dumps(json.loads(testQuery), indent=4)
-    print '-----------------------------------------------------'
+f = open('queryTestoutput.adoc', 'w')
+
+for index, testQuery in enumerate(testQueries):
+    _writeLine(f, '==== Example ' + str(index))
+    _writeLine(f, '')
+    _writeLine(f, '================================')
+    _writeLine(f, '.input')
+    _writeLine(f, '[source,json]')
+    _writeLine(f, '----')
+    _writeLine(f, json.dumps(json.loads(testQuery), indent=4))
+    _writeLine(f, '----')
     applElem, qse, options = jaquel_to_ods_convert.JaquelToQueryStructureExt(_model, testQuery)
-    print str(qse).replace('org.asam.ods.', '')
-    print str(options)
-    print '-----------------------------------------------------'
+    _writeLine(f, '.corba')
+    _writeLine(f, '----')
+    _writeLine(f, str(qse).replace('org.asam.ods.', '').replace("anuSeq=", "\n  anuSeq=").replace("condSeq=", "\n  condSeq=").replace("joinSeq=", "\n  joinSeq=").replace("orderBy=", "\n  orderBy=").replace("groupBy=", "\n  groupBy=").replace("SelItem(", "\n    SelItem(").replace("SelAIDNameUnitId(", "\n    SelAIDNameUnitId(").replace("SelOrder(", "\n    SelOrder(").replace("JoinDef(", "\n    JoinDef("))
+    _writeLine(f, '----')
     protoSelect = ods_to_protobuf_select.ods_to_protobuf_select_json(_model, qse, options)
-    print str(protoSelect)
-    print '-----------------------------------------------------'
+    _writeLine(f, '.protobuf')
+    _writeLine(f, '[source,json]')
+    _writeLine(f, '----')
+    _writeLine(f, str(protoSelect))
+    _writeLine(f, '----')
     result = _session.GetInstancesEx(qse, options['rowlimit'])
-    print '+++++++++++++++++++++++++++++++++++++++++++++++++++++'
+    _writeLine(f, '================================')
+
+f.close

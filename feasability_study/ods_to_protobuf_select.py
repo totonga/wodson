@@ -172,4 +172,9 @@ def ods_to_protobuf_select_json(model, qse, options):
         targetOrderby.objecttype = _aidToWrite(groupBy.aid, default_objecttype)
         targetOrderby.atribute = groupBy.aaName 
 
+    rv.rowlimit = options['rowlimit'];
+    rv.rowskip = options['rowskip'];
+    rv.seqlimit = options['seqlimit'];
+    rv.seqskip = options['seqskip'];
+
     return json_format.MessageToJson(rv)
