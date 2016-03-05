@@ -9,7 +9,7 @@ import odslib
 from sys import maxsize, maxint
 
 _jo_aggregates = { '$none': org.asam.ods.NONE, '$count': org.asam.ods.COUNT, '$dcount': org.asam.ods.DCOUNT, '$min': org.asam.ods.MIN, '$max': org.asam.ods.MAX, '$avg': org.asam.ods.AVG, '$sum': org.asam.ods.SUM, '$distinct': org.asam.ods.DISTINCT, '$point': org.asam.ods.POINT}
-_jo_operators = { '$eq': org.asam.ods.EQ, '$neq': org.asam.ods.NEQ, '$lt': org.asam.ods.LT, '$gt': org.asam.ods.GT, '$lte': org.asam.ods.LTE, '$gte': org.asam.ods.GTE, '$inset': org.asam.ods.INSET, '$notinset': org.asam.ods.NOTINSET, '$like': org.asam.ods.LIKE, '$null': org.asam.ods.IS_NULL, '$notnull': org.asam.ods.IS_NOT_NULL, '$notlike': org.asam.ods.NOTLIKE, '$between': org.asam.ods.BETWEEN }
+_jo_operators = { '$eq': org.asam.ods.EQ, '$neq': org.asam.ods.NEQ, '$lt': org.asam.ods.LT, '$gt': org.asam.ods.GT, '$lte': org.asam.ods.LTE, '$gte': org.asam.ods.GTE, '$in': org.asam.ods.INSET, '$notinset': org.asam.ods.NOTINSET, '$like': org.asam.ods.LIKE, '$null': org.asam.ods.IS_NULL, '$notnull': org.asam.ods.IS_NOT_NULL, '$notlike': org.asam.ods.NOTLIKE, '$between': org.asam.ods.BETWEEN }
 _jo_operators_ci_map = { org.asam.ods.EQ: org.asam.ods.CI_EQ, org.asam.ods.NEQ: org.asam.ods.CI_NEQ, org.asam.ods.LT: org.asam.ods.CI_LT, org.asam.ods.GT: org.asam.ods.CI_GT, org.asam.ods.LTE: org.asam.ods.CI_LTE, org.asam.ods.GTE: org.asam.ods.CI_GTE, org.asam.ods.INSET: org.asam.ods.CI_INSET, org.asam.ods.NOTINSET: org.asam.ods.CI_NOTINSET, org.asam.ods.LIKE: org.asam.ods.CI_LIKE, org.asam.ods.NOTLIKE: org.asam.ods.CI_NOTLIKE }
 
 def _jo_enum(model, aaApplElem, aaName, nameOrIndex):

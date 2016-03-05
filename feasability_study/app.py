@@ -247,7 +247,7 @@ def data_access_post(conI,  query_struct):
                         valueValid = True
                         if valIndex < columnFlagLength:
                             valueValid = odslib.ValidFlag(columnFlags[valIndex])
-                        valArray.append(columnValue if(True == valueValid) else None)
+                        valArray.append(columnValue if(True == valueValid) else (None if not odslib.IsSequence(attr.dType) else []))
 
                     valuesObj[_GetDiscriminatorArrayName(attr.dType)] = valArray
                 else:

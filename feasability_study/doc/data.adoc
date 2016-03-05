@@ -25,7 +25,7 @@ TIP: The server will have a default rowMaxCount setting.
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "AoTest"
+    "AoTest": {}
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -35,7 +35,27 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 ================================
 
-.get results from instances with objecttype 1 with all properties
+.get results from Project all properties
+================================
+TIP: The server will have a default rowMaxCount setting.
+     He will potentially not return all AoTest if there are more of them.
+     
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "Project": {}
+}' 
+'http://localhost:8081/con/c1/data/access'
+----
+.result
+[source,json]
+----
+----
+================================
+
+.get results from instances with objecttype 5 with all properties
 ================================
 TIP: Using the objecttype will give no great speed improvement. It is not even readable.
      
@@ -44,7 +64,7 @@ TIP: Using the objecttype will give no great speed improvement. It is not even r
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "1"
+    "5": {}
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -61,8 +81,10 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "MeaQuantity",
-    "rowMaxCount": 50
+    "AoMeasurementQuantity": {},
+    "$options": {
+        "$rowlimit": 10
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -81,11 +103,11 @@ TIP: if an instance should be shown in a tree it is sufficient to retrieve name 
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "MeaQuantity",
-    "attributes": [
-        "name",
-        "id"
-    ]
+    "AoMeasurementQuantity": {},
+    "$attributes": {
+        "name": 1,
+        "id": 1
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -97,19 +119,20 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 
 .get id and name attribute of the given entity and the name attribute of the related measurement
 ================================
-TIP: if an instance should shown it might be usefult to retrieve some parent/related attributes
+TIP: if an instance should shown it might be usefult to retrieve some parent/related attributes. 
+     Be aware of the fact that two DataMatrices are returned.
 
 .request
 [source,json]
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "MeaQuantity",
-    "attributes": [
-        "name",
-        "id",
-        "measurement.name"
-    ]
+    "AoMeasurementQuantity": {},
+    "$attributes": {
+        "name": 1,
+        "id": 1,
+        "measurement.name": 1
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -127,10 +150,25 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "MeaQuantity",
-    "conditions": [
-        "id=4"
-    ]
+    "AoMeasurementQuantity": 1960
+}' 
+'http://localhost:8081/con/c1/data/access'
+----
+.result
+[source,json]
+----
+----
+
+Same result will show up with the following request
+
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
+{
+    "AoMeasurementQuantity": {
+        "id": 1960
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -140,21 +178,20 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 ================================
 
-.get children MeasurementQuantities of the Measurement with id=2
+.get children MeasurementQuantities of the Measurement with id=4
 ================================
 .request
 [source,json]
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "MeaQuantity",
-    "attributes": [
-        "name",
-        "id"
-    ],
-    "conditions": [
-        "measurement=2"
-    ]
+    "AoMeasurementQuantity": {
+        "measurement": 4
+    },
+    "$attributes": {
+        "name": 1,
+        "id": 1
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -164,23 +201,22 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 ================================
 
-.Get information about all MeasurementQuantities of a the SubTest with id=2
+.Get information about all MeasurementQuantities of a the SubTest with id=10
 ================================
 .request
 [source,json]
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "MeaQuantity",
-    "attributes": [
-        "name",
-        "id",
-        "measurement.name",
-        "measurement.id"
-    ],
-    "conditions": [
-        "measurement.test=2"
-    ]
+    "AoMeasurementQuantity": {
+        "measurement.test": 10
+    },
+    "$attributes": {
+        "name": 1,
+        "id": 1,
+        "measurement.name": 1,
+        "measurement.id": 1
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -195,26 +231,36 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 .request
 [source,json]
 ----
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
-    "entity": "AoMeasurementQuantity",
-    "conditions": [
-        "measurement.measurement_begin > 20090101000000",
-        "$and",
-        "$open",
-        "name=Uctf_String",
-        "$or",
-        "name=Uctf_Time",
-        "$close"
-    ],
-    "attributes": [
-        "name",
-        "id",
-        "unit",
-        "measurement.name",
-        "measurement.id",
-        "measurement.test.name",
-        "measurement.test.id"
-    ]
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '
+{
+    "AoMeasurementQuantity": {
+        "$and": [
+            {
+                "measurement.measurement_begin": {
+                    "$gt": "20071101115000"
+                }
+            },
+            {
+                "$or": [
+                    {
+                        "name": "7 Time Point10:+Z"
+                    },
+                    {
+                        "name": "1 Time Point4:+Z"
+                    }
+                ]
+            }
+        ]
+    },
+    "$attributes": {
+        "name": 1,
+        "id": 1,
+        "unit.name": 1,
+        "measurement.name": 1,
+        "measurement.id": 1,
+        "measurement.test.name": 1,
+        "measurement.test.id": 1
+    }
 }' 'http://localhost:8081/con/c2/data/access'
 ----
 .result
@@ -230,10 +276,12 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "MeaQuantity",
-    "attributes": [
-        "DISTINCT(name)"
-    ]
+    "AoMeasurementQuantity": {},
+    "$attributes": {
+        "name": {
+            "$distinct": 1
+        }
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -250,13 +298,13 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "MeaQuantity",
-    "attributes": [
-        "name"
-    ],
-    "orderBy": [
-        "DESCENDING(name)"
-    ]
+    "AoMeasurementQuantity": {},
+    "$attributes": {
+        "name": 1
+    },
+    "$orderby": {
+        "name": 0
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -271,17 +319,18 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 .request
 [source,json]
 ----
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
-    "entity": "AoMeasurementQuantity",
-    "attributes": [
-        "name"
-    ],
-    "orderBy": [
-        "name"
-    ],
-    "groupBy": [
-        "name"
-    ]
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '
+{
+    "AoMeasurementQuantity": {},
+    "$attributes": {
+        "name": 1
+    },
+    "$orderby": {
+        "name": 1
+    },
+    "$groupby": {
+        "name": 1
+    }
 }' 'http://localhost:8081/con/c1/data/access'
 ----
 .result
@@ -290,19 +339,40 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 ================================
 
-.Use outer joins for sparse keys
+.Using normal joins will only return element where all relations are set
 ================================
 .request
 [source,json]
 ----
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{
-    "entity": "AoMeasurementQuantity",
-    "attributes": [
-        "name",
-        "OUTER(unit).name",
-        "OUTER(quantity).name"
-    ],
-    "rowMaxCount": 2000
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '
+{
+    "AoMeasurementQuantity": {},
+    "$attributes": {
+        "name": 1,
+        "unit.name": 1,
+        "quantity.name": 1
+    }
+}' 'http://localhost:8081/con/c1/data/access'
+----
+.result
+[source,json]
+----
+----
+================================
+
+.Use outer joins for sparse set relations
+================================
+.request
+[source,json]
+----
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '
+{
+    "AoMeasurementQuantity": {},
+    "$attributes": {
+        "name": 1,
+        "unit:OUTER.name": 1,
+        "quantity:OUTER.name": 1
+    }
 }' 'http://localhost:8081/con/c1/data/access'
 ----
 .result
@@ -330,16 +400,13 @@ will be returned in unkownSeq which allows different types for each result row.
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "AoLocalColumn",
-    "conditions": [
-        "id=12"
-    ],
-    "attributes": [
-        "id",
-        "values",
-        "flags",
-        "generation_parameters"
-    ]
+    "AoLocalColumn": 2263,
+    "$attributes": {
+        "id": 1,
+        "generation_parameters": 1,
+        "values": 1,
+        "flags": 1
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -349,24 +416,25 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 ================================
 
-.Get id, values, flags and generation_parameters of all local columns of the Submatrix with id=8, but return maximal 1000 sequence rows
+.Get id, values, flags and generation_parameters of all local columns of the Submatrix with id=24, but return maximal 3 sequence rows
 ================================
 .request
 [source,json]
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "LocalColumn",
-    "conditions": [
-        "submatrix=8"
-    ],
-    "attributes": [
-        "id",
-        "values",
-        "flags",
-        "generation_parameters"
-    ],
-    "seqMaxCount": 1000
+    "AoLocalColumn": {
+        "submatrix": 24
+    },
+    "$attributes": {
+        "id": 1,
+        "generation_parameters": 1,
+        "values": 1,
+        "flags": 1
+    },
+    "$options": {
+        "$seqlimit": 3
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -376,25 +444,23 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 ================================
 
-.Get next chunk id, values and flags of all local columns of the Submatrix with id=8
+.Get  chunk id, values and flags of all local columns with id=2263
 ================================
 .request
 [source,json]
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "LocalColumn",
-    "conditions": [
-        "submatrix=8"
-    ],
-    "attributes": [
-        "id",
-        "values",
-        "flags",
-        "generation_parameters"
-    ],
-    "seqSkipCount": 1000,
-    "seqMaxCount": 1500
+    "AoLocalColumn": 2263,
+    "$attributes": {
+        "id": 1,
+        "values": 1,
+        "flags": 1
+    },
+    "$options": {
+        "$seqlimit": 100,
+        "$seqskip": 10
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----
@@ -404,29 +470,28 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 ----
 ================================
 
-.Get id, values, flags and generation_parameters of all local column Time and Revs of the Submatrix with id=8
+.Get id, values, flags and generation_parameters of all local column Phoenix_02 and FFemAIF1_14 of the Submatrix with id=24
 ================================
 .request
 [source,json]
 ----
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/problem+json' -d '
 {
-    "entity": "LocalColumn",
-    "conditions": [
-        "submatrix=8",
-        "$and",
-        "$open",
-        "name=Time",
-        "$or",
-        "name=Revs",
-        "$close"
-    ],
-    "attributes": [
-        "id",
-        "values",
-        "flags",
-        "generation_parameters"
-    ]
+    "AoLocalColumn": {
+        "submatrix": 24,
+        "name": {
+            "$in": [
+                "Phoenix_02",
+                "FFemAIF1_14"
+            ]
+        }
+    },
+    "$attributes": {
+        "id": 1,
+        "generation_parameters": 1,
+        "values": 1,
+        "flags": 1
+    }
 }' 
 'http://localhost:8081/con/c1/data/access'
 ----

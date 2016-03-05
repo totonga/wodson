@@ -347,6 +347,36 @@ def _column_get_seq(column):
     return None
 
 
+def IsSequence(arrayType):
+    if arrayType == org.asam.ods.DS_BYTE:
+        return True
+    elif arrayType == org.asam.ods.DS_BOOLEAN:
+        return True
+    elif arrayType == org.asam.ods.DS_SHORT:
+        return True
+    elif arrayType == org.asam.ods.DS_LONG:
+        return True
+    elif arrayType == org.asam.ods.DS_LONGLONG:
+        return True
+    elif arrayType == org.asam.ods.DS_FLOAT:
+        return True
+    elif arrayType == org.asam.ods.DS_DOUBLE:
+        return True
+    elif arrayType == org.asam.ods.DS_DATE:
+        return True
+    elif arrayType == org.asam.ods.DS_STRING:
+        return True
+    elif arrayType == org.asam.ods.DS_ENUM:
+        return True
+    elif arrayType == org.asam.ods.DS_COMPLEX:
+        return True
+    elif arrayType == org.asam.ods.DS_DCOMPLEX:
+        return True
+    elif arrayType == org.asam.ods.DS_EXTERNALREFERENCE:
+        return True
+
+    return False
+
 def ColumnCountRows(column):
     seq = _column_get_seq(column)
     if seq is None:
