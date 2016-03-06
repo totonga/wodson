@@ -51,4 +51,8 @@ There are different implementation of session middleware. They are used to
 allow some kind of persistent configuration stored based on the configuration 
 of the middleware. Most of the implementations allow a lot of different 
 session storage, starting from memory over file to central database.
-Wodson will store its con settings persistent in such an session middleware.
+
+Wodson uses https://github.com/bbangert/beaker[Beaker] to store its con settings persistent. 
+By default a session-id signed with a given secret that needs to be replaced.
+It is strongly configurable how the session is handled.
+
