@@ -35,7 +35,8 @@ session_opts = {
     'session.type': 'file',
     'session.cookie_expires': 30000,
     'session.data_dir': './data',
-    'session.auto': True
+    'session.auto': True,
+    'session.secret': 'VerySecretAndRandomString!PotentiallyAutomaticGenerated'
 }
 
 
