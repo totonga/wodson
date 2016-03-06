@@ -11,75 +11,100 @@ POST /con/c5/data/access
 
 ----
 {
-  "entity": "AoTest"
+    "AoTest": {}
 }
 ----
 
 ----
 {
-  "entity": "AoTest",
-  "attributes": ["name","id"]
+    "AoTest": {},
+    "$attributes": {
+        "name": 1,
+        "id": 1
+    }
 }
 ----
 
 ----
 {
-  "entity": "AoTest",
-  "attributes": ["children.name","children.id"]
+    "AoTest": {},
+    "$attributes": {
+        "children.name": 1,
+        "children.id": 1
+    }
 }
 ----
 
 ----
 {
-  "entity": "AoTest",
-  "attributes": ["children.name","children.id","children.parent_test"]
+    "AoTest": {},
+    "$attributes": {
+        "children": {
+            "name": 1,
+            "id": 1,
+            "parent_test": 1
+        }
+    }
 }
 ----
 
 ----
 {
-  "entity": "AoTest",
-  "conditions": ["id=???"],
-  "attributes": ["children.name","children.id"]
+    "AoTest": "???",
+    "$attributes": {
+        "children": {
+            "name": 1,
+            "id": 1
+        }
+    }
 }
 ----
 
 ----
 {
-  "entity": "???",
-  "conditions": ["id=???"],
-  "attributes": ["children.name","children.id"]
+    "???": "???",
+    "$attributes": {
+        "children": {
+            "name": 1,
+            "id": 1
+        }
+    }
 }
 ----
 
 ----
 {
-  "entity": "???",
-  "conditions": ["id=???"],
-  "attributes": ["children.name","children.id"]
+    "AoMeasurement": "???",
+    "$attributes": {
+        "measurement_quantities": {
+            "name": 1,
+            "id": 1,
+            "datatype": 1
+        }
+    }
 }
 ----
 
 ----
 {
-  "entity": "AoMeasurement",
-  "conditions": ["id=???"],
-  "attributes": ["measurement_quantities.name","measurement_quantities.id","measurement_quantities.datatype"]
+    "AoMeasurementQuantity": "???",
+    "$attributes": {
+        "local_columns": {
+            "name": 1,
+            "id": 1
+        }
+    }
 }
 ----
 
 ----
 {
-  "entity": "AoMeasurementQuantity",
-  "conditions": ["id=???"],
-  "attributes": ["local_columns.name","local_columns.id"]
-}
-----
-
-----
-{
-  "entity": "AoLocalColumn",
-  "conditions": ["id=???"],
-  "attributes": ["id", "generation_parameters","flags","values"]
+    "AoLocalColumn": "???",
+    "$attributes": {
+        "id": 1,
+        "generation_parameters": 1,
+        "flags": 1,
+        "values": 1
+    }
 }
 ----
