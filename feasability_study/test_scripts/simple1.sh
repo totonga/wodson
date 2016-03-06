@@ -24,7 +24,7 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/ht
 ]' 'http://localhost:8081/con/myCon'
 
 pause 'Get Server Model [Press key to continue]'
-curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/myCon/model'
+curl -X GET --header 'Accept: application/json' 'http://localhost:8081/con/myCon/model/access'
 
 pause 'Retrieve name and id from AoTests [Press key to continue]'
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{

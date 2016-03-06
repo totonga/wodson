@@ -42,6 +42,7 @@ def update(config, conI, params):
             for param in params:
                 config['cons'][conI][param] = params[param]
                 return
+    add(config, conI, params)
 
 
 def get_params(config, conI):
