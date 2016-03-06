@@ -25,8 +25,11 @@ from beaker.middleware import SessionMiddleware
 import org
 import ods_protobuf_convert
 import jaquel_to_ods_convert
+import con_utils
 
 app = connexion.App(__name__)
+
+_active_aosession = {}
 
 session_opts = {
     'session.type': 'file',
@@ -45,20 +48,21 @@ class BeakerSessionInterface(SessionInterface):
         session.save()
 
 
-class _CCon:
-    name_value_params_ = {}
-    session_obj_ = None
+def _Session(config, conI):
+    global _active_aosession
 
-    def __init__(self, context_vars):
-        self.name_value_params_ = context_vars
+    if not _active_aosession.has_key(conI):
+        params = con_utils.get_params(config, conI)
+        _active_aosession[conI] = odslib.CSessionAutoReconnect(params)
 
-_cons = {}
-_cons['c1'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'})
-_cons['c2'] = _CCon({u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'})
-_cons['c3'] = _CCon({u'$URL': u'corbaname::#AtfxNameMapTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
-_cons['c4'] = _CCon({u'$URL': u'corbaname::#AtfxTest.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
-_cons['c5'] = _CCon({u'$URL': u'corbaname::#AtfxDatabase.ASAM-ODS', u'USER': '', u'PASSWORD': u''})
-_cons['openatfx'] = _CCon({u'$URL': u'corbaname::localhost:900#ATFX.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma', u'FILENAME': u'Example_Simple.atfx'})
+    return _active_aosession[conI]
+
+
+def _SessionClose(conI):
+    global _active_aosession
+
+    if _active_aosession.has_key(conI):
+        del _active_aosession[conI]
 
 
 def _request_wants_protobuf():
@@ -129,23 +133,6 @@ def _GetDiscriminatorArrayName(arrayType):
     return None
 
 
-def _Session(conI):
-    global session_obj__
-
-    if _cons[conI].session_obj_ is None:
-        _cons[conI].session_obj_ = odslib.CSessionAutoReconnect(_cons[conI].name_value_params_)
-
-    return _cons[conI].session_obj_
-
-
-def _SessionClose(conI):
-    global session_obj__
-
-    if not _cons[conI].session_obj_ is None:
-        _cons[conI].session_obj_.Close()
-        _cons[conI].session_obj_ = None
-
-
 def data_post(conI, data_matrix):
     logging.info('create instances')
     return jsonify({}), 200
@@ -189,13 +176,13 @@ def data_access_post(conI,  query_struct):
         seqSkipCount = query_struct['seqSkipCount'] if 'seqSkipCount' in query_struct else 0
         seqMaxCount = query_struct['seqMaxCount'] if 'seqMaxCount' in query_struct else 50
 
-        so = _Session(conI)
+        so = _Session(session, conI)
         model = so.Model()
         elem = model.GetElemEx(entityStr)
         result = so.GetElementValues(elem.aeName, conditions, attributes, orderBy, groupBy, rowMaxCount)
     else:
         # assume jaquel
-        so = _Session(conI)
+        so = _Session(session, conI)
         model = so.Model()
 
         elem, qse, options = jaquel_to_ods_convert.JaquelToQueryStructureExt(model, query_struct)
@@ -351,7 +338,7 @@ def model_delete_post(conI, model):
 def model_access_get(conI):
     logging.info('get the server model')
     rv = {}
-    model = _Session(conI).Model()
+    model = _Session(session, conI).Model()
     # add enumerations
     enumsArray = []
     for enum in model.enums_:
@@ -417,7 +404,7 @@ def model_access_get(conI):
 
 def context_get(conI,  pattern):
     logging.info('get context variables')
-    so = _Session(conI)
+    so = _Session(session, conI)
     nvi = so.GetContext(pattern)
     rv = []
     nviCount = nvi.getCount()
@@ -433,71 +420,83 @@ def context_get(conI,  pattern):
 
 def context_put(conI, parameters):
     logging.info('set context variables')
-    so = _Session(conI)
+    so = _Session(session, conI)
     for param in parameters:
         varName = param['name']
         varValue = param['value']
         so.setContextString(varName,  varValue)
-
     return NoContent, 200
 
 
 def con_get():
     logging.info('get info from existing Con entries')
-
+    cons = con_utils.list(session)
     rv = {}
     rv['cons'] = []
-
-    for con in _cons:
+    for conI in cons:
         conObj = {}
-        conObj['name'] = con
+        conObj['name'] = conI
         rv['cons'].append(conObj)
-
     return jsonify(rv), 200;
 
+
+def con_put(cons):
+    logging.info('get info from existing Con entries')
+    for conI in cons:
+        if con_utils.exists(session, conI):
+            con_utils.update(session, conI, cons[conI])
+        else:
+            con_utils.add(session, conI, cons[conI])
+    return NoContent, 200
 
 def con_coni_get(conI):
     logging.info('get con parameters')
     rv = []
-    for param in _cons[conI].name_value_params_:
+    params = con_utils.get_params(session, conI)
+    for param in params:
         if 'PASSWORD' != param:
             pObj = {}
             pObj['name'] = param
-            pObj['value'] = _cons[conI].name_value_params_[param]
+            pObj['value'] = params[param]
             rv.append(pObj)
     return rv
 
 
 def con_coni_post(conI, parameters):
     logging.info('Create a new con')
-    if conI in _cons:
+    if con_utils.exists(session, conI):
+        # already exist
         return NoContent, 405
 
-    _cons[conI] = _CCon({})
-
+    params = {}
     for param in parameters:
         pName = param['name']
         pValue = param['value']
-        _cons[conI].name_value_params_[pName] = pValue
+        params[pName] = pValue
+
+    con_utils.add(session, conI, params)
 
     return NoContent, 200
 
 
 def con_coni_delete(conI):
     logging.info('delete con and close session')
-    del _cons[conI]
+    con_utils.delete(session, conI)
+    _SessionClose(conI)
     return NoContent, 200
 
 
 def con_coni_put(conI, parameters):
     logging.info('set con parameters')
-    # make sure we can change configuration of session
-    _SessionClose(conI)
-
+    params = {}
     for param in parameters:
         pName = param['name']
         pValue = param['value']
-        _cons[conI].name_value_params_[pName] = pValue
+        params[pName] = pValue
+
+    # make sure we can change configuration of session
+    _SessionClose(conI)
+    con_utils.update(session, conI, params)
 
     return NoContent, 200
 
@@ -508,7 +507,7 @@ def utils_asampath_create_get(conI, params):
     entityStr = params['entity']
     iid = params['id']
 
-    so = _Session(conI)
+    so = _Session(session, conI)
     model = so.Model()
     elem = model.GetElemEx(entityStr)
     rv = {}
@@ -525,7 +524,7 @@ def utils_asampath_resolve_get(conI, params):
 
     path = params['path']
 
-    so = _Session(conI)
+    so = _Session(session, conI)
     entity,  iid = so.AsamPathResolve(path)
     rv = {}
     rv['entity'] = entity

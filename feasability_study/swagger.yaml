@@ -528,6 +528,24 @@ paths:
       security:
         - session_auth:
           - access_data
+    put:
+      tags:
+        - API_Methods
+        - Info
+      description: set a list of cons to be used
+      operationId: app.con_put
+      parameters:
+        - name: cons
+          in: body
+          description: list of object to be set to config
+          required: true
+          type: object
+      responses:
+        '200':
+          description: Successful response
+      security:
+        - session_auth:
+          - access_data
   /con/{conI}:
     get:
       tags:
