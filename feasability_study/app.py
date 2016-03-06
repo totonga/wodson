@@ -15,21 +15,34 @@ __email__ = "totonga@gmail.com"
 __status__ = "Prototype"
 
 import logging
-import org
 import odslib
 import connexion
-
-# from flask import Flask
-from flask import render_template,  redirect,  jsonify, url_for
-from flask import request
+from flask import render_template, redirect, jsonify, url_for, request, make_response, session
+from flask.sessions import SessionInterface
 from connexion import NoContent
-from flask import make_response
+from beaker.middleware import SessionMiddleware
 
+import org
 import ods_protobuf_convert
 import jaquel_to_ods_convert
 
-
 app = connexion.App(__name__)
+
+session_opts = {
+    'session.type': 'file',
+    'session.cookie_expires': 30000,
+    'session.data_dir': './data',
+    'session.auto': True
+}
+
+
+class BeakerSessionInterface(SessionInterface):
+    def open_session(self, app, request):
+        session = request.environ['beaker.session']
+        return session
+
+    def save_session(self, app, session, response):
+        session.save()
 
 
 class _CCon:
@@ -559,13 +572,14 @@ def testdataget():
 
 
 logging.basicConfig(level=logging.INFO)
-
 app.add_api('swagger.yaml')
+application = app.app
+application.wsgi_app = SessionMiddleware(application.wsgi_app, session_opts)
+application.session_interface = BeakerSessionInterface()
 # set the WSGI application callable to allow using uWSGI:
 # uwsgi --http :8081 -w app
 # Make the WSGI interface available at the top level so wfastcgi can get it.
-wsgi_app = app.app.wsgi_app
-application = app.app
+wsgi_app = application.wsgi_app
 
 if __name__ == '__main__':
     application.run('localhost', 8081)
