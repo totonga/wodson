@@ -32,6 +32,53 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 .result
 [source,json]
 ----
+{
+  "matrices": [
+    {
+      "name": "TestBed", 
+      "baseName": "AoTest", 
+      "objecttype": "2", 
+      "columns": [
+        {
+          "name": "Name", 
+          "baseName": "name", 
+          "datatype": "DT_STRING", 
+          "dtString": { "values": ["CFMA-L8","HAVC_PRT_KL EP","CFMA-L9"] }
+        },
+        {
+          "name": "Id", 
+          "baseName": "id", 
+          "datatype": "DT_ID", 
+          "dtLonglong": { "values": ["2","3","4"] } 
+        },
+        {
+          "name": "Description", 
+          "datatype": "DT_STRING", 
+          "baseName": "description", 
+          "dtString": { "values": ["Engine test bench","All-wheel flat-roadway test bench","All-wheel flat-roadway test bench"] }
+        },
+        {
+          "name": "Version", 
+          "datatype": "DT_STRING", 
+          "baseName": "version", 
+          "dtString": { "values": ["2.1","1.5","1.2"] }
+        },
+        {
+          "name": "Location", 
+          "datatype": "DT_STRING", 
+          "baseName": "", 
+          "dtString": { "values": ["Madrid","Austin","Milan"] }
+        },
+        {
+          "name": "Environment", 
+          "datatype": "DT_ID", 
+          "baseName": "environment", 
+          "dtLonglong": { "values": ["1","1","1"] }
+        }
+      ]
+    }
+  ]
+}
 ----
 ================================
 
@@ -441,6 +488,72 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 .result
 [source,json]
 ----
+{
+  "matrices": [
+    {
+      "name": "LocalColumn",
+      "baseName": "AoLocalColumn", 
+      "objecttype": "205", 
+      "columns": [
+        {
+          "name": "Id", 
+          "baseName": "id", 
+          "datatype": "DT_ID", 
+          "flags": [], 
+          "dtLonglong": { "values": ["2262", "2263", "2264"] }
+        }, 
+        {
+          "name": "iGeneration_Parameters", 
+          "baseName": "generation_parameters", 
+          "datatype": "DS_DOUBLE", 
+          "dsDouble": {
+            "values": [ 
+              { "values": [] }, 
+              { "values": [] }, 
+              { "values": [0.0, 4.76171875] }
+            ]
+          }, 
+          "flags": [false,false,true]
+        }, 
+        {
+          "name": "iValues", 
+          "baseName": "values", 
+          "datatype": "DT_UNKNOWN", 
+          "dtUnknown": {
+            "values": [
+              {
+                "datatype": "DT_FLOAT", 
+                "dtFloat": { "values": [-10000.0, -10000.0, -10000.0] }
+              }, 
+              {
+                "datatype": "DT_FLOAT", 
+                "dtFloat": { "values": [7.6884284019470215, 7.6887431144714355, 7.689032077789307] }
+              }, 
+              {
+                "datatype": "DT_FLOAT", 
+                "dtFloat": { "values": [0.0, 4.76171875] }
+              }
+            ]
+          }, 
+          "flags": []
+        }, 
+        {
+          "name": "iFlags", 
+          "baseName": "flags", 
+          "datatype": "DS_SHORT", 
+          "dsLong": {
+            "values": [
+              { "values": [] }, 
+              { "values": [] }, 
+              { "values": [16384, 16543] }
+            ]
+          }, 
+          "flags": [false, false, true]
+        }
+      ]
+    }
+  ]
+}
 ----
 ================================
 
