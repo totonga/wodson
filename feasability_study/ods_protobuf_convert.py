@@ -162,7 +162,7 @@ def o2p_datamatrices(model, elem, result, rowSkipCount, seqSkipCount, seqMaxCoun
         data_matrix = rv.matrices.add()
         data_matrix.name = tableElem.aeName
         data_matrix.base_name = tableElem.beName
-        data_matrix.objecttype = table.aid
+        data_matrix.objecttype = odslib.LL2Int(table.aid)
         data_matrix.row_skip_count = rowSkipCount
         data_matrix.seq_skip_count = seqSkipCount
 
