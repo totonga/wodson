@@ -33,7 +33,7 @@ _active_aosession = {}
 
 session_opts = {
     'session.type': 'file',
-    'session.cookie_expires': 30000,
+    'session.cookie_expires': False, # can be set to secconds instead
     'session.data_dir': './data',
     'session.auto': True,
     'session.secret': 'VerySecretAndRandomString!PotentiallyAutomaticGenerated'
