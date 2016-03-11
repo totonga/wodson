@@ -423,6 +423,9 @@ _queriesEngine.append('''
 }''')
 
 _fileHandle = open('queryTestoutput.adoc', 'w')
+_fileHandle.write(':toc: left\n:toclevels: 3\n\n')
+
 _RunQueriesAndAddToFile('Medamak', {u'$URL': u'corbaname::10.89.2.24:900#MeDaMak1.ASAM-ODS', u'USER': 'test', u'PASSWORD': u'test'}, _fileHandle, _queriesMedaMak)
 _RunQueriesAndAddToFile('Engine', {u'$URL': u'corbaname::10.89.2.24:900#ENGINE1.ASAM-ODS', u'USER': 'System', u'PASSWORD': u'puma'}, _fileHandle, _queriesEngine)
+
 _fileHandle.close
