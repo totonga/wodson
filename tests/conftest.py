@@ -6,7 +6,7 @@ import pytest
 
 from asamatfx import AtfxStore
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
 
 
 @pytest.fixture
