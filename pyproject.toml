@@ -1,0 +1,51 @@
+[project]
+name = "asamatfx"
+version = "0.1.0"
+description = "ATFX reader with in-memory SQLite backend and ODS data-read API"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "numpy>=2.0",
+    "odsbox[oidc]>=1.2.0",
+]
+
+[project.scripts]
+asamatfx = "asamatfx._cli:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.20.2",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.12",
+    "types-protobuf>=7.34.1.20260503",
+    "types-requests>=2.33.0.20260503",
+]
+
+[tool.mypy]
+strict = true
+python_version = "3.14"
+warn_return_any = true
+plugins = []
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+
+[tool.ruff]
+target-version = "py314"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "ANN"]
+ignore = ["ANN401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.setuptools.package-data]
+asamatfx = ["base_model/*", "py.typed"]
