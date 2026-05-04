@@ -511,7 +511,6 @@ def _fill_sequence_column(column: Any, seq_data: list[Any], data_type: int, actu
     elif data_type in (
         ods.DataTypeEnum.DS_LONG,
         ods.DataTypeEnum.DS_SHORT,
-        ods.DataTypeEnum.DS_ENUM,
     ):
         arr = column.long_arrays.values.add()
         arr.values.extend([int(v) for v in seq_data])
@@ -522,6 +521,7 @@ def _fill_sequence_column(column: Any, seq_data: list[Any], data_type: int, actu
         ods.DataTypeEnum.DS_STRING,
         ods.DataTypeEnum.DS_DATE,
         ods.DataTypeEnum.DS_EXTERNALREFERENCE,
+        ods.DataTypeEnum.DS_ENUM,
     ):
         arr = column.string_arrays.values.add()
         arr.values.extend([str(v) for v in seq_data])
