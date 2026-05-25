@@ -539,6 +539,100 @@ def test_common_typespecs_localcolumn_values():
                 )
 
 
+def test_example_atfx_localcolumn_values():
+    """tests/data/openatfx/example.atfx (PAK corpus): 17 LocalColumns with mixed
+    explicit and external_component sequence representations.  Three channels
+    reference truncated offsets in the binary and legitimately return empty values;
+    the remaining 14 channels must have non-empty numeric data.
+    """
+    atfx_path = _OPENATFX_DIR / "example.atfx"
+    with AtfxStore(atfx_path) as store:
+        model = store.model()
+        lc_ent = model.entities["lc"]
+
+        id_attr = next(a for a, x in lc_ent.attributes.items() if x.base_name == "id")
+        name_attr = next(a for a, x in lc_ent.attributes.items() if x.base_name == "name")
+        sr_attr = next(
+            (a for a, x in lc_ent.attributes.items() if x.base_name == "sequence_representation"),
+            None,
+        )
+        val_attr = next(a for a, x in lc_ent.attributes.items() if x.base_name == "values")
+
+        stmt = ods.SelectStatement()
+        stmt.columns.add(aid=lc_ent.aid, attribute=id_attr)
+        stmt.columns.add(aid=lc_ent.aid, attribute=name_attr)
+        if sr_attr:
+            stmt.columns.add(aid=lc_ent.aid, attribute=sr_attr)
+        stmt.columns.add(aid=lc_ent.aid, attribute=val_attr)
+        result = store.data_read(stmt)
+
+        assert len(result.matrices) == 1
+        m = result.matrices[0]
+        id_col = next(c for c in m.columns if c.name == id_attr)
+        name_col = next(c for c in m.columns if c.name == name_attr)
+        sr_col = next((c for c in m.columns if c.name == sr_attr), None) if sr_attr else None
+        val_col = next(c for c in m.columns if c.name == val_attr)
+
+        ids = list(id_col.longlong_array.values)
+        names = list(name_col.string_array.values)
+        srs = list(sr_col.string_array.values) if sr_col else ["explicit"] * len(ids)
+
+        # Row counts must match
+        assert len(ids) == 17
+        assert len(val_col.unknown_arrays.values) == 17
+
+        def ua(lc_id: int):  # type: ignore[no-untyped-def]
+            return val_col.unknown_arrays.values[ids.index(lc_id)]
+
+        # --- Channels with known truncated binary data return empty (acceptable) ---
+        _TRUNCATED_IDS = {61, 72, 112}
+        for lc_id in _TRUNCATED_IDS:
+            assert ua(lc_id).WhichOneof("UnknownOneOf") is None, (
+                f"lc_id={lc_id}: expected empty values for truncated channel"
+            )
+
+        # --- All other channels must have non-empty values ---
+        for lc_id, sr in zip(ids, srs):
+            if lc_id in _TRUNCATED_IDS:
+                continue
+            w = ua(lc_id).WhichOneof("UnknownOneOf")
+            assert w is not None, (
+                f"lc_id={lc_id} sr={sr!r}: expected non-empty values"
+            )
+
+        # --- Spot-checks ---
+        # Time channel (lc=45): DT_DOUBLE, first value ≈ 4.6e-4 s
+        ua_time = ua(45)
+        assert ua_time.data_type == ods.DataTypeEnum.DT_DOUBLE
+        t = list(ua_time.double_array.values)
+        assert len(t) > 0
+        assert math.isclose(t[0], 4.613e-4, rel_tol=1e-3)
+
+        # LS.Right Side (lc=39): DT_FLOAT, explicit
+        ua_ls = ua(39)
+        assert ua_ls.data_type == ods.DataTypeEnum.DT_FLOAT
+        ls = list(ua_ls.float_array.values)
+        assert len(ls) > 0
+        assert math.isclose(ls[0], 0.02715, rel_tol=1e-3)
+
+        # signed_b (lc=115): external_component, DT_SHORT stored in long_array
+        ua_sb = ua(115)
+        assert ua_sb.data_type == ods.DataTypeEnum.DT_SHORT
+        sb = list(ua_sb.long_array.values)
+        assert sb[:3] == [1, 0, -1]
+
+        # unsigned_b (lc=118): external_component, DT_BYTE stored in byte_array
+        ua_ub = ua(118)
+        assert ua_ub.data_type == ods.DataTypeEnum.DT_BYTE
+        assert len(ua_ub.byte_array.values) > 0
+
+        # All explicit channels must have the correct sequence representation
+        _EXTERNAL_IDS = {115, 118}
+        for lc_id, sr in zip(ids, srs):
+            expected_sr = "external_component" if lc_id in _EXTERNAL_IDS else "explicit"
+            assert sr == expected_sr, f"lc_id={lc_id}: expected sr={expected_sr!r}, got {sr!r}"
+
+
 # ---- Unit tests for helpers ----
 
 
