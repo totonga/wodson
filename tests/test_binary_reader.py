@@ -1,9 +1,20 @@
 """Tests for binary reader with external .dat files."""
 
+from pathlib import Path
+
 import odsbox.proto.ods_pb2 as ods
 import pytest
 
 from wodson.atfx import AtfxStore
+
+_OPENATFX_DIR = Path(__file__).resolve().parent / "data" / "openatfx"
+
+
+# Override the conftest fixture: use the checked-in openatfx copy so these
+# tests run in CI without requiring docs/spec/examples/.
+@pytest.fixture
+def common_typespecs_atfx():
+    return _OPENATFX_DIR / "Example_CommonTypespecs.atfx"
 
 
 @pytest.fixture
@@ -53,6 +64,7 @@ def test_common_typespecs_localcolumns(common_store):
     assert len(name_col.string_array.values) > 10
 
 
+@pytest.mark.devtest
 def test_cast_typespecs_model_loads(cast_typespecs_atfx):
     """CastTypespecs should load model even if .dat is missing."""
     dat_file = cast_typespecs_atfx.parent / "Example_CastTypespecs.dat"
@@ -128,6 +140,7 @@ def test_common_typespecs_values_data_types(common_store):
     assert ua_bstr_beo.bytestr_array.values[1] == bytes([2, 4, 8, 16, 32, 64, 128])
 
 
+@pytest.mark.devtest
 def test_cast_typespecs_values_data_types(cast_store):
     """UnknownArray.data_type and values for each CastTypespecs Localcolumn.Values."""
     model = cast_store.model()

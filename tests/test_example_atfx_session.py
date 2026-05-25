@@ -27,14 +27,17 @@ Quick reference::
 from pathlib import Path
 
 import odsbox.proto.ods_pb2 as ods
+import pytest
 from odsbox.con_i import ConI
 
 from wodson.atfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
 
-# ---------------------------------------------------------------------------
-# Fixture file: the same ATFX used throughout the docs examples
-# ---------------------------------------------------------------------------
-SIMPLE_ATFX = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples" / "Example_Simple.atfx"
+# Fixture file used by generic tests (checked in)
+SIMPLE_ATFX = Path(__file__).resolve().parent / "data" / "openatfx" / "asam600" / "Example_Simple.atfx"
+
+# Fixture file used by devtest-marked tests that assert specific instance values
+# from the ASAM spec example (docs/spec/examples/, not checked in).
+_SPEC_SIMPLE_ATFX = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples" / "Example_Simple.atfx"
 
 
 # ---------------------------------------------------------------------------
@@ -92,13 +95,14 @@ def test_connect_with_context_variable():
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.devtest
 def test_query_data_via_coni():
     """Use ConI.data_read() to execute a SelectStatement in-process.
 
     The result is the same ``ods.DataMatrices`` you would get from a real
     ASAM ODS HTTP server, so existing parsing code can be reused unchanged.
     """
-    with AtfxSession(default_file=str(SIMPLE_ATFX)) as session:
+    with AtfxSession(default_file=str(_SPEC_SIMPLE_ATFX)) as session:
         with ConI(
             url=session.url,
             auth=None,
@@ -128,13 +132,14 @@ def test_query_data_via_coni():
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.devtest
 def test_query_data_jaquel():
     """Use the higher-level ConI.query_data() with a JAQueL dict query.
 
     ``query_data`` converts the dict to a ``SelectStatement`` and returns
     a pandas DataFrame.  The in-process session is transparent to the caller.
     """
-    with AtfxSession(default_file=str(SIMPLE_ATFX)) as session:
+    with AtfxSession(default_file=str(_SPEC_SIMPLE_ATFX)) as session:
         with ConI(
             url=session.url,
             auth=None,

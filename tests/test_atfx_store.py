@@ -7,6 +7,8 @@ import pytest
 
 from wodson.atfx import AtfxStore
 
+pytestmark = pytest.mark.devtest
+
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
 
 ALL_ATFX_FILES = sorted(DATA_DIR.glob("*.atfx"))

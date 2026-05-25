@@ -10,7 +10,7 @@ from odsbox.con_i import ConI
 
 from wodson.atfx import CONTEXT_VAR_ATFX_FILE, AtfxServer
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
+DATA_DIR = Path(__file__).resolve().parent / "data" / "openatfx" / "asam600"
 SIMPLE_ATFX = DATA_DIR / "Example_Simple.atfx"
 
 CONTENT_TYPE_PROTO = "application/x-asamods+protobuf"

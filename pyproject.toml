@@ -73,6 +73,10 @@ ignore = ["ANN401"]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
+markers = [
+    "integration: tests that require a live ASAM ODS server",
+    "devtest: tests that require locally available spec files (docs/spec/, not checked in) — excluded from CI",
+]
 
 [tool.setuptools.package-data]
 wodson = ["py.typed"]

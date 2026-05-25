@@ -21,6 +21,8 @@ from wodson.atfx._instance_parser import (
     _parse_values_content,
 )
 
+pytestmark = pytest.mark.devtest
+
 
 def test_simple_instance_count(simple_store):
     """Verify correct number of instances are loaded (queryable via data_read)."""

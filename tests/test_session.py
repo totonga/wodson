@@ -11,8 +11,12 @@ from odsbox.con_i import ConI
 from wodson.atfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
 from wodson.atfx._session import AtfxAdapter
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
+DATA_DIR = Path(__file__).resolve().parent / "data" / "openatfx" / "asam600"
 SIMPLE_ATFX = DATA_DIR / "Example_Simple.atfx"
+
+# Used only by devtest-marked tests that assert specific instance values from the
+# ASAM spec example (docs/spec/examples/, not checked in).
+_SPEC_SIMPLE_ATFX = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples" / "Example_Simple.atfx"
 
 CONTENT_TYPE_PROTO = "application/x-asamods+protobuf"
 CONTENT_TYPE_JSON = "application/x-asamods+json"
@@ -298,9 +302,10 @@ class TestConI:
                 model = con.model_read()
         assert "Environment" in model.entities
 
+    @pytest.mark.devtest
     def test_coni_data_read(self):
         """ConI.data_read() returns DataMatrices with expected values."""
-        with AtfxSession(default_file=str(SIMPLE_ATFX)) as session:
+        with AtfxSession(default_file=str(_SPEC_SIMPLE_ATFX)) as session:
             with ConI(
                 url=session.url,
                 auth=None,

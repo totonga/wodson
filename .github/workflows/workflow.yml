@@ -51,7 +51,7 @@ jobs:
         run: uv sync --all-groups
 
       - name: Run tests
-        run: uv run pytest tests/ -v
+        run: uv run pytest tests/ -v -m "not devtest"
 
   release:
     name: Release
