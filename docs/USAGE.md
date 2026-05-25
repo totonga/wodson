@@ -11,8 +11,9 @@ content, and optionally expose them over an ASAM ODS HTTP interface.
 2. [ATFX File Format](#atfx-file-format)
 3. [Embedded Library — AtfxStore](#embedded-library--atfxstore)
 4. [HTTP Server — AtfxServer](#http-server--atfxserver)
-5. [CLI — Command Line Interface](#cli--command-line-interface)
-6. [Querying with odsbox ConI](#querying-with-odsbox-coni)
+5. [In-Process Access — AtfxSession](#in-process-access--atfxsession)
+6. [CLI — Command Line Interface](#cli--command-line-interface)
+7. [Querying with odsbox ConI](#querying-with-odsbox-coni)
 7. [Supported Content Types](#supported-content-types)
 8. [API Reference](#api-reference)
 
@@ -219,6 +220,78 @@ resp = requests.post(
 )
 # HTTP 201 — session URL in Location header
 session_url = resp.headers["Location"]
+```
+
+---
+
+## In-Process Access — AtfxSession
+
+`AtfxSession` is a `requests.Session` subclass that routes `ConI` HTTP calls
+directly to an `AtfxStore` — **no socket, no TCP, no port allocation**.
+It is the fastest way to use the `odsbox` `ConI` API against a local ATFX
+file when you do not need a real network endpoint.
+
+### When to use AtfxSession
+
+| Approach | Network? | Threads? | Best for |
+|---|---|---|---|
+| `AtfxStore` (direct) | No | No | Python-only, lowest-level access |
+| `AtfxSession` + `ConI` | No | No | Re-use existing `ConI` code in-process |
+| `AtfxServer` + `ConI` | Yes (localhost) | Yes | Remote clients, multi-process, CLI |
+
+### Basic usage — pass the file to AtfxSession
+
+```python
+from odsbox.con_i import ConI
+from asamatfx import AtfxSession
+
+with AtfxSession(default_file="path/to/file.atfx") as session:
+    with ConI(
+        url=session.url,       # "http://asamatfx.local" — no real HTTP
+        auth=None,
+        custom_session=session,
+    ) as con:
+        model = con.model_read()
+        df = con.query_data({"AoEnvironment": {}})
+        print(df)
+```
+
+### Using the ATFX_FILE context variable
+
+Passing the file via `context_variables` mirrors the `AtfxServer` pattern,
+making it easy to switch between in-process and HTTP access:
+
+```python
+from odsbox.con_i import ConI
+from asamatfx import AtfxSession, CONTEXT_VAR_ATFX_FILE
+
+with AtfxSession() as session:
+    with ConI(
+        url=session.url,
+        auth=None,
+        custom_session=session,
+        context_variables={CONTEXT_VAR_ATFX_FILE: "path/to/file.atfx"},
+        load_model=False,
+    ) as con:
+        model = con.model_read()
+```
+
+### Switching between AtfxSession and AtfxServer
+
+Because the `url` + `custom_session` interface is identical to the HTTP server
+pattern, you can swap in `AtfxServer` with minimal code changes:
+
+```python
+# In-process (no network)
+with AtfxSession(default_file="file.atfx") as session:
+    url, custom_session = session.url, session
+
+# Over HTTP (real server)
+# with AtfxServer(default_file="file.atfx") as server:
+#     url, custom_session = server.url, None
+
+with ConI(url=url, auth=None, custom_session=custom_session) as con:
+    model = con.model_read()
 ```
 
 ---
