@@ -14,26 +14,27 @@ import io
 import pstats
 import time
 from pathlib import Path
+from typing import Any
 
 import odsbox.proto.ods_pb2 as ods
 import requests
-from google.protobuf import json_format
 
 from wodson.atfx import CONTEXT_VAR_ATFX_FILE, AtfxServer, AtfxSession, AtfxStore
 
-_DEFAULT_FILE = (
-    Path(__file__).parent.parent
-    / "tests"
-    / "data"
-    / "openatfx"
-    / "asam600"
-    / "Example_Simple.atfx"
-)
+_DEFAULT_FILE = Path(__file__).parent.parent / "tests" / "data" / "openatfx" / "asam600" / "Example_Simple.atfx"
 
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+
+def _find_id_attr_name(entity: ods.Model.Entity) -> str | None:
+    """Return the application attribute name whose base_name is 'id'."""
+    for aname, attr in entity.attributes.items():
+        if attr.base_name == "id":
+            return aname
+    return None
 
 
 def _make_data_read_stmt(model: ods.Model) -> ods.SelectStatement:
@@ -48,7 +49,31 @@ def _make_data_read_stmt(model: ods.Model) -> ods.SelectStatement:
     return stmt
 
 
-def _time(label: str, fn, *args, iterations: int = 1, **kwargs):  # type: ignore[no-untyped-def]
+def _make_where_id_stmt(
+    entity: ods.Model.Entity,
+    id_val: int,
+    *attr_names: str,
+) -> ods.SelectStatement:
+    """Build SELECT <attr_names> FROM entity WHERE id_attr = id_val.
+
+    Pass a single ``"*"`` as *attr_names* for SELECT *.
+    """
+    id_attr = _find_id_attr_name(entity) or "Id"
+    stmt = ods.SelectStatement()
+    for attr in attr_names:
+        col = stmt.columns.add()
+        col.aid = entity.aid
+        col.attribute = attr
+    cond_item = stmt.where.add()
+    cond = cond_item.condition
+    cond.aid = entity.aid
+    cond.attribute = id_attr
+    cond.operator = ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_EQ
+    cond.longlong_array.values.append(id_val)
+    return stmt
+
+
+def _time(label: str, fn: Any, *args: Any, iterations: int = 1, **kwargs: Any) -> Any:
     """Run *fn* *iterations* times and report min / avg ms."""
     times: list[float] = []
     result = None
@@ -76,7 +101,57 @@ def profile_store(file_path: Path, iterations: int) -> None:
     assert model is not None
 
     stmt = _make_data_read_stmt(model)
-    _time("store.data_read(simple)", store.data_read, stmt, iterations=iterations)
+    _time("store.data_read(simple SELECT *)", store.data_read, stmt, iterations=iterations)
+
+    # Pick the first entity that has an id attribute; use its real id value.
+    target_entity: ods.Model.Entity | None = None
+    target_id: int = 0
+    for ename in model.entities:
+        entity = model.entities[ename]
+        if _find_id_attr_name(entity) is not None:
+            # Read all rows to find a real id value.
+            s = ods.SelectStatement()
+            col = s.columns.add()
+            col.aid = entity.aid
+            col.attribute = "*"
+            dm = store.data_read(s)
+            for matrix in dm.matrices:
+                for column in matrix.columns:
+                    id_name = _find_id_attr_name(entity) or "Id"
+                    if column.name == id_name and column.longlong_array.values:
+                        target_entity = entity
+                        target_id = column.longlong_array.values[0]
+                        break
+                if target_entity is not None:
+                    break
+        if target_entity is not None:
+            break
+
+    if target_entity is not None:
+        id_attr = _find_id_attr_name(target_entity) or "Id"
+        # Find a second attribute name (e.g. Name) if available
+        second_attr: str | None = None
+        for aname in target_entity.attributes:
+            if aname != id_attr:
+                second_attr = aname
+                break
+
+        stmt_star = _make_where_id_stmt(target_entity, target_id, "*")
+        _time(
+            f"store.data_read(SELECT * WHERE {id_attr}={target_id})",
+            store.data_read,
+            stmt_star,
+            iterations=iterations,
+        )
+
+        if second_attr is not None:
+            stmt_cols = _make_where_id_stmt(target_entity, target_id, id_attr, second_attr)
+            _time(
+                f"store.data_read(SELECT {id_attr},{second_attr} WHERE {id_attr}={target_id})",
+                store.data_read,
+                stmt_cols,
+                iterations=iterations,
+            )
 
     store.close()
 
@@ -143,8 +218,7 @@ def profile_http(file_path: Path, iterations: int) -> None:
         def model_read() -> ods.Model:
             resp = requests.post(
                 f"{session_url}/model-read",
-                headers={"Content-Type": "application/x-asamods+protobuf",
-                         "Accept": "application/x-asamods+protobuf"},
+                headers={"Content-Type": "application/x-asamods+protobuf", "Accept": "application/x-asamods+protobuf"},
                 timeout=10,
             )
             assert resp.status_code == 200
@@ -163,8 +237,7 @@ def profile_http(file_path: Path, iterations: int) -> None:
             resp = requests.post(
                 f"{session_url}/data-read",
                 data=stmt_bytes,
-                headers={"Content-Type": "application/x-asamods+protobuf",
-                         "Accept": "application/x-asamods+protobuf"},
+                headers={"Content-Type": "application/x-asamods+protobuf", "Accept": "application/x-asamods+protobuf"},
                 timeout=10,
             )
             assert resp.status_code == 200
@@ -186,19 +259,67 @@ def profile_cprofile(file_path: Path, iterations: int) -> None:
     print(f"\n=== Phase 4: cProfile deep-dive (data_read x{iterations}) ===")
     store = AtfxStore(file_path)
     model = store.model()
-    stmt = _make_data_read_stmt(model)
 
-    pr = cProfile.Profile()
-    pr.enable()
-    for _ in range(iterations):
-        store.data_read(stmt)
-    pr.disable()
+    # Build all three statement variants ---
+    stmt_simple = _make_data_read_stmt(model)
 
-    stream = io.StringIO()
-    ps = pstats.Stats(pr, stream=stream)
-    ps.sort_stats("cumulative")
-    ps.print_stats(30)
-    print(stream.getvalue())
+    # Find entity + first id value for WHERE variants
+    where_entity: ods.Model.Entity | None = None
+    where_id: int = 0
+    for ename in model.entities:
+        entity = model.entities[ename]
+        if _find_id_attr_name(entity) is None:
+            continue
+        s = ods.SelectStatement()
+        col = s.columns.add()
+        col.aid = entity.aid
+        col.attribute = "*"
+        dm = store.data_read(s)
+        for matrix in dm.matrices:
+            for column in matrix.columns:
+                id_name = _find_id_attr_name(entity) or "Id"
+                if column.name == id_name and column.longlong_array.values:
+                    where_entity = entity
+                    where_id = column.longlong_array.values[0]
+                    break
+            if where_entity is not None:
+                break
+        if where_entity is not None:
+            break
+
+    def _cprofile_run(label: str, stmts: list[ods.SelectStatement]) -> None:
+        pr = cProfile.Profile()
+        pr.enable()
+        for _ in range(iterations):
+            for s in stmts:
+                store.data_read(s)
+        pr.disable()
+        stream = io.StringIO()
+        ps = pstats.Stats(pr, stream=stream)
+        ps.sort_stats("cumulative")
+        ps.print_stats(20)
+        print(f"--- {label} ---")
+        print(stream.getvalue())
+
+    _cprofile_run("SELECT * (no WHERE)", [stmt_simple])
+
+    if where_entity is not None:
+        id_attr = _find_id_attr_name(where_entity) or "Id"
+        second_attr: str | None = None
+        for aname in where_entity.attributes:
+            if aname != id_attr:
+                second_attr = aname
+                break
+
+        stmt_star_where = _make_where_id_stmt(where_entity, where_id, "*")
+        _cprofile_run(f"SELECT * WHERE {id_attr}={where_id}", [stmt_star_where])
+
+        if second_attr is not None:
+            stmt_cols_where = _make_where_id_stmt(where_entity, where_id, id_attr, second_attr)
+            _cprofile_run(
+                f"SELECT {id_attr},{second_attr} WHERE {id_attr}={where_id}",
+                [stmt_cols_where],
+            )
 
     store.close()
 

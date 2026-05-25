@@ -90,6 +90,8 @@ def create_schema(conn: sqlite3.Connection, model: ods.Model) -> None:
             columns.append(f'"{col_name}" {col_type}')
 
         # Add relation columns (store as INTEGER foreign key IDs)
+        # Track to-one relation columns for indexing after table creation.
+        to_one_rel_cols: list[str] = []
         for rname in entity.relations:
             rel = entity.relations[rname]
             # Only create a column for to-one relations (range_max == 1)
@@ -98,6 +100,7 @@ def create_schema(conn: sqlite3.Connection, model: ods.Model) -> None:
             # Use TEXT for multi-valued relations, INTEGER for single-valued
             if rel.range_max == 1:
                 columns.append(f'"{col_name}" INTEGER')
+                to_one_rel_cols.append(col_name)
             else:
                 columns.append(f'"{col_name}" TEXT')
 
@@ -105,6 +108,23 @@ def create_schema(conn: sqlite3.Connection, model: ods.Model) -> None:
             cols_sql = ", ".join(columns)
             sql = f'CREATE TABLE IF NOT EXISTS "{table_name}" ({cols_sql})'
             cursor.execute(sql)
+
+            # Index the ODS id column so WHERE id=N lookups are O(log n).
+            id_col: str | None = None
+            for aname, attr in entity.attributes.items():
+                if attr.base_name == "id":
+                    id_col = _col_name(aname)
+                    break
+            if id_col is not None:
+                cursor.execute(
+                    f'CREATE UNIQUE INDEX IF NOT EXISTS "idx_{table_name}_{id_col}" ON "{table_name}" ("{id_col}")'
+                )
+
+            # Index to-one relation columns (parent/foreign-key lookups).
+            for rel_col in to_one_rel_cols:
+                cursor.execute(
+                    f'CREATE INDEX IF NOT EXISTS "idx_{table_name}_{rel_col}" ON "{table_name}" ("{rel_col}")'
+                )
 
     conn.commit()
 

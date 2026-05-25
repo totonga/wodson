@@ -128,21 +128,41 @@ _CI_TO_BASE: dict[int, int] = {
     _OpEnum.OP_CI_NOTINSET: _OpEnum.OP_NOTINSET,
 }
 
+# Cached scalar operator/conjunction constants used inside _build_where.
+_OP_IS_NULL = _OpEnum.OP_IS_NULL
+_OP_IS_NOT_NULL = _OpEnum.OP_IS_NOT_NULL
+_OP_INSET = _OpEnum.OP_INSET
+_OP_NOTINSET = _OpEnum.OP_NOTINSET
+_OP_BETWEEN = _OpEnum.OP_BETWEEN
+_OP_NULL_TYPES: frozenset[int] = frozenset({_OP_IS_NULL, _OP_IS_NOT_NULL})
+_OP_SET_TYPES: frozenset[int] = frozenset({_OP_INSET, _OP_NOTINSET})
+
+_ConjEnum = ods.SelectStatement.ConditionItem.ConjuctionEnum
+_CO_AND = _ConjEnum.CO_AND
+_CO_OR = _ConjEnum.CO_OR
+_CO_NOT = _ConjEnum.CO_NOT
+_CO_OPEN = _ConjEnum.CO_OPEN
+_CO_CLOSE = _ConjEnum.CO_CLOSE
+
 
 class _QueryContext:
     """Holds state for building a SQL query from a SelectStatement."""
 
-    def __init__(self, model: ods.Model) -> None:
+    def __init__(
+        self,
+        model: ods.Model,
+        aid_to_entity: dict[int, ods.Model.Entity] | None = None,
+    ) -> None:
         self.model = model
-        # AID -> entity
-        self.aid_to_entity: dict[int, ods.Model.Entity] = {}
-        # AID -> table alias
+        # AID -> table alias (per-query, always starts empty)
         self.aid_to_alias: dict[int, str] = {}
         self.alias_counter = 0
 
-        for ename in model.entities:
-            entity = model.entities[ename]
-            self.aid_to_entity[entity.aid] = entity
+        if aid_to_entity is not None:
+            # Use pre-built map from AtfxStore to avoid re-iterating the model.
+            self.aid_to_entity = aid_to_entity
+        else:
+            self.aid_to_entity = {model.entities[ename].aid: model.entities[ename] for ename in model.entities}
 
     def get_alias(self, aid: int) -> str:
         """Get or create a table alias for the given AID."""
@@ -177,9 +197,10 @@ def data_read(
     conn: sqlite3.Connection,
     model: ods.Model,
     select_statement: ods.SelectStatement,
+    aid_to_entity: dict[int, ods.Model.Entity] | None = None,
 ) -> ods.DataMatrices:
     """Execute a SelectStatement against the SQLite database and return DataMatrices."""
-    ctx = _QueryContext(model)
+    ctx = _QueryContext(model, aid_to_entity)
     params: list[Any] = []
 
     # Determine primary AID from first column
@@ -330,15 +351,15 @@ def _build_where(
     for item in where_items:
         if item.HasField("conjunction"):
             conj = item.conjunction
-            if conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_AND:
+            if conj == _CO_AND:
                 parts.append("AND")
-            elif conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_OR:
+            elif conj == _CO_OR:
                 parts.append("OR")
-            elif conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_NOT:
+            elif conj == _CO_NOT:
                 parts.append("NOT")
-            elif conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_OPEN:
+            elif conj == _CO_OPEN:
                 parts.append("(")
-            elif conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_CLOSE:
+            elif conj == _CO_CLOSE:
                 parts.append(")")
         elif item.HasField("condition"):
             cond = item.condition
@@ -361,19 +382,13 @@ def _build_where(
             if is_ci and values:
                 values = [v.lower() if isinstance(v, str) else v for v in values]
 
-            if op in (
-                ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_IS_NULL,
-                ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_IS_NOT_NULL,
-            ):
+            if op in _OP_NULL_TYPES:
                 parts.append(f"{col_ref} {op_str}")
-            elif op in (
-                ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_INSET,
-                ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_NOTINSET,
-            ):
+            elif op in _OP_SET_TYPES:
                 placeholders = ", ".join(["?"] * len(values))
                 parts.append(f"{col_ref} {op_str} ({placeholders})")
                 params.extend(values)
-            elif op == ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_BETWEEN:
+            elif op == _OP_BETWEEN:
                 if len(values) >= 2:
                     parts.append(f"{col_ref} BETWEEN ? AND ?")
                     params.extend(values[:2])
