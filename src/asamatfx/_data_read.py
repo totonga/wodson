@@ -411,7 +411,9 @@ def _fill_column(
         # Sequence data stored as pickled BLOBs
         for val in values:
             if val is None:
-                column.unknown_arrays.values.add()
+                # All sequence types share a oneof field; use the same sub-array type
+                # for null rows so that null and non-null entries stay in the same field.
+                _fill_sequence_column(column, [], data_type, None)
             else:
                 raw = pickle.loads(val) if isinstance(val, bytes) else val  # noqa: S301
                 # Detect (actual_dt: int, seq_data: list) tuple stored by _serialize_value

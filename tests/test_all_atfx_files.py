@@ -36,6 +36,14 @@ def _localcolumn_entity_name(model: ods.Model) -> str | None:
     return None
 
 
+def _attr_by_base(entity: ods.ApplicationElement, base_name: str) -> str | None:
+    """Return the application-level attribute name that maps to *base_name*."""
+    for aname, attr in entity.attributes.items():
+        if attr.base_name == base_name:
+            return aname
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Parametrized: open + model
 # ---------------------------------------------------------------------------
@@ -138,12 +146,16 @@ def test_localcolumn_values_accessible(atfx_file: Path) -> None:
             pytest.skip("No AoLocalColumn entity in this file")
 
         lc_entity = model.entities[lc_name]
-        if "Values" not in lc_entity.attributes:
-            pytest.skip(f"{lc_name} has no Values attribute")
+        id_attr = _attr_by_base(lc_entity, "id")
+        val_attr = _attr_by_base(lc_entity, "values")
+        if val_attr is None:
+            pytest.skip(f"{lc_name} has no values attribute")
+        if id_attr is None:
+            pytest.skip(f"{lc_name} has no id attribute")
 
         stmt = ods.SelectStatement()
-        stmt.columns.add(aid=lc_entity.aid, attribute="Id")
-        stmt.columns.add(aid=lc_entity.aid, attribute="Values")
+        stmt.columns.add(aid=lc_entity.aid, attribute=id_attr)
+        stmt.columns.add(aid=lc_entity.aid, attribute=val_attr)
         result = store.data_read(stmt)
 
         assert result is not None
@@ -152,7 +164,7 @@ def test_localcolumn_values_accessible(atfx_file: Path) -> None:
             return  # entity has no instances, that is valid
         matrix = result.matrices[0]
         col_names = {c.name for c in matrix.columns}
-        assert "Values" in col_names, f"{lc_name}: Values column missing from result"
+        assert val_attr in col_names, f"{lc_name}: values column missing from result"
 
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
@@ -165,26 +177,30 @@ def test_localcolumn_values_row_count_consistent(atfx_file: Path) -> None:
             pytest.skip("No AoLocalColumn entity in this file")
 
         lc_entity = model.entities[lc_name]
-        if "Values" not in lc_entity.attributes:
-            pytest.skip(f"{lc_name} has no Values attribute")
+        id_attr = _attr_by_base(lc_entity, "id")
+        val_attr = _attr_by_base(lc_entity, "values")
+        if val_attr is None:
+            pytest.skip(f"{lc_name} has no values attribute")
+        if id_attr is None:
+            pytest.skip(f"{lc_name} has no id attribute")
 
         stmt = ods.SelectStatement()
-        stmt.columns.add(aid=lc_entity.aid, attribute="Id")
-        stmt.columns.add(aid=lc_entity.aid, attribute="Values")
+        stmt.columns.add(aid=lc_entity.aid, attribute=id_attr)
+        stmt.columns.add(aid=lc_entity.aid, attribute=val_attr)
         result = store.data_read(stmt)
 
         if not result.matrices:
             return  # entity has no instances, that is valid
         matrix = result.matrices[0]
-        id_col = next((c for c in matrix.columns if c.name == "Id"), None)
-        val_col = next((c for c in matrix.columns if c.name == "Values"), None)
+        id_col = next((c for c in matrix.columns if c.name == id_attr), None)
+        val_col = next((c for c in matrix.columns if c.name == val_attr), None)
         assert id_col is not None
         assert val_col is not None
 
         id_count = len(id_col.longlong_array.values)
         val_count = len(val_col.unknown_arrays.values)
         assert id_count == val_count, (
-            f"{atfx_file.name}: Id rows ({id_count}) != Values rows ({val_count})"
+            f"{atfx_file.name}: id rows ({id_count}) != values rows ({val_count})"
         )
 
 
