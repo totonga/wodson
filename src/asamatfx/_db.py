@@ -55,7 +55,6 @@ def _sqlite_type(data_type: int) -> str:
         ods.DataTypeEnum.DT_SHORT,
         ods.DataTypeEnum.DT_LONG,
         ods.DataTypeEnum.DT_LONGLONG,
-        ods.DataTypeEnum.DT_ENUM,
     ):
         return "INTEGER"
     elif data_type in (ods.DataTypeEnum.DT_FLOAT, ods.DataTypeEnum.DT_DOUBLE):
@@ -64,6 +63,7 @@ def _sqlite_type(data_type: int) -> str:
         ods.DataTypeEnum.DT_STRING,
         ods.DataTypeEnum.DT_DATE,
         ods.DataTypeEnum.DT_EXTERNALREFERENCE,
+        ods.DataTypeEnum.DT_ENUM,
     ):
         return "TEXT"
     elif data_type in _SEQUENCE_TYPES or data_type in _BLOB_TYPES:
@@ -169,12 +169,16 @@ def _serialize_value(val: Any, data_type: int, file_map: dict[str, Path]) -> Any
 
     # External component: resolve binary data
     if isinstance(val, ExternalComponentRef):
-        if data_type == ods.DataTypeEnum.DT_UNKNOWN:
-            # Preserve the ODS type from the binary typespec
-            tv = read_external_component_typed(val, file_map)
-            return pickle.dumps((tv.data_type, tv.values))
-        arr = read_external_component(val, file_map)
-        return pickle.dumps(arr.tolist())
+        try:
+            if data_type == ods.DataTypeEnum.DT_UNKNOWN:
+                # Preserve the ODS type from the binary typespec
+                tv = read_external_component_typed(val, file_map)
+                return pickle.dumps((tv.data_type, tv.values))
+            arr = read_external_component(val, file_map)
+            return pickle.dumps(arr.tolist())
+        except (ValueError, OSError) as exc:
+            _log.warning("Skipping unreadable external component '%s': %s", val.identifier, exc)
+            return None
 
     # TypedValues carries XML-derived ODS type info
     if isinstance(val, TypedValues):

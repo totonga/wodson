@@ -7,7 +7,7 @@ import pytest
 
 from asamatfx import AtfxStore
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
 
 ALL_ATFX_FILES = sorted(DATA_DIR.glob("*.atfx"))
 

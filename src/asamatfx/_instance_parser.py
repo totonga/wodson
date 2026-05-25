@@ -125,6 +125,14 @@ def parse_instances(root: ET.Element, model: ods.Model) -> dict[str, list[dict[s
     return result
 
 
+def _parse_external_reference_str(ref_el: ET.Element) -> str:
+    """Parse an <external_reference> element into a pipe-separated string."""
+    description = _text(ref_el, "description") or ""
+    mimetype = _text(ref_el, "mimetype") or ""
+    location = _text(ref_el, "location") or ""
+    return f"{description}|{mimetype}|{location}"
+
+
 def _parse_attribute_value(el: ET.Element, data_type: int, base_name: str) -> Any:
     """Parse a single attribute element's value based on its ODS data type."""
     # Check for <Values> child containing bulk data or component ref
@@ -133,7 +141,20 @@ def _parse_attribute_value(el: ET.Element, data_type: int, base_name: str) -> An
         # Check if this element itself has children (for Values-like structure)
         children = list(el)
         if children:
-            # Could be inline Values directly under the attribute element
+            # DT_EXTERNALREFERENCE: single <external_reference> child
+            if data_type == ods.DataTypeEnum.DT_EXTERNALREFERENCE:
+                ref_el = _find(el, "external_reference")
+                if ref_el is not None:
+                    return _parse_external_reference_str(ref_el)
+            # DS_EXTERNALREFERENCE: multiple <external_reference> children
+            elif data_type == ods.DataTypeEnum.DS_EXTERNALREFERENCE:
+                return [_parse_external_reference_str(r) for r in _findall(el, "external_reference")]
+            # DS_ENUM: <s> child elements with enum name strings
+            elif data_type == ods.DataTypeEnum.DS_ENUM:
+                s_els = _findall(el, "s")
+                if s_els:
+                    return [(s.text or "").strip() for s in s_els]
+            # Generic inline Values
             return _parse_values_content(el, data_type)
         # Plain text scalar
         text = (el.text or "").strip()
@@ -225,8 +246,10 @@ def _parse_scalar(text: str, data_type: int) -> Any:
         ods.DataTypeEnum.DS_LONG,
         ods.DataTypeEnum.DS_LONGLONG,
         ods.DataTypeEnum.DS_BYTE,
-        ods.DataTypeEnum.DS_ENUM,
     ):
+        return _parse_numeric_list(text, int)
+    elif dt == ods.DataTypeEnum.DS_ENUM:
+        # Inline text: space-separated integer ordinals (string names handled via child elements)
         return _parse_numeric_list(text, int)
     elif dt == ods.DataTypeEnum.DS_BOOLEAN:
         return _parse_boolean_list(text)
