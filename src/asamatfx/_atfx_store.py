@@ -12,7 +12,7 @@ import odsbox.proto.ods_pb2 as ods
 from ._base_model import load_base_model
 from ._data_read import data_read
 from ._db import create_schema, load_instances
-from ._instance_parser import parse_instances
+from ._instance_parser import parse_instances, resolve_external_component_refs
 from ._model_builder import build_model, detect_ods_version
 from ._xml_utils import _find, _findall, _text
 
@@ -67,6 +67,9 @@ class AtfxStore:
 
         # Parse instances
         instances = parse_instances(root, self._model)
+
+        # Resolve AoExternalComponent references (third value-reference pattern)
+        resolve_external_component_refs(self._model, instances, self._file_map, self._atfx_dir)
 
         # Create in-memory SQLite DB
         self._conn = sqlite3.connect(":memory:", check_same_thread=False)

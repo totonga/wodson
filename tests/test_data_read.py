@@ -1,11 +1,14 @@
 """Tests for data_read (SelectStatement -> SQL -> DataMatrices)."""
 
 import math
+from pathlib import Path
 
 import odsbox.proto.ods_pb2 as ods
 
 from asamatfx import AtfxStore
 from asamatfx._data_read import _extract_condition_values, _to_float
+
+_OPENATFX_DIR = Path(__file__).resolve().parent / "data" / "openatfx"
 
 
 def test_simple_query_all_measurements(simple_store):
@@ -400,6 +403,140 @@ def test_nonnumbers_localcolumn_values(nonnumbers_atfx):
         assert math.isinf(cx64[0]) and cx64[0] < 0
         assert math.isinf(cx64[2]) and cx64[2] > 0
         assert math.isnan(cx64[4])
+
+
+def test_common_typespecs_localcolumn_values():
+    """Example_CommonTypespecs.atfx (openatfx corpus): all 18 explicit LocalColumns
+    covering every common binary encoding must load non-empty values with correct
+    data types and spot-check first values.
+    """
+    atfx_path = _OPENATFX_DIR / "Example_CommonTypespecs.atfx"
+    with AtfxStore(atfx_path) as store:
+        model = store.model()
+        lc_ent = model.entities["Localcolumn"]
+
+        stmt = ods.SelectStatement()
+        stmt.columns.add(aid=lc_ent.aid, attribute="Id")
+        stmt.columns.add(aid=lc_ent.aid, attribute="Name")
+        stmt.columns.add(aid=lc_ent.aid, attribute="Values")
+        result = store.data_read(stmt)
+
+        m = result.matrices[0]
+        id_col = next(c for c in m.columns if c.name == "Id")
+        name_col = next(c for c in m.columns if c.name == "Name")
+        values_col = next(c for c in m.columns if c.name == "Values")
+
+        names = list(name_col.string_array.values)
+        # Every LC must have a populated UnknownArray entry
+        assert len(values_col.unknown_arrays.values) == len(names), (
+            "Number of value sub-arrays does not match number of LocalColumns"
+        )
+
+        def ua(lc_name: str):  # type: ignore[no-untyped-def]
+            return values_col.unknown_arrays.values[names.index(lc_name)]
+
+        # --- Boolean ---
+        ua_bool = ua("MyMqBoolean")
+        assert ua_bool.data_type == ods.DataTypeEnum.DT_BOOLEAN
+        assert list(ua_bool.boolean_array.values)[:3] == [True, True, True]
+
+        # --- Byte ---
+        ua_byte = ua("MyMqByte")
+        assert ua_byte.data_type == ods.DataTypeEnum.DT_BYTE
+        raw = ua_byte.byte_array.values
+        assert raw[0] == 1 and raw[1] == 2 and raw[2] == 3
+        assert raw[-1] == 255  # unsigned 0xFF
+
+        # --- Short (little-endian) → stored in long_array ---
+        ua_short = ua("MyMqShort")
+        assert ua_short.data_type == ods.DataTypeEnum.DT_SHORT
+        assert list(ua_short.long_array.values)[:3] == [10, 20, 30]
+
+        # --- Long (little-endian) ---
+        ua_long = ua("MyMqLong")
+        assert ua_long.data_type == ods.DataTypeEnum.DT_LONG
+        assert list(ua_long.long_array.values)[:3] == [100, 200, 300]
+
+        # --- Longlong (little-endian) ---
+        ua_ll = ua("MyMqLonglong")
+        assert ua_ll.data_type == ods.DataTypeEnum.DT_LONGLONG
+        assert list(ua_ll.longlong_array.values)[:3] == [1000, 2000, 3000]
+
+        # --- Float (little-endian) ---
+        ua_float = ua("MyMqFloat")
+        assert ua_float.data_type == ods.DataTypeEnum.DT_FLOAT
+        f32 = list(ua_float.float_array.values)
+        assert math.isclose(f32[0], 123.456, rel_tol=1e-4)
+        assert math.isclose(f32[1], 789.012, rel_tol=1e-4)
+        assert math.isclose(f32[2], -3333.0, rel_tol=1e-4)
+
+        # --- Double (little-endian) ---
+        ua_double = ua("MyMqDouble")
+        assert ua_double.data_type == ods.DataTypeEnum.DT_DOUBLE
+        f64 = list(ua_double.double_array.values)
+        assert math.isclose(f64[0], 456.789012, rel_tol=1e-6)
+        assert math.isclose(f64[1], 345.678901, rel_tol=1e-6)
+        assert math.isclose(f64[2], -6666666.0, rel_tol=1e-6)
+
+        # --- Complex (little-endian) — stored as interleaved float pairs (DT_FLOAT) ---
+        ua_cx = ua("MyMqComplex")
+        assert ua_cx.data_type == ods.DataTypeEnum.DT_FLOAT
+        cx = list(ua_cx.float_array.values)
+        assert math.isclose(cx[0], 1.1, rel_tol=1e-4)   # real part of first pair
+        assert math.isclose(cx[1], 0.1, rel_tol=1e-4)   # imag part of first pair
+
+        # --- Dcomplex (little-endian) — stored as interleaved double pairs (DT_DOUBLE) ---
+        ua_dcx = ua("MyMqDcomplex")
+        assert ua_dcx.data_type == ods.DataTypeEnum.DT_DOUBLE
+        dcx = list(ua_dcx.double_array.values)
+        assert math.isclose(dcx[0], 1.11, rel_tol=1e-8)
+        assert math.isclose(dcx[1], 0.11, rel_tol=1e-8)
+
+        # --- Date — stored as DT_STRING in this file ---
+        ua_date = ua("MyMqDate")
+        assert ua_date.data_type in (ods.DataTypeEnum.DT_DATE, ods.DataTypeEnum.DT_STRING)
+        dates = list(ua_date.string_array.values)
+        assert dates[0] == "20050130121532123789"
+
+        # --- String ---
+        ua_str = ua("MyMqString")
+        assert ua_str.data_type == ods.DataTypeEnum.DT_STRING
+        assert list(ua_str.string_array.values)[:3] == ["val1", "val2", "val3"]
+
+        # --- Big-endian variants must match their little-endian counterparts ---
+        for le_name, be_name in (
+            ("MyMqShort",    "MyMqShortBeo"),
+            ("MyMqLong",     "MyMqLongBeo"),
+            ("MyMqLonglong", "MyMqLonglongBeo"),
+            ("MyMqFloat",    "MyMqFloatBeo"),
+            ("MyMqDouble",   "MyMqDoubleBeo"),
+        ):
+            ua_le = ua(le_name)
+            ua_be = ua(be_name)
+            assert ua_be.data_type == ua_le.data_type, (
+                f"{be_name} data_type {ua_be.data_type} != {le_name} data_type {ua_le.data_type}"
+            )
+            if ua_le.data_type == ods.DataTypeEnum.DT_FLOAT:
+                le_vals = list(ua_le.float_array.values)
+                be_vals = list(ua_be.float_array.values)
+            elif ua_le.data_type == ods.DataTypeEnum.DT_DOUBLE:
+                le_vals = list(ua_le.double_array.values)
+                be_vals = list(ua_be.double_array.values)
+            elif ua_le.data_type in (ods.DataTypeEnum.DT_SHORT, ods.DataTypeEnum.DT_LONG):
+                le_vals = list(ua_le.long_array.values)
+                be_vals = list(ua_be.long_array.values)
+            elif ua_le.data_type == ods.DataTypeEnum.DT_LONGLONG:
+                le_vals = list(ua_le.longlong_array.values)
+                be_vals = list(ua_be.longlong_array.values)
+            else:
+                continue
+            assert len(le_vals) == len(be_vals), (
+                f"{be_name} length {len(be_vals)} != {le_name} length {len(le_vals)}"
+            )
+            for j, (lv, bv) in enumerate(zip(le_vals, be_vals)):
+                assert math.isclose(lv, bv, rel_tol=1e-5, abs_tol=1e-10), (
+                    f"{be_name}[{j}]={bv} != {le_name}[{j}]={lv}"
+                )
 
 
 # ---- Unit tests for helpers ----

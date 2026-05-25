@@ -7,6 +7,7 @@ import math
 import xml.etree.ElementTree as ET
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 import odsbox.proto.ods_pb2 as ods
@@ -363,3 +364,166 @@ def _parse_timestring_sequence(el: ET.Element) -> list[str]:
     if text:
         return text.split()
     return []
+
+
+def resolve_external_component_refs(
+    model: ods.Model,
+    instances: dict[str, list[dict[str, Any]]],
+    file_map: dict[str, Path],
+    atfx_dir: Path,
+) -> None:
+    """Resolve AoExternalComponent references in AoLocalColumn instances.
+
+    For ``lc`` instances whose ``values`` attribute is ``None`` but that hold a
+    relation to an ``AoExternalComponent`` entity, build an
+    :class:`ExternalComponentRef` from the ``ec`` instance attributes using
+    base_name mappings and inject it as the ``values`` attribute value.  The
+    ``file_map`` is updated in-place so that the ``filename_url`` entries are
+    resolvable during binary data loading.
+    """
+    # Locate entity names by ODS base_name
+    lc_entity_name: str | None = None
+    ec_entity_name: str | None = None
+    for ename, entity in model.entities.items():
+        if entity.base_name == "AoLocalColumn":
+            lc_entity_name = ename
+        elif entity.base_name == "AoExternalComponent":
+            ec_entity_name = ename
+
+    if lc_entity_name is None or ec_entity_name is None:
+        return
+
+    lc_entity = model.entities[lc_entity_name]
+    ec_entity = model.entities[ec_entity_name]
+
+    # Find relation name on lc whose base_name is "external_component"
+    ec_rel_name: str | None = None
+    for rname, rel in lc_entity.relations.items():
+        if rel.base_name == "external_component":
+            ec_rel_name = rname
+            break
+
+    if ec_rel_name is None:
+        return
+
+    # Find the values attribute name on lc (base_name == "values")
+    lc_values_attr: str | None = None
+    for aname, attr in lc_entity.attributes.items():
+        if attr.base_name == "values":
+            lc_values_attr = aname
+            break
+
+    if lc_values_attr is None:
+        return
+
+    # Build {base_name -> app_attr_name} for ec entity attributes
+    ec_base_to_app: dict[str, str] = {}
+    for aname, attr in ec_entity.attributes.items():
+        if attr.base_name:
+            ec_base_to_app[attr.base_name] = aname
+
+    # Build {base_name -> app_rel_name} for ec entity relations (for ao_values_file fallback)
+    ec_base_to_rel: dict[str, str] = {}
+    for rname, rel in ec_entity.relations.items():
+        if rel.base_name:
+            ec_base_to_rel[rname] = rel.base_name
+
+    # Invert to {base_relation -> app_rel_name}
+    ec_rel_base_to_app: dict[str, str] = {v: k for k, v in ec_base_to_rel.items()}
+
+    # Find ec id attribute name (base_name == "id")
+    ec_id_attr: str | None = ec_base_to_app.get("id")
+    if ec_id_attr is None:
+        return
+
+    # Build {ec_id -> ec_instance} lookup
+    ec_by_id: dict[int, dict[str, Any]] = {}
+    for ec_inst in instances.get(ec_entity_name, []):
+        raw_id = ec_inst.get(ec_id_attr)
+        if raw_id is not None:
+            ec_by_id[int(raw_id)] = ec_inst
+
+    if not ec_by_id:
+        return
+
+    def _ec_val(ec_inst: dict[str, Any], base: str) -> Any:
+        app_name = ec_base_to_app.get(base)
+        return ec_inst.get(app_name) if app_name is not None else None
+
+    # Prepare AoFile lookup for the ao_values_file fallback:
+    # If ExternalComponent.filename_url is empty, follow the ao_values_file relation
+    # to an AoFile (base_name "AoFile") instance and read its ao_location attribute.
+    ao_values_file_rel: str | None = ec_rel_base_to_app.get("ao_values_file")
+    aofile_by_id: dict[int, dict[str, Any]] = {}
+    aofile_location_attr: str | None = None
+    aofile_id_attr: str | None = None
+
+    if ao_values_file_rel is not None:
+        aofile_entity_name: str | None = None
+        for ename, entity in model.entities.items():
+            if entity.base_name == "AoFile":
+                aofile_entity_name = ename
+                break
+        if aofile_entity_name is not None:
+            aofile_entity = model.entities[aofile_entity_name]
+            for aname, attr in aofile_entity.attributes.items():
+                if attr.base_name == "ao_location":
+                    aofile_location_attr = aname
+                elif attr.base_name == "id":
+                    aofile_id_attr = aname
+            if aofile_id_attr is not None:
+                for aofile_inst in instances.get(aofile_entity_name, []):
+                    raw_id = aofile_inst.get(aofile_id_attr)
+                    if raw_id is not None:
+                        aofile_by_id[int(raw_id)] = aofile_inst
+
+    # Process lc instances
+    for lc_inst in instances.get(lc_entity_name, []):
+        if lc_inst.get(lc_values_attr) is not None:
+            continue  # already has values — nothing to do
+
+        raw_ec_ref = lc_inst.get(ec_rel_name)
+        if raw_ec_ref is None:
+            continue
+
+        # Relation may be a single int or a one-element list
+        ec_id = raw_ec_ref[0] if isinstance(raw_ec_ref, list) else raw_ec_ref
+        found_ec = ec_by_id.get(int(ec_id))
+        if found_ec is None:
+            _log.warning(
+                "AoLocalColumn references ec id=%s which was not found in instances", ec_id
+            )
+            continue
+
+        ref = ExternalComponentRef()
+        ref.identifier = str(_ec_val(found_ec, "filename_url") or "")
+        ref.datatype = str(_ec_val(found_ec, "value_type") or "")
+        ref.length = int(_ec_val(found_ec, "component_length") or 0)
+        ref.inioffset = int(_ec_val(found_ec, "start_offset") or 0)
+        ref.blocksize = int(_ec_val(found_ec, "block_size") or 0)
+        ref.valperblock = int(_ec_val(found_ec, "valuesperblock") or 1)
+        value_offset = _ec_val(found_ec, "value_offset")
+        ref.valoffsets = [int(value_offset)] if value_offset is not None else []
+        bit_count = _ec_val(found_ec, "ao_bit_count")
+        if bit_count is not None:
+            ref.bitcount = int(bit_count)
+        bit_offset = _ec_val(found_ec, "ao_bit_offset")
+        if bit_offset is not None:
+            ref.bitoffset = int(bit_offset)
+
+        # Fallback: if filename_url is empty, follow ao_values_file → AoFile.ao_location
+        if not ref.identifier and ao_values_file_rel is not None and aofile_location_attr is not None:
+            raw_file_ref = found_ec.get(ao_values_file_rel)
+            if raw_file_ref is not None:
+                file_id = raw_file_ref[0] if isinstance(raw_file_ref, list) else raw_file_ref
+                maybe_aofile = aofile_by_id.get(int(file_id))
+                if maybe_aofile is not None:
+                    loc = maybe_aofile.get(aofile_location_attr)
+                    if loc:
+                        ref.identifier = str(loc)
+
+        # Register the filename in the file_map so _binary_reader can find it
+        if ref.identifier and ref.identifier not in file_map:
+            file_map[ref.identifier] = atfx_dir / ref.identifier
+
+        lc_inst[lc_values_attr] = ref
