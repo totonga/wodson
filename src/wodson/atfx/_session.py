@@ -33,6 +33,7 @@ import logging
 import threading
 import uuid
 from collections.abc import Mapping
+from pathlib import Path
 from urllib.parse import urlparse
 
 import odsbox.proto.ods_pb2 as ods
@@ -71,6 +72,23 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
         self._default_file: str | None = default_file
         self._sessions: dict[str, AtfxStore] = {}
         self._lock: threading.Lock = threading.Lock()
+        # Cache loaded stores by resolved path; same semantics as the HTTP server.
+        self._store_cache: dict[str, AtfxStore] = {}
+
+    def get_or_load_store(self, file_path: str) -> AtfxStore:
+        """Return a cached AtfxStore for *file_path*, loading it on first use."""
+        resolved = str(Path(file_path).resolve())
+        with self._lock:
+            if resolved in self._store_cache:
+                return self._store_cache[resolved]
+        store = AtfxStore(file_path)
+        with self._lock:
+            if resolved not in self._store_cache:
+                self._store_cache[resolved] = store
+            else:
+                store.close()
+                store = self._store_cache[resolved]
+        return store
 
     # ------------------------------------------------------------------
     # BaseAdapter interface
@@ -108,8 +126,9 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
     def close(self) -> None:
         """Close all managed AtfxStore instances."""
         with self._lock:
-            for store in self._sessions.values():
+            for store in self._store_cache.values():
                 store.close()
+            self._store_cache.clear()
             self._sessions.clear()
 
     # ------------------------------------------------------------------
@@ -132,7 +151,7 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
             return self._error_response(request, 400, f"Missing context variable '{CONTEXT_VAR_ATFX_FILE}'")
 
         try:
-            store = AtfxStore(file_path)
+            store = self.get_or_load_store(file_path)
         except Exception as exc:  # noqa: BLE001
             return self._error_response(request, 400, f"Failed to load ATFX file: {exc}")
 
@@ -181,10 +200,9 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
 
     def _handle_logout(self, request: PreparedRequest, session_id: str) -> Response:
         with self._lock:
-            store = self._sessions.pop(session_id, None)
-        if store is not None:
-            store.close()
-            _log.info("Session closed: %s", session_id)
+            self._sessions.pop(session_id, None)
+        # The AtfxStore is owned by the cache; do not close it here.
+        _log.info("Session closed: %s", session_id)
         return self._build_response(request, 200, b"")
 
     # ------------------------------------------------------------------

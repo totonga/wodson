@@ -23,6 +23,7 @@ import socketserver
 import threading
 import uuid
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from pathlib import Path
 from typing import cast
 
 import odsbox.proto.ods_pb2 as ods
@@ -58,10 +59,38 @@ class _AtfxHttpServer(socketserver.ThreadingMixIn, HTTPServer):
         self._sessions: dict[str, AtfxStore] = {}
         self._lock: threading.Lock = threading.Lock()
         self._default_file: str | None = default_file
+        # Cache loaded stores by resolved file path so that reconnects to the
+        # same file skip the ~10ms parse+load step.  The store is owned by the
+        # cache; session logout does NOT close it.
+        self._store_cache: dict[str, AtfxStore] = {}
         # After bind, server_address is updated with the actual port
         bound = cast(tuple[str, int], self.server_address)
         self._host: str = bound[0]
         self._port: int = bound[1]
+
+    def get_or_load_store(self, file_path: str) -> AtfxStore:
+        """Return a cached AtfxStore for *file_path*, loading it on first use."""
+        resolved = str(Path(file_path).resolve())
+        with self._lock:
+            if resolved in self._store_cache:
+                return self._store_cache[resolved]
+        # Load outside the lock to avoid blocking other threads during parsing.
+        store = AtfxStore(file_path)
+        with self._lock:
+            # Re-check after acquiring lock (another thread may have loaded it).
+            if resolved not in self._store_cache:
+                self._store_cache[resolved] = store
+            else:
+                store.close()  # discard the duplicate we just created
+                store = self._store_cache[resolved]
+        return store
+
+    def close_all_stores(self) -> None:
+        """Close every cached AtfxStore (called on server shutdown)."""
+        with self._lock:
+            for store in self._store_cache.values():
+                store.close()
+            self._store_cache.clear()
 
 
 class _AtfxRequestHandler(BaseHTTPRequestHandler):
@@ -117,7 +146,7 @@ class _AtfxRequestHandler(BaseHTTPRequestHandler):
             self._send_error(400, f"Missing context variable '{CONTEXT_VAR_ATFX_FILE}'")
             return
         try:
-            store = AtfxStore(file_path)
+            store = self._srv.get_or_load_store(file_path)
         except Exception as exc:  # noqa: BLE001
             self._send_error(400, f"Failed to load ATFX file: {exc}")
             return
@@ -176,10 +205,9 @@ class _AtfxRequestHandler(BaseHTTPRequestHandler):
 
     def _handle_logout(self, session_id: str) -> None:
         with self._srv._lock:
-            store = self._srv._sessions.pop(session_id, None)
-        if store is not None:
-            store.close()
-            _log.info("Session closed: %s", session_id)
+            self._srv._sessions.pop(session_id, None)
+        # The AtfxStore is owned by the server cache; do not close it here.
+        _log.info("Session closed: %s", session_id)
         self.send_response(200)
         self.send_header("Content-Length", "0")
         self.end_headers()
@@ -296,6 +324,7 @@ class AtfxServer:
         """Shutdown the server and join the background thread."""
         _log.info("Stopping server")
         self._server.shutdown()
+        self._server.close_all_stores()
         if self._thread is not None:
             self._thread.join(timeout=5.0)
             self._thread = None
