@@ -1,22 +1,49 @@
 [project]
 name = "wodson"
 version = "0.1.0"
-description = "ASAM ODS tools collection — ATFX reader, HTTP server, and more"
+description = "ASAM ODS tools collection — ATFX reader, HTTP server, and more (experimental)"
 readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 requires-python = ">=3.14"
+authors = [
+    { name = "Andreas K", email = "totonga@gmail.com" },
+]
+keywords = ["ASAM", "ODS", "ATFX", "measurement data", "protobuf"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 dependencies = [
     "numpy>=2.0",
     "odsbox[oidc]>=1.2.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/totonga/asamatfx"
+Repository = "https://github.com/totonga/asamatfx"
+Issues = "https://github.com/totonga/asamatfx/issues"
+Changelog = "https://github.com/totonga/asamatfx/releases"
+
 [project.scripts]
 wodson = "wodson._cli:main"
+
+[build-system]
+requires = ["uv_build>=0.6,<0.12"]
+build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
     "mypy>=1.20.2",
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
+    "python-semantic-release>=9.0.0",
     "ruff>=0.15.12",
     "types-protobuf>=7.34.1.20260503",
     "types-requests>=2.33.0.20260503",
@@ -50,3 +77,16 @@ testpaths = ["tests"]
 [tool.setuptools.package-data]
 wodson = ["py.typed"]
 "wodson.atfx" = ["base_model/*"]
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+version_variables = ["src/wodson/__init__.py:__version__"]
+tag_format = "v{version}"
+build_command = "uv build"
+
+[tool.semantic_release.branches.main]
+match = "main"
+prerelease = false
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = ["^Merge", "^chore"]
