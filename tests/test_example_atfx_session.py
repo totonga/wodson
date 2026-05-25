@@ -6,7 +6,7 @@ intentionally verbose so that each test reads as a standalone usage example.
 
 Quick reference::
 
-    from asamatfx import AtfxSession, CONTEXT_VAR_ATFX_FILE
+    from wodson import AtfxSession, CONTEXT_VAR_ATFX_FILE
     from odsbox.con_i import ConI
 
     # Pattern 1 — pass the file path directly to AtfxSession
@@ -29,7 +29,7 @@ from pathlib import Path
 import odsbox.proto.ods_pb2 as ods
 from odsbox.con_i import ConI
 
-from asamatfx.atfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
+from wodson.atfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
 
 # ---------------------------------------------------------------------------
 # Fixture file: the same ATFX used throughout the docs examples
@@ -50,7 +50,7 @@ def test_connect_with_default_file():
     """
     with AtfxSession(default_file=str(SIMPLE_ATFX)) as session:
         with ConI(
-            url=session.url,  # "http://asamatfx.local" — no real HTTP
+            url=session.url,  # "http://wodson.local" — no real HTTP
             auth=None,  # no authentication needed
             custom_session=session,
             load_model=True,  # cache the model on connect

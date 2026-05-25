@@ -250,7 +250,7 @@ class AtfxServer:
     Usage::
 
         from odsbox.con_i import ConI
-        from asamatfx import AtfxServer, CONTEXT_VAR_ATFX_FILE
+        from wodson.atfx import AtfxServer, CONTEXT_VAR_ATFX_FILE
 
         with AtfxServer() as server:
             with ConI(

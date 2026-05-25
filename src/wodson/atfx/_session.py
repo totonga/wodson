@@ -7,7 +7,7 @@ no socket, no TCP, no port allocation required.
 Usage::
 
     from odsbox.con_i import ConI
-    from asamatfx import AtfxSession, CONTEXT_VAR_ATFX_FILE
+    from wodson.atfx import AtfxSession, CONTEXT_VAR_ATFX_FILE
 
     # Pass the ATFX file as a default (no context variable needed in ConI)
     with AtfxSession(default_file="path/to/file.atfx") as session:
@@ -50,20 +50,20 @@ from ._server import CONTENT_TYPE_JSON, CONTENT_TYPE_PROTO, CONTEXT_VAR_ATFX_FIL
 
 _log = logging.getLogger(__name__)
 
-_SYNTHETIC_BASE_URL: str = "http://asamatfx.local"
+_SYNTHETIC_BASE_URL: str = "http://wodson.local"
 """Synthetic URL prefix used as the mount point for the in-process adapter."""
 
 
 class AtfxAdapter(requests.adapters.BaseAdapter):
     """In-process transport adapter that handles ASAM ODS requests via AtfxStore.
 
-    Mirrors the routing and serialization logic of :class:`~asamatfx._server._AtfxRequestHandler`
+    Mirrors the routing and serialization logic of :class:`~wodson.atfx._server._AtfxRequestHandler`
     without any network involvement.  Sessions are stored in an internal dict
-    keyed by UUID, exactly as in :class:`~asamatfx._server._AtfxHttpServer`.
+    keyed by UUID, exactly as in :class:`~wodson.atfx._server._AtfxHttpServer`.
 
     :param default_file: Path to an ATFX file used when the ``ATFX_FILE``
         context variable is not supplied on session creation.  Mirrors the
-        ``default_file`` parameter of :class:`~asamatfx.AtfxServer`.
+        ``default_file`` parameter of :class:`~wodson.atfx.AtfxServer`.
     """
 
     def __init__(self, default_file: str | None = None) -> None:
@@ -265,7 +265,7 @@ class AtfxSession(requests.Session):
 
     Replaces the HTTP transport with an in-process adapter so that
     :class:`~odsbox.con_i.ConI` can be used without starting an
-    :class:`~asamatfx.AtfxServer`.  All serialization, content-type
+    :class:`~wodson.atfx.AtfxServer`.  All serialization, content-type
     negotiation, and session management are handled identically to the HTTP
     server — only the network layer is removed.
 
@@ -275,7 +275,7 @@ class AtfxSession(requests.Session):
     Usage::
 
         from odsbox.con_i import ConI
-        from asamatfx import AtfxSession
+        from wodson.atfx import AtfxSession
 
         with AtfxSession(default_file="path/to/file.atfx") as session:
             with ConI(url=session.url, custom_session=session) as con:

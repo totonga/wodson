@@ -5,8 +5,8 @@ from pathlib import Path
 
 import odsbox.proto.ods_pb2 as ods
 
-from asamatfx.atfx import AtfxStore
-from asamatfx.atfx._data_read import _extract_condition_values, _to_float
+from wodson.atfx import AtfxStore
+from wodson.atfx._data_read import _extract_condition_values, _to_float
 
 _OPENATFX_DIR = Path(__file__).resolve().parent / "data" / "openatfx"
 

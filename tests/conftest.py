@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from asamatfx.atfx import AtfxStore
+from wodson.atfx import AtfxStore
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
 

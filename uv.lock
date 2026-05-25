@@ -7,7 +7,7 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "asamatfx"
+name = "wodson"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

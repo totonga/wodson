@@ -8,8 +8,8 @@ import requests
 from google.protobuf import json_format
 from odsbox.con_i import ConI
 
-from asamatfx.atfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
-from asamatfx.atfx._session import AtfxAdapter
+from wodson.atfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
+from wodson.atfx._session import AtfxAdapter
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
 SIMPLE_ATFX = DATA_DIR / "Example_Simple.atfx"
@@ -375,7 +375,7 @@ class TestAtfxAdapter:
     def test_adapter_url_property(self):
         """AtfxSession.url returns the synthetic base URL."""
         session = AtfxSession()
-        assert session.url == "http://asamatfx.local"
+        assert session.url == "http://wodson.local"
         session.close()
 
     def test_adapter_is_instance_of_base_adapter(self):

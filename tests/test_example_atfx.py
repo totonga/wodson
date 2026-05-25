@@ -5,7 +5,7 @@ from pathlib import Path
 import odsbox.proto.ods_pb2 as ods
 import pytest
 
-from asamatfx.atfx import AtfxStore
+from wodson.atfx import AtfxStore
 
 EXAMPLE_ATFX = Path(__file__).resolve().parent / "data" / "openatfx" / "example.atfx"
 

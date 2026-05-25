@@ -1,6 +1,6 @@
-# asamatfx — Usage Guide
+# wodson — Usage Guide
 
-This guide covers how to use **asamatfx** to read ASAM ATFX files, query their
+This guide covers how to use **wodson** to read ASAM ATFX files, query their
 content, and optionally expose them over an ASAM ODS HTTP interface.
 
 ---
@@ -22,13 +22,13 @@ content, and optionally expose them over an ASAM ODS HTTP interface.
 ## Installation
 
 ```bash
-pip install asamatfx
+pip install wodson
 ```
 
 With [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uv add asamatfx
+uv add wodson
 ```
 
 ---
@@ -55,7 +55,7 @@ direct Python access to the ODS API.
 ### Loading a file
 
 ```python
-from asamatfx.atfx import AtfxStore
+from wodson.atfx import AtfxStore
 
 # Context manager (recommended)
 with AtfxStore("measurement.atfx") as store:
@@ -90,7 +90,7 @@ Data is queried using `ods.SelectStatement`, mirroring the ASAM ODS HTTP
 
 ```python
 import odsbox.proto.ods_pb2 as ods
-from asamatfx.atfx import AtfxStore
+from wodson.atfx import AtfxStore
 
 with AtfxStore("measurement.atfx") as store:
     model = store.model()
@@ -175,7 +175,7 @@ independently loads the requested ATFX file.
 ### Starting the server
 
 ```python
-from asamatfx.atfx import AtfxServer
+from wodson.atfx import AtfxServer
 
 # Context manager — starts on entry, stops on exit
 with AtfxServer(host="127.0.0.1", port=8080) as server:
@@ -208,7 +208,7 @@ Send a `POST /ods` with `ods.ContextVariables` containing the `ATFX_FILE` key:
 ```python
 import requests
 import odsbox.proto.ods_pb2 as ods
-from asamatfx.atfx import CONTEXT_VAR_ATFX_FILE
+from wodson.atfx import CONTEXT_VAR_ATFX_FILE
 
 ctx = ods.ContextVariables()
 ctx.variables[CONTEXT_VAR_ATFX_FILE].string_array.values.append("/path/to/file.atfx")
@@ -243,11 +243,11 @@ file when you do not need a real network endpoint.
 
 ```python
 from odsbox.con_i import ConI
-from asamatfx.atfx import AtfxSession
+from wodson.atfx import AtfxSession
 
 with AtfxSession(default_file="path/to/file.atfx") as session:
     with ConI(
-        url=session.url,       # "http://asamatfx.local" — no real HTTP
+        url=session.url,       # "http://wodson.local" — no real HTTP
         auth=None,
         custom_session=session,
     ) as con:
@@ -263,7 +263,7 @@ making it easy to switch between in-process and HTTP access:
 
 ```python
 from odsbox.con_i import ConI
-from asamatfx.atfx import AtfxSession, CONTEXT_VAR_ATFX_FILE
+from wodson.atfx import AtfxSession, CONTEXT_VAR_ATFX_FILE
 
 with AtfxSession() as session:
     with ConI(
@@ -301,13 +301,13 @@ with ConI(url=url, auth=None, custom_session=custom_session) as con:
 Start the HTTP server from the command line:
 
 ```bash
-uv run asamatfx atfx serve --file path/to/file.atfx
+uv run wodson atfx serve --file path/to/file.atfx
 ```
 
 ### Options
 
 ```
-usage: asamatfx atfx serve [-h] [--file PATH] [--host HOST] [--port PORT]
+usage: wodson atfx serve [-h] [--file PATH] [--host HOST] [--port PORT]
                            [--loglevel {verbose,default,quiet}]
 
 options:
@@ -322,19 +322,19 @@ options:
 
 ```bash
 # Loopback, default port
-uv run asamatfx atfx serve --file data/Example_Simple.atfx
+uv run wodson atfx serve --file data/Example_Simple.atfx
 
 # All interfaces, custom port
-uv run asamatfx atfx serve --file data/Example_Simple.atfx --host 0.0.0.0 --port 9090
+uv run wodson atfx serve --file data/Example_Simple.atfx --host 0.0.0.0 --port 9090
 
 # Verbose logging for debugging
-uv run asamatfx atfx serve --file data/Example_Simple.atfx --loglevel verbose
+uv run wodson atfx serve --file data/Example_Simple.atfx --loglevel verbose
 ```
 
 The server prints its URL on startup:
 
 ```
-asamatfx server listening on http://127.0.0.1:8080
+wodson server listening on http://127.0.0.1:8080
   ATFX_FILE context variable: data/Example_Simple.atfx
 Press Ctrl+C to stop.
 ```
@@ -348,7 +348,7 @@ using the same API as any other ASAM ODS server:
 
 ```python
 from odsbox.con_i import ConI
-from asamatfx.atfx import CONTEXT_VAR_ATFX_FILE
+from wodson.atfx import CONTEXT_VAR_ATFX_FILE
 
 with ConI(
     url="http://127.0.0.1:8080",

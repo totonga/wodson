@@ -1,9 +1,12 @@
-# asamatfx
+# wodson
 
-Python library that reads [ASAM ATFX](https://www.asam.net/standards/detail/atfx/) files and exposes
-their content through the [ASAM ODS](https://www.asam.net/standards/detail/ods/) protobuf API.
+A collection of ASAM ODS tools.
 
 ## Features
+
+### Experimental ATFX parser
+
+This is an experimental ATFX reader. Target is not correctness or completeness, but a working prototype that can read some real-world ATFX files and be used as a base for further experiments. It currently supports:
 
 - Parses ATFX XML files (ASAM ODS 5.1, 5.3, 6.2 schemas)
 - Reads optional external binary `.dat` files (all standard typespecs)
@@ -11,7 +14,7 @@ their content through the [ASAM ODS](https://www.asam.net/standards/detail/ods/)
 - Exposes `ods.Model` (application model) and `ods.DataMatrices` (data-read)
 - Embeddable Python library (`AtfxStore`)
 - Standalone HTTP server compatible with `odsbox.ConI` (`AtfxServer`)
-- CLI: `uv run asamatfx atfx serve --file path/to/file.atfx`
+- CLI: `uv run wodson atfx serve --file path/to/file.atfx`
 
 ## Requirements
 
@@ -22,59 +25,21 @@ their content through the [ASAM ODS](https://www.asam.net/standards/detail/ods/)
 ## Installation
 
 ```bash
-pip install asamatfx
+pip install wodson
 # or with uv:
-uv add asamatfx
+uv add wodson
 ```
 
 ## Quick Start
 
-### Embedded library
-
-```python
-from asamatfx.atfx import AtfxStore
-import odsbox.proto.ods_pb2 as ods
-
-with AtfxStore("path/to/file.atfx") as store:
-    model = store.model()                         # ods.Model
-
-    stmt = ods.SelectStatement()
-    stmt.columns.add(aid=model.entities["Measurement"].aid, attribute="*")
-    result = store.data_read(stmt)                # ods.DataMatrices
-```
-
-### HTTP server + odsbox ConI
-
-```python
-from odsbox.con_i import ConI
-from asamatfx.atfx import AtfxServer, CONTEXT_VAR_ATFX_FILE
-
-with AtfxServer(host="127.0.0.1", port=8080) as server:
-    with ConI(
-        url=server.url,
-        auth=None,
-        context_variables={CONTEXT_VAR_ATFX_FILE: "path/to/file.atfx"},
-        load_model=False,
-    ) as con:
-        model = con.model_read()
-        df    = con.query_data({"AoMeasurement": {"$attributes": {"name": 1}}})
-```
-
-### CLI
-
-```bash
-uv run asamatfx atfx serve --file path/to/file.atfx --host 0.0.0.0 --port 8080
-```
-
-Then connect any `odsbox.ConI` client to `http://localhost:8080` and set the
-`ATFX_FILE` context variable to the file path.
+See [docs/atfx.md](docs/atfx.md) for usage examples (embedded library, HTTP server, CLI).
 
 ## Project Layout
 
 ```
-src/asamatfx/
+src/wodson/
     __init__.py          Package root
-    _cli.py              CLI entry point (asamatfx atfx serve …)
+    _cli.py              CLI entry point (wodson atfx serve …)
     atfx/
         __init__.py          Public API (AtfxStore, AtfxServer, AtfxSession, …)
         _cli.py              atfx subcommand logic
@@ -92,7 +57,8 @@ src/asamatfx/
         _xml_utils.py        Namespace-aware XML element lookup helpers
         _naming.py           ODS name → SQLite identifier utilities
 docs/
-    USAGE.md             End-user usage guide
+    atfx.md              ATFX reader quick-start guide
+    USAGE.md             Full end-user usage guide
     spec/                ASAM schema files and base model JSON
 tests/                   pytest test suite
 ```

@@ -1,18 +1,18 @@
-# asamatfx - Copilot Instructions
+# wodson - Copilot Instructions
 
 ## Project Purpose
 
-**asamatfx** is a Python library that reads ASAM ATFX files (XML + optional binary `.dat` files), loads data into an in-memory SQLite database, and exposes it via the ASAM ODS protobuf API. It also provides an HTTP server (`AtfxServer`) compatible with the `odsbox.ConI` client.
+**wodson** is a collection of ASAM ODS tools. Currently it provides an ATFX reader: it reads ASAM ATFX files (XML + optional binary `.dat` files), loads data into an in-memory SQLite database, and exposes it via the ASAM ODS protobuf API. It also provides an HTTP server (`AtfxServer`) compatible with the `odsbox.ConI` client.
 
 ## Module Map
 
-All implementation lives under `src/asamatfx/atfx/`. The top-level `src/asamatfx/` package contains only the CLI entry point and the `py.typed` marker.
+All implementation lives under `src/wodson/atfx/`. The top-level `src/wodson/` package contains only the CLI entry point and the `py.typed` marker.
 
 | Module | Role |
 |--------|------|
 | `_cli.py` | Top-level CLI entry point — registers `atfx` subcommand group |
 | `atfx/__init__.py` | Public API — exports `AtfxStore`, `AtfxServer`, `AtfxSession`, `CONTEXT_VAR_ATFX_FILE` |
-| `atfx/_cli.py` | `atfx` subcommand logic — `asamatfx atfx serve --file FILE [--host H] [--port P] [--loglevel L]` |
+| `atfx/_cli.py` | `atfx` subcommand logic — `wodson atfx serve --file FILE [--host H] [--port P] [--loglevel L]` |
 | `atfx/_atfx_store.py` | Main `AtfxStore` class — parses ATFX, builds model, loads instances |
 | `atfx/_server.py` | `AtfxServer` HTTP server — read-only ASAM ODS HTTP API |
 | `atfx/_session.py` | `AtfxSession` — in-process requests adapter (no TCP) |
@@ -28,7 +28,7 @@ All implementation lives under `src/asamatfx/atfx/`. The top-level `src/asamatfx
 ## Public API
 
 ```python
-from asamatfx.atfx import AtfxStore, AtfxServer, AtfxSession, CONTEXT_VAR_ATFX_FILE
+from wodson.atfx import AtfxStore, AtfxServer, AtfxSession, CONTEXT_VAR_ATFX_FILE
 ```
 
 ### AtfxStore (embedded usage)

@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 import odsbox.proto.ods_pb2 as ods
 import pytest
 
-from asamatfx.atfx._instance_parser import (
+from wodson.atfx._instance_parser import (
     ExternalComponentRef,
     TypedValues,
     _parse_boolean_list,

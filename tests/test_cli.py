@@ -7,8 +7,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from asamatfx._cli import _build_parser, main
-from asamatfx.atfx._cli import (
+from wodson._cli import _build_parser, main
+from wodson.atfx._cli import (
     _LOG_LEVELS,
     _cmd_serve,
     _configure_logging,
@@ -86,11 +86,11 @@ def test_configure_logging_sets_level():
     import logging
 
     _configure_logging("quiet")
-    assert logging.getLogger("asamatfx").level == logging.WARNING
+    assert logging.getLogger("wodson").level == logging.WARNING
     _configure_logging("verbose")
-    assert logging.getLogger("asamatfx").level == logging.DEBUG
+    assert logging.getLogger("wodson").level == logging.DEBUG
     _configure_logging("default")
-    assert logging.getLogger("asamatfx").level == logging.INFO
+    assert logging.getLogger("wodson").level == logging.INFO
 
 
 def test_log_levels_mapping():
@@ -101,8 +101,8 @@ def test_log_levels_mapping():
     assert _LOG_LEVELS["quiet"] == logging.WARNING
 
 
-@patch("asamatfx.atfx._cli.AtfxServer")
-@patch("asamatfx.atfx._cli.signal")
+@patch("wodson.atfx._cli.AtfxServer")
+@patch("wodson.atfx._cli.signal")
 def test_cmd_serve_starts_and_stops(mock_signal, mock_server_cls):
     mock_server = MagicMock()
     mock_server.url = "http://127.0.0.1:8080"
@@ -131,8 +131,8 @@ def test_wait_windows_joins_thread():
     mock_thread.join.assert_called_once()
 
 
-@patch("asamatfx.atfx._cli.dispatch")
-@patch("sys.argv", ["asamatfx", "atfx", "serve", "--file", "test.atfx"])
+@patch("wodson.atfx._cli.dispatch")
+@patch("sys.argv", ["wodson", "atfx", "serve", "--file", "test.atfx"])
 def test_main_dispatches_atfx(mock_dispatch):
     main()
     mock_dispatch.assert_called_once()

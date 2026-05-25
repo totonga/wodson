@@ -2,9 +2,9 @@
 
 Usage::
 
-    uv run asamatfx atfx serve
-    uv run asamatfx atfx serve --file path/to/file.atfx
-    uv run asamatfx atfx serve --file path/to/file.atfx --host 0.0.0.0 --port 8080
+    uv run wodson atfx serve
+    uv run wodson atfx serve --file path/to/file.atfx
+    uv run wodson atfx serve --file path/to/file.atfx --host 0.0.0.0 --port 8080
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ import logging
 import signal
 import sys
 
-from asamatfx.atfx._server import AtfxServer
+from wodson.atfx._server import AtfxServer
 
 # Mapping from user-facing names to logging levels
 _LOG_LEVELS: dict[str, int] = {
@@ -74,13 +74,13 @@ def dispatch(args: argparse.Namespace) -> None:
 
 
 def _configure_logging(level_name: str) -> None:
-    """Configure the ``asamatfx`` logger hierarchy."""
+    """Configure the ``wodson`` logger hierarchy."""
     level = _LOG_LEVELS.get(level_name, logging.INFO)
     logging.basicConfig(
         format="%(asctime)s %(levelname)-8s %(name)s: %(message)s",
         level=level,
     )
-    logging.getLogger("asamatfx").setLevel(level)
+    logging.getLogger("wodson").setLevel(level)
 
 
 def _cmd_serve(args: argparse.Namespace) -> None:
@@ -95,7 +95,7 @@ def _cmd_serve(args: argparse.Namespace) -> None:
     server.start()
 
     actual_url = server.url
-    log.info("asamatfx server listening on %s", actual_url)
+    log.info("wodson server listening on %s", actual_url)
     if file_path:
         log.info("  Default ATFX file: %s", file_path)
     else:

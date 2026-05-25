@@ -1,7 +1,7 @@
 [project]
-name = "asamatfx"
+name = "wodson"
 version = "0.1.0"
-description = "ATFX reader with in-memory SQLite backend and ODS data-read API"
+description = "ASAM ODS tools collection — ATFX reader, HTTP server, and more"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-asamatfx = "asamatfx._cli:main"
+wodson = "wodson._cli:main"
 
 [dependency-groups]
 dev = [
@@ -48,5 +48,5 @@ pythonpath = ["src"]
 testpaths = ["tests"]
 
 [tool.setuptools.package-data]
-asamatfx = ["py.typed"]
-"asamatfx.atfx" = ["base_model/*"]
+wodson = ["py.typed"]
+"wodson.atfx" = ["base_model/*"]

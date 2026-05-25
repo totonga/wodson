@@ -3,7 +3,7 @@
 import odsbox.proto.ods_pb2 as ods
 import pytest
 
-from asamatfx.atfx import AtfxStore
+from wodson.atfx import AtfxStore
 
 
 @pytest.fixture

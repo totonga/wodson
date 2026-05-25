@@ -4,9 +4,9 @@ import xml.etree.ElementTree as ET
 
 import odsbox.proto.ods_pb2 as ods
 
-from asamatfx.atfx import AtfxStore
-from asamatfx.atfx._model_builder import detect_ods_version
-from asamatfx.atfx._xml_utils import _extract_ns
+from wodson.atfx import AtfxStore
+from wodson.atfx._model_builder import detect_ods_version
+from wodson.atfx._xml_utils import _extract_ns
 
 
 def test_simple_model_entity_count(simple_store):
