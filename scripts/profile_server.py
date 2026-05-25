@@ -73,6 +73,66 @@ def _make_where_id_stmt(
     return stmt
 
 
+def _make_where_rel_stmt(
+    entity: ods.Model.Entity,
+    rel_name: str,
+    parent_id: int,
+    *attr_names: str,
+) -> ods.SelectStatement:
+    """Build SELECT <attr_names> FROM entity WHERE rel_name = parent_id."""
+    stmt = ods.SelectStatement()
+    for attr in attr_names:
+        col = stmt.columns.add()
+        col.aid = entity.aid
+        col.attribute = attr
+    cond_item = stmt.where.add()
+    cond = cond_item.condition
+    cond.aid = entity.aid
+    cond.attribute = rel_name
+    cond.operator = ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_EQ
+    cond.longlong_array.values.append(parent_id)
+    return stmt
+
+
+def _find_child_relations(
+    model: ods.Model,
+    parent_entity: ods.Model.Entity,
+) -> list[tuple[ods.Model.Entity, str]]:
+    """Return (child_entity, rel_name) for entities with a to-one FK pointing to parent_entity."""
+    result: list[tuple[ods.Model.Entity, str]] = []
+    for ename in model.entities:
+        child = model.entities[ename]
+        for rname, rel in child.relations.items():
+            if rel.entity_name == parent_entity.name and rel.range_max == 1:
+                result.append((child, rname))
+    return result
+
+
+def _find_child_example(
+    model: ods.Model,
+    store: AtfxStore,
+) -> tuple[ods.Model.Entity, int, ods.Model.Entity, str] | None:
+    """Find (parent_entity, parent_id, child_entity, rel_name) for a populated FK relation."""
+    for ename in model.entities:
+        parent = model.entities[ename]
+        child_rels = _find_child_relations(model, parent)
+        if not child_rels:
+            continue
+        id_attr = _find_id_attr_name(parent) or "Id"
+        s = ods.SelectStatement()
+        s_col = s.columns.add()
+        s_col.aid = parent.aid
+        s_col.attribute = "*"
+        dm = store.data_read(s)
+        for matrix in dm.matrices:
+            for data_col in matrix.columns:
+                if data_col.name == id_attr and data_col.longlong_array.values:
+                    parent_id = data_col.longlong_array.values[0]
+                    child_entity, rel_name = child_rels[0]
+                    return parent, parent_id, child_entity, rel_name
+    return None
+
+
 def _time(label: str, fn: Any, *args: Any, iterations: int = 1, **kwargs: Any) -> Any:
     """Run *fn* *iterations* times and report min / avg ms."""
     times: list[float] = []
@@ -150,6 +210,32 @@ def profile_store(file_path: Path, iterations: int) -> None:
                 f"store.data_read(SELECT {id_attr},{second_attr} WHERE {id_attr}={target_id})",
                 store.data_read,
                 stmt_cols,
+                iterations=iterations,
+            )
+
+    # Children via relation filter (WHERE rel_col = parent_id) — independent discovery
+    child_example = _find_child_example(model, store)
+    if child_example is not None:
+        _, parent_id_c, child_entity, rel_name = child_example
+        id_attr_c = _find_id_attr_name(child_entity) or "Id"
+        second_attr_c: str | None = None
+        for aname in child_entity.attributes:
+            if aname != id_attr_c:
+                second_attr_c = aname
+                break
+        stmt_children = _make_where_rel_stmt(child_entity, rel_name, parent_id_c, "*")
+        _time(
+            f"store.data_read(SELECT * WHERE {rel_name}={parent_id_c} [children])",
+            store.data_read,
+            stmt_children,
+            iterations=iterations,
+        )
+        if second_attr_c is not None:
+            stmt_children_cols = _make_where_rel_stmt(child_entity, rel_name, parent_id_c, id_attr_c, second_attr_c)
+            _time(
+                f"store.data_read(SELECT {id_attr_c},{second_attr_c} WHERE {rel_name}={parent_id_c})",
+                store.data_read,
+                stmt_children_cols,
                 iterations=iterations,
             )
 
@@ -321,6 +407,28 @@ def profile_cprofile(file_path: Path, iterations: int) -> None:
                 [stmt_cols_where],
             )
 
+    # Children by relation filter — independent discovery
+    child_example_p4 = _find_child_example(model, store)
+    if child_example_p4 is not None:
+        _, parent_id_p4, child_entity_p4, rel_name_p4 = child_example_p4
+        id_attr_p4 = _find_id_attr_name(child_entity_p4) or "Id"
+        second_attr_p4: str | None = None
+        for aname_p4 in child_entity_p4.attributes:
+            if aname_p4 != id_attr_p4:
+                second_attr_p4 = aname_p4
+                break
+        stmt_rel = _make_where_rel_stmt(child_entity_p4, rel_name_p4, parent_id_p4, "*")
+        _cprofile_run(
+            f"SELECT * WHERE {rel_name_p4}={parent_id_p4} [children]",
+            [stmt_rel],
+        )
+        if second_attr_p4 is not None:
+            stmt_rel_cols = _make_where_rel_stmt(child_entity_p4, rel_name_p4, parent_id_p4, id_attr_p4, second_attr_p4)
+            _cprofile_run(
+                f"SELECT {id_attr_p4},{second_attr_p4} WHERE {rel_name_p4}={parent_id_p4} [children]",
+                [stmt_rel_cols],
+            )
+
     store.close()
 
 
@@ -340,6 +448,106 @@ def profile_cprofile_model(file_path: Path, iterations: int) -> None:
     ps.sort_stats("cumulative")
     ps.print_stats(20)
     print(stream.getvalue())
+
+    store.close()
+
+
+# ---------------------------------------------------------------------------
+# Phase 6: full tree traversal
+# ---------------------------------------------------------------------------
+
+
+def _find_root_entity(model: ods.Model) -> ods.Model.Entity | None:
+    """Find an entity that is a root in the hierarchy (no outgoing to-one FK, most incoming)."""
+    incoming_count: dict[str, int] = {}
+    for ename in model.entities:
+        entity = model.entities[ename]
+        for rel in entity.relations.values():
+            if rel.range_max == 1 and rel.entity_name:
+                incoming_count[rel.entity_name] = incoming_count.get(rel.entity_name, 0) + 1
+
+    best: ods.Model.Entity | None = None
+    best_count = -1
+    for ename in model.entities:
+        entity = model.entities[ename]
+        if any(rel.range_max == 1 for rel in entity.relations.values()):
+            continue  # has a parent FK — not a root
+        count = incoming_count.get(ename, 0)
+        if count > best_count:
+            best_count = count
+            best = entity
+    return best
+
+
+def _collect_traversal_stmts(
+    store: AtfxStore,
+    model: ods.Model,
+    entity: ods.Model.Entity,
+    parent_rel: str | None,
+    parent_id: int | None,
+    max_depth: int,
+    depth: int = 0,
+) -> list[ods.SelectStatement]:
+    """Recursively collect query statements that simulate a tree traversal."""
+    if depth >= max_depth:
+        return []
+
+    stmts: list[ods.SelectStatement] = []
+    id_attr = _find_id_attr_name(entity) or "Id"
+
+    if parent_rel is not None and parent_id is not None:
+        list_stmt = _make_where_rel_stmt(entity, parent_rel, parent_id, "*")
+    else:
+        list_stmt = ods.SelectStatement()
+        list_col = list_stmt.columns.add()
+        list_col.aid = entity.aid
+        list_col.attribute = "*"
+    stmts.append(list_stmt)
+
+    # Execute once to discover the actual instance ids
+    dm = store.data_read(list_stmt)
+    instance_ids: list[int] = []
+    for matrix in dm.matrices:
+        for data_col in matrix.columns:
+            if data_col.name == id_attr:
+                instance_ids.extend(data_col.longlong_array.values)
+
+    if not instance_ids:
+        return stmts
+
+    first_id = instance_ids[0]
+    stmts.append(_make_where_id_stmt(entity, first_id, "*"))
+
+    for child_entity, rel_name in _find_child_relations(model, entity):
+        stmts.extend(_collect_traversal_stmts(store, model, child_entity, rel_name, first_id, max_depth, depth + 1))
+
+    return stmts
+
+
+def profile_traversal(file_path: Path, iterations: int) -> None:
+    print(f"\n=== Phase 6: Full tree traversal ({iterations}x) ===")
+    store = AtfxStore(file_path)
+    model = store.model()
+
+    root = _find_root_entity(model)
+    if root is None:
+        print("  No root entity found, skipping")
+        store.close()
+        return
+
+    print(f"  Root entity: {root.name}")
+    traversal_stmts = _collect_traversal_stmts(store, model, root, None, None, max_depth=6)
+    print(f"  Traversal steps: {len(traversal_stmts)} queries")
+
+    def run_traversal() -> None:
+        for stmt in traversal_stmts:
+            store.data_read(stmt)
+
+    _time(
+        f"Full traversal ({len(traversal_stmts)} queries each)",
+        run_traversal,
+        iterations=iterations,
+    )
 
     store.close()
 
@@ -368,6 +576,7 @@ def main() -> None:
     profile_http(file_path, args.iterations)
     profile_cprofile(file_path, args.iterations)
     profile_cprofile_model(file_path, args.iterations)
+    profile_traversal(file_path, args.iterations)
 
 
 if __name__ == "__main__":

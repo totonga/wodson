@@ -349,7 +349,8 @@ def _build_where(
     params: list[Any] = []
 
     for item in where_items:
-        if item.HasField("conjunction"):
+        item_type = item.WhichOneof("ItemOneOf")
+        if item_type == "conjunction":
             conj = item.conjunction
             if conj == _CO_AND:
                 parts.append("AND")
@@ -361,7 +362,7 @@ def _build_where(
                 parts.append("(")
             elif conj == _CO_CLOSE:
                 parts.append(")")
-        elif item.HasField("condition"):
+        elif item_type == "condition":
             cond = item.condition
             entity = ctx.get_entity(cond.aid)
             alias = ctx.get_alias(cond.aid)
@@ -403,22 +404,11 @@ def _build_where(
 
 
 def _extract_condition_values(cond: Any) -> list[Any]:
-    """Extract values from a condition's value oneof field."""
-    if cond.HasField("string_array"):
-        return list(cond.string_array.values)
-    elif cond.HasField("long_array"):
-        return list(cond.long_array.values)
-    elif cond.HasField("float_array"):
-        return list(cond.float_array.values)
-    elif cond.HasField("double_array"):
-        return list(cond.double_array.values)
-    elif cond.HasField("longlong_array"):
-        return list(cond.longlong_array.values)
-    elif cond.HasField("boolean_array"):
-        return list(cond.boolean_array.values)
-    elif cond.HasField("byte_array"):
-        return list(cond.byte_array.values)
-    return []
+    """Extract values from a condition's ValueOneOf field."""
+    which = cond.WhichOneof("ValueOneOf")
+    if which is None or which == "nested_statement":
+        return []
+    return list(getattr(cond, which).values)
 
 
 def _build_data_matrices(
