@@ -75,6 +75,12 @@ class AtfxStore:
         self._conn = sqlite3.connect(":memory:", check_same_thread=False)
         create_schema(self._conn, self._model)
         load_instances(self._conn, self._model, instances, self._file_map)
+
+        # Pre-compute AID → entity map once; reused by every data_read call.
+        self._aid_to_entity: dict[int, ods.Model.Entity] = {
+            self._model.entities[ename].aid: self._model.entities[ename] for ename in self._model.entities
+        }
+
         _log.info(
             "AtfxStore ready: %d entities, %d instance groups",
             len(self._model.entities),
@@ -96,7 +102,7 @@ class AtfxStore:
         Returns:
             ods.DataMatrices containing the query results.
         """
-        return data_read(self._conn, self._model, select_statement)
+        return data_read(self._conn, self._model, select_statement, self._aid_to_entity)
 
     def context_read(self) -> ods.ContextVariables:
         """Return context variables for this ATFX session.

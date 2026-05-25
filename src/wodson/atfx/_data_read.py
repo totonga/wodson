@@ -10,9 +10,64 @@ from typing import Any
 
 import odsbox.proto.ods_pb2 as ods
 
+from ._db import _SEQUENCE_TYPES
 from ._naming import _col_name, _table_name
 
 _log = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Cache protobuf enum constants at module level to avoid repeated __getattr__
+# lookups through the EnumTypeWrapper on every call.
+# ---------------------------------------------------------------------------
+_DT = ods.DataTypeEnum
+
+_DT_BOOLEAN = _DT.DT_BOOLEAN
+_DT_BYTE = _DT.DT_BYTE
+_DT_SHORT = _DT.DT_SHORT
+_DT_LONG = _DT.DT_LONG
+_DT_LONGLONG = _DT.DT_LONGLONG
+_DT_FLOAT = _DT.DT_FLOAT
+_DT_DOUBLE = _DT.DT_DOUBLE
+_DT_COMPLEX = _DT.DT_COMPLEX
+_DT_DCOMPLEX = _DT.DT_DCOMPLEX
+_DT_STRING = _DT.DT_STRING
+_DT_DATE = _DT.DT_DATE
+_DT_EXTERNALREFERENCE = _DT.DT_EXTERNALREFERENCE
+_DT_ENUM = _DT.DT_ENUM
+_DT_BYTESTR = _DT.DT_BYTESTR
+_DT_BLOB = _DT.DT_BLOB
+_DT_UNKNOWN = _DT.DT_UNKNOWN
+
+_DS_FLOAT = _DT.DS_FLOAT
+_DS_COMPLEX = _DT.DS_COMPLEX
+_DS_DOUBLE = _DT.DS_DOUBLE
+_DS_DCOMPLEX = _DT.DS_DCOMPLEX
+_DS_LONG = _DT.DS_LONG
+_DS_SHORT = _DT.DS_SHORT
+_DS_LONGLONG = _DT.DS_LONGLONG
+_DS_STRING = _DT.DS_STRING
+_DS_DATE = _DT.DS_DATE
+_DS_EXTERNALREFERENCE = _DT.DS_EXTERNALREFERENCE
+_DS_ENUM = _DT.DS_ENUM
+_DS_BOOLEAN = _DT.DS_BOOLEAN
+_DS_BYTE = _DT.DS_BYTE
+_DS_BYTESTR = _DT.DS_BYTESTR
+
+# Grouped type sets for fast membership tests (frozenset.__contains__ is O(1))
+_DT_STR_TYPES: frozenset[int] = frozenset({_DT_STRING, _DT_DATE, _DT_EXTERNALREFERENCE, _DT_ENUM})
+_DT_INT_TYPES: frozenset[int] = frozenset({_DT_SHORT, _DT_LONG})
+_DT_FLOAT_TYPES: frozenset[int] = frozenset({_DT_FLOAT, _DT_COMPLEX})
+_DT_DOUBLE_TYPES: frozenset[int] = frozenset({_DT_DOUBLE, _DT_DCOMPLEX})
+_DT_BYTES_TYPES: frozenset[int] = frozenset({_DT_BYTESTR, _DT_BLOB})
+_DT_COMPLEX_TYPES: frozenset[int] = frozenset({_DT_COMPLEX, _DT_DCOMPLEX})
+_DS_FLOAT_TYPES: frozenset[int] = frozenset({_DS_FLOAT, _DS_COMPLEX})
+_DS_DOUBLE_TYPES: frozenset[int] = frozenset({_DS_DOUBLE, _DS_DCOMPLEX})
+_DS_INT_TYPES: frozenset[int] = frozenset({_DS_LONG, _DS_SHORT})
+_DS_STR_TYPES: frozenset[int] = frozenset({_DS_STRING, _DS_DATE, _DS_EXTERNALREFERENCE, _DS_ENUM})
+_DS_BYTE_TYPES: frozenset[int] = frozenset({_DS_BYTE, _DS_BYTESTR})
+
+_AG_NONE = ods.AggregateEnum.AG_NONE
+_AG_DISTINCT = ods.AggregateEnum.AG_DISTINCT
 
 # Aggregate mapping
 _AGGREGATE_MAP: dict[int, str] = {
@@ -73,21 +128,41 @@ _CI_TO_BASE: dict[int, int] = {
     _OpEnum.OP_CI_NOTINSET: _OpEnum.OP_NOTINSET,
 }
 
+# Cached scalar operator/conjunction constants used inside _build_where.
+_OP_IS_NULL = _OpEnum.OP_IS_NULL
+_OP_IS_NOT_NULL = _OpEnum.OP_IS_NOT_NULL
+_OP_INSET = _OpEnum.OP_INSET
+_OP_NOTINSET = _OpEnum.OP_NOTINSET
+_OP_BETWEEN = _OpEnum.OP_BETWEEN
+_OP_NULL_TYPES: frozenset[int] = frozenset({_OP_IS_NULL, _OP_IS_NOT_NULL})
+_OP_SET_TYPES: frozenset[int] = frozenset({_OP_INSET, _OP_NOTINSET})
+
+_ConjEnum = ods.SelectStatement.ConditionItem.ConjuctionEnum
+_CO_AND = _ConjEnum.CO_AND
+_CO_OR = _ConjEnum.CO_OR
+_CO_NOT = _ConjEnum.CO_NOT
+_CO_OPEN = _ConjEnum.CO_OPEN
+_CO_CLOSE = _ConjEnum.CO_CLOSE
+
 
 class _QueryContext:
     """Holds state for building a SQL query from a SelectStatement."""
 
-    def __init__(self, model: ods.Model) -> None:
+    def __init__(
+        self,
+        model: ods.Model,
+        aid_to_entity: dict[int, ods.Model.Entity] | None = None,
+    ) -> None:
         self.model = model
-        # AID -> entity
-        self.aid_to_entity: dict[int, ods.Model.Entity] = {}
-        # AID -> table alias
+        # AID -> table alias (per-query, always starts empty)
         self.aid_to_alias: dict[int, str] = {}
         self.alias_counter = 0
 
-        for ename in model.entities:
-            entity = model.entities[ename]
-            self.aid_to_entity[entity.aid] = entity
+        if aid_to_entity is not None:
+            # Use pre-built map from AtfxStore to avoid re-iterating the model.
+            self.aid_to_entity = aid_to_entity
+        else:
+            self.aid_to_entity = {model.entities[ename].aid: model.entities[ename] for ename in model.entities}
 
     def get_alias(self, aid: int) -> str:
         """Get or create a table alias for the given AID."""
@@ -108,23 +183,24 @@ class _QueryContext:
         if attr_name in entity.attributes:
             return attr_name, entity.attributes[attr_name].data_type
         if attr_name in entity.relations:
-            return attr_name, ods.DataTypeEnum.DT_LONGLONG
+            return attr_name, _DT_LONGLONG
         for aname in entity.attributes:
             if aname.lower() == attr_name.lower():
                 return aname, entity.attributes[aname].data_type
         for rname in entity.relations:
             if rname.lower() == attr_name.lower():
-                return rname, ods.DataTypeEnum.DT_LONGLONG
-        return attr_name, ods.DataTypeEnum.DT_UNKNOWN
+                return rname, _DT_LONGLONG
+        return attr_name, _DT_UNKNOWN
 
 
 def data_read(
     conn: sqlite3.Connection,
     model: ods.Model,
     select_statement: ods.SelectStatement,
+    aid_to_entity: dict[int, ods.Model.Entity] | None = None,
 ) -> ods.DataMatrices:
     """Execute a SelectStatement against the SQLite database and return DataMatrices."""
-    ctx = _QueryContext(model)
+    ctx = _QueryContext(model, aid_to_entity)
     params: list[Any] = []
 
     # Determine primary AID from first column
@@ -150,7 +226,7 @@ def data_read(
                 attr = entity.attributes[aname]
                 col_ref = f'"{alias}"."{_col_name(aname)}"'
                 select_parts.append(col_ref)
-                column_meta.append((col.aid, aname, attr.data_type, ods.AggregateEnum.AG_NONE))
+                column_meta.append((col.aid, aname, attr.data_type, _AG_NONE))
         else:
             # Single attribute or relation
             attr_name = col.attribute
@@ -161,7 +237,7 @@ def data_read(
             agg = col.aggregate
             agg_func = _AGGREGATE_MAP.get(agg, "")
             if agg_func:
-                if agg == ods.AggregateEnum.AG_DISTINCT:
+                if agg == _AG_DISTINCT:
                     col_ref = f"COUNT(DISTINCT {col_ref})"
                 else:
                     col_ref = f"{agg_func}({col_ref})"
@@ -273,19 +349,20 @@ def _build_where(
     params: list[Any] = []
 
     for item in where_items:
-        if item.HasField("conjunction"):
+        item_type = item.WhichOneof("ItemOneOf")
+        if item_type == "conjunction":
             conj = item.conjunction
-            if conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_AND:
+            if conj == _CO_AND:
                 parts.append("AND")
-            elif conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_OR:
+            elif conj == _CO_OR:
                 parts.append("OR")
-            elif conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_NOT:
+            elif conj == _CO_NOT:
                 parts.append("NOT")
-            elif conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_OPEN:
+            elif conj == _CO_OPEN:
                 parts.append("(")
-            elif conj == ods.SelectStatement.ConditionItem.ConjuctionEnum.CO_CLOSE:
+            elif conj == _CO_CLOSE:
                 parts.append(")")
-        elif item.HasField("condition"):
+        elif item_type == "condition":
             cond = item.condition
             entity = ctx.get_entity(cond.aid)
             alias = ctx.get_alias(cond.aid)
@@ -306,19 +383,13 @@ def _build_where(
             if is_ci and values:
                 values = [v.lower() if isinstance(v, str) else v for v in values]
 
-            if op in (
-                ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_IS_NULL,
-                ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_IS_NOT_NULL,
-            ):
+            if op in _OP_NULL_TYPES:
                 parts.append(f"{col_ref} {op_str}")
-            elif op in (
-                ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_INSET,
-                ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_NOTINSET,
-            ):
+            elif op in _OP_SET_TYPES:
                 placeholders = ", ".join(["?"] * len(values))
                 parts.append(f"{col_ref} {op_str} ({placeholders})")
                 params.extend(values)
-            elif op == ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_BETWEEN:
+            elif op == _OP_BETWEEN:
                 if len(values) >= 2:
                     parts.append(f"{col_ref} BETWEEN ? AND ?")
                     params.extend(values[:2])
@@ -333,22 +404,11 @@ def _build_where(
 
 
 def _extract_condition_values(cond: Any) -> list[Any]:
-    """Extract values from a condition's value oneof field."""
-    if cond.HasField("string_array"):
-        return list(cond.string_array.values)
-    elif cond.HasField("long_array"):
-        return list(cond.long_array.values)
-    elif cond.HasField("float_array"):
-        return list(cond.float_array.values)
-    elif cond.HasField("double_array"):
-        return list(cond.double_array.values)
-    elif cond.HasField("longlong_array"):
-        return list(cond.longlong_array.values)
-    elif cond.HasField("boolean_array"):
-        return list(cond.boolean_array.values)
-    elif cond.HasField("byte_array"):
-        return list(cond.byte_array.values)
-    return []
+    """Extract values from a condition's ValueOneOf field."""
+    which = cond.WhichOneof("ValueOneOf")
+    if which is None or which == "nested_statement":
+        return []
+    return list(getattr(cond, which).values)
 
 
 def _build_data_matrices(
@@ -405,9 +465,7 @@ def _fill_column(
     select_statement: ods.SelectStatement,
 ) -> None:
     """Fill a DataMatrix.Column with typed values."""
-    from ._db import _SEQUENCE_TYPES
-
-    if data_type in _SEQUENCE_TYPES or data_type == ods.DataTypeEnum.DT_UNKNOWN:
+    if data_type in _SEQUENCE_TYPES or data_type == _DT_UNKNOWN:
         # Sequence data stored as pickled BLOBs
         for val in values:
             if val is None:
@@ -447,51 +505,43 @@ def _fill_column(
 
 def _fill_unknown_array_values(ua: Any, seq_data: list[Any], data_type: int) -> None:
     """Fill an UnknownArray with values using the given concrete ODS data_type."""
-    if data_type == ods.DataTypeEnum.DT_BOOLEAN:
+    if data_type == _DT_BOOLEAN:
         ua.data_type = data_type
         ua.boolean_array.values.extend([bool(v) for v in seq_data])
-    elif data_type == ods.DataTypeEnum.DT_BYTE:
+    elif data_type == _DT_BYTE:
         ua.data_type = data_type
         ua.byte_array.values = bytes([int(v) & 0xFF for v in seq_data])
-    elif data_type in (
-        ods.DataTypeEnum.DT_SHORT,
-        ods.DataTypeEnum.DT_LONG,
-        ods.DataTypeEnum.DT_ENUM,
-    ):
+    elif data_type in _DT_INT_TYPES or data_type == _DT_ENUM:
         ua.data_type = data_type
         ua.long_array.values.extend([int(v) for v in seq_data])
-    elif data_type == ods.DataTypeEnum.DT_LONGLONG:
+    elif data_type == _DT_LONGLONG:
         ua.data_type = data_type
         ua.longlong_array.values.extend([int(v) for v in seq_data])
-    elif data_type in (ods.DataTypeEnum.DT_FLOAT, ods.DataTypeEnum.DT_COMPLEX):
+    elif data_type in _DT_FLOAT_TYPES:
         ua.data_type = data_type
         ua.float_array.values.extend([_to_float(v) for v in seq_data])
-    elif data_type in (ods.DataTypeEnum.DT_DOUBLE, ods.DataTypeEnum.DT_DCOMPLEX):
+    elif data_type in _DT_DOUBLE_TYPES:
         ua.data_type = data_type
         ua.double_array.values.extend([_to_float(v) for v in seq_data])
-    elif data_type in (
-        ods.DataTypeEnum.DT_STRING,
-        ods.DataTypeEnum.DT_DATE,
-        ods.DataTypeEnum.DT_EXTERNALREFERENCE,
-    ):
+    elif data_type in _DT_STR_TYPES:
         ua.data_type = data_type
         ua.string_array.values.extend([str(v) for v in seq_data])
-    elif data_type == ods.DataTypeEnum.DT_BYTESTR:
+    elif data_type == _DT_BYTESTR:
         ua.data_type = data_type
         ua.bytestr_array.values.extend([v if isinstance(v, bytes) else bytes(v) for v in seq_data])
     else:
         # DT_UNKNOWN or unrecognised: infer concrete type from Python values
         if isinstance(seq_data[0], bool):
-            ua.data_type = ods.DataTypeEnum.DT_BOOLEAN
+            ua.data_type = _DT_BOOLEAN
             ua.boolean_array.values.extend([bool(v) for v in seq_data])
         elif isinstance(seq_data[0], int):
-            ua.data_type = ods.DataTypeEnum.DT_LONGLONG
+            ua.data_type = _DT_LONGLONG
             ua.longlong_array.values.extend([int(v) for v in seq_data])
         elif isinstance(seq_data[0], float):
-            ua.data_type = ods.DataTypeEnum.DT_DOUBLE
+            ua.data_type = _DT_DOUBLE
             ua.double_array.values.extend([float(v) for v in seq_data])
         else:
-            ua.data_type = ods.DataTypeEnum.DT_STRING
+            ua.data_type = _DT_STRING
             ua.string_array.values.extend([str(v) for v in seq_data])
 
 
@@ -504,43 +554,35 @@ def _to_float(val: Any) -> float:
 
 def _fill_sequence_column(column: Any, seq_data: list[Any], data_type: int, actual_dt: int | None = None) -> None:
     """Fill column with a sequence of values as a sub-array."""
-    if data_type in (ods.DataTypeEnum.DS_FLOAT, ods.DataTypeEnum.DS_COMPLEX):
+    if data_type in _DS_FLOAT_TYPES:
         arr = column.float_arrays.values.add()
         arr.values.extend([_to_float(v) for v in seq_data])
-    elif data_type in (ods.DataTypeEnum.DS_DOUBLE, ods.DataTypeEnum.DS_DCOMPLEX):
+    elif data_type in _DS_DOUBLE_TYPES:
         arr = column.double_arrays.values.add()
         arr.values.extend([_to_float(v) for v in seq_data])
-    elif data_type in (
-        ods.DataTypeEnum.DS_LONG,
-        ods.DataTypeEnum.DS_SHORT,
-    ):
+    elif data_type in _DS_INT_TYPES:
         arr = column.long_arrays.values.add()
         arr.values.extend([int(v) for v in seq_data])
-    elif data_type == ods.DataTypeEnum.DS_LONGLONG:
+    elif data_type == _DS_LONGLONG:
         arr = column.longlong_arrays.values.add()
         arr.values.extend([int(v) for v in seq_data])
-    elif data_type in (
-        ods.DataTypeEnum.DS_STRING,
-        ods.DataTypeEnum.DS_DATE,
-        ods.DataTypeEnum.DS_EXTERNALREFERENCE,
-        ods.DataTypeEnum.DS_ENUM,
-    ):
+    elif data_type in _DS_STR_TYPES:
         arr = column.string_arrays.values.add()
         arr.values.extend([str(v) for v in seq_data])
-    elif data_type in (ods.DataTypeEnum.DS_BOOLEAN,):
+    elif data_type == _DS_BOOLEAN:
         arr = column.boolean_arrays.values.add()
         arr.values.extend([bool(v) for v in seq_data])
-    elif data_type in (ods.DataTypeEnum.DS_BYTE, ods.DataTypeEnum.DS_BYTESTR):
+    elif data_type in _DS_BYTE_TYPES:
         arr = column.byte_arrays.values.add()
         arr.values = bytes(seq_data) if seq_data else b""
-    elif data_type == ods.DataTypeEnum.DT_UNKNOWN:
+    elif data_type == _DT_UNKNOWN:
         # Store as UnknownArray; use actual_dt when known (from XML tag), else infer
         ua = column.unknown_arrays.values.add()
         if seq_data:
             _fill_unknown_array_values(
                 ua,
                 seq_data,
-                actual_dt if actual_dt is not None else ods.DataTypeEnum.DT_UNKNOWN,
+                actual_dt if actual_dt is not None else _DT_UNKNOWN,
             )
     else:
         arr = column.string_arrays.values.add()
@@ -549,36 +591,31 @@ def _fill_sequence_column(column: Any, seq_data: list[Any], data_type: int, actu
 
 def _append_value(column: Any, val: Any, data_type: int) -> None:
     """Append a single scalar value to the appropriate column array."""
-    if data_type in (
-        ods.DataTypeEnum.DT_STRING,
-        ods.DataTypeEnum.DT_DATE,
-        ods.DataTypeEnum.DT_EXTERNALREFERENCE,
-        ods.DataTypeEnum.DT_ENUM,
-    ):
+    if data_type in _DT_STR_TYPES:
         column.string_array.values.append(str(val))
-    elif data_type in (ods.DataTypeEnum.DT_SHORT, ods.DataTypeEnum.DT_LONG):
+    elif data_type in _DT_INT_TYPES:
         column.long_array.values.append(int(val))
-    elif data_type == ods.DataTypeEnum.DT_LONGLONG:
+    elif data_type == _DT_LONGLONG:
         column.longlong_array.values.append(int(val))
-    elif data_type == ods.DataTypeEnum.DT_FLOAT:
+    elif data_type == _DT_FLOAT:
         column.float_array.values.append(_to_float(val))
-    elif data_type == ods.DataTypeEnum.DT_DOUBLE:
+    elif data_type == _DT_DOUBLE:
         column.double_array.values.append(_to_float(val))
-    elif data_type == ods.DataTypeEnum.DT_BOOLEAN:
+    elif data_type == _DT_BOOLEAN:
         column.boolean_array.values.append(bool(val))
-    elif data_type == ods.DataTypeEnum.DT_BYTE:
+    elif data_type == _DT_BYTE:
         column.byte_array.values += bytes([int(val)])
-    elif data_type in (ods.DataTypeEnum.DT_COMPLEX, ods.DataTypeEnum.DT_DCOMPLEX):
+    elif data_type in _DT_COMPLEX_TYPES:
         # Stored as pickled blob
         if isinstance(val, bytes):
             data = pickle.loads(val)  # noqa: S301
-            if data_type == ods.DataTypeEnum.DT_COMPLEX:
+            if data_type == _DT_COMPLEX:
                 column.float_array.values.extend([float(v) for v in data])
             else:
                 column.double_array.values.extend([float(v) for v in data])
         else:
             column.double_array.values.append(float(val))
-    elif data_type in (ods.DataTypeEnum.DT_BYTESTR, ods.DataTypeEnum.DT_BLOB):
+    elif data_type in _DT_BYTES_TYPES:
         if isinstance(val, bytes):
             column.bytestr_array.values.append(val)
         else:
@@ -590,24 +627,19 @@ def _append_value(column: Any, val: Any, data_type: int) -> None:
 
 def _append_default_value(column: Any, data_type: int) -> None:
     """Append a default/zero value for NULL handling."""
-    if data_type in (
-        ods.DataTypeEnum.DT_STRING,
-        ods.DataTypeEnum.DT_DATE,
-        ods.DataTypeEnum.DT_EXTERNALREFERENCE,
-        ods.DataTypeEnum.DT_ENUM,
-    ):
+    if data_type in _DT_STR_TYPES:
         column.string_array.values.append("")
-    elif data_type in (ods.DataTypeEnum.DT_SHORT, ods.DataTypeEnum.DT_LONG):
+    elif data_type in _DT_INT_TYPES:
         column.long_array.values.append(0)
-    elif data_type == ods.DataTypeEnum.DT_LONGLONG:
+    elif data_type == _DT_LONGLONG:
         column.longlong_array.values.append(0)
-    elif data_type == ods.DataTypeEnum.DT_FLOAT:
+    elif data_type == _DT_FLOAT:
         column.float_array.values.append(0.0)
-    elif data_type == ods.DataTypeEnum.DT_DOUBLE:
+    elif data_type == _DT_DOUBLE:
         column.double_array.values.append(0.0)
-    elif data_type == ods.DataTypeEnum.DT_BOOLEAN:
+    elif data_type == _DT_BOOLEAN:
         column.boolean_array.values.append(False)
-    elif data_type == ods.DataTypeEnum.DT_BYTE:
+    elif data_type == _DT_BYTE:
         column.byte_array.values += b"\x00"
     else:
         column.string_array.values.append("")
