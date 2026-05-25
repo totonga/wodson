@@ -7,19 +7,19 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from asamatfx._cli import (
+from asamatfx._cli import _build_parser, main
+from asamatfx.atfx._cli import (
     _LOG_LEVELS,
-    _build_parser,
     _cmd_serve,
     _configure_logging,
     _wait_windows,
-    main,
 )
 
 
-def test_build_parser_has_serve_subcommand():
+def test_build_parser_has_atfx_serve_subcommand():
     parser = _build_parser()
-    args = parser.parse_args(["serve", "--file", "test.atfx"])
+    args = parser.parse_args(["atfx", "serve", "--file", "test.atfx"])
+    assert args.module == "atfx"
     assert args.command == "serve"
     assert args.file == "test.atfx"
     assert args.host == "127.0.0.1"
@@ -29,50 +29,57 @@ def test_build_parser_has_serve_subcommand():
 
 def test_build_parser_custom_host_port():
     parser = _build_parser()
-    args = parser.parse_args(["serve", "--file", "x.atfx", "--host", "0.0.0.0", "--port", "9090"])
+    args = parser.parse_args(["atfx", "serve", "--file", "x.atfx", "--host", "0.0.0.0", "--port", "9090"])
     assert args.host == "0.0.0.0"
     assert args.port == 9090
 
 
 def test_build_parser_short_flags():
     parser = _build_parser()
-    args = parser.parse_args(["serve", "-f", "x.atfx", "-p", "1234"])
+    args = parser.parse_args(["atfx", "serve", "-f", "x.atfx", "-p", "1234"])
     assert args.file == "x.atfx"
     assert args.port == 1234
 
 
 def test_build_parser_file_is_optional():
     parser = _build_parser()
-    args = parser.parse_args(["serve"])
+    args = parser.parse_args(["atfx", "serve"])
+    assert args.module == "atfx"
     assert args.command == "serve"
     assert args.file is None
     assert args.host == "127.0.0.1"
     assert args.port == 8080
 
 
-def test_build_parser_requires_subcommand():
+def test_build_parser_requires_module():
     parser = _build_parser()
     with pytest.raises(SystemExit):
         parser.parse_args([])
 
 
+def test_build_parser_requires_subcommand():
+    parser = _build_parser()
+    with pytest.raises(SystemExit):
+        parser.parse_args(["atfx"])
+
+
 def test_build_parser_loglevel_choices():
     parser = _build_parser()
     for level in ("verbose", "default", "quiet"):
-        args = parser.parse_args(["serve", "-f", "x.atfx", "--loglevel", level])
+        args = parser.parse_args(["atfx", "serve", "-f", "x.atfx", "--loglevel", level])
         assert args.loglevel == level
 
 
 def test_build_parser_loglevel_short_flag():
     parser = _build_parser()
-    args = parser.parse_args(["serve", "-f", "x.atfx", "-l", "verbose"])
+    args = parser.parse_args(["atfx", "serve", "-f", "x.atfx", "-l", "verbose"])
     assert args.loglevel == "verbose"
 
 
 def test_build_parser_invalid_loglevel():
     parser = _build_parser()
     with pytest.raises(SystemExit):
-        parser.parse_args(["serve", "-f", "x.atfx", "--loglevel", "invalid"])
+        parser.parse_args(["atfx", "serve", "-f", "x.atfx", "--loglevel", "invalid"])
 
 
 def test_configure_logging_sets_level():
@@ -94,8 +101,8 @@ def test_log_levels_mapping():
     assert _LOG_LEVELS["quiet"] == logging.WARNING
 
 
-@patch("asamatfx._cli.AtfxServer")
-@patch("asamatfx._cli.signal")
+@patch("asamatfx.atfx._cli.AtfxServer")
+@patch("asamatfx.atfx._cli.signal")
 def test_cmd_serve_starts_and_stops(mock_signal, mock_server_cls):
     mock_server = MagicMock()
     mock_server.url = "http://127.0.0.1:8080"
@@ -107,7 +114,7 @@ def test_cmd_serve_starts_and_stops(mock_signal, mock_server_cls):
     mock_signal.pause.side_effect = KeyboardInterrupt
 
     parser = _build_parser()
-    args = parser.parse_args(["serve", "--file", "test.atfx"])
+    args = parser.parse_args(["atfx", "serve", "--file", "test.atfx"])
 
     with pytest.raises(KeyboardInterrupt):
         _cmd_serve(args)
@@ -116,8 +123,7 @@ def test_cmd_serve_starts_and_stops(mock_signal, mock_server_cls):
     mock_server.start.assert_called_once()
 
 
-@patch("asamatfx._cli.AtfxServer")
-def test_wait_windows_joins_thread(mock_server_cls):
+def test_wait_windows_joins_thread():
     mock_server = MagicMock()
     mock_thread = MagicMock()
     mock_server._thread = mock_thread
@@ -125,8 +131,8 @@ def test_wait_windows_joins_thread(mock_server_cls):
     mock_thread.join.assert_called_once()
 
 
-@patch("asamatfx._cli._cmd_serve")
-@patch("sys.argv", ["asamatfx", "serve", "--file", "test.atfx"])
-def test_main_dispatches_serve(mock_cmd_serve):
+@patch("asamatfx.atfx._cli.dispatch")
+@patch("sys.argv", ["asamatfx", "atfx", "serve", "--file", "test.atfx"])
+def test_main_dispatches_atfx(mock_dispatch):
     main()
-    mock_cmd_serve.assert_called_once()
+    mock_dispatch.assert_called_once()

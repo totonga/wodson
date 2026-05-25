@@ -44,8 +44,8 @@ from requests.cookies import cookiejar_from_dict
 from requests.models import PreparedRequest
 from requests.structures import CaseInsensitiveDict
 
-from asamatfx._atfx_store import AtfxStore
-from asamatfx._server import CONTENT_TYPE_JSON, CONTENT_TYPE_PROTO, CONTEXT_VAR_ATFX_FILE
+from ._atfx_store import AtfxStore
+from ._server import CONTENT_TYPE_JSON, CONTENT_TYPE_PROTO, CONTEXT_VAR_ATFX_FILE
 
 _log = logging.getLogger(__name__)
 

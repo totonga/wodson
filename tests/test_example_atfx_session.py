@@ -29,7 +29,7 @@ from pathlib import Path
 import odsbox.proto.ods_pb2 as ods
 from odsbox.con_i import ConI
 
-from asamatfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
+from asamatfx.atfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
 
 # ---------------------------------------------------------------------------
 # Fixture file: the same ATFX used throughout the docs examples

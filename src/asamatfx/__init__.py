@@ -1,7 +1,1 @@
-"""asamatfx - ATFX reader with in-memory SQLite backend and ODS data-read API."""
-
-from ._atfx_store import AtfxStore
-from ._server import CONTEXT_VAR_ATFX_FILE, AtfxServer
-from ._session import AtfxSession
-
-__all__ = ["AtfxServer", "AtfxSession", "AtfxStore", "CONTEXT_VAR_ATFX_FILE"]
+"""asamatfx — top-level package. Use ``asamatfx.atfx`` for the ATFX reader API."""

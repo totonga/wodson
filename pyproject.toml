@@ -48,4 +48,5 @@ pythonpath = ["src"]
 testpaths = ["tests"]
 
 [tool.setuptools.package-data]
-asamatfx = ["base_model/*", "py.typed"]
+asamatfx = ["py.typed"]
+"asamatfx.atfx" = ["base_model/*"]
