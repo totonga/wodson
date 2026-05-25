@@ -36,11 +36,11 @@ def _localcolumn_entity_name(model: ods.Model) -> str | None:
     return None
 
 
-def _attr_by_base(entity: ods.ApplicationElement, base_name: str) -> str | None:
+def _attr_by_base(entity: ods.Model.Entity, base_name: str) -> str | None:
     """Return the application-level attribute name that maps to *base_name*."""
     for aname, attr in entity.attributes.items():
         if attr.base_name == base_name:
-            return aname
+            return str(aname)
     return None
 
 

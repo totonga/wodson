@@ -36,7 +36,7 @@ def tstser_matrix(example_store):
     return result.matrices[0]
 
 
-def _get_col(matrix, name: str):
+def _get_col(matrix: ods.DataMatrix, name: str) -> ods.DataMatrix.Column:
     """Return the named column from *matrix*, or raise AssertionError."""
     for col in matrix.columns:
         if col.name.lower() == name.lower():

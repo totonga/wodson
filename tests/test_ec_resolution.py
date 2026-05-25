@@ -32,17 +32,17 @@ def aofile_store():
         yield store
 
 
-def _lc_entity(model: ods.Model):
+def _lc_entity(model: ods.Model) -> tuple[str | None, ods.Model.Entity | None]:
     for ename, entity in model.entities.items():
         if entity.base_name == "AoLocalColumn":
-            return ename, entity
+            return str(ename), entity
     return None, None
 
 
-def _values_attr_name(entity) -> str | None:
+def _values_attr_name(entity: ods.Model.Entity) -> str | None:
     for aname, attr in entity.attributes.items():
         if attr.base_name == "values":
-            return aname
+            return str(aname)
     return None
 
 
@@ -96,6 +96,7 @@ def test_ec_backed_lc_signed_bytes(ec_store):
     """lc_iid=115 (signed_b, dt_sbyte) must yield 10 values promoted to DT_SHORT."""
     model = ec_store.model()
     _, lc_entity = _lc_entity(model)
+    assert lc_entity is not None
     values_attr = _values_attr_name(lc_entity)
 
     # Find the lc id attribute name (base_name == "id")
@@ -125,6 +126,7 @@ def test_ec_backed_lc_unsigned_bytes(ec_store):
     """lc_iid=118 (unsigned_b, dt_byte) must yield 10 values as DT_BYTE."""
     model = ec_store.model()
     _, lc_entity = _lc_entity(model)
+    assert lc_entity is not None
     values_attr = _values_attr_name(lc_entity)
 
     lc_id_attr = next(a for a, attr in lc_entity.attributes.items() if attr.base_name == "id")
