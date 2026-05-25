@@ -8,8 +8,8 @@ import requests
 from google.protobuf import json_format
 from odsbox.con_i import ConI
 
-from asamatfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
-from asamatfx._session import AtfxAdapter
+from asamatfx.atfx import CONTEXT_VAR_ATFX_FILE, AtfxSession
+from asamatfx.atfx._session import AtfxAdapter
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
 SIMPLE_ATFX = DATA_DIR / "Example_Simple.atfx"

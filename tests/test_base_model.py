@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import odsbox.proto.ods_pb2 as ods
 
-from asamatfx._base_model import _parse_datatype, load_base_model
+from asamatfx.atfx._base_model import _parse_datatype, load_base_model
 
 
 def test_load_base_model_returns_valid_model():

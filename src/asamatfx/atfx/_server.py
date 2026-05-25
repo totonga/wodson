@@ -29,7 +29,7 @@ import odsbox.proto.ods_pb2 as ods
 from google.protobuf import json_format
 from google.protobuf.message import Message
 
-from asamatfx._atfx_store import AtfxStore
+from ._atfx_store import AtfxStore
 
 _log = logging.getLogger(__name__)
 
