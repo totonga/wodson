@@ -11,7 +11,7 @@ their content through the [ASAM ODS](https://www.asam.net/standards/detail/ods/)
 - Exposes `ods.Model` (application model) and `ods.DataMatrices` (data-read)
 - Embeddable Python library (`AtfxStore`)
 - Standalone HTTP server compatible with `odsbox.ConI` (`AtfxServer`)
-- CLI: `uv run asamatfx serve --file path/to/file.atfx`
+- CLI: `uv run asamatfx atfx serve --file path/to/file.atfx`
 
 ## Requirements
 
@@ -32,7 +32,7 @@ uv add asamatfx
 ### Embedded library
 
 ```python
-from asamatfx import AtfxStore
+from asamatfx.atfx import AtfxStore
 import odsbox.proto.ods_pb2 as ods
 
 with AtfxStore("path/to/file.atfx") as store:
@@ -47,7 +47,7 @@ with AtfxStore("path/to/file.atfx") as store:
 
 ```python
 from odsbox.con_i import ConI
-from asamatfx import AtfxServer, CONTEXT_VAR_ATFX_FILE
+from asamatfx.atfx import AtfxServer, CONTEXT_VAR_ATFX_FILE
 
 with AtfxServer(host="127.0.0.1", port=8080) as server:
     with ConI(
@@ -63,7 +63,7 @@ with AtfxServer(host="127.0.0.1", port=8080) as server:
 ### CLI
 
 ```bash
-uv run asamatfx serve --file path/to/file.atfx --host 0.0.0.0 --port 8080
+uv run asamatfx atfx serve --file path/to/file.atfx --host 0.0.0.0 --port 8080
 ```
 
 Then connect any `odsbox.ConI` client to `http://localhost:8080` and set the
@@ -73,18 +73,24 @@ Then connect any `odsbox.ConI` client to `http://localhost:8080` and set the
 
 ```
 src/asamatfx/
-    base_model/          ASAM ODS base model protobuf JSON files
-              ODSBaseModel_asam37.protobuf.json
-    __init__.py          Public API exports
-    _atfx_store.py       AtfxStore — parses + loads ATFX into SQLite
-    _server.py           AtfxServer — ASAM ODS HTTP server
-    _cli.py              CLI entry point
-    _base_model.py       Loads ODSBaseModel JSON → ods.BaseModel
-    _model_builder.py    Builds ods.Model from <application_model> XML
-    _instance_parser.py  Parses <instance_data> (inline + external)
-    _binary_reader.py    Reads external .dat binary files via numpy
-    _db.py               SQLite schema creation + instance loading
-    _data_read.py        SelectStatement → SQL → DataMatrices
+    __init__.py          Package root
+    _cli.py              CLI entry point (asamatfx atfx serve …)
+    atfx/
+        __init__.py          Public API (AtfxStore, AtfxServer, AtfxSession, …)
+        _cli.py              atfx subcommand logic
+        base_model/          ASAM ODS base model protobuf JSON files
+                  ODSBaseModel_asam37.protobuf.json
+        _atfx_store.py       AtfxStore — parses + loads ATFX into SQLite
+        _server.py           AtfxServer — ASAM ODS HTTP server
+        _session.py          AtfxSession — in-process requests adapter
+        _base_model.py       Loads ODSBaseModel JSON → ods.BaseModel
+        _model_builder.py    Builds ods.Model from <application_model> XML
+        _instance_parser.py  Parses <instance_data> (inline + external)
+        _binary_reader.py    Reads external .dat binary files via numpy
+        _db.py               SQLite schema creation + instance loading
+        _data_read.py        SelectStatement → SQL → DataMatrices
+        _xml_utils.py        Namespace-aware XML element lookup helpers
+        _naming.py           ODS name → SQLite identifier utilities
 docs/
     USAGE.md             End-user usage guide
     spec/                ASAM schema files and base model JSON

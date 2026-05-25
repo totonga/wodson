@@ -438,3 +438,22 @@ class TestConI:
             f"'Values' attribute missing from Localcolumn; got: {list(lc.attributes.keys())}"
         )
         assert lc.attributes["Values"].base_name == "values"
+
+
+class TestLocationHeader:
+    """The Location header must always be a reachable URL for the client."""
+
+    def test_location_uses_request_host_not_bind_address(self):
+        """When bound to 0.0.0.0 the Location header must echo the request Host,
+        not the raw bind address — 0.0.0.0 is not a valid outbound destination
+        on Windows (WinError 10049)."""
+        with AtfxServer(host="127.0.0.1", port=0) as server:
+            resp = _connect(server.url, str(SIMPLE_ATFX))
+            assert resp.status_code == 201
+            location = resp.headers["Location"]
+            assert not location.startswith("http://0.0.0.0"), (
+                f"Location must not use bind address 0.0.0.0; got: {location}"
+            )
+            # The returned URL must actually be reachable
+            resp2 = requests.post(f"{location}/model-read", headers={"Accept": CONTENT_TYPE_PROTO}, timeout=10)
+            assert resp2.status_code == 200

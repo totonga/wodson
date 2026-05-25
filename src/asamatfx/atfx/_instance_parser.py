@@ -490,9 +490,7 @@ def resolve_external_component_refs(
         ec_id = raw_ec_ref[0] if isinstance(raw_ec_ref, list) else raw_ec_ref
         found_ec = ec_by_id.get(int(ec_id))
         if found_ec is None:
-            _log.warning(
-                "AoLocalColumn references ec id=%s which was not found in instances", ec_id
-            )
+            _log.warning("AoLocalColumn references ec id=%s which was not found in instances", ec_id)
             continue
 
         ref = ExternalComponentRef()

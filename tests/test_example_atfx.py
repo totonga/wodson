@@ -48,6 +48,7 @@ def _get_col(matrix, name: str):
 # DT_EXTERNALREFERENCE
 # ---------------------------------------------------------------------------
 
+
 def test_dt_externalreference_type(tstser_matrix):
     """DT_EXTERNALREFERENCE attribute is returned as a string column."""
     col = _get_col(tstser_matrix, "appl_attr_dt_externalreference")
@@ -65,6 +66,7 @@ def test_dt_externalreference_value(tstser_matrix):
 # ---------------------------------------------------------------------------
 # DS_EXTERNALREFERENCE
 # ---------------------------------------------------------------------------
+
 
 def test_ds_externalreference_type(tstser_matrix):
     """DS_EXTERNALREFERENCE attribute is returned as a string_arrays column."""
@@ -88,6 +90,7 @@ def test_ds_externalreference_values(tstser_matrix):
 # DT_ENUM
 # ---------------------------------------------------------------------------
 
+
 def test_dt_enum_type(tstser_matrix):
     """DT_ENUM attribute is returned as a string column (enum name)."""
     col = _get_col(tstser_matrix, "appl_attr_dt_enum")
@@ -105,6 +108,7 @@ def test_dt_enum_value(tstser_matrix):
 # ---------------------------------------------------------------------------
 # DS_ENUM
 # ---------------------------------------------------------------------------
+
 
 def test_ds_enum_type(tstser_matrix):
     """DS_ENUM attribute is returned as a string_arrays column."""

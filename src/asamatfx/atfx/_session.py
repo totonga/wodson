@@ -32,6 +32,7 @@ import datetime
 import logging
 import threading
 import uuid
+from collections.abc import Mapping
 from urllib.parse import urlparse
 
 import odsbox.proto.ods_pb2 as ods
@@ -78,13 +79,13 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
         self,
         request: PreparedRequest,
         stream: bool = False,  # noqa: FBT001, FBT002
-        timeout: float | tuple[float, float] | None = None,
+        timeout: float | tuple[float, float] | tuple[float, None] | None = None,
         verify: bool | str = True,  # noqa: FBT001, FBT002
-        cert: str | tuple[str, str] | None = None,
-        proxies: dict[str, str] | None = None,
+        cert: bytes | str | tuple[bytes | str, bytes | str] | None = None,
+        proxies: Mapping[str, str] | None = None,
     ) -> Response:
         """Dispatch a PreparedRequest to the matching in-process handler."""
-        path = urlparse(request.url).path.lstrip("/")
+        path = urlparse(request.url or "").path.lstrip("/")
         parts = path.split("/")
 
         method = (request.method or "").upper()
@@ -128,9 +129,7 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
         elif self._default_file is not None:
             file_path = self._default_file
         else:
-            return self._error_response(
-                request, 400, f"Missing context variable '{CONTEXT_VAR_ATFX_FILE}'"
-            )
+            return self._error_response(request, 400, f"Missing context variable '{CONTEXT_VAR_ATFX_FILE}'")
 
         try:
             store = AtfxStore(file_path)
@@ -206,12 +205,12 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
 
     @staticmethod
     def _content_type(request: PreparedRequest) -> str:
-        headers = request.headers or {}
+        headers: CaseInsensitiveDict[str] = request.headers or CaseInsensitiveDict()
         return str(headers.get("Content-Type", CONTENT_TYPE_PROTO))
 
     @staticmethod
     def _accept(request: PreparedRequest) -> str:
-        headers = request.headers or {}
+        headers: CaseInsensitiveDict[str] = request.headers or CaseInsensitiveDict()
         return str(headers.get("Accept", CONTENT_TYPE_PROTO))
 
     @staticmethod
@@ -251,10 +250,10 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
         r.headers = CaseInsensitiveDict({"Content-Length": str(len(body))})
         r.url = request.url or ""
         r.request = request
-        r._content = body  # type: ignore[attr-defined]
+        r._content = body
         r._content_consumed = True  # type: ignore[attr-defined]
         r.reason = ""
-        r.cookies = cookiejar_from_dict({})
+        r.cookies = cookiejar_from_dict({})  # type: ignore[no-untyped-call]
         r.history = []
         r.elapsed = datetime.timedelta(0)
         r.encoding = "utf-8"

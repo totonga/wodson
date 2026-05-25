@@ -126,9 +126,10 @@ class _AtfxRequestHandler(BaseHTTPRequestHandler):
         with self._srv._lock:
             self._srv._sessions[session_id] = store
 
-        host = self._srv._host
-        port = self._srv._port
-        session_url = f"http://{host}:{port}/ods/{session_id}"
+        # Use the Host request header so the Location URL is always reachable
+        # by the client — the bind address (e.g. 0.0.0.0) is not routable.
+        request_host = self.headers.get("Host") or f"{self._srv._host}:{self._srv._port}"
+        session_url = f"http://{request_host}/ods/{session_id}"
         _log.info("Session created: %s (file: %s)", session_id, file_path)
 
         self.send_response(201)

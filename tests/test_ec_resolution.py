@@ -74,9 +74,7 @@ def test_ec_backed_lc_returns_data(ec_store):
     assert values_attr is not None
 
     # Find the lc id attribute name (base_name == "id")
-    lc_id_attr = next(
-        a for a, attr in lc_entity.attributes.items() if attr.base_name == "id"
-    )
+    lc_id_attr = next(a for a, attr in lc_entity.attributes.items() if attr.base_name == "id")
 
     # Query id + values for all lc instances
     stmt = ods.SelectStatement()
@@ -101,9 +99,7 @@ def test_ec_backed_lc_signed_bytes(ec_store):
     values_attr = _values_attr_name(lc_entity)
 
     # Find the lc id attribute name (base_name == "id")
-    lc_id_attr = next(
-        a for a, attr in lc_entity.attributes.items() if attr.base_name == "id"
-    )
+    lc_id_attr = next(a for a, attr in lc_entity.attributes.items() if attr.base_name == "id")
 
     stmt = ods.SelectStatement()
     stmt.columns.add(aid=lc_entity.aid, attribute=lc_id_attr)
@@ -131,9 +127,7 @@ def test_ec_backed_lc_unsigned_bytes(ec_store):
     _, lc_entity = _lc_entity(model)
     values_attr = _values_attr_name(lc_entity)
 
-    lc_id_attr = next(
-        a for a, attr in lc_entity.attributes.items() if attr.base_name == "id"
-    )
+    lc_id_attr = next(a for a, attr in lc_entity.attributes.items() if attr.base_name == "id")
 
     stmt = ods.SelectStatement()
     stmt.columns.add(aid=lc_entity.aid, attribute=lc_id_attr)
@@ -202,12 +196,8 @@ def test_aofile_ec_identifier_resolved(aofile_store):
     lc_name = next(n for n, e in model.entities.items() if e.base_name == "AoLocalColumn")
     lc_entity = model.entities[lc_name]
 
-    lc_id_attr = next(
-        a for a, attr in lc_entity.attributes.items() if attr.base_name == "id"
-    )
-    values_attr = next(
-        a for a, attr in lc_entity.attributes.items() if attr.base_name == "values"
-    )
+    lc_id_attr = next(a for a, attr in lc_entity.attributes.items() if attr.base_name == "id")
+    values_attr = next(a for a, attr in lc_entity.attributes.items() if attr.base_name == "values")
     seq_repr_attr = next(
         (a for a, attr in lc_entity.attributes.items() if attr.base_name == "sequence_representation"),
         None,
@@ -233,8 +223,7 @@ def test_aofile_ec_identifier_resolved(aofile_store):
         for ua in val_col.unknown_arrays.values
     )
     assert has_any_values, (
-        "No ec-backed LocalColumn has any resolved values — "
-        "ao_values_file fallback may not be working"
+        "No ec-backed LocalColumn has any resolved values — ao_values_file fallback may not be working"
     )
 
 
@@ -311,12 +300,7 @@ def test_lc_values_and_gp_per_seq_rep(atfx_path: Path) -> None:
                 # Generated channels: Values may be empty; GenerationParameters must be set.
                 if gp_col is not None:
                     gp_da = gp_col.double_arrays.values[i]
-                    assert len(gp_da.values) > 0, (
-                        f"lc_id={lc_id} sr={sr!r}: expected non-empty GenerationParameters"
-                    )
+                    assert len(gp_da.values) > 0, f"lc_id={lc_id} sr={sr!r}: expected non-empty GenerationParameters"
             else:
                 # Explicitly-stored channels: Values must be non-empty.
-                assert has_values, (
-                    f"lc_id={lc_id} sr={sr!r}: expected non-empty Values for explicit/external channel"
-                )
-
+                assert has_values, f"lc_id={lc_id} sr={sr!r}: expected non-empty Values for explicit/external channel"

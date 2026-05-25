@@ -422,7 +422,7 @@ def test_common_typespecs_localcolumn_values():
         result = store.data_read(stmt)
 
         m = result.matrices[0]
-        id_col = next(c for c in m.columns if c.name == "Id")
+        _id_col = next(c for c in m.columns if c.name == "Id")
         name_col = next(c for c in m.columns if c.name == "Name")
         values_col = next(c for c in m.columns if c.name == "Values")
 
@@ -482,8 +482,8 @@ def test_common_typespecs_localcolumn_values():
         ua_cx = ua("MyMqComplex")
         assert ua_cx.data_type == ods.DataTypeEnum.DT_FLOAT
         cx = list(ua_cx.float_array.values)
-        assert math.isclose(cx[0], 1.1, rel_tol=1e-4)   # real part of first pair
-        assert math.isclose(cx[1], 0.1, rel_tol=1e-4)   # imag part of first pair
+        assert math.isclose(cx[0], 1.1, rel_tol=1e-4)  # real part of first pair
+        assert math.isclose(cx[1], 0.1, rel_tol=1e-4)  # imag part of first pair
 
         # --- Dcomplex (little-endian) — stored as interleaved double pairs (DT_DOUBLE) ---
         ua_dcx = ua("MyMqDcomplex")
@@ -505,11 +505,11 @@ def test_common_typespecs_localcolumn_values():
 
         # --- Big-endian variants must match their little-endian counterparts ---
         for le_name, be_name in (
-            ("MyMqShort",    "MyMqShortBeo"),
-            ("MyMqLong",     "MyMqLongBeo"),
+            ("MyMqShort", "MyMqShortBeo"),
+            ("MyMqLong", "MyMqLongBeo"),
             ("MyMqLonglong", "MyMqLonglongBeo"),
-            ("MyMqFloat",    "MyMqFloatBeo"),
-            ("MyMqDouble",   "MyMqDoubleBeo"),
+            ("MyMqFloat", "MyMqFloatBeo"),
+            ("MyMqDouble", "MyMqDoubleBeo"),
         ):
             ua_le = ua(le_name)
             ua_be = ua(be_name)
@@ -530,13 +530,9 @@ def test_common_typespecs_localcolumn_values():
                 be_vals = list(ua_be.longlong_array.values)
             else:
                 continue
-            assert len(le_vals) == len(be_vals), (
-                f"{be_name} length {len(be_vals)} != {le_name} length {len(le_vals)}"
-            )
+            assert len(le_vals) == len(be_vals), f"{be_name} length {len(be_vals)} != {le_name} length {len(le_vals)}"
             for j, (lv, bv) in enumerate(zip(le_vals, be_vals)):
-                assert math.isclose(lv, bv, rel_tol=1e-5, abs_tol=1e-10), (
-                    f"{be_name}[{j}]={bv} != {le_name}[{j}]={lv}"
-                )
+                assert math.isclose(lv, bv, rel_tol=1e-5, abs_tol=1e-10), f"{be_name}[{j}]={bv} != {le_name}[{j}]={lv}"
 
 
 def test_example_atfx_localcolumn_values():
@@ -574,7 +570,7 @@ def test_example_atfx_localcolumn_values():
         val_col = next(c for c in m.columns if c.name == val_attr)
 
         ids = list(id_col.longlong_array.values)
-        names = list(name_col.string_array.values)
+        _names = list(name_col.string_array.values)
         srs = list(sr_col.string_array.values) if sr_col else ["explicit"] * len(ids)
 
         # Row counts must match
@@ -596,9 +592,7 @@ def test_example_atfx_localcolumn_values():
             if lc_id in _TRUNCATED_IDS:
                 continue
             w = ua(lc_id).WhichOneof("UnknownOneOf")
-            assert w is not None, (
-                f"lc_id={lc_id} sr={sr!r}: expected non-empty values"
-            )
+            assert w is not None, f"lc_id={lc_id} sr={sr!r}: expected non-empty values"
 
         # --- Spot-checks ---
         # Time channel (lc=45): DT_DOUBLE, first value ≈ 4.6e-4 s

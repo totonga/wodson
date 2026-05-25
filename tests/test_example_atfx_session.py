@@ -50,10 +50,10 @@ def test_connect_with_default_file():
     """
     with AtfxSession(default_file=str(SIMPLE_ATFX)) as session:
         with ConI(
-            url=session.url,     # "http://asamatfx.local" — no real HTTP
-            auth=None,           # no authentication needed
+            url=session.url,  # "http://asamatfx.local" — no real HTTP
+            auth=None,  # no authentication needed
             custom_session=session,
-            load_model=True,     # cache the model on connect
+            load_model=True,  # cache the model on connect
         ) as con:
             model = con.model()
 
@@ -74,7 +74,7 @@ def test_connect_with_context_variable():
     Use this pattern when you want the same code to work with both
     ``AtfxSession`` (in-process) and ``AtfxServer`` (over HTTP).
     """
-    with AtfxSession() as session:          # no default_file on the session
+    with AtfxSession() as session:  # no default_file on the session
         with ConI(
             url=session.url,
             auth=None,
@@ -145,6 +145,7 @@ def test_query_data_jaquel():
     assert not df.empty
     assert "Environment.Name" in df.columns
     assert "MyEnvironment" in df["Environment.Name"].values
+
 
 # ---------------------------------------------------------------------------
 # Example 5 — context-manager cleanup

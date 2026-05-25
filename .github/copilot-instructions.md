@@ -6,24 +6,29 @@
 
 ## Module Map
 
+All implementation lives under `src/asamatfx/atfx/`. The top-level `src/asamatfx/` package contains only the CLI entry point and the `py.typed` marker.
+
 | Module | Role |
 |--------|------|
-| `_atfx_store.py` | Main `AtfxStore` class — parses ATFX, builds model, loads instances |
-| `_server.py` | `AtfxServer` HTTP server — read-only ASAM ODS HTTP API |
-| `_cli.py` | CLI entry point — `asamatfx serve --file FILE [--host H] [--port P] [--loglevel L]` |
-| `_base_model.py` | Loads `ODSBaseModel_asam37.protobuf.json` into `ods.BaseModel` |
-| `_model_builder.py` | Builds `ods.Model` from `<application_model>` XML |
-| `_instance_parser.py` | Parses `<instance_data>` (inline + external references) |
-| `_binary_reader.py` | Reads external `.dat` binary files via numpy |
-| `_db.py` | SQLite schema creation + instance loading |
-| `_data_read.py` | Translates `ods.SelectStatement` → SQL → `ods.DataMatrices` |
-| `_xml_utils.py` | Namespace-aware XML element lookup helpers |
-| `_naming.py` | ODS name → SQLite identifier conversion utilities |
+| `_cli.py` | Top-level CLI entry point — registers `atfx` subcommand group |
+| `atfx/__init__.py` | Public API — exports `AtfxStore`, `AtfxServer`, `AtfxSession`, `CONTEXT_VAR_ATFX_FILE` |
+| `atfx/_cli.py` | `atfx` subcommand logic — `asamatfx atfx serve --file FILE [--host H] [--port P] [--loglevel L]` |
+| `atfx/_atfx_store.py` | Main `AtfxStore` class — parses ATFX, builds model, loads instances |
+| `atfx/_server.py` | `AtfxServer` HTTP server — read-only ASAM ODS HTTP API |
+| `atfx/_session.py` | `AtfxSession` — in-process requests adapter (no TCP) |
+| `atfx/_base_model.py` | Loads `ODSBaseModel_asam37.protobuf.json` into `ods.BaseModel` |
+| `atfx/_model_builder.py` | Builds `ods.Model` from `<application_model>` XML |
+| `atfx/_instance_parser.py` | Parses `<instance_data>` (inline + external references) |
+| `atfx/_binary_reader.py` | Reads external `.dat` binary files via numpy |
+| `atfx/_db.py` | SQLite schema creation + instance loading |
+| `atfx/_data_read.py` | Translates `ods.SelectStatement` → SQL → `ods.DataMatrices` |
+| `atfx/_xml_utils.py` | Namespace-aware XML element lookup helpers |
+| `atfx/_naming.py` | ODS name → SQLite identifier conversion utilities |
 
 ## Public API
 
 ```python
-from asamatfx import AtfxStore, AtfxServer, CONTEXT_VAR_ATFX_FILE
+from asamatfx.atfx import AtfxStore, AtfxServer, AtfxSession, CONTEXT_VAR_ATFX_FILE
 ```
 
 ### AtfxStore (embedded usage)

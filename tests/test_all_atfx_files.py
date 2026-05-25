@@ -48,6 +48,7 @@ def _attr_by_base(entity: ods.ApplicationElement, base_name: str) -> str | None:
 # Parametrized: open + model
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
 def test_open_and_model_not_empty(atfx_file: Path) -> None:
     """Every ATFX file must open and return a model with at least one entity."""
@@ -63,14 +64,13 @@ def test_entities_have_attributes(atfx_file: Path) -> None:
         model = store.model()
         for ename, entity in model.entities.items():
             assert entity.aid > 0, f"{atfx_file.name}/{ename}: aid must be positive"
-            assert len(entity.attributes) > 0, (
-                f"{atfx_file.name}/{ename}: entity has no attributes"
-            )
+            assert len(entity.attributes) > 0, f"{atfx_file.name}/{ename}: entity has no attributes"
 
 
 # ---------------------------------------------------------------------------
 # Parametrized: wildcard query per entity
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
 def test_wildcard_query_all_entities(atfx_file: Path) -> None:
@@ -84,12 +84,9 @@ def test_wildcard_query_all_entities(atfx_file: Path) -> None:
             stmt = ods.SelectStatement()
             stmt.columns.add(aid=entity.aid, attribute="*")
             result = store.data_read(stmt)
-            assert result is not None, (
-                f"{atfx_file.name}/{ename}: data_read returned None"
-            )
+            assert result is not None, f"{atfx_file.name}/{ename}: data_read returned None"
             assert len(result.matrices) in (0, 1), (
-                f"{atfx_file.name}/{ename}: expected 0 or 1 matrices, "
-                f"got {len(result.matrices)}"
+                f"{atfx_file.name}/{ename}: expected 0 or 1 matrices, got {len(result.matrices)}"
             )
             if result.matrices:
                 assert result.matrices[0].aid == entity.aid
@@ -98,6 +95,7 @@ def test_wildcard_query_all_entities(atfx_file: Path) -> None:
 # ---------------------------------------------------------------------------
 # Parametrized: Id + Name query per entity
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
 def test_id_and_name_query(atfx_file: Path) -> None:
@@ -126,14 +124,13 @@ def test_id_and_name_query(atfx_file: Path) -> None:
             name_col = next(c for c in matrix.columns if c.name == "Name")
             id_count = len(id_col.longlong_array.values)
             name_count = len(name_col.string_array.values)
-            assert id_count == name_count, (
-                f"{atfx_file.name}/{ename}: Id rows ({id_count}) != Name rows ({name_count})"
-            )
+            assert id_count == name_count, f"{atfx_file.name}/{ename}: Id rows ({id_count}) != Name rows ({name_count})"
 
 
 # ---------------------------------------------------------------------------
 # Parametrized: local column values
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
 def test_localcolumn_values_accessible(atfx_file: Path) -> None:
@@ -199,14 +196,13 @@ def test_localcolumn_values_row_count_consistent(atfx_file: Path) -> None:
 
         id_count = len(id_col.longlong_array.values)
         val_count = len(val_col.unknown_arrays.values)
-        assert id_count == val_count, (
-            f"{atfx_file.name}: id rows ({id_count}) != values rows ({val_count})"
-        )
+        assert id_count == val_count, f"{atfx_file.name}: id rows ({id_count}) != values rows ({val_count})"
 
 
 # ---------------------------------------------------------------------------
 # Parametrized: COUNT aggregate
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
 def test_count_aggregate_per_entity(atfx_file: Path) -> None:
@@ -230,9 +226,6 @@ def test_count_aggregate_per_entity(atfx_file: Path) -> None:
             assert len(matrix.columns) == 1
             count_col = matrix.columns[0]
             assert len(count_col.longlong_array.values) == 1, (
-                f"{atfx_file.name}/{ename}: COUNT returned "
-                f"{len(count_col.longlong_array.values)} rows"
+                f"{atfx_file.name}/{ename}: COUNT returned {len(count_col.longlong_array.values)} rows"
             )
-            assert count_col.longlong_array.values[0] >= 0, (
-                f"{atfx_file.name}/{ename}: COUNT is negative"
-            )
+            assert count_col.longlong_array.values[0] >= 0, f"{atfx_file.name}/{ename}: COUNT is negative"

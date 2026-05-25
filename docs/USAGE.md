@@ -55,7 +55,7 @@ direct Python access to the ODS API.
 ### Loading a file
 
 ```python
-from asamatfx import AtfxStore
+from asamatfx.atfx import AtfxStore
 
 # Context manager (recommended)
 with AtfxStore("measurement.atfx") as store:
@@ -90,7 +90,7 @@ Data is queried using `ods.SelectStatement`, mirroring the ASAM ODS HTTP
 
 ```python
 import odsbox.proto.ods_pb2 as ods
-from asamatfx import AtfxStore
+from asamatfx.atfx import AtfxStore
 
 with AtfxStore("measurement.atfx") as store:
     model = store.model()
@@ -175,7 +175,7 @@ independently loads the requested ATFX file.
 ### Starting the server
 
 ```python
-from asamatfx import AtfxServer
+from asamatfx.atfx import AtfxServer
 
 # Context manager — starts on entry, stops on exit
 with AtfxServer(host="127.0.0.1", port=8080) as server:
@@ -208,7 +208,7 @@ Send a `POST /ods` with `ods.ContextVariables` containing the `ATFX_FILE` key:
 ```python
 import requests
 import odsbox.proto.ods_pb2 as ods
-from asamatfx import CONTEXT_VAR_ATFX_FILE
+from asamatfx.atfx import CONTEXT_VAR_ATFX_FILE
 
 ctx = ods.ContextVariables()
 ctx.variables[CONTEXT_VAR_ATFX_FILE].string_array.values.append("/path/to/file.atfx")
@@ -243,7 +243,7 @@ file when you do not need a real network endpoint.
 
 ```python
 from odsbox.con_i import ConI
-from asamatfx import AtfxSession
+from asamatfx.atfx import AtfxSession
 
 with AtfxSession(default_file="path/to/file.atfx") as session:
     with ConI(
@@ -263,7 +263,7 @@ making it easy to switch between in-process and HTTP access:
 
 ```python
 from odsbox.con_i import ConI
-from asamatfx import AtfxSession, CONTEXT_VAR_ATFX_FILE
+from asamatfx.atfx import AtfxSession, CONTEXT_VAR_ATFX_FILE
 
 with AtfxSession() as session:
     with ConI(
@@ -301,17 +301,17 @@ with ConI(url=url, auth=None, custom_session=custom_session) as con:
 Start the HTTP server from the command line:
 
 ```bash
-uv run asamatfx serve --file path/to/file.atfx
+uv run asamatfx atfx serve --file path/to/file.atfx
 ```
 
 ### Options
 
 ```
-usage: asamatfx serve [-h] --file PATH [--host HOST] [--port PORT]
-                      [--loglevel {verbose,default,quiet}]
+usage: asamatfx atfx serve [-h] [--file PATH] [--host HOST] [--port PORT]
+                           [--loglevel {verbose,default,quiet}]
 
 options:
-  --file PATH, -f PATH   Path to the .atfx file to serve  (required)
+  --file PATH, -f PATH   Path to the .atfx file to serve  (optional; client can provide via context variables)
   --host HOST            Bind address  (default: 127.0.0.1)
   --port PORT, -p PORT   TCP port      (default: 8080)
   --loglevel, -l         Log verbosity: verbose (DEBUG), default (INFO),
@@ -322,13 +322,13 @@ options:
 
 ```bash
 # Loopback, default port
-uv run asamatfx serve --file data/Example_Simple.atfx
+uv run asamatfx atfx serve --file data/Example_Simple.atfx
 
 # All interfaces, custom port
-uv run asamatfx serve --file data/Example_Simple.atfx --host 0.0.0.0 --port 9090
+uv run asamatfx atfx serve --file data/Example_Simple.atfx --host 0.0.0.0 --port 9090
 
 # Verbose logging for debugging
-uv run asamatfx serve --file data/Example_Simple.atfx --loglevel verbose
+uv run asamatfx atfx serve --file data/Example_Simple.atfx --loglevel verbose
 ```
 
 The server prints its URL on startup:
@@ -348,7 +348,7 @@ using the same API as any other ASAM ODS server:
 
 ```python
 from odsbox.con_i import ConI
-from asamatfx import CONTEXT_VAR_ATFX_FILE
+from asamatfx.atfx import CONTEXT_VAR_ATFX_FILE
 
 with ConI(
     url="http://127.0.0.1:8080",
