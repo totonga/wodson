@@ -70,15 +70,15 @@ def parse_instances(root: ET.Element, model: ods.Model) -> dict[str, list[dict[s
         _log.debug("No <instance_data> element found")
         return {}
 
-    # Build lookup: entity_name -> {attr_name -> (base_name, data_type), ...}
-    entity_attrs: dict[str, dict[str, tuple[str, int]]] = {}
+    # Build lookup: entity_name -> {attr_name -> (base_name, data_type, enumeration), ...}
+    entity_attrs: dict[str, dict[str, tuple[str, int, str]]] = {}
     entity_rels: dict[str, set[str]] = {}
     for ename in model.entities:
         entity = model.entities[ename]
-        attrs: dict[str, tuple[str, int]] = {}
+        attrs: dict[str, tuple[str, int, str]] = {}
         for aname in entity.attributes:
             a = entity.attributes[aname]
-            attrs[aname] = (a.base_name, a.data_type)
+            attrs[aname] = (a.base_name, a.data_type, a.enumeration)
         entity_attrs[ename] = attrs
         rels: set[str] = set()
         for rname in entity.relations:
@@ -107,12 +107,12 @@ def parse_instances(root: ET.Element, model: ods.Model) -> dict[str, list[dict[s
                 child_tag = child_tag.split("}", 1)[1]
 
             if child_tag in attrs_map:
-                base_name, dt = attrs_map[child_tag]
-                instance[child_tag] = _parse_attribute_value(child, dt, base_name)
+                base_name, dt, enum_name = attrs_map[child_tag]
+                instance[child_tag] = _parse_attribute_value(child, dt, base_name, model.enumerations, enum_name)
             elif child_tag.lower() in attrs_map_lower:
                 key = attrs_map_lower[child_tag.lower()]
-                base_name, dt = attrs_map[key]
-                instance[key] = _parse_attribute_value(child, dt, base_name)
+                base_name, dt, enum_name = attrs_map[key]
+                instance[key] = _parse_attribute_value(child, dt, base_name, model.enumerations, enum_name)
             elif child_tag in rels_set:
                 # Relation value: space-separated IDs
                 text = (child.text or "").strip()
@@ -134,7 +134,13 @@ def _parse_external_reference_str(ref_el: ET.Element) -> str:
     return f"{description}|{mimetype}|{location}"
 
 
-def _parse_attribute_value(el: ET.Element, data_type: int, base_name: str) -> Any:
+def _parse_attribute_value(
+    el: ET.Element,
+    data_type: int,
+    base_name: str,
+    enumerations: Any,
+    enumeration_name: str,
+) -> Any:
     """Parse a single attribute element's value based on its ODS data type."""
     # Check for <Values> child containing bulk data or component ref
     values_el = _find(el, "Values")
@@ -154,17 +160,23 @@ def _parse_attribute_value(el: ET.Element, data_type: int, base_name: str) -> An
             elif data_type == ods.DataTypeEnum.DS_ENUM:
                 s_els = _findall(el, "s")
                 if s_els:
-                    return [(s.text or "").strip() for s in s_els]
+                    # Each <s> contains a single enum value (not space-separated)
+                    return [_convert_enum_to_int((s.text or "").strip(), enumerations, enumeration_name) for s in s_els]
             # Generic inline Values
-            return _parse_values_content(el, data_type)
+            return _parse_values_content(el, data_type, enumerations, enumeration_name)
         # Plain text scalar
         text = (el.text or "").strip()
-        return _parse_scalar(text, data_type)
+        return _parse_scalar(text, data_type, enumerations, enumeration_name)
 
-    return _parse_values_content(values_el, data_type)
+    return _parse_values_content(values_el, data_type, enumerations, enumeration_name)
 
 
-def _parse_values_content(values_el: ET.Element, data_type: int) -> Any:
+def _parse_values_content(
+    values_el: ET.Element,
+    data_type: int,
+    enumerations: Any,
+    enumeration_name: str,
+) -> Any:
     """Parse the content of a <Values> element (inline data or component ref)."""
     # Check for <component> child (external binary reference)
     comp_el = _find(values_el, "component")
@@ -191,14 +203,19 @@ def _parse_values_content(values_el: ET.Element, data_type: int) -> Any:
             return TypedValues(xml_dt, _parse_boolean_list(child.text))
         elif child_tag in ("A_FLOAT32", "A_FLOAT64", "A_COMPLEX32", "A_COMPLEX64"):
             return TypedValues(xml_dt, _parse_float_list(child.text))
+        elif child_tag == "A_ENUM":
+            # A_ENUM: convert enum names to integers
+            text_list = _parse_numeric_list(child.text, str)
+            int_list = [_convert_enum_to_int(val, enumerations, enumeration_name) for val in text_list]
+            return TypedValues(xml_dt, int_list)
         else:
-            # A_INT*, A_UINT*, A_ENUM
+            # A_INT*, A_UINT*
             return TypedValues(xml_dt, _parse_numeric_list(child.text, int))
 
     # Fallback: try text directly
     text = (values_el.text or "").strip()
     if text:
-        return text
+        return _parse_scalar(text, data_type, enumerations, enumeration_name)
     return None
 
 
@@ -231,7 +248,47 @@ def _parse_component_ref(comp_el: ET.Element) -> ExternalComponentRef:
     return ref
 
 
-def _parse_scalar(text: str, data_type: int) -> Any:
+def _convert_enum_to_int(
+    text: str,
+    enumerations: Any,
+    enumeration_name: str,
+) -> int:
+    """Convert an enum name string to its integer value.
+
+    If the enumeration is not found or the value is not in it,
+    logs a warning and returns the first enumeration value (or 0).
+    """
+    # If already an integer, return as-is
+    try:
+        return int(text)
+    except ValueError:
+        pass
+
+    # Look up in enumeration
+    if enumeration_name and enumeration_name in enumerations:
+        enum = enumerations[enumeration_name]
+        if text in enum.items:
+            return int(enum.items[text])
+        else:
+            # Value not found - warn and use first entry
+            first_value = next(iter(enum.items.values())) if enum.items else 0
+            _log.warning(
+                f"Enum value '{text}' not found in enumeration '{enumeration_name}', "
+                f"using first entry (value={first_value})"
+            )
+            return int(first_value)
+    else:
+        # Enumeration not found - warn and use 0
+        _log.warning(f"Enumeration '{enumeration_name}' not found for enum value '{text}', using 0")
+        return 0
+
+
+def _parse_scalar(
+    text: str,
+    data_type: int,
+    enumerations: Any,
+    enumeration_name: str,
+) -> Any:
     """Parse a scalar (or inline sequence) text value by ODS data type."""
     if not text:
         return None
@@ -250,8 +307,9 @@ def _parse_scalar(text: str, data_type: int) -> Any:
     ):
         return _parse_numeric_list(text, int)
     elif dt == ods.DataTypeEnum.DS_ENUM:
-        # Inline text: space-separated integer ordinals (string names handled via child elements)
-        return _parse_numeric_list(text, int)
+        # DS_ENUM: space-separated enum names or integers - convert each to int
+        parts = text.split()
+        return [_convert_enum_to_int(p, enumerations, enumeration_name) for p in parts]
     elif dt == ods.DataTypeEnum.DS_BOOLEAN:
         return _parse_boolean_list(text)
     elif dt in (
@@ -275,11 +333,8 @@ def _parse_scalar(text: str, data_type: int) -> Any:
     elif dt in (ods.DataTypeEnum.DT_COMPLEX, ods.DataTypeEnum.DT_DCOMPLEX):
         return _parse_float_list(text)
     elif dt == ods.DataTypeEnum.DT_ENUM:
-        # Could be string enum name or int
-        try:
-            return int(text)
-        except ValueError:
-            return text
+        # DT_ENUM: convert enum name to integer
+        return _convert_enum_to_int(text, enumerations, enumeration_name)
     else:
         # DT_STRING, DT_DATE, DT_EXTERNALREFERENCE, etc.
         return text
@@ -418,9 +473,19 @@ def resolve_external_component_refs(
 
     # Build {base_name -> app_attr_name} for ec entity attributes
     ec_base_to_app: dict[str, str] = {}
+    typespec_enum_name: str = ""
     for aname, attr in ec_entity.attributes.items():
         if attr.base_name:
             ec_base_to_app[attr.base_name] = aname
+        if attr.base_name == "value_type" and attr.enumeration:
+            typespec_enum_name = attr.enumeration
+
+    # Build reverse mapping: typespec enum integer value -> string name
+    # (value_type is parsed as DT_ENUM integer but _TYPESPEC_MAP uses string keys)
+    typespec_int_to_str: dict[int, str] = {}
+    if typespec_enum_name and typespec_enum_name in model.enumerations:
+        for item_name, item_val in model.enumerations[typespec_enum_name].items.items():
+            typespec_int_to_str[int(item_val)] = item_name
 
     # Build {base_name -> app_rel_name} for ec entity relations (for ao_values_file fallback)
     ec_base_to_rel: dict[str, str] = {}
@@ -495,7 +560,11 @@ def resolve_external_component_refs(
 
         ref = ExternalComponentRef()
         ref.identifier = str(_ec_val(found_ec, "filename_url") or "")
-        ref.datatype = str(_ec_val(found_ec, "value_type") or "")
+        raw_value_type = _ec_val(found_ec, "value_type")
+        if raw_value_type is not None and typespec_int_to_str:
+            ref.datatype = typespec_int_to_str.get(int(raw_value_type), str(raw_value_type))
+        else:
+            ref.datatype = str(raw_value_type or "")
         ref.length = int(_ec_val(found_ec, "component_length") or 0)
         ref.inioffset = int(_ec_val(found_ec, "start_offset") or 0)
         ref.blocksize = int(_ec_val(found_ec, "block_size") or 0)

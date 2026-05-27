@@ -55,6 +55,7 @@ def _sqlite_type(data_type: int) -> str:
         ods.DataTypeEnum.DT_SHORT,
         ods.DataTypeEnum.DT_LONG,
         ods.DataTypeEnum.DT_LONGLONG,
+        ods.DataTypeEnum.DT_ENUM,
     ):
         return "INTEGER"
     elif data_type in (ods.DataTypeEnum.DT_FLOAT, ods.DataTypeEnum.DT_DOUBLE):
@@ -63,7 +64,6 @@ def _sqlite_type(data_type: int) -> str:
         ods.DataTypeEnum.DT_STRING,
         ods.DataTypeEnum.DT_DATE,
         ods.DataTypeEnum.DT_EXTERNALREFERENCE,
-        ods.DataTypeEnum.DT_ENUM,
     ):
         return "TEXT"
     elif data_type in _SEQUENCE_TYPES or data_type in _BLOB_TYPES:

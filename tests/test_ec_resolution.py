@@ -283,12 +283,14 @@ def test_lc_values_and_gp_per_seq_rep(atfx_path: Path) -> None:
         gp_col = next((c for c in matrix.columns if c.name == gp_attr), None) if gp_attr else None
 
         ids = list(id_col.longlong_array.values)
-        srs = list(sr_col.string_array.values) if sr_col is not None else []
+        # sequence_representation is DT_ENUM; values are integer ordinals in long_array.
+        # seq_rep_enum: implicit_constant=1, implicit_linear=2
+        srs = list(sr_col.long_array.values) if sr_col is not None else []
 
-        _GENERATED = {"implicit_linear", "implicit_constant"}
+        _GENERATED = {1, 2}  # implicit_constant, implicit_linear
 
         for i, lc_id in enumerate(ids):
-            sr = srs[i] if i < len(srs) else ""
+            sr = srs[i] if i < len(srs) else -1
             val_ua = val_col.unknown_arrays.values[i]
             has_values = (
                 len(val_ua.double_array.values) > 0

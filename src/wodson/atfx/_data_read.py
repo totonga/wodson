@@ -54,16 +54,19 @@ _DS_BYTE = _DT.DS_BYTE
 _DS_BYTESTR = _DT.DS_BYTESTR
 
 # Grouped type sets for fast membership tests (frozenset.__contains__ is O(1))
-_DT_STR_TYPES: frozenset[int] = frozenset({_DT_STRING, _DT_DATE, _DT_EXTERNALREFERENCE, _DT_ENUM})
-_DT_INT_TYPES: frozenset[int] = frozenset({_DT_SHORT, _DT_LONG})
+_DT_STR_TYPES: frozenset[int] = frozenset({_DT_STRING, _DT_DATE, _DT_EXTERNALREFERENCE})
+_DT_INT_TYPES: frozenset[int] = frozenset({_DT_SHORT, _DT_LONG, _DT_ENUM})
 _DT_FLOAT_TYPES: frozenset[int] = frozenset({_DT_FLOAT, _DT_COMPLEX})
 _DT_DOUBLE_TYPES: frozenset[int] = frozenset({_DT_DOUBLE, _DT_DCOMPLEX})
 _DT_BYTES_TYPES: frozenset[int] = frozenset({_DT_BYTESTR, _DT_BLOB})
 _DT_COMPLEX_TYPES: frozenset[int] = frozenset({_DT_COMPLEX, _DT_DCOMPLEX})
+
+# Complex data types (each logical value is stored as 2 consecutive floats: real, imag)
+_COMPLEX_TYPES: frozenset[int] = frozenset({_DT_COMPLEX, _DT_DCOMPLEX, _DS_COMPLEX, _DS_DCOMPLEX})
 _DS_FLOAT_TYPES: frozenset[int] = frozenset({_DS_FLOAT, _DS_COMPLEX})
 _DS_DOUBLE_TYPES: frozenset[int] = frozenset({_DS_DOUBLE, _DS_DCOMPLEX})
-_DS_INT_TYPES: frozenset[int] = frozenset({_DS_LONG, _DS_SHORT})
-_DS_STR_TYPES: frozenset[int] = frozenset({_DS_STRING, _DS_DATE, _DS_EXTERNALREFERENCE, _DS_ENUM})
+_DS_INT_TYPES: frozenset[int] = frozenset({_DS_LONG, _DS_SHORT, _DS_ENUM})
+_DS_STR_TYPES: frozenset[int] = frozenset({_DS_STRING, _DS_DATE, _DS_EXTERNALREFERENCE})
 _DS_BYTE_TYPES: frozenset[int] = frozenset({_DS_BYTE, _DS_BYTESTR})
 
 _AG_NONE = ods.AggregateEnum.AG_NONE
@@ -484,12 +487,16 @@ def _fill_column(
                     actual_dt = None
                     seq_data = raw
                 # Apply values_start/values_limit
+                # Complex types store 2 floats per logical value (real, imag),
+                # so the start/limit in logical values must be scaled by 2.
+                effective_dt = actual_dt if actual_dt is not None else data_type
+                stride = 2 if effective_dt in _COMPLEX_TYPES else 1
                 vs = select_statement.values_start
                 vl = select_statement.values_limit
                 if vs > 0:
-                    seq_data = seq_data[vs:]
+                    seq_data = seq_data[vs * stride :]
                 if vl > 0:
-                    seq_data = seq_data[:vl]
+                    seq_data = seq_data[: vl * stride]
                 _fill_sequence_column(column, seq_data, data_type, actual_dt)
         return
 
@@ -525,7 +532,10 @@ def _fill_unknown_array_values(ua: Any, seq_data: list[Any], data_type: int) -> 
         ua.double_array.values.extend([_to_float(v) for v in seq_data])
     elif data_type in _DT_STR_TYPES:
         ua.data_type = data_type
-        ua.string_array.values.extend([str(v) for v in seq_data])
+        if data_type == _DT_DATE:
+            ua.string_array.values.extend([_normalize_asam_time(str(v)) for v in seq_data])
+        else:
+            ua.string_array.values.extend([str(v) for v in seq_data])
     elif data_type == _DT_BYTESTR:
         ua.data_type = data_type
         ua.bytestr_array.values.extend([v if isinstance(v, bytes) else bytes(v) for v in seq_data])
@@ -552,6 +562,18 @@ def _to_float(val: Any) -> float:
     return float(val)
 
 
+def _normalize_asam_time(value: str) -> str:
+    """Ensure an ASAM ODS time string has at least 8 characters (YYYYMMDD).
+
+    Short values like ``'2010'`` (year only) or ``'201003'`` (year+month) are
+    padded with ``'01'`` segments so that downstream consumers (e.g. odsbox)
+    always receive a valid date string.
+    """
+    if len(value) < 8:
+        return (value + "01010000000000000000")[:8]
+    return value
+
+
 def _fill_sequence_column(column: Any, seq_data: list[Any], data_type: int, actual_dt: int | None = None) -> None:
     """Fill column with a sequence of values as a sub-array."""
     if data_type in _DS_FLOAT_TYPES:
@@ -568,7 +590,10 @@ def _fill_sequence_column(column: Any, seq_data: list[Any], data_type: int, actu
         arr.values.extend([int(v) for v in seq_data])
     elif data_type in _DS_STR_TYPES:
         arr = column.string_arrays.values.add()
-        arr.values.extend([str(v) for v in seq_data])
+        if data_type == _DS_DATE:
+            arr.values.extend([_normalize_asam_time(str(v)) for v in seq_data])
+        else:
+            arr.values.extend([str(v) for v in seq_data])
     elif data_type == _DS_BOOLEAN:
         arr = column.boolean_arrays.values.add()
         arr.values.extend([bool(v) for v in seq_data])
@@ -592,7 +617,10 @@ def _fill_sequence_column(column: Any, seq_data: list[Any], data_type: int, actu
 def _append_value(column: Any, val: Any, data_type: int) -> None:
     """Append a single scalar value to the appropriate column array."""
     if data_type in _DT_STR_TYPES:
-        column.string_array.values.append(str(val))
+        s = str(val)
+        if data_type == _DT_DATE:
+            s = _normalize_asam_time(s)
+        column.string_array.values.append(s)
     elif data_type in _DT_INT_TYPES:
         column.long_array.values.append(int(val))
     elif data_type == _DT_LONGLONG:

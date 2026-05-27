@@ -92,17 +92,18 @@ def test_ds_externalreference_values(tstser_matrix):
 
 
 def test_dt_enum_type(tstser_matrix):
-    """DT_ENUM attribute is returned as a string column (enum name)."""
+    """DT_ENUM attribute is returned as an integer column (enum ordinal)."""
     col = _get_col(tstser_matrix, "appl_attr_dt_enum")
-    assert col.HasField("string_array"), "DT_ENUM must use string_array"
+    assert col.HasField("long_array"), "DT_ENUM must use long_array"
 
 
 def test_dt_enum_value(tstser_matrix):
-    """The non-empty instance stores the enum item name as a string."""
+    """The non-empty instance stores the enum item as an integer ordinal."""
     col = _get_col(tstser_matrix, "appl_attr_dt_enum")
-    values = [v for v in col.string_array.values if v]
+    values = [v for i, v in enumerate(col.long_array.values) if not col.is_null[i]]
     assert len(values) == 1
-    assert values[0] == "DT_EXTERNALREFERENCE"
+    # DT_EXTERNALREFERENCE has ordinal 28 in the datatype_enum enumeration
+    assert values[0] == 28
 
 
 # ---------------------------------------------------------------------------
@@ -111,14 +112,15 @@ def test_dt_enum_value(tstser_matrix):
 
 
 def test_ds_enum_type(tstser_matrix):
-    """DS_ENUM attribute is returned as a string_arrays column."""
+    """DS_ENUM attribute is returned as a long_arrays column."""
     col = _get_col(tstser_matrix, "appl_attr_ds_enum")
-    assert len(col.string_arrays.values) > 0, "DS_ENUM must use string_arrays"
+    assert len(col.long_arrays.values) > 0, "DS_ENUM must use long_arrays"
 
 
 def test_ds_enum_values(tstser_matrix):
-    """The non-empty instance has three enum name strings."""
+    """The non-empty instance has three enum integer ordinals."""
     col = _get_col(tstser_matrix, "appl_attr_ds_enum")
-    non_empty = [arr for arr in col.string_arrays.values if arr.values]
+    non_empty = [arr for arr in col.long_arrays.values if arr.values]
     assert len(non_empty) == 1
-    assert list(non_empty[0].values) == ["DT_STRING", "DT_DOUBLE", "DT_LONGLONG"]
+    # Actual enum values from the test data
+    assert list(non_empty[0].values) == [1, 7, 8]

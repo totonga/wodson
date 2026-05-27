@@ -268,35 +268,37 @@ class TestParseComponentRef:
 
 class TestParseScalar:
     def test_int_types(self):
-        assert _parse_scalar("42", ods.DataTypeEnum.DT_LONG) == 42
-        assert _parse_scalar("99", ods.DataTypeEnum.DT_LONGLONG) == 99
+        assert _parse_scalar("42", ods.DataTypeEnum.DT_LONG, {}, "") == 42
+        assert _parse_scalar("99", ods.DataTypeEnum.DT_LONGLONG, {}, "") == 99
 
     def test_float_types(self):
-        assert _parse_scalar("3.14", ods.DataTypeEnum.DT_FLOAT) == pytest.approx(3.14)
-        assert _parse_scalar("2.71", ods.DataTypeEnum.DT_DOUBLE) == pytest.approx(2.71)
+        assert _parse_scalar("3.14", ods.DataTypeEnum.DT_FLOAT, {}, "") == pytest.approx(3.14)
+        assert _parse_scalar("2.71", ods.DataTypeEnum.DT_DOUBLE, {}, "") == pytest.approx(2.71)
 
     def test_boolean(self):
-        assert _parse_scalar("true", ods.DataTypeEnum.DT_BOOLEAN) is True
-        assert _parse_scalar("false", ods.DataTypeEnum.DT_BOOLEAN) is False
+        assert _parse_scalar("true", ods.DataTypeEnum.DT_BOOLEAN, {}, "") is True
+        assert _parse_scalar("false", ods.DataTypeEnum.DT_BOOLEAN, {}, "") is False
 
     def test_string(self):
-        assert _parse_scalar("hello", ods.DataTypeEnum.DT_STRING) == "hello"
+        assert _parse_scalar("hello", ods.DataTypeEnum.DT_STRING, {}, "") == "hello"
 
     def test_empty_returns_none(self):
-        assert _parse_scalar("", ods.DataTypeEnum.DT_STRING) is None
+        assert _parse_scalar("", ods.DataTypeEnum.DT_STRING, {}, "") is None
 
     def test_enum_int(self):
-        assert _parse_scalar("5", ods.DataTypeEnum.DT_ENUM) == 5
+        # Integer string converts to int directly
+        assert _parse_scalar("5", ods.DataTypeEnum.DT_ENUM, {}, "") == 5
 
     def test_enum_string_fallback(self):
-        assert _parse_scalar("enumval", ods.DataTypeEnum.DT_ENUM) == "enumval"
+        # Enum name without enumeration logs warning and uses 0
+        assert _parse_scalar("enumval", ods.DataTypeEnum.DT_ENUM, {}, "") == 0
 
 
 class TestParseValuesContent:
     def test_inline_float_values(self):
         xml_str = "<Values><A_FLOAT32>1.0 2.0 3.0</A_FLOAT32></Values>"
         el = ET.fromstring(xml_str)
-        result = _parse_values_content(el, ods.DataTypeEnum.DT_UNKNOWN)
+        result = _parse_values_content(el, ods.DataTypeEnum.DT_UNKNOWN, {}, "")
         assert isinstance(result, TypedValues)
         assert result.data_type == ods.DataTypeEnum.DT_FLOAT
         assert result.values == [1.0, 2.0, 3.0]
@@ -304,7 +306,7 @@ class TestParseValuesContent:
     def test_inline_int_values(self):
         xml_str = "<Values><A_INT32>10 20 30</A_INT32></Values>"
         el = ET.fromstring(xml_str)
-        result = _parse_values_content(el, ods.DataTypeEnum.DT_UNKNOWN)
+        result = _parse_values_content(el, ods.DataTypeEnum.DT_UNKNOWN, {}, "")
         assert isinstance(result, TypedValues)
         assert result.data_type == ods.DataTypeEnum.DT_LONG
         assert result.values == [10, 20, 30]
@@ -312,6 +314,6 @@ class TestParseValuesContent:
     def test_component_ref(self):
         xml_str = "<Values><component><identifier>f.dat</identifier></component></Values>"
         el = ET.fromstring(xml_str)
-        result = _parse_values_content(el, ods.DataTypeEnum.DT_UNKNOWN)
+        result = _parse_values_content(el, ods.DataTypeEnum.DT_UNKNOWN, {}, "")
         assert isinstance(result, ExternalComponentRef)
         assert result.identifier == "f.dat"
