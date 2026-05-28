@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.2.0 (2026-05-28)
+
+### Features
+
+- Add fallback for relation range from base model in build_model
+  ([`c32017e`](https://github.com/totonga/wodson/commit/c32017ebc834d3fcc574a9d90767ac137eed8f49))
+
+
 ## v1.1.1 (2026-05-28)
 
 ### Bug Fixes
