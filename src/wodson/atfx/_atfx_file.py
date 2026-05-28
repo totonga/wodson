@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from odsbox.con_i import ConI
 
@@ -158,11 +158,12 @@ class AtfxFile:
 
     def query(
         self,
-        query: Any,
-        enum_as_string: bool = False,
-        date_as_timestamp: bool = False,
-        is_null_to_nan: bool = False,
-        result_naming_mode: str = "model",
+        query: str | dict[str, Any],
+        *,
+        enum_as_string: bool = True,
+        date_as_timestamp: bool = True,
+        is_null_to_nan: bool = True,
+        mode: Literal["model", "query"] = "model",
         **kwargs: Any,
     ) -> pd.DataFrame:
         """Execute a JAQueL query and return results as a pandas DataFrame.
@@ -175,7 +176,7 @@ class AtfxFile:
         :param enum_as_string: Return enumeration values as strings instead of integers.
         :param date_as_timestamp: Return dates as timestamps instead of datetime objects.
         :param is_null_to_nan: Convert NULL values to NaN in the DataFrame.
-        :param result_naming_mode: Column naming mode ('model' or 'base').
+        :param mode: Column naming mode ('model' or 'query').
         :param kwargs: Additional keyword arguments passed to query_data.
         :return: Query results as a pandas DataFrame.
 
@@ -196,12 +197,12 @@ class AtfxFile:
                     "$attributes": {"name": 1, "date_created": 1}
                 })
         """
-        return self.con_i.query_data(
-            query=query,
+        return self.con_i.query(
+            jaquel_query=query,
             enum_as_string=enum_as_string,
             date_as_timestamp=date_as_timestamp,
             is_null_to_nan=is_null_to_nan,
-            result_naming_mode=result_naming_mode,
+            result_naming_mode=mode,
             **kwargs,
         )
 
