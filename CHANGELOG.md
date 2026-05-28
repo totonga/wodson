@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.2.1 (2026-05-28)
+
+### Bug Fixes
+
+- Cache resolved "id" column names in _QueryContext for improved performance
+  ([`e017762`](https://github.com/totonga/wodson/commit/e0177621403c31d4e5e0574439fe4f9c7a3a7681))
+
+
 ## v1.2.0 (2026-05-28)
 
 ### Features
