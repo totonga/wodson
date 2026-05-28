@@ -6,7 +6,8 @@ import odsbox.proto.ods_pb2 as ods
 import pytest
 
 from wodson.atfx import AtfxStore
-from wodson.atfx._model_builder import detect_ods_version
+from wodson.atfx._base_model import load_base_model
+from wodson.atfx._model_builder import build_model, detect_ods_version
 from wodson.atfx._xml_utils import _extract_ns
 
 pytestmark = pytest.mark.devtest
@@ -123,6 +124,37 @@ def test_localcolumn_values_attribute(simple_store):
     model = simple_store.model()
     lc = model.entities["Localcolumn"]
     assert "Values" in lc.attributes
+
+
+def test_relation_range_fallback_from_base_model():
+    """range_min/range_max should be taken from the base model when XML omits min_occurs/max_occurs."""
+    # AoMeasurement.test has rangeMin=1, rangeMax=1 in the base model
+    xml_str = (
+        '<atfx_file xmlns="http://www.asam.net/ODS/5.3.0/Schema">'
+        "<application_model>"
+        "<application_element>"
+        "<name>Mea</name>"
+        "<basetype>AoMeasurement</basetype>"
+        "<relation_attribute>"
+        "<name>Tst</name>"
+        "<ref_to>Tst</ref_to>"
+        "<base_relation>test</base_relation>"
+        "<inverse_name>Measurements</inverse_name>"
+        "</relation_attribute>"
+        "</application_element>"
+        "<application_element>"
+        "<name>Tst</name>"
+        "<basetype>AoTest</basetype>"
+        "</application_element>"
+        "</application_model>"
+        "</atfx_file>"
+    )
+    root = ET.fromstring(xml_str)
+    base_model = load_base_model()
+    model = build_model(root, base_model)
+    rel = model.entities["Mea"].relations["Tst"]
+    assert rel.range_min == 1
+    assert rel.range_max == 1
 
 
 # ---- Unit tests for helpers ----

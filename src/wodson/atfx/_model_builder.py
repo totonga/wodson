@@ -190,6 +190,12 @@ def build_model(root: ET.Element, base_model: ods.BaseModel) -> ods.Model:
                 # inverse base name
                 rel.inverse_base_name = bm_rel.inverse_name
 
+                # range from base model if not defined in XML
+                if not min_occurs_str:
+                    rel.range_min = bm_rel.range_min
+                if not max_occurs_str:
+                    rel.range_max = bm_rel.range_max
+
                 # inverse range
                 rel.inverse_range_min = bm_rel.inverse_range_min
                 rel.inverse_range_max = bm_rel.inverse_range_max
