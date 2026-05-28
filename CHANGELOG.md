@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.1.1 (2026-05-28)
+
+### Bug Fixes
+
+- Return enums as int
+  ([`004c6b0`](https://github.com/totonga/wodson/commit/004c6b04b6c59e71a13c1514b6ff35d076654d42))
+
+
 ## v1.1.0 (2026-05-25)
 
 ### Bug Fixes
