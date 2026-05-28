@@ -160,6 +160,8 @@ class _QueryContext:
         # AID -> table alias (per-query, always starts empty)
         self.aid_to_alias: dict[int, str] = {}
         self.alias_counter = 0
+        # AID -> resolved "id" column name (cached to avoid repeated attribute scans)
+        self._id_col_cache: dict[int, str] = {}
 
         if aid_to_entity is not None:
             # Use pre-built map from AtfxStore to avoid re-iterating the model.
@@ -180,6 +182,25 @@ class _QueryContext:
             msg = f"Unknown AID: {aid}"
             raise ValueError(msg)
         return self.aid_to_entity[aid]
+
+    def get_id_col(self, entity: ods.Model.Entity) -> str:
+        """Return the SQLite column name for the attribute with base_name 'id' in entity.
+
+        Iterates the entity's attributes to find the one whose base_name is 'id' and
+        returns ``_col_name(aname)``.  Falls back to ``_col_name('Id')`` when no such
+        attribute is found (e.g. the entity was built without base-model supplementation).
+        Results are cached per AID so the attribute scan only happens once per entity.
+        """
+        aid = entity.aid
+        if aid in self._id_col_cache:
+            return self._id_col_cache[aid]
+        result = _col_name("Id")  # fallback
+        for aname, attr in entity.attributes.items():
+            if attr.base_name == "id":
+                result = _col_name(aname)
+                break
+        self._id_col_cache[aid] = result
+        return result
 
     def resolve_attribute(self, entity: ods.Model.Entity, attr_name: str) -> tuple[str, int]:
         """Resolve an attribute or relation name (case-insensitive) and return (resolved_name, data_type)."""
@@ -270,24 +291,26 @@ def data_read(
             rel = from_entity.relations[rel_name]
             # If from_entity has a to-one relation (FATHER), from has FK column
             if rel.range_max == 1:
-                on_clause = f'"{from_alias}"."{_col_name(rel_name)}" = "{to_alias}"."{_col_name("Id")}"'
+                on_clause = f'"{from_alias}"."{_col_name(rel_name)}" = "{to_alias}"."{ctx.get_id_col(to_entity)}"'
             else:
                 # to_entity should have the inverse relation as FK
                 inv_name = rel.inverse_name
                 if inv_name:
-                    on_clause = f'"{to_alias}"."{_col_name(inv_name)}" = "{from_alias}"."{_col_name("Id")}"'
+                    on_clause = f'"{to_alias}"."{_col_name(inv_name)}" = "{from_alias}"."{ctx.get_id_col(from_entity)}"'
                 else:
-                    on_clause = f'"{to_alias}"."{_col_name(rel_name)}" = "{from_alias}"."{_col_name("Id")}"'
+                    on_clause = f'"{to_alias}"."{_col_name(rel_name)}" = "{from_alias}"."{ctx.get_id_col(from_entity)}"'
         elif rel_name in to_entity.relations:
             rel = to_entity.relations[rel_name]
             if rel.range_max == 1:
-                on_clause = f'"{to_alias}"."{_col_name(rel_name)}" = "{from_alias}"."{_col_name("Id")}"'
+                on_clause = f'"{to_alias}"."{_col_name(rel_name)}" = "{from_alias}"."{ctx.get_id_col(from_entity)}"'
             else:
-                on_clause = f'"{from_alias}"."{_col_name(rel.inverse_name)}" = "{to_alias}"."{_col_name("Id")}"'
+                on_clause = (
+                    f'"{from_alias}"."{_col_name(rel.inverse_name)}" = "{to_alias}"."{ctx.get_id_col(to_entity)}"'
+                )
 
         if not on_clause:
             # Fallback: try id-based join
-            on_clause = f'"{from_alias}"."id" = "{to_alias}"."id"'
+            on_clause = f'"{from_alias}"."{ctx.get_id_col(from_entity)}" = "{to_alias}"."{ctx.get_id_col(to_entity)}"'
 
         join_clauses.append(f'{join_type} "{to_table}" AS "{to_alias}" ON {on_clause}')
 
