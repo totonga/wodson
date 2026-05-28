@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.2.2 (2026-05-28)
+
+### Bug Fixes
+
+- Implement fix_complex_values function to correctly handle complex ODS data types
+  ([`25e5879`](https://github.com/totonga/wodson/commit/25e5879a99bbc7a8875e74f6424a05fbc6ec22f6))
+
+
 ## v1.2.1 (2026-05-28)
 
 ### Bug Fixes
