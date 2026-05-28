@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.2.3 (2026-05-28)
+
+### Bug Fixes
+
+- Query should use query
+  ([`affcc59`](https://github.com/totonga/wodson/commit/affcc59374319b17824ec73028e076cef5ecd41d))
+
+
 ## v1.2.2 (2026-05-28)
 
 ### Bug Fixes
