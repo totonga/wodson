@@ -11,7 +11,7 @@ import odsbox.proto.ods_pb2 as ods
 
 from ._base_model import load_base_model
 from ._data_read import data_read
-from ._db import create_schema, load_instances
+from ._db import create_schema, fix_complex_values, load_instances
 from ._instance_parser import parse_instances, resolve_external_component_refs
 from ._model_builder import build_model, detect_ods_version
 from ._xml_utils import _find, _findall, _text
@@ -75,6 +75,7 @@ class AtfxStore:
         self._conn = sqlite3.connect(":memory:", check_same_thread=False)
         create_schema(self._conn, self._model)
         load_instances(self._conn, self._model, instances, self._file_map)
+        fix_complex_values(self._conn, self._model)
 
         # Pre-compute AID → entity map once; reused by every data_read call.
         self._aid_to_entity: dict[int, ods.Model.Entity] = {

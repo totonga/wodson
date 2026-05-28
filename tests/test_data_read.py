@@ -481,16 +481,16 @@ def test_common_typespecs_localcolumn_values():
         assert math.isclose(f64[1], 345.678901, rel_tol=1e-6)
         assert math.isclose(f64[2], -6666666.0, rel_tol=1e-6)
 
-        # --- Complex (little-endian) — stored as interleaved float pairs (DT_FLOAT) ---
+        # --- Complex (little-endian) — fix_complex_values re-types ieeefloat4 blob to DT_COMPLEX ---
         ua_cx = ua("MyMqComplex")
-        assert ua_cx.data_type == ods.DataTypeEnum.DT_FLOAT
+        assert ua_cx.data_type == ods.DataTypeEnum.DT_COMPLEX
         cx = list(ua_cx.float_array.values)
         assert math.isclose(cx[0], 1.1, rel_tol=1e-4)  # real part of first pair
         assert math.isclose(cx[1], 0.1, rel_tol=1e-4)  # imag part of first pair
 
-        # --- Dcomplex (little-endian) — stored as interleaved double pairs (DT_DOUBLE) ---
+        # --- Dcomplex (little-endian) — fix_complex_values re-types ieeefloat8 blob to DT_DCOMPLEX ---
         ua_dcx = ua("MyMqDcomplex")
-        assert ua_dcx.data_type == ods.DataTypeEnum.DT_DOUBLE
+        assert ua_dcx.data_type == ods.DataTypeEnum.DT_DCOMPLEX
         dcx = list(ua_dcx.double_array.values)
         assert math.isclose(dcx[0], 1.11, rel_tol=1e-8)
         assert math.isclose(dcx[1], 0.11, rel_tol=1e-8)
@@ -628,6 +628,65 @@ def test_example_atfx_localcolumn_values():
         for lc_id, sr in zip(ids, srs):
             expected_sr = "external_component" if lc_id in _EXTERNAL_IDS else "explicit"
             assert sr == expected_sr, f"lc_id={lc_id}: expected sr={expected_sr!r}, got {sr!r}"
+
+
+def test_example_atfx_complex_attributes():
+    """tests/data/openatfx/example.atfx: DT_COMPLEX, DT_DCOMPLEX, DS_COMPLEX and
+    DS_DCOMPLEX application attributes on the tstser entity read back with correct
+    types and interleaved real/imaginary values.
+    """
+    atfx_path = _OPENATFX_DIR / "example.atfx"
+    with AtfxStore(atfx_path) as store:
+        model = store.model()
+        tstser = model.entities["tstser"]
+
+        stmt = ods.SelectStatement()
+        stmt.columns.add(aid=tstser.aid, attribute="appl_attr_dt_complex")
+        stmt.columns.add(aid=tstser.aid, attribute="appl_attr_dt_dcomplex")
+        stmt.columns.add(aid=tstser.aid, attribute="appl_attr_ds_complex")
+        stmt.columns.add(aid=tstser.aid, attribute="appl_attr_ds_dcomplex")
+
+        # Filter to instance 2 (Test_Vorbeifahrt) which has non-empty values.
+        cond_item = stmt.where.add()
+        cond_item.condition.aid = tstser.aid
+        cond_item.condition.attribute = "tstser_iid"
+        cond_item.condition.operator = ods.SelectStatement.ConditionItem.Condition.OperatorEnum.OP_EQ
+        cond_item.condition.longlong_array.values.append(2)
+
+        result = store.data_read(stmt)
+        assert len(result.matrices) == 1
+        m = result.matrices[0]
+
+        def col(name: str):  # type: ignore[no-untyped-def]
+            return next(c for c in m.columns if c.name == name)
+
+        # DT_COMPLEX: scalar value (5.1+10.2i) stored as 2 consecutive floats.
+        cx32 = list(col("appl_attr_dt_complex").float_array.values)
+        assert len(cx32) == 2
+        assert math.isclose(cx32[0], 5.1, rel_tol=1e-5)
+        assert math.isclose(cx32[1], 10.2, rel_tol=1e-5)
+
+        # DT_DCOMPLEX: scalar value (5.1+10.2i) stored as 2 consecutive doubles.
+        cx64 = list(col("appl_attr_dt_dcomplex").double_array.values)
+        assert len(cx64) == 2
+        assert math.isclose(cx64[0], 5.1, rel_tol=1e-10)
+        assert math.isclose(cx64[1], 10.2, rel_tol=1e-10)
+
+        # DS_COMPLEX: sequence of 2 complex pairs = 4 interleaved floats.
+        ds_cx32 = list(col("appl_attr_ds_complex").float_arrays.values[0].values)
+        assert len(ds_cx32) == 4
+        assert math.isclose(ds_cx32[0], 1.2, rel_tol=1e-5)
+        assert math.isclose(ds_cx32[1], 3.4, rel_tol=1e-5)
+        assert math.isclose(ds_cx32[2], 2.1, rel_tol=1e-5)
+        assert math.isclose(ds_cx32[3], 4.3, rel_tol=1e-5)
+
+        # DS_DCOMPLEX: sequence of 2 complex pairs = 4 interleaved doubles.
+        ds_cx64 = list(col("appl_attr_ds_dcomplex").double_arrays.values[0].values)
+        assert len(ds_cx64) == 4
+        assert math.isclose(ds_cx64[0], 1.2, rel_tol=1e-10)
+        assert math.isclose(ds_cx64[1], 3.4, rel_tol=1e-10)
+        assert math.isclose(ds_cx64[2], 2.1, rel_tol=1e-10)
+        assert math.isclose(ds_cx64[3], 4.3, rel_tol=1e-10)
 
 
 # ---- Unit tests for helpers ----

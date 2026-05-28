@@ -102,8 +102,8 @@ def test_common_typespecs_values_data_types(common_store):
     assert id_to_dt[255] == ods.DataTypeEnum.DT_LONGLONG  # dt_longlong
     assert id_to_dt[256] == ods.DataTypeEnum.DT_FLOAT  # ieeefloat4
     assert id_to_dt[257] == ods.DataTypeEnum.DT_DOUBLE  # ieeefloat8
-    assert id_to_dt[258] == ods.DataTypeEnum.DT_FLOAT  # ieeefloat4 (complex pairs stored as floats)
-    assert id_to_dt[259] == ods.DataTypeEnum.DT_DOUBLE  # ieeefloat8 (dcomplex pairs stored as doubles)
+    assert id_to_dt[258] == ods.DataTypeEnum.DT_COMPLEX  # ieeefloat4 re-typed by fix_complex_values
+    assert id_to_dt[259] == ods.DataTypeEnum.DT_DCOMPLEX  # ieeefloat8 re-typed by fix_complex_values
     assert id_to_dt[260] == ods.DataTypeEnum.DT_STRING  # dt_string (dates)
     assert id_to_dt[261] == ods.DataTypeEnum.DT_STRING  # dt_string_utf8
     assert id_to_dt[262] == ods.DataTypeEnum.DT_BYTESTR  # dt_bytestr_leo
