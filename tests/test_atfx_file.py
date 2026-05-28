@@ -11,6 +11,8 @@ import pytest
 
 from wodson.atfx import AtfxFile
 
+pytestmark = pytest.mark.devtest
+
 
 def test_context_manager_opens_and_closes(simple_atfx):
     """AtfxFile can be opened and closed as a context manager."""
