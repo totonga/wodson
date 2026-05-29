@@ -12,7 +12,7 @@ import odsbox.proto.ods_pb2 as ods
 from ._base_model import load_base_model
 from ._data_read import data_read
 from ._db import create_schema, fix_complex_values, load_instances
-from ._instance_parser import parse_instances, resolve_external_component_refs
+from ._instance_parser import ExternalComponentRef, parse_instances, resolve_external_component_refs
 from ._model_builder import build_model, detect_ods_version
 from ._xml_utils import _find, _findall, _text
 
@@ -71,7 +71,22 @@ class AtfxStore:
         # Resolve AoExternalComponent references (third value-reference pattern)
         resolve_external_component_refs(self._model, instances, self._file_map, self._atfx_dir)
 
-        # Create in-memory SQLite DB
+        # Register identifiers for inline <component> refs (pattern 1: embedded in lc <Values>).
+        # resolve_external_component_refs handles pattern 2 (separate AoExternalComponent entity)
+        # and registers those identifiers.  Pattern 1 refs are produced by parse_instances via
+        # _parse_component_ref but that code has no access to file_map, so they may be absent
+        # here when the ATFX <files> section is missing or incomplete.  We register them now so
+        # the binary reader can find them.
+        for entity_instances in instances.values():
+            for inst in entity_instances:
+                for val in inst.values():
+                    if (
+                        isinstance(val, ExternalComponentRef)
+                        and val.identifier
+                        and val.identifier not in self._file_map
+                    ):
+                        self._file_map[val.identifier] = self._atfx_dir / val.identifier
+
         self._conn = sqlite3.connect(":memory:", check_same_thread=False)
         create_schema(self._conn, self._model)
         load_instances(self._conn, self._model, instances, self._file_map)

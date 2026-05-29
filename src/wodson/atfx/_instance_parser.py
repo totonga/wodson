@@ -517,18 +517,17 @@ def resolve_external_component_refs(
 
     # Prepare AoFile lookup for the ao_values_file fallback:
     # If ExternalComponent.filename_url is empty, follow the ao_values_file relation
-    # to an AoFile (base_name "AoFile") instance and read its ao_location attribute.
+    # to an AoFile instance and read its ao_location attribute.
     ao_values_file_rel: str | None = ec_rel_base_to_app.get("ao_values_file")
     aofile_by_id: dict[int, dict[str, Any]] = {}
     aofile_location_attr: str | None = None
     aofile_id_attr: str | None = None
 
     if ao_values_file_rel is not None:
-        aofile_entity_name: str | None = None
-        for ename, entity in model.entities.items():
-            if entity.base_name == "AoFile":
-                aofile_entity_name = ename
-                break
+        # Use the entity the relation is defined to point to (not base_name search,
+        # which may match the wrong entity when multiple entities share base_name "AoFile").
+        ao_values_file_rel_def = ec_entity.relations.get(ao_values_file_rel)
+        aofile_entity_name: str | None = ao_values_file_rel_def.entity_name if ao_values_file_rel_def else None
         if aofile_entity_name is not None:
             aofile_entity = model.entities[aofile_entity_name]
             for aname, attr in aofile_entity.attributes.items():
