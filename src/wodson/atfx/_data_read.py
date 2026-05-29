@@ -160,6 +160,10 @@ class _QueryContext:
         # AID -> table alias (per-query, always starts empty)
         self.aid_to_alias: dict[int, str] = {}
         self.alias_counter = 0
+        # AIDs that have been placed into the FROM clause or an explicit JOIN clause.
+        # This is distinct from aid_to_alias because SELECT column processing
+        # pre-populates aliases for joined entities before the JOIN loop runs.
+        self.joined_aids: set[int] = set()
         # AID -> resolved "id" column name (cached to avoid repeated attribute scans)
         self._id_col_cache: dict[int, str] = {}
 
@@ -235,6 +239,7 @@ def data_read(
     primary_entity = ctx.get_entity(primary_aid)
     primary_alias = ctx.get_alias(primary_aid)
     primary_table = _table_name(primary_entity.name)
+    ctx.joined_aids.add(primary_aid)
 
     # Build SELECT clause
     select_parts: list[str] = []
@@ -276,6 +281,16 @@ def data_read(
     for join in select_statement.joins:
         from_entity = ctx.get_entity(join.aid_from)
         to_entity = ctx.get_entity(join.aid_to)
+        # Determine which entity is being newly introduced into the FROM/JOIN clause.
+        # We use joined_aids (not aid_to_alias) because SELECT column processing
+        # pre-populates aid_to_alias for all referenced entities before this loop runs,
+        # making it an unreliable indicator of which entity is already in the query.
+        #
+        # When JAQueL reverses a 1-to-many traversal (e.g. filtering AoMeasurement by
+        # submatrices.id), it emits aid_from=AoSubmatrix, aid_to=AoMeasurement where
+        # AoMeasurement is already the primary entity in FROM. In that case, introduce
+        # aid_from (the child entity) via the JOIN instead.
+        to_is_new = join.aid_to not in ctx.joined_aids
         from_alias = ctx.get_alias(join.aid_from)
         to_alias = ctx.get_alias(join.aid_to)
         to_table = _table_name(to_entity.name)
@@ -312,7 +327,17 @@ def data_read(
             # Fallback: try id-based join
             on_clause = f'"{from_alias}"."{ctx.get_id_col(from_entity)}" = "{to_alias}"."{ctx.get_id_col(to_entity)}"'
 
-        join_clauses.append(f'{join_type} "{to_table}" AS "{to_alias}" ON {on_clause}')
+        if to_is_new:
+            # Normal case: to_entity is being introduced for the first time.
+            join_clauses.append(f'{join_type} "{to_table}" AS "{to_alias}" ON {on_clause}')
+            ctx.joined_aids.add(join.aid_to)
+        else:
+            # Reversed traversal case: to_entity is already in FROM/an earlier JOIN.
+            # Introduce from_entity instead (e.g. filtering AoMeasurement by submatrices.id
+            # produces aid_from=AoSubmatrix, aid_to=AoMeasurement where AoMeasurement is primary).
+            from_table = _table_name(from_entity.name)
+            join_clauses.append(f'{join_type} "{from_table}" AS "{from_alias}" ON {on_clause}')
+            ctx.joined_aids.add(join.aid_from)
 
     # Build WHERE clause
     where_clause, where_params = _build_where(ctx, select_statement.where)
