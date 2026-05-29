@@ -1,6 +1,6 @@
 [project]
 name = "wodson"
-version = "1.2.3"
+version = "1.2.4"
 description = "ASAM ODS tools collection — ATFX reader, HTTP server, and more (experimental)"
 readme = "README.md"
 license = "Apache-2.0"

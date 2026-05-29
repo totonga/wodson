@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.2.4 (2026-05-29)
+
+### Bug Fixes
+
+- Update file-map registration for external component references and improve AoFile resolution logic
+  ([`1d03aad`](https://github.com/totonga/wodson/commit/1d03aad767532642b0a6a0d1bb30194ae880384c))
+
+
 ## v1.2.3 (2026-05-28)
 
 ### Bug Fixes
