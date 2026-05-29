@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.2.5 (2026-05-29)
+
+### Bug Fixes
+
+- Joins to n relations did not work
+  ([`28adcdf`](https://github.com/totonga/wodson/commit/28adcdfd3b8c085132c87f7a668e54007cad2046))
+
+
 ## v1.2.4 (2026-05-29)
 
 ### Bug Fixes
