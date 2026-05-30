@@ -15,6 +15,7 @@ This is an experimental ATFX reader. Target is not correctness or completeness, 
 - Embeddable Python library (`AtfxStore`)
 - Standalone HTTP server compatible with `odsbox.ConI` (`AtfxServer`)
 - CLI: `uv run wodson atfx serve --file path/to/file.atfx`
+- High-level DataFrame convenience API (`AtfxFile`)
 
 ## Requirements
 
@@ -41,9 +42,10 @@ src/wodson/
     __init__.py          Package root
     _cli.py              CLI entry point (wodson atfx serve …)
     atfx/
-        __init__.py          Public API (AtfxStore, AtfxServer, AtfxSession, …)
+        __init__.py          Public API (AtfxFile, AtfxStore, AtfxServer, AtfxSession, …)
         _cli.py              atfx subcommand logic
         base_model/          ASAM ODS base model protobuf JSON files
+        _atfx_file.py        AtfxFile — high-level DataFrame + JAQueL wrapper
                   ODSBaseModel_asam37.protobuf.json
         _atfx_store.py       AtfxStore — parses + loads ATFX into SQLite
         _server.py           AtfxServer — ASAM ODS HTTP server

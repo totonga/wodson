@@ -1,35 +1,49 @@
-"""Tests for AtfxFile convenience wrapper.
+"""CI-safe duplicate of test_atfx_file.py.
 
-These tests demonstrate the simplified API for working with ATFX files using
-the :class:`AtfxFile` wrapper, which combines :class:`AtfxSession` and
-:class:`odsbox.con_i.ConI` into a single context manager with DataFrame-based
-query methods.
+Uses only checked-in ATFX files from tests/data/openatfx so the suite runs in
+CI/CD. The spec-file counterpart test_atfx_file.py remains marked ``devtest``
+because docs/spec/examples is not checked into the repository.
 """
+
+from pathlib import Path
 
 import odsbox.proto.ods_pb2 as ods
 import pytest
 
 from wodson.atfx import AtfxFile
 
-pytestmark = pytest.mark.devtest
+_OPENATFX_DIR = Path(__file__).resolve().parent / "data" / "openatfx"
+_OPENATFX_ASAM600_DIR = _OPENATFX_DIR / "asam600"
+
+
+@pytest.fixture
+def simple_atfx():
+    return _OPENATFX_ASAM600_DIR / "Example_Simple.atfx"
+
+
+@pytest.fixture
+def alltypes_atfx():
+    return _OPENATFX_ASAM600_DIR / "Example_AllTypes.atfx"
+
+
+@pytest.fixture
+def common_typespecs_atfx():
+    return _OPENATFX_DIR / "Example_CommonTypespecs.atfx"
 
 
 def test_context_manager_opens_and_closes(simple_atfx):
     """AtfxFile can be opened and closed as a context manager."""
     with AtfxFile(simple_atfx) as atfx:
         assert atfx is not None
-        # Should be usable within the context
         assert atfx.con_i is not None
         assert atfx.mc is not None
 
 
 def test_accepts_string_or_path(simple_atfx):
     """AtfxFile accepts both str and Path objects."""
-    # Test with str
     with AtfxFile(str(simple_atfx)) as atfx:
         assert atfx.mc is not None
 
-    # Test with Path
     with AtfxFile(simple_atfx) as atfx:
         assert atfx.mc is not None
 
@@ -39,12 +53,10 @@ def test_con_i_property_access(simple_atfx):
     with AtfxFile(simple_atfx) as atfx:
         con_i = atfx.con_i
 
-        # Should be a ConI instance with standard methods
         assert hasattr(con_i, "model_read")
         assert hasattr(con_i, "data_read")
         assert hasattr(con_i, "query_data")
 
-        # Should be able to call low-level methods
         model = con_i.model()
         assert len(model.entities) > 0
 
@@ -62,10 +74,8 @@ def test_mc_property_access(simple_atfx):
     with AtfxFile(simple_atfx) as atfx:
         mc = atfx.mc
 
-        # ModelCache should have entity lookup methods
         assert hasattr(mc, "entity")
 
-        # Should be able to look up expected base entities
         env = mc.entity("AoEnvironment")
         assert env is not None
         assert env.name in ("Environment", "AoEnvironment")
@@ -86,8 +96,6 @@ def test_mc_raises_outside_context_manager(simple_atfx):
 def test_model_loaded_immediately(simple_atfx):
     """Model is loaded immediately when entering context manager."""
     with AtfxFile(simple_atfx) as atfx:
-        # mc should be immediately accessible without additional calls
-        # Get the model from con_i to check entities
         model = atfx.con_i.model()
         assert len(model.entities) > 0
 
@@ -95,14 +103,10 @@ def test_model_loaded_immediately(simple_atfx):
 def test_query_method_basic(simple_atfx):
     """The query() method executes JAQueL queries and returns DataFrames."""
     with AtfxFile(simple_atfx) as atfx:
-        # Query Environment entities
         df = atfx.query({"AoEnvironment": {}, "$attributes": {"id": 1, "name": 1}})
 
-        # Should return a DataFrame
-        assert hasattr(df, "columns")  # pandas DataFrame
-        assert len(df) >= 0  # May be empty, but should be valid
-
-        # Columns should include requested attributes (prefixed with entity name)
+        assert hasattr(df, "columns")
+        assert len(df) >= 0
         assert any("Id" in col for col in df.columns)
 
 
@@ -111,26 +115,21 @@ def test_query_method_measurements(simple_atfx):
     with AtfxFile(simple_atfx) as atfx:
         df = atfx.query({"AoMeasurement": {}, "$attributes": {"id": 1, "name": 1}})
 
-        # Should return results (Example_Simple should have measurements)
         assert len(df) > 0
-        # Column names are prefixed with entity name
         assert any("Id" in col for col in df.columns)
 
 
 def test_query_method_with_filter(alltypes_atfx):
     """Query with filters using JAQueL syntax."""
     with AtfxFile(alltypes_atfx) as atfx:
-        # Query all measurements first
         all_meas = atfx.query({"AoMeasurement": {}, "$attributes": {"id": 1, "name": 1}})
 
         if len(all_meas) > 0:
-            # Query with a filter (if we know a name)
             name_col = [c for c in all_meas.columns if "Name" in c][0]
             first_name = all_meas.iloc[0][name_col]
 
             filtered = atfx.query({"AoMeasurement": {"name": first_name}, "$attributes": {"id": 1, "name": 1}})
 
-            # Should return at least the one we filtered for
             assert len(filtered) >= 1
 
 
@@ -139,7 +138,6 @@ def test_con_i_advanced_usage(simple_atfx):
     with AtfxFile(simple_atfx) as atfx:
         model = atfx.con_i.model()
 
-        # Find the Measurement entity
         mea_entity = None
         for entity in model.entities.values():
             if entity.name in ("AoMeasurement", "Measurement"):
@@ -148,35 +146,28 @@ def test_con_i_advanced_usage(simple_atfx):
 
         assert mea_entity is not None
 
-        # Build a SelectStatement
         stmt = ods.SelectStatement()
         stmt.columns.add(aid=mea_entity.aid, attribute="Id")
         stmt.columns.add(aid=mea_entity.aid, attribute="Name")
 
-        # Execute via con_i
         result = atfx.con_i.data_read(stmt)
 
-        # Should return DataMatrices
         assert len(result.matrices) > 0
 
 
 def test_query_submatrix_entities(alltypes_atfx):
     """Query Submatrix entities from ATFX file."""
     with AtfxFile(alltypes_atfx) as atfx:
-        # Query Submatrix entities
         df = atfx.query({"AoSubmatrix": {}, "$attributes": {"id": 1, "name": 1, "number_of_rows": 1}})
 
-        # Should find submatrices in AllTypes example
         assert len(df) > 0
 
 
 def test_query_localcolumn_entities(alltypes_atfx):
     """Query LocalColumn entities from ATFX file."""
     with AtfxFile(alltypes_atfx) as atfx:
-        # Query LocalColumn entities
         df = atfx.query({"AoLocalColumn": {}, "$attributes": {"id": 1, "name": 1}})
 
-        # Should find local columns in AllTypes example
         assert len(df) > 0
 
 
@@ -193,10 +184,8 @@ def test_works_with_multiple_files(atfx_file, request):
     fixture_value = request.getfixturevalue(atfx_file)
 
     with AtfxFile(fixture_value) as atfx:
-        # Should be able to query basic entities
         df = atfx.query({"AoEnvironment": {}, "$attributes": {"id": 1}})
 
-        # Should return valid DataFrame
         assert hasattr(df, "columns")
 
 
@@ -204,16 +193,10 @@ def test_cleanup_on_error(simple_atfx):
     """Resources are cleaned up even if an error occurs in the with block."""
     try:
         with AtfxFile(simple_atfx) as atfx:
-            # Use the file
             _ = atfx.mc
-
-            # Raise an error
             raise ValueError("Test error")
     except ValueError:
-        pass  # Expected
-
-    # atfx should be cleaned up and unusable now
-    # (No good way to test this directly, but at least verify no exception)
+        pass
 
 
 def test_read_channels_method_exists(simple_atfx):
@@ -230,10 +213,7 @@ def test_read_channels_signature(simple_atfx):
     with AtfxFile(simple_atfx) as atfx:
         sig = inspect.signature(atfx.read_channels)
 
-        # Check required parameter
         assert "group_id" in sig.parameters
-
-        # Check optional parameters
         assert "column_patterns" in sig.parameters
         assert "column_patterns_case_insensitive" in sig.parameters
         assert "date_as_timestamp" in sig.parameters
@@ -248,11 +228,6 @@ def test_read_channels_signature(simple_atfx):
         assert params["set_independent_as_index"].default is True
         assert params["values_start"].default == 0
         assert params["values_limit"].default == 0
-
-
-# Note: The following read_channels tests may skip due to known compatibility
-# issues between odsbox's BulkReader and certain ATFX files. This is a
-# limitation of the underlying odsbox library, not of the AtfxFile wrapper.
 
 
 def test_read_channels_basic_read(alltypes_atfx):
@@ -348,11 +323,6 @@ def test_read_channels_returns_dataframe_with_correct_structure(alltypes_atfx):
             if "invalid literal for int()" in str(e) or "list index out of range" in str(e):
                 pytest.skip(f"Known odsbox compatibility issue: {e}")
             raise
-
-
-# ---------------------------------------------------------------------------
-# Navigation helper methods: measurements(), groups(), channels()
-# ---------------------------------------------------------------------------
 
 
 def test_measurements_method_exists(simple_atfx):
@@ -501,25 +471,12 @@ def test_navigation_hierarchy(simple_atfx):
         ch = atfx.channels(group_id)
         assert len(ch) > 0
 
-        # read_channels invocation is covered by dedicated tests above
-
-
-# ---------------------------------------------------------------------------
-# Advanced tests for submatrix queries with parent attributes
-# ---------------------------------------------------------------------------
-
 
 def test_submatrix_with_parent_measurement(alltypes_atfx):
-    """Demonstrate querying Submatrix with parent Measurement attributes.
-
-    This example shows how to use the low-level con_i to join Submatrix
-    with its parent Measurement, retrieving both Submatrix and Measurement
-    attributes in a single query.
-    """
+    """Demonstrate querying Submatrix with parent Measurement attributes."""
     with AtfxFile(alltypes_atfx) as atfx:
         model = atfx.con_i.model()
 
-        # Find entity AIDs
         submatrix_entity = None
         measurement_entity = None
 
@@ -532,17 +489,11 @@ def test_submatrix_with_parent_measurement(alltypes_atfx):
         if submatrix_entity is None or measurement_entity is None:
             pytest.skip("Required entities not found in model")
 
-        # Build a join query: Submatrix with parent Measurement
         stmt = ods.SelectStatement()
-
-        # Select Submatrix attributes
         stmt.columns.add(aid=submatrix_entity.aid, attribute="Id")
         stmt.columns.add(aid=submatrix_entity.aid, attribute="Name")
-
-        # Select parent Measurement attributes
         stmt.columns.add(aid=measurement_entity.aid, attribute="Name")
 
-        # Join from Submatrix to Measurement via "Measurement" relation
         stmt.joins.add(
             aid_from=submatrix_entity.aid,
             aid_to=measurement_entity.aid,
@@ -550,26 +501,17 @@ def test_submatrix_with_parent_measurement(alltypes_atfx):
             join_type=ods.SelectStatement.JoinItem.JoinTypeEnum.JT_DEFAULT,
         )
 
-        # Execute the query
         result = atfx.con_i.data_read(stmt)
 
-        # Should have results with data from both entities
         assert len(result.matrices) > 0
-        # Should have at least the Submatrix columns
-        # (JOIN behavior may vary - column count depends on implementation)
         assert len(result.matrices[0].columns) >= 2
 
 
 def test_localcolumn_with_parent_submatrix(alltypes_atfx):
-    """Demonstrate querying LocalColumn with parent Submatrix attributes.
-
-    This example shows how to retrieve LocalColumn data along with attributes
-    from its parent Submatrix using a JOIN.
-    """
+    """Demonstrate querying LocalColumn with parent Submatrix attributes."""
     with AtfxFile(alltypes_atfx) as atfx:
         model = atfx.con_i.model()
 
-        # Find entity AIDs
         localcolumn_entity = None
         submatrix_entity = None
 
@@ -582,17 +524,11 @@ def test_localcolumn_with_parent_submatrix(alltypes_atfx):
         if localcolumn_entity is None or submatrix_entity is None:
             pytest.skip("Required entities not found in model")
 
-        # Build a join query: LocalColumn with parent Submatrix
         stmt = ods.SelectStatement()
-
-        # Select LocalColumn attributes
         stmt.columns.add(aid=localcolumn_entity.aid, attribute="Id")
         stmt.columns.add(aid=localcolumn_entity.aid, attribute="Name")
-
-        # Select parent Submatrix name
         stmt.columns.add(aid=submatrix_entity.aid, attribute="Name")
 
-        # Join from LocalColumn to Submatrix via "Submatrix" relation
         stmt.joins.add(
             aid_from=localcolumn_entity.aid,
             aid_to=submatrix_entity.aid,
@@ -600,8 +536,6 @@ def test_localcolumn_with_parent_submatrix(alltypes_atfx):
             join_type=ods.SelectStatement.JoinItem.JoinTypeEnum.JT_DEFAULT,
         )
 
-        # Execute the query
         result = atfx.con_i.data_read(stmt)
 
-        # Should have results with data from both entities
         assert len(result.matrices) > 0

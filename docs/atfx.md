@@ -36,7 +36,17 @@ with AtfxServer(host="127.0.0.1", port=8080) as server:
         load_model=False,
     ) as con:
         model = con.model_read()
-        df    = con.query_data({"AoMeasurement": {"$attributes": {"name": 1}}})
+        df    = con.query({"AoMeasurement": {"$attributes": {"name": 1}}})
+```
+
+## High-level DataFrame API
+
+```python
+from wodson.atfx import AtfxFile
+
+with AtfxFile("path/to/file.atfx") as atfx:
+    measurements = atfx.measurements()
+    print(measurements.head())
 ```
 
 ## CLI

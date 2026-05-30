@@ -8,19 +8,21 @@ Usage::
 
     from wodson.atfx import AtfxFile
 
-    # Open file and query with JAQueL syntax
     with AtfxFile("path/to/file.atfx") as atfx:
-        # Access model cache
-        model = atfx.mc
+        # Navigate the measurement hierarchy
+        tests_df = atfx.tests()
+        meas_df  = atfx.measurements()
+        grps_df  = atfx.groups(meas_df.iloc[0]["Measurement.Id"])
+        ch_df    = atfx.channels(grps_df.iloc[0]["Submatrix.Id"])
 
-        # Query metadata entities
+        # Read bulk channel values for a group
+        df = atfx.read_channels(grps_df.iloc[0]["Submatrix.Id"])
+
+        # Flexible metadata queries via JAQueL
         df = atfx.query({"AoMeasurement": {}, "$attributes": {"name": 1, "id": 1}})
 
-        # Access low-level ConI for advanced operations
+        # Low-level ConI for advanced SelectStatement access
         raw_result = atfx.con_i.data_read(select_statement)
-
-        # Query bulk signal data
-        timeseries_df = atfx.timeseries(...)
 """
 
 from __future__ import annotations
@@ -43,24 +45,16 @@ _log = logging.getLogger(__name__)
 class AtfxFile:
     """High-level ATFX file reader with DataFrame-based JAQueL query interface.
 
-    Wraps :class:`AtfxSession` and :class:`odsbox.con_i.ConI` to provide a
-    simplified API for common operations. The model is loaded immediately on
-    connection so that ``.mc`` property access is fast.
-
     :param filepath: Path to an ATFX file to open.
 
     Example::
 
         with AtfxFile("data.atfx") as atfx:
-            # Explore model
-            print(atfx.mc.entities)
 
-            # Query data
-            measurements = atfx.query({
-                "AoMeasurement": {},
-                "$attributes": {"name": 1, "id": 1}
-            })
-            print(measurements)
+            groups = atfx.groups()
+            for group_id in groups["id"].to_list():
+                df = atfx.read_channels(group_id)
+                display(df.head())
     """
 
     def __init__(self, filepath: str | Path) -> None:
@@ -147,11 +141,11 @@ class AtfxFile:
 
             with AtfxFile("data.atfx") as atfx:
                 # List all entities
-                for entity in atfx.mc.entities.values():
+                for entity in atfx.mc.model().entities.values():
                     print(entity.name, entity.aid)
 
                 # Look up specific entity
-                mea = atfx.mc.get_entity_by_name("AoMeasurement")
+                mea = atfx.mc.entity_by_base_name("AoMeasurement")
                 print(mea.attributes)
         """
         return self.con_i.mc
@@ -192,7 +186,7 @@ class AtfxFile:
                 # Query with filters
                 df = atfx.query({
                     "AoMeasurement": {
-                        "name": {"$like": "Test%"}
+                        "name": {"$like": "My_Mea*"}
                     },
                     "$attributes": {"name": 1, "date_created": 1}
                 })
@@ -206,50 +200,168 @@ class AtfxFile:
             **kwargs,
         )
 
-    def timeseries(
+    def measurements(
         self,
-        submatrix_iid: int,
+        *,
+        name_filter: str | None = None,
+        conditions: dict[str, Any] | None = None,
+        limit: int = 10000,
+    ) -> pd.DataFrame:
+        """List measurement entries (AoMeasurement) as a DataFrame.
+
+        When the application model includes an AoTest entity, the parent test id
+        and name are automatically added via a JAQueL join.
+
+        :param name_filter: Optional :code:`$like` pattern to filter by measurement
+            name (e.g. ``"Run_*"``). ``None`` returns all measurements.
+        :param conditions: Extra JAQueL filter conditions merged into the
+            AoMeasurement clause (e.g. ``{"measurement_begin": {"$gte": "20240101"}}``).  
+        :param limit: Maximum number of rows to return. ``0`` means no limit.
+        :return: DataFrame with one row per measurement.
+
+        Example::
+
+            with AtfxFile("data.atfx") as atfx:
+                df = atfx.measurements()
+                df = atfx.measurements(name_filter="Run_*", limit=50)
+                df = atfx.measurements(conditions={"date_created": {"$gte": "20240101"}})
+        """
+        mea_conditions: dict[str, Any] = {}
+        if name_filter is not None:
+            mea_conditions["name"] = {"$like": name_filter}
+        if conditions is not None:
+            mea_conditions.update(conditions)
+
+        options: dict[str, Any] = {}
+        if limit > 0:
+            options["$rowlimit"] = limit
+
+        mea_e = self.mc.entity_by_base_name("AoMeasurement")
+        
+        attributes = [attr.base_name for attr in mea_e.attributes.values() if attr.base_name]
+
+        q: dict[str, Any] = {"AoMeasurement": mea_conditions, "$attributes": {attr: 1 for attr in attributes}}
+        if options:
+            q["$options"] = options
+        
+        return self.query(q, mode="query")
+
+    def groups(
+            self, 
+            measurement_id: int| None = None,
+            *,
+            conditions: dict[str, Any] | None = None,
+            limit: int = 10000) -> pd.DataFrame:
+        """List channel groups (AoSubmatrix) belonging to a measurement.
+
+        Each group is an independent set of channels that share one x-axis
+        (e.g. one sweep of time-sampled signals or a frequency run).
+
+        :param measurement_id: Instance ID (``id``) of the parent AoMeasurement.
+        :param conditions: Extra JAQueL filter conditions merged into the
+            AoSubmatrix clause (e.g. ``{"number_of_rows": {"$lte": 1000000}}``).  
+        :param limit: Maximum number of rows to return. ``0`` means no limit.
+        :return: DataFrame with one row per group.
+
+        Example::
+
+            with AtfxFile("data.atfx") as atfx:
+                meas = atfx.measurements()
+                groups = atfx.groups(meas.iloc[0]["Measurement.Id"])
+                groups = atfx.groups(meas.iloc[0]["id"])
+        """
+        submatrix_conditions: dict[str, Any] = {}
+        if measurement_id is not None:
+            submatrix_conditions["measurement"] = {"id": measurement_id}
+        if conditions is not None:
+            submatrix_conditions.update(conditions)
+
+        q: dict[str, Any] = {
+            "AoSubmatrix": submatrix_conditions,
+            "$attributes": {"id": 1, "name": 1, "number_of_rows": 1, "measurement": {"id": 1, "name": 1}},
+        }
+        if limit > 0:
+            q["$options"] = {"$rowlimit": limit}
+
+        return self.query(q, mode="query")
+
+    def channels(self, group_id: int, *, limit: int = 10000) -> pd.DataFrame:
+        """List channel metadata (AoLocalColumn) belonging to a group.
+
+        Returns metadata only — name, data type, and whether the channel is
+        the independent axis. Use :meth:`read_channels` to fetch the actual
+        signal values.
+
+        :param group_id: Instance ID (``id``) of the parent AoSubmatrix (group).
+    :param limit: Maximum number of rows to return. ``0`` means no limit.
+        :return: DataFrame with one row per channel.
+
+        Example::
+
+            with AtfxFile("data.atfx") as atfx:
+                groups = atfx.groups(measurement_id)
+                ch   = atfx.channels(groups.iloc[0]["Submatrix.Id"])
+                ch   = atfx.channels(groups.iloc[0]["id"])
+        """
+        q: dict[str, Any] = {
+            "AoLocalColumn": {"submatrix": group_id},
+            "$attributes": {"id": 1, "name": 1, "independent": 1, "measurement_quantity": {"id": 1, "datatype": 1, "unit:OUTER": {"name": 1}}},
+        }
+        if limit > 0:
+            q["$options"] = {"$rowlimit": limit}
+
+        df = self.query(q, mode="query")
+
+        df = df.rename(columns={
+            "measurement_quantity.datatype": "datatype",
+            "measurement_quantity.unit:OUTER.name": "unit_string"
+        })
+
+        return df
+
+    def read_channels(
+        self,
+        group_id: int,
         column_patterns: list[str] | None = None,
-        column_patterns_case_insensitive: bool = False,
+        column_patterns_case_insensitive: bool = True,
         date_as_timestamp: bool = True,
         set_independent_as_index: bool = True,
         values_start: int = 0,
         values_limit: int = 0,
     ) -> pd.DataFrame:
-        """Query bulk signal data from a Submatrix as a pandas DataFrame.
+        """Read bulk channel values from a group (AoSubmatrix) as a DataFrame.
 
-        This is a pass-through to :meth:`odsbox.bulk_reader.BulkReader.data_read` with
-        identical signature. Use this for efficient access to measurement data
-        stored in LocalColumns within a Submatrix.
+        Each column in the returned DataFrame corresponds to one AoLocalColumn
+        within the group. The independent channel (e.g. time, RPM, frequency)
+        is set as the DataFrame index by default.
 
-        :param submatrix_iid: Instance ID (iid) of the Submatrix to read.
-        :param column_patterns: List of column name patterns (supports wildcards like "Co*").
-            If None, reads all columns.
-        :param column_patterns_case_insensitive: Whether column patterns are case-insensitive.
-        :param date_as_timestamp: Return date columns as timestamps instead of datetime objects.
-        :param set_independent_as_index: Set independent columns as DataFrame index.
+        This is a pass-through to :meth:`odsbox.bulk_reader.BulkReader.data_read`.
+
+        :param group_id: Instance ID (``id``) of the AoSubmatrix / group.
+        :param column_patterns: Channel name patterns to select (supports ``*`` wildcards).
+            ``None`` reads all channels.
+        :param column_patterns_case_insensitive: Whether patterns are case-insensitive.
+        :param date_as_timestamp: Return date channels as timestamps.
+        :param set_independent_as_index: Use independent channel as DataFrame index.
         :param values_start: Start index for reading values (0-based).
-        :param values_limit: Maximum number of values to read (0 = no limit).
-        :return: Time series data as a pandas DataFrame.
+        :param values_limit: Maximum number of values to read. ``0`` = no limit.
+        :return: DataFrame with one column per channel and one row per sample.
 
         Example::
 
             with AtfxFile("data.atfx") as atfx:
-                # First, find a submatrix ID
-                submatrices = atfx.query({
-                    "AoSubmatrix": {},
-                    "$attributes": {"id": 1, "name": 1}
-                })
-                submatrix_id = submatrices.iloc[0]["Submatrix.Id"]
+                meas  = atfx.measurements()
+                groups  = atfx.groups(meas.iloc[0]["id"])
+                group_id = groups.iloc[0]["id"]
 
-                # Read all columns from that submatrix
-                df = atfx.timeseries(submatrix_id)
+                # Read all channels
+                df = atfx.read_channels(group_id)
 
-                # Read specific columns matching a pattern
-                df = atfx.timeseries(submatrix_id, column_patterns=["Time", "Speed*"])
+                # Read only channels matching a pattern
+                df = atfx.read_channels(group_id, column_patterns=["Time", "Speed*"])
         """
         return self.con_i.bulk.data_read(
-            submatrix_iid=submatrix_iid,
+            submatrix_iid=group_id,
             column_patterns=column_patterns,
             column_patterns_case_insensitive=column_patterns_case_insensitive,
             date_as_timestamp=date_as_timestamp,

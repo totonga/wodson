@@ -14,8 +14,9 @@ content, and optionally expose them over an ASAM ODS HTTP interface.
 5. [In-Process Access — AtfxSession](#in-process-access--atfxsession)
 6. [CLI — Command Line Interface](#cli--command-line-interface)
 7. [Querying with odsbox ConI](#querying-with-odsbox-coni)
-7. [Supported Content Types](#supported-content-types)
-8. [API Reference](#api-reference)
+8. [Supported Content Types](#supported-content-types)
+9. [API Reference](#api-reference)
+10. [Error Handling](#error-handling)
 
 ---
 
@@ -252,7 +253,7 @@ with AtfxSession(default_file="path/to/file.atfx") as session:
         custom_session=session,
     ) as con:
         model = con.model_read()
-        df = con.query_data({"AoEnvironment": {}})
+        df = con.query({"AoEnvironment": {}})
         print(df)
 ```
 
@@ -335,7 +336,7 @@ The server prints its URL on startup:
 
 ```
 wodson server listening on http://127.0.0.1:8080
-  ATFX_FILE context variable: data/Example_Simple.atfx
+    Default ATFX file: data/Example_Simple.atfx
 Press Ctrl+C to stop.
 ```
 
@@ -359,7 +360,7 @@ with ConI(
     model = con.model_read()
 
     # High-level JAQueL query → pandas DataFrame
-    df = con.query_data({"AoMeasurement": {"$attributes": {"name": 1, "id": 1}}})
+    df = con.query({"AoMeasurement": {"$attributes": {"name": 1, "id": 1}}})
     print(df)
 
     # Low-level SelectStatement
@@ -431,6 +432,39 @@ Context manager (`with` statement) calls `start()` / `stop()` automatically.
 
 String constant `"ATFX_FILE"` — the context variable key used to pass the ATFX
 file path when creating a session via `POST /ods`.
+
+---
+
+### `AtfxSession(default_file=None)`
+
+In-process `requests.Session` transport for `odsbox.ConI`.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `default_file` | `str \| None` | ATFX file used when `ATFX_FILE` context variable is omitted |
+
+| Member | Type | Description |
+|--------|------|-------------|
+| `url` | `str` | Synthetic base URL for ConI (default `http://wodson.local`) |
+
+Use this when you want ConI semantics without opening a TCP port.
+
+---
+
+### `AtfxFile(filepath)`
+
+High-level convenience wrapper around `AtfxSession` + `ConI` for DataFrame-first
+workflows.
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `query(jaquel_query, ...)` | `pandas.DataFrame` | Run a JAQueL query |
+| `measurements(...)` | `pandas.DataFrame` | Query AoMeasurement rows |
+| `groups(measurement_id, ...)` | `pandas.DataFrame` | Query AoSubmatrix rows |
+| `channels(group_id, ...)` | `pandas.DataFrame` | Query AoLocalColumn rows |
+| `read_channels(group_id, ...)` | `pandas.DataFrame` | Read channel value matrices |
+
+Context manager (`with` statement) manages session lifecycle automatically.
 
 ---
 
