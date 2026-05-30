@@ -29,16 +29,13 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from odsbox.con_i import ConI
 
 from wodson.simple.measurements import Measurements
 
 from ._session import AtfxSession
-
-if TYPE_CHECKING:
-    from odsbox.model_cache import ModelCache
 
 _log = logging.getLogger(__name__)
 
@@ -114,4 +111,3 @@ class AtfxFile(Measurements):
         if self._atfx_con_i is None:
             raise RuntimeError("AtfxFile must be used as a context manager")
         return self._atfx_con_i
-
