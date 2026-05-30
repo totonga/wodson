@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v1.3.0 (2026-05-30)
+
+### Bug Fixes
+
+- Linting ...
+  ([`08ec571`](https://github.com/totonga/wodson/commit/08ec5710fe4060d6c0b4f00dd180bf9cdea2153c))
+
+### Features
+
+- Added helper methods to AtfxFile
+  ([`b11baab`](https://github.com/totonga/wodson/commit/b11baab0c2882b8d0e15451c56412b493f7b38ff))
+
+- Added simple Measurements
+  ([`0bbfa22`](https://github.com/totonga/wodson/commit/0bbfa2208917f5ff6f37c2ef3fba9abb3c297443))
+
+
 ## v1.2.5 (2026-05-29)
 
 ### Bug Fixes
