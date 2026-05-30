@@ -468,6 +468,23 @@ Context manager (`with` statement) manages session lifecycle automatically.
 
 ---
 
+### `Measurements(con_i)`
+
+Generic query/navigation helper that operates on an existing `odsbox.ConI`
+instance.
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `query(jaquel_query, ...)` | `pandas.DataFrame` | Run a JAQueL query |
+| `measurements(...)` | `pandas.DataFrame` | Query AoMeasurement rows |
+| `groups(measurement_id, ...)` | `pandas.DataFrame` | Query AoSubmatrix rows |
+| `channels(group_id, ...)` | `pandas.DataFrame` | Query AoLocalColumn rows |
+| `read_channels(group_id, ...)` | `pandas.DataFrame` | Read channel value matrices |
+
+Import path: `from wodson.simple.measurements import Measurements`.
+
+---
+
 ## Error Handling
 
 HTTP error responses are returned as `ods.ErrorInfo` protobuf messages with
