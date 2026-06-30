@@ -14,9 +14,10 @@ content, and optionally expose them over an ASAM ODS HTTP interface.
 5. [In-Process Access — AtfxSession](#in-process-access--atfxsession)
 6. [CLI — Command Line Interface](#cli--command-line-interface)
 7. [Querying with odsbox ConI](#querying-with-odsbox-coni)
-8. [Supported Content Types](#supported-content-types)
-9. [API Reference](#api-reference)
-10. [Error Handling](#error-handling)
+8. [DataFrame → DataMatrix — Writing ODS Data](#dataframe--datamatrix--writing-ods-data)
+9. [Supported Content Types](#supported-content-types)
+10. [API Reference](#api-reference)
+11. [Error Handling](#error-handling)
 
 ---
 
@@ -482,6 +483,207 @@ instance.
 | `read_channels(group_id, ...)` | `pandas.DataFrame` | Read channel value matrices |
 
 Import path: `from wodson.simple.measurements import Measurements`.
+
+---
+
+## DataFrame → DataMatrix — Writing ODS Data
+
+`wodson.atfx.data_matrix` provides functions to convert a Pandas `DataFrame`
+into an `ods.DataMatrix` protobuf message.  This is the write-side counterpart
+to `odsbox.datamatrices_to_pandas.to_pandas`.
+
+```python
+from wodson.data_matrix import (
+    dataframe_to_datamatrix,
+    dataframe_to_unknown_array_datamatrix,
+    merge_into_datamatrix,
+)
+```
+
+All three functions are also re-exported from `wodson.atfx`:
+
+```python
+from wodson.data_matrix import dataframe_to_datamatrix
+```
+
+---
+
+### Column naming
+
+Column names are resolved against the ODS application model to populate
+`DataMatrix.name`, `DataMatrix.base_name`, `DataMatrix.aid`, and each
+`Column.name`, `Column.base_name`.
+
+**Two lookup modes are supported and can be mixed in one call:**
+
+| Mode | Column name format | When to use |
+|------|-------------------|-------------|
+| **Prefix** | `"Entity.Attribute"` | No `entity_name` provided; entity parsed from prefix |
+| **Explicit entity** | `"Attribute"` | `entity_name` parameter given; prefix is ignored |
+
+When *both* a prefix and `entity_name` are present, the **explicit
+`entity_name` wins**.
+
+Either the application name or the base name can be used for both the entity
+and the attribute parts:
+
+```python
+# Application names
+df.columns = ["Measurement.Name"]
+
+# Base names work too
+df.columns = ["AoMeasurement.name"]
+
+# Explicit entity, plain attribute names
+matrix = dataframe_to_datamatrix(df, model, entity_name="Measurement")
+```
+
+All columns in a single call must resolve to the **same** entity.
+
+---
+
+### Normal data — `dataframe_to_datamatrix`
+
+Each DataFrame column becomes one scalar `DataMatrix.Column`.
+
+```python
+import pandas as pd
+import odsbox.proto.ods_pb2 as ods
+from wodson.atfx import AtfxStore
+from wodson.data_matrix import dataframe_to_datamatrix
+
+with AtfxStore("measurement.atfx") as store:
+    model = store.model()
+
+df = pd.DataFrame({
+    "Measurement.Name":    ["Run1", "Run2", "Run3"],
+    "Measurement.Version": ["1.0",  "1.1",  "1.2"],
+})
+
+matrix = dataframe_to_datamatrix(df, model)
+# matrix.aid, matrix.name, matrix.base_name come from the model
+# matrix.columns[0].name == "Name" (application name)
+```
+
+**NaN / `None` / `pd.NA` / `pd.NaT`** values are automatically converted to
+`is_null = True` entries.  A zero placeholder is written at the same position
+in the data array so all arrays stay aligned:
+
+```python
+df = pd.DataFrame({"Measurement.Name": ["ok", None, "also-ok"]})
+matrix = dataframe_to_datamatrix(df, model)
+
+col = matrix.columns[0]
+# col.is_null  == [False, True, False]
+# col.string_array.values == ["ok", "", "also-ok"]
+```
+
+**Type resolution priority** (highest to lowest):
+
+1. `data_type_hints={"AttrName": ods.DataTypeEnum.DT_LONG}` — user override
+2. Model attribute's `data_type` (when not `DT_UNKNOWN`)
+3. Inferred from the pandas `dtype`
+
+**Inferred type mapping:**
+
+| pandas dtype | ODS type |
+|---|---|
+| `bool` / `BooleanDtype` | `DT_BOOLEAN` |
+| `uint8` | `DT_BYTE` |
+| `int16` / `Int16Dtype` | `DT_SHORT` |
+| `int8`, `int32` | `DT_LONG` |
+| `int64` / `Int64Dtype` | `DT_LONGLONG` |
+| `float32` | `DT_FLOAT` |
+| `float64` / `Float64Dtype` | `DT_DOUBLE` |
+| `complex64` | `DT_COMPLEX` |
+| `complex128` | `DT_DCOMPLEX` |
+| `StringDtype` | `DT_STRING` |
+| `object` (first non-null value decides) | `DT_STRING`, `DT_LONGLONG`, `DT_DOUBLE`, `DT_BYTESTR` |
+
+---
+
+### Unknown-array data — `dataframe_to_unknown_array_datamatrix`
+
+Use this for entity attributes that store a **sequence of values per row**,
+such as `AoLocalColumn.Values`.  Each DataFrame cell must be a `list` or
+`numpy.ndarray`; the ODS type is inferred from the element values.
+
+```python
+from wodson.data_matrix import dataframe_to_unknown_array_datamatrix
+
+df = pd.DataFrame({
+    "Localcolumn.Values": [
+        [1.0, 2.0, 3.0],   # channel 0 values
+        [4.0, 5.0],         # channel 1 values (different length)
+    ]
+})
+matrix = dataframe_to_unknown_array_datamatrix(df, model)
+
+col = matrix.columns[0]
+# col.data_type == DT_UNKNOWN
+# col.unknown_arrays.values[0].double_array.values == [1.0, 2.0, 3.0]
+# col.unknown_arrays.values[1].double_array.values == [4.0, 5.0]
+```
+
+A `None` / `pd.NA` cell (no list at all) is treated as null:
+- `column.is_null[i] = True`
+- The corresponding `UnknownArray` is left empty.
+
+---
+
+### Merging into an existing DataMatrix — `merge_into_datamatrix`
+
+Append new columns to an existing `DataMatrix` **in-place**.  This is
+useful when you want to build a matrix incrementally from multiple DataFrames.
+
+```python
+from wodson.data_matrix import dataframe_to_datamatrix, merge_into_datamatrix
+
+df_ids   = pd.DataFrame({"Measurement.Id":   [1, 2, 3]})
+df_names = pd.DataFrame({"Measurement.Name": ["a", "b", "c"]})
+
+matrix = dataframe_to_datamatrix(df_ids, model)
+merge_into_datamatrix(matrix, df_names, model)
+
+# matrix now has two columns: Id and Name
+```
+
+**Rules enforced by `merge_into_datamatrix`:**
+
+| Condition | Effect |
+|---|---|
+| Column name already exists | Raises `ValueError` (no overwrite) |
+| Entity `aid` does not match | Raises `ValueError` |
+| Row count does not match existing data | Raises `ValueError` |
+| `use_unknown_arrays=True` | Cells must be lists → `UnknownArray` columns |
+| `data_type_hints` | Same as `dataframe_to_datamatrix` |
+
+---
+
+### Roundtrip with odsbox
+
+The column naming convention (`"Entity.Attribute"`) matches the default output
+of `odsbox.datamatrices_to_pandas.to_pandas`, enabling lossless roundtrips:
+
+```python
+from odsbox.datamatrices_to_pandas import to_pandas
+from wodson.atfx import AtfxStore
+from wodson.data_matrix import dataframe_to_datamatrix
+
+with AtfxStore("measurement.atfx") as store:
+    model = store.model()
+
+    # Read
+    stmt = ods.SelectStatement()
+    stmt.columns.add(aid=model.entities["Measurement"].aid, attribute="*")
+    matrices = store.data_read(stmt)
+
+    # Convert to DataFrame
+    df = to_pandas(matrices, is_null_to_nan=True)
+
+    # Convert back — null values re-map to is_null entries
+    matrix_back = dataframe_to_datamatrix(df, model)
+```
 
 ---
 
