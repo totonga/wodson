@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v1.4.0 (2026-07-24)
+
+### Features
+
+- Do lazy loading of bulk data ([#14](https://github.com/totonga/wodson/pull/14),
+  [`b3b08d4`](https://github.com/totonga/wodson/commit/b3b08d45c2c5fd443538f402e3fceadbd43f7379))
+
+- Lazy loading of bulk data and test refactoring ([#14](https://github.com/totonga/wodson/pull/14),
+  [`b3b08d4`](https://github.com/totonga/wodson/commit/b3b08d45c2c5fd443538f402e3fceadbd43f7379))
+
+### Refactoring
+
+- Reorder and extend tests ([#14](https://github.com/totonga/wodson/pull/14),
+  [`b3b08d4`](https://github.com/totonga/wodson/commit/b3b08d45c2c5fd443538f402e3fceadbd43f7379))
+
+
 ## v1.3.0 (2026-05-30)
 
 ### Bug Fixes
