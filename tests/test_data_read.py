@@ -9,6 +9,8 @@ import pytest
 from wodson.atfx import AtfxStore
 from wodson.atfx._data_read import _extract_condition_values, _to_float
 
+pytest_plugins = ["tests._devtest_fixtures"]
+
 pytestmark = pytest.mark.devtest
 
 _OPENATFX_DIR = Path(__file__).resolve().parent / "data" / "openatfx"

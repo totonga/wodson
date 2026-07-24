@@ -29,15 +29,29 @@ class AtfxStore:
         result = store.data_read(select_statement)
     """
 
-    def __init__(self, file_path: str | Path, base_model_path: Path | None = None) -> None:
+    def __init__(
+        self,
+        file_path: str | Path,
+        base_model_path: Path | None = None,
+        *,
+        lazy_load_binary: bool = True,
+        strict_binary_load: bool = False,
+    ) -> None:
         """Initialize the store by parsing and loading the ATFX file.
 
         Args:
             file_path: Path to the .atfx file.
             base_model_path: Optional path to the base model JSON. Defaults to shipped version.
+            lazy_load_binary: When true, defer external binary reads until queried.
+                Set to false to eagerly read referenced binary data.
+            strict_binary_load: When true together with ``lazy_load_binary=False``,
+                propagate unreadable external binary errors instead of logging and
+                storing null values.
         """
         self._file_path = Path(file_path).resolve()
         self._atfx_dir = self._file_path.parent
+        self._lazy_load_binary = lazy_load_binary
+        self._strict_binary_load = strict_binary_load
         _log.info("Loading ATFX file: %s", self._file_path)
 
         # Parse XML
@@ -89,7 +103,14 @@ class AtfxStore:
 
         self._conn = sqlite3.connect(":memory:", check_same_thread=False)
         create_schema(self._conn, self._model)
-        load_instances(self._conn, self._model, instances, self._file_map)
+        load_instances(
+            self._conn,
+            self._model,
+            instances,
+            self._file_map,
+            lazy_load_binary=lazy_load_binary,
+            strict_binary_load=strict_binary_load,
+        )
         fix_complex_values(self._conn, self._model)
 
         # Pre-compute AID → entity map once; reused by every data_read call.
@@ -118,21 +139,21 @@ class AtfxStore:
         Returns:
             ods.DataMatrices containing the query results.
         """
-        return data_read(self._conn, self._model, select_statement, self._aid_to_entity)
+        return data_read(self._conn, self._model, select_statement, self._aid_to_entity, self._file_map)
 
     def context_read(self) -> ods.ContextVariables:
         """Return context variables for this ATFX session.
 
         Populated variables:
 
-        * ``ASAM-ODS-VERSION`` -- ODS schema version extracted from the XML
+        * ``ODSVERSION`` -- ODS schema version extracted from the XML
           namespace, e.g. ``"6.1.0"``.
         * ``BASE-MODEL-VERSION`` -- value of ``<base_model_version>`` in the
           ATFX file, e.g. ``"asam35"``.
         """
         ctx = ods.ContextVariables()
         if self._ods_version:
-            ctx.variables["ASAM-ODS-VERSION"].string_array.values.append(self._ods_version)
+            ctx.variables["ODSVERSION"].string_array.values.append(self._ods_version)
         if self._base_model_version:
             ctx.variables["BASE-MODEL-VERSION"].string_array.values.append(self._base_model_version)
         return ctx

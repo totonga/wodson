@@ -13,6 +13,7 @@ from wodson.atfx._session import AtfxAdapter
 
 DATA_DIR = Path(__file__).resolve().parent / "data" / "openatfx" / "asam600"
 SIMPLE_ATFX = DATA_DIR / "Example_Simple.atfx"
+COMMON_TYPESPECS_ATFX = Path(__file__).resolve().parent / "data" / "openatfx" / "Example_CommonTypespecs.atfx"
 
 # Used only by devtest-marked tests that assert specific instance values from the
 # ASAM spec example (docs/spec/examples/, not checked in).
@@ -76,6 +77,28 @@ class TestConnect:
                 data=ctx.SerializeToString(),
                 headers={"Content-Type": CONTENT_TYPE_PROTO, "Accept": CONTENT_TYPE_PROTO},
             )
+        assert resp.status_code == 400
+
+    def test_connect_strict_eager_binary_validation_returns_400(self, tmp_path: Path) -> None:
+        """Strict eager validation fails session creation when a referenced .dat file is missing."""
+        if not COMMON_TYPESPECS_ATFX.exists():
+            pytest.skip("Binary ATFX fixture not present")
+
+        copied_atfx = tmp_path / COMMON_TYPESPECS_ATFX.name
+        copied_atfx.write_bytes(COMMON_TYPESPECS_ATFX.read_bytes())
+
+        with AtfxSession(
+            default_file=str(copied_atfx),
+            lazy_load_binary=False,
+            strict_binary_load=True,
+        ) as session:
+            ctx = ods.ContextVariables()
+            resp = session.post(
+                f"{session.url}/ods",
+                data=ctx.SerializeToString(),
+                headers={"Content-Type": CONTENT_TYPE_PROTO, "Accept": CONTENT_TYPE_PROTO},
+            )
+
         assert resp.status_code == 400
 
     def test_logout_removes_session(self):
@@ -154,7 +177,7 @@ class TestProtobuf:
         assert resp.status_code == 200
         cv = ods.ContextVariables()
         cv.ParseFromString(resp.content)
-        assert "ASAM-ODS-VERSION" in cv.variables
+        assert "ODSVERSION" in cv.variables
 
     def test_model_read_returns_entities(self, session_url):
         """model-read returns ods.Model with expected entities."""

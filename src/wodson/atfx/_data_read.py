@@ -6,11 +6,13 @@ import logging
 import math
 import pickle
 import sqlite3
+from pathlib import Path
 from typing import Any
 
 import odsbox.proto.ods_pb2 as ods
 
-from ._db import _SEQUENCE_TYPES
+from ._binary_reader import read_external_component, read_external_component_typed
+from ._db import _SEQUENCE_TYPES, _decode_lazy_external_component
 from ._naming import _col_name, _table_name
 
 _log = logging.getLogger(__name__)
@@ -226,6 +228,7 @@ def data_read(
     model: ods.Model,
     select_statement: ods.SelectStatement,
     aid_to_entity: dict[int, ods.Model.Entity] | None = None,
+    file_map: dict[str, Path] | None = None,
 ) -> ods.DataMatrices:
     """Execute a SelectStatement against the SQLite database and return DataMatrices."""
     ctx = _QueryContext(model, aid_to_entity)
@@ -385,7 +388,7 @@ def data_read(
     _log.debug("Query returned %d row(s)", len(rows))
 
     # Build DataMatrices result
-    return _build_data_matrices(rows, column_meta, ctx, select_statement)
+    return _build_data_matrices(rows, column_meta, ctx, select_statement, file_map)
 
 
 def _build_where(
@@ -467,6 +470,7 @@ def _build_data_matrices(
     column_meta: list[tuple[int, str, int, int]],
     ctx: _QueryContext,
     select_statement: ods.SelectStatement,
+    file_map: dict[str, Path] | None,
 ) -> ods.DataMatrices:
     """Convert SQL result rows into ods.DataMatrices."""
     result = ods.DataMatrices()
@@ -504,7 +508,7 @@ def _build_data_matrices(
             values_list: list[Any] = [row[col_idx] for row in rows]
 
             # Apply values_start/values_limit for sequence columns
-            _fill_column(column, values_list, dt, select_statement)
+            _fill_column(column, values_list, dt, select_statement, file_map)
 
     return result
 
@@ -514,6 +518,7 @@ def _fill_column(
     values: list[Any],
     data_type: int,
     select_statement: ods.SelectStatement,
+    file_map: dict[str, Path] | None,
 ) -> None:
     """Fill a DataMatrix.Column with typed values."""
     if data_type in _SEQUENCE_TYPES or data_type == _DT_UNKNOWN:
@@ -524,16 +529,7 @@ def _fill_column(
                 # for null rows so that null and non-null entries stay in the same field.
                 _fill_sequence_column(column, [], data_type, None)
             else:
-                raw = pickle.loads(val) if isinstance(val, bytes) else val  # noqa: S301
-                # Detect (actual_dt: int, seq_data: list) tuple stored by _serialize_value
-                actual_dt: int | None
-                seq_data: list[Any]
-                if isinstance(raw, tuple) and len(raw) == 2 and isinstance(raw[0], int):
-                    actual_dt = raw[0]
-                    seq_data = raw[1]
-                else:
-                    actual_dt = None
-                    seq_data = raw
+                actual_dt, seq_data = _resolve_sequence_value(val, data_type, file_map)
                 # Apply values_start/values_limit
                 # Complex types store 2 floats per logical value (real, imag),
                 # so the start/limit in logical values must be scaled by 2.
@@ -556,6 +552,37 @@ def _fill_column(
         else:
             column.is_null.append(False)
             _append_value(column, val, data_type)
+
+
+def _resolve_sequence_value(
+    val: Any,
+    data_type: int,
+    file_map: dict[str, Path] | None,
+) -> tuple[int | None, list[Any]]:
+    """Deserialize a stored sequence value, loading binary payloads on demand."""
+    raw = pickle.loads(val) if isinstance(val, bytes) else val  # noqa: S301
+
+    lazy_payload = _decode_lazy_external_component(raw)
+    if lazy_payload is not None:
+        ref, actual_dt = lazy_payload
+        if file_map is None:
+            _log.warning("Skipping unreadable external component '%s': missing file map", ref.identifier)
+            return actual_dt, []
+
+        try:
+            if data_type == _DT_UNKNOWN:
+                typed = read_external_component_typed(ref, file_map)
+                return actual_dt if actual_dt is not None else typed.data_type, typed.values
+            arr = read_external_component(ref, file_map)
+            return actual_dt, arr.tolist()
+        except (ValueError, OSError) as exc:
+            _log.warning("Skipping unreadable external component '%s': %s", ref.identifier, exc)
+            return actual_dt, []
+
+    if isinstance(raw, tuple) and len(raw) == 2 and isinstance(raw[0], int):
+        return raw[0], raw[1]
+
+    return None, raw
 
 
 def _fill_unknown_array_values(ua: Any, seq_data: list[Any], data_type: int) -> None:

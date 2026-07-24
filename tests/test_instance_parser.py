@@ -21,6 +21,8 @@ from wodson.atfx._instance_parser import (
     _parse_values_content,
 )
 
+pytest_plugins = ["tests._devtest_fixtures"]
+
 pytestmark = pytest.mark.devtest
 
 

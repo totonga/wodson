@@ -54,11 +54,15 @@ class _AtfxHttpServer(socketserver.ThreadingMixIn, HTTPServer):
         server_address: tuple[str, int],
         request_handler_class: type[BaseHTTPRequestHandler],
         default_file: str | None = None,
+        lazy_load_binary: bool = True,
+        strict_binary_load: bool = False,
     ) -> None:
         super().__init__(server_address, request_handler_class)
         self._sessions: dict[str, AtfxStore] = {}
         self._lock: threading.Lock = threading.Lock()
         self._default_file: str | None = default_file
+        self._lazy_load_binary: bool = lazy_load_binary
+        self._strict_binary_load: bool = strict_binary_load
         # Cache loaded stores by resolved file path so that reconnects to the
         # same file skip the ~10ms parse+load step.  The store is owned by the
         # cache; session logout does NOT close it.
@@ -75,7 +79,11 @@ class _AtfxHttpServer(socketserver.ThreadingMixIn, HTTPServer):
             if resolved in self._store_cache:
                 return self._store_cache[resolved]
         # Load outside the lock to avoid blocking other threads during parsing.
-        store = AtfxStore(file_path)
+        store = AtfxStore(
+            file_path,
+            lazy_load_binary=self._lazy_load_binary,
+            strict_binary_load=self._strict_binary_load,
+        )
         with self._lock:
             # Re-check after acquiring lock (another thread may have loaded it).
             if resolved not in self._store_cache:
@@ -291,7 +299,15 @@ class AtfxServer:
                 matrices = con.data_read(select_statement)
     """
 
-    def __init__(self, host: str = "127.0.0.1", port: int = 0, default_file: str | None = None) -> None:
+    def __init__(
+        self,
+        host: str = "127.0.0.1",
+        port: int = 0,
+        default_file: str | None = None,
+        *,
+        lazy_load_binary: bool = True,
+        strict_binary_load: bool = False,
+    ) -> None:
         """Create the server (does not start serving yet).
 
         Args:
@@ -299,8 +315,19 @@ class AtfxServer:
             port: Port to bind. ``0`` lets the OS pick a free port.
             default_file: Path to an ATFX file used when no ``ATFX_FILE``
                 context variable is supplied on session creation.
+            lazy_load_binary: When true, defer external binary reads until the
+                queried column is materialized. Set to false to eagerly read
+                referenced binary data while creating the store.
+            strict_binary_load: When true together with ``lazy_load_binary=False``,
+                fail session creation if any external binary payload is unreadable.
         """
-        self._server = _AtfxHttpServer((host, port), _AtfxRequestHandler, default_file)
+        self._server = _AtfxHttpServer(
+            (host, port),
+            _AtfxRequestHandler,
+            default_file,
+            lazy_load_binary,
+            strict_binary_load,
+        )
         self._thread: threading.Thread | None = None
 
     @property

@@ -114,6 +114,14 @@ def _bit_ods_dt(typespec: str, bitcount: int) -> int:
             return ods.DataTypeEnum.DT_LONGLONG
 
 
+def infer_external_component_data_type(ref: ExternalComponentRef) -> int:
+    """Infer the ODS data type for an external component without reading binary data."""
+    typespec = ref.datatype.lower()
+    if typespec in _BIT_TYPESPECS:
+        return _bit_ods_dt(typespec, ref.bitcount)
+    return _TYPESPEC_TO_ODS_DT.get(typespec, ods.DataTypeEnum.DT_UNKNOWN)
+
+
 def _read_bit_values(
     data: bytes,
     ref: ExternalComponentRef,

@@ -10,6 +10,8 @@ from wodson.atfx._base_model import load_base_model
 from wodson.atfx._model_builder import build_model, detect_ods_version
 from wodson.atfx._xml_utils import _extract_ns
 
+pytest_plugins = ["tests._devtest_fixtures"]
+
 pytestmark = pytest.mark.devtest
 
 
@@ -199,9 +201,9 @@ def test_relation_type_from_base_model(simple_store):
     assert env_rel.relationship == ods.Model.RelationshipEnum.RS_FATHER
 
 
-def test_all_example_files_load(data_dir):
+def test_all_example_files_load(spec_examples_dir):
     """All example ATFX files should load without error."""
-    atfx_files = list(data_dir.glob("*.atfx"))
+    atfx_files = list(spec_examples_dir.glob("*.atfx"))
     assert len(atfx_files) == 7
 
     for atfx_file in atfx_files:

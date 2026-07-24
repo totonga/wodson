@@ -11,7 +11,7 @@ from typing import Any
 import numpy as np
 import odsbox.proto.ods_pb2 as ods
 
-from ._binary_reader import read_external_component, read_external_component_typed
+from ._binary_reader import infer_external_component_data_type, read_external_component, read_external_component_typed
 from ._instance_parser import ExternalComponentRef, TypedValues
 from ._naming import _col_name, _table_name
 
@@ -45,6 +45,26 @@ _BLOB_TYPES = frozenset(
         ods.DataTypeEnum.DT_DCOMPLEX,
     }
 )
+
+_LAZY_EXTERNAL_COMPONENT_TAG = "__wodson_lazy_external_component__"
+
+
+def _encode_lazy_external_component(ref: ExternalComponentRef, actual_dt: int | None) -> bytes:
+    """Serialize an external component reference for deferred binary loading."""
+    return pickle.dumps((_LAZY_EXTERNAL_COMPONENT_TAG, ref, actual_dt))
+
+
+def _decode_lazy_external_component(raw: Any) -> tuple[ExternalComponentRef, int | None] | None:
+    """Return the deferred external component payload if *raw* encodes one."""
+    if (
+        isinstance(raw, tuple)
+        and len(raw) == 3
+        and raw[0] == _LAZY_EXTERNAL_COMPONENT_TAG
+        and isinstance(raw[1], ExternalComponentRef)
+        and (raw[2] is None or isinstance(raw[2], int))
+    ):
+        return raw[1], raw[2]
+    return None
 
 
 def _sqlite_type(data_type: int) -> str:
@@ -134,6 +154,9 @@ def load_instances(
     model: ods.Model,
     instances: dict[str, list[dict[str, Any]]],
     file_map: dict[str, Path],
+    *,
+    lazy_load_binary: bool = True,
+    strict_binary_load: bool = False,
 ) -> None:
     """Load parsed instances into the SQLite database."""
     cursor = conn.cursor()
@@ -174,7 +197,15 @@ def load_instances(
             row_values: list[Any] = []
             for key, dt in zip(all_col_keys, col_types, strict=True):
                 val = inst.get(key)
-                row_values.append(_serialize_value(val, dt, file_map))
+                row_values.append(
+                    _serialize_value(
+                        val,
+                        dt,
+                        file_map,
+                        lazy_load_binary=lazy_load_binary,
+                        strict_binary_load=strict_binary_load,
+                    )
+                )
             rows.append(tuple(row_values))
 
         cursor.executemany(sql, rows)
@@ -182,13 +213,24 @@ def load_instances(
     conn.commit()
 
 
-def _serialize_value(val: Any, data_type: int, file_map: dict[str, Path]) -> Any:
+def _serialize_value(
+    val: Any,
+    data_type: int,
+    file_map: dict[str, Path],
+    *,
+    lazy_load_binary: bool,
+    strict_binary_load: bool,
+) -> Any:
     """Serialize a value for SQLite storage."""
     if val is None:
         return None
 
     # External component: resolve binary data
     if isinstance(val, ExternalComponentRef):
+        if lazy_load_binary:
+            actual_dt = infer_external_component_data_type(val) if data_type == ods.DataTypeEnum.DT_UNKNOWN else None
+            return _encode_lazy_external_component(val, actual_dt)
+
         try:
             if data_type == ods.DataTypeEnum.DT_UNKNOWN:
                 # Preserve the ODS type from the binary typespec
@@ -197,6 +239,8 @@ def _serialize_value(val: Any, data_type: int, file_map: dict[str, Path]) -> Any
             arr = read_external_component(val, file_map)
             return pickle.dumps(arr.tolist())
         except (ValueError, OSError) as exc:
+            if strict_binary_load:
+                raise
             _log.warning("Skipping unreadable external component '%s': %s", val.identifier, exc)
             return None
 
@@ -336,6 +380,15 @@ def fix_complex_values(conn: sqlite3.Connection, model: ods.Model) -> None:
         complex_dt = meq_complex[int(meq_id)]
         try:
             raw = pickle.loads(blob)  # noqa: S301
+            lazy_payload = _decode_lazy_external_component(raw)
+            if lazy_payload is not None:
+                ref, current_dt = lazy_payload
+                if current_dt in (
+                    ods.DataTypeEnum.DT_FLOAT,
+                    ods.DataTypeEnum.DT_DOUBLE,
+                ):
+                    updates.append((_encode_lazy_external_component(ref, complex_dt), lc_id))
+                continue
             if isinstance(raw, tuple) and len(raw) == 2 and isinstance(raw[0], int):
                 current_dt, values = raw
                 # Only re-type float/double blobs (not already-correct types).
