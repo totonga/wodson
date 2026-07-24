@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 import logging
 import math
 import pickle
 import sqlite3
+from pathlib import Path
 from typing import Any
 
 import odsbox.proto.ods_pb2 as ods

@@ -1,12 +1,14 @@
 """Tests for binary reader with external .dat files."""
 
-from pathlib import Path
 import shutil
+from pathlib import Path
 
 import odsbox.proto.ods_pb2 as ods
 import pytest
 
 from wodson.atfx import AtfxStore
+
+pytest_plugins = ["tests._devtest_fixtures"]
 
 _OPENATFX_DIR = Path(__file__).resolve().parent / "data" / "openatfx"
 

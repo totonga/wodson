@@ -7,14 +7,16 @@ import pytest
 
 from wodson.atfx import AtfxStore
 
+pytest_plugins = ["tests._devtest_fixtures"]
+
 pytestmark = pytest.mark.devtest
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
+DATA_DIR_SPEC = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
 
-ALL_ATFX_FILES = sorted(DATA_DIR.glob("*.atfx"))
+ALL_ATFX_FILES_SPEC = sorted(DATA_DIR_SPEC.glob("*.atfx"))
 
 
-@pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.stem)
+@pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES_SPEC, ids=lambda p: p.stem)
 def test_load_and_model(atfx_file):
     """Every example file should load and produce a non-empty model."""
     # Skip files that need .dat if the .dat doesn't exist
@@ -28,7 +30,7 @@ def test_load_and_model(atfx_file):
             assert entity.aid > 0
 
 
-@pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.stem)
+@pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES_SPEC, ids=lambda p: p.stem)
 def test_query_first_entity(atfx_file):
     """Query all instances of the first entity in each file."""
     with AtfxStore(atfx_file) as store:
@@ -43,6 +45,13 @@ def test_query_first_entity(atfx_file):
 
         # Should succeed without error
         assert result is not None
+
+
+@pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES_SPEC, ids=lambda p: p.stem)
+def test_strict_bulk_validation_all_example_files(atfx_file):
+    """Every spec example file should survive full eager bulk-load validation."""
+    with AtfxStore(atfx_file, lazy_load_binary=False, strict_binary_load=True) as store:
+        assert len(store.model().entities) > 0
 
 
 def test_simple_full_roundtrip(simple_atfx):

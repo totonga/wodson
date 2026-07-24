@@ -58,6 +58,14 @@ def _attr_by_base(entity: ods.Model.Entity, base_name: str) -> str | None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.stem)
+def test_strict_bulk_validation_all_example_files(atfx_file):
+    """Every spec example file should survive full eager bulk-load validation."""
+    strict_binary_load = atfx_file.stem not in ["example", "example_asam36", "example_toleratedIncorrect"]
+    with AtfxStore(atfx_file, lazy_load_binary=False, strict_binary_load=strict_binary_load) as store:
+        assert len(store.model().entities) > 0
+
+
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
 def test_open_and_model_not_empty(atfx_file: Path, lazy_load_binary: bool) -> None:
     """Every ATFX file must open and return a model with at least one entity."""
