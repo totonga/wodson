@@ -22,7 +22,7 @@ classifiers = [
 ]
 dependencies = [
     "numpy>=2.0",
-    "odsbox[oidc]>=1.2.0",
+    "odsbox[oidc]>=1.6.0",
 ]
 
 [project.urls]

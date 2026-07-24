@@ -1278,16 +1278,16 @@ wheels = [
 
 [[package]]
 name = "odsbox"
-version = "1.2.0"
+version = "1.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pandas" },
     { name = "protobuf" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/65/78/380ebb4829a4bccc988a1cfb74259fd60add9c73149f5f316d9a989e3a6f/odsbox-1.2.0.tar.gz", hash = "sha256:185dd490f688e5e539a52980dd55123f9f3481ab322ae7e13a224103ba458ab5", size = 1330864, upload-time = "2026-04-03T21:09:41.717Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e3/64/d0f73cd13625821766bfd9a0b00da25283cab07e4473e3121107cfff648f/odsbox-1.6.0.tar.gz", hash = "sha256:7759f37ac2975f33dc7b64b1e1bd0f9687cd796cdad88bfe9a48ab90a9c2f55a", size = 61075, upload-time = "2026-07-24T11:33:13.28Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/81/1e/3a61cf841229f32c45b23bab431c6e02c128f7eab2aa9f6764854bd1e4da/odsbox-1.2.0-py3-none-any.whl", hash = "sha256:5814de744855357a2cc80fd3ae89ef2a9b24fb61e8a065fae1c3052a08edbb78", size = 68073, upload-time = "2026-04-03T21:09:39.919Z" },
+    { url = "https://files.pythonhosted.org/packages/ad/68/6262f1a472cd736437f1ca50d265198ed79fa4b26d2be0d77de8e58d1e04/odsbox-1.6.0-py3-none-any.whl", hash = "sha256:7253254a8ff6adf39c23d24d8a6355780286beb0d0295c361c9108a3ee59c5d4", size = 70753, upload-time = "2026-07-24T11:33:12.128Z" },
 ]
 
 [package.optional-dependencies]
@@ -2186,7 +2186,7 @@ wheels = [
 
 [[package]]
 name = "wodson"
-version = "1.3.0"
+version = "1.4.0"
 source = { editable = "." }
 dependencies = [
     { name = "numpy" },
@@ -2212,7 +2212,7 @@ examples = [
 [package.metadata]
 requires-dist = [
     { name = "numpy", specifier = ">=2.0" },
-    { name = "odsbox", extras = ["oidc"], specifier = ">=1.2.0" },
+    { name = "odsbox", extras = ["oidc"], specifier = ">=1.6.0" },
 ]
 
 [package.metadata.requires-dev]
