@@ -400,7 +400,7 @@ Load an ATFX file into memory.
 |--------|---------|-------------|
 | `model()` | `ods.Model` | Application model |
 | `data_read(select_statement)` | `ods.DataMatrices` | Execute a query |
-| `context_read()` | `ods.ContextVariables` | Session context (`ASAM-ODS-VERSION`, `BASE-MODEL-VERSION`) |
+| `context_read()` | `ods.ContextVariables` | Session context (`ODSVERSION`, `BASE-MODEL-VERSION`) |
 | `close()` | `None` | Release resources |
 
 Context manager (`with` statement) calls `close()` automatically.

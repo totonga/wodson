@@ -67,9 +67,17 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
         ``default_file`` parameter of :class:`~wodson.atfx.AtfxServer`.
     """
 
-    def __init__(self, default_file: str | None = None) -> None:
+    def __init__(
+        self,
+        default_file: str | None = None,
+        *,
+        lazy_load_binary: bool = True,
+        strict_binary_load: bool = False,
+    ) -> None:
         super().__init__()
         self._default_file: str | None = default_file
+        self._lazy_load_binary: bool = lazy_load_binary
+        self._strict_binary_load: bool = strict_binary_load
         self._sessions: dict[str, AtfxStore] = {}
         self._lock: threading.Lock = threading.Lock()
         # Cache loaded stores by resolved path; same semantics as the HTTP server.
@@ -81,7 +89,11 @@ class AtfxAdapter(requests.adapters.BaseAdapter):
         with self._lock:
             if resolved in self._store_cache:
                 return self._store_cache[resolved]
-        store = AtfxStore(file_path)
+        store = AtfxStore(
+            file_path,
+            lazy_load_binary=self._lazy_load_binary,
+            strict_binary_load=self._strict_binary_load,
+        )
         with self._lock:
             if resolved not in self._store_cache:
                 self._store_cache[resolved] = store
@@ -300,9 +312,19 @@ class AtfxSession(requests.Session):
                 model = con.model_read()
     """
 
-    def __init__(self, default_file: str | None = None) -> None:
+    def __init__(
+        self,
+        default_file: str | None = None,
+        *,
+        lazy_load_binary: bool = True,
+        strict_binary_load: bool = False,
+    ) -> None:
         super().__init__()
-        self._adapter = AtfxAdapter(default_file)
+        self._adapter = AtfxAdapter(
+            default_file,
+            lazy_load_binary=lazy_load_binary,
+            strict_binary_load=strict_binary_load,
+        )
         self.mount(_SYNTHETIC_BASE_URL + "/", self._adapter)
 
     @property

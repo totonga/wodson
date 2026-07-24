@@ -110,7 +110,7 @@ def test_geometry_loads(geometry_atfx):
 
 
 def test_context_read_returns_variables(simple_atfx):
-    """context_read() should return ASAM-ODS-VERSION and BASE-MODEL-VERSION."""
+    """context_read() should return ODSVERSION and BASE-MODEL-VERSION."""
     with AtfxStore(simple_atfx) as store:
         ctx = store.context_read()
         assert "BASE-MODEL-VERSION" in ctx.variables
@@ -122,6 +122,6 @@ def test_context_read_ods_version(simple_atfx):
     """ODS version should be extracted from XML namespace."""
     with AtfxStore(simple_atfx) as store:
         ctx = store.context_read()
-        if "ASAM-ODS-VERSION" in ctx.variables:
-            ods_ver = ctx.variables["ASAM-ODS-VERSION"].string_array.values[0]
+        if "ODSVERSION" in ctx.variables:
+            ods_ver = ctx.variables["ODSVERSION"].string_array.values[0]
             assert ods_ver != ""

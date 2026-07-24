@@ -10,6 +10,10 @@ from wodson.atfx import AtfxStore
 DATA_DIR = Path(__file__).resolve().parent / "data"
 
 ALL_ATFX_FILES = sorted(DATA_DIR.rglob("*.atfx"))
+LOAD_BULK_MODES = [
+    pytest.param(True, id="without-bulk-load"),
+    pytest.param(False, id="with-bulk-load"),
+]
 
 
 # ---------------------------------------------------------------------------
@@ -20,11 +24,16 @@ ALL_ATFX_FILES = sorted(DATA_DIR.rglob("*.atfx"))
 _BINARY_ERRORS = (ValueError, FileNotFoundError, OSError)
 
 
-def _open_store(atfx_file: Path) -> AtfxStore:
+@pytest.fixture(params=LOAD_BULK_MODES)
+def lazy_load_binary(request: pytest.FixtureRequest) -> bool:
+    return bool(request.param)
+
+
+def _open_store(atfx_file: Path, *, lazy_load_binary: bool) -> AtfxStore:
     """Open an AtfxStore, skipping files whose external binary data is missing
     or truncated (pre-existing data quality issues in the test corpus)."""
     try:
-        return AtfxStore(atfx_file)
+        return AtfxStore(atfx_file, lazy_load_binary=lazy_load_binary)
     except _BINARY_ERRORS as exc:
         pytest.skip(f"{atfx_file.name}: cannot open - {exc}")
 
@@ -50,17 +59,17 @@ def _attr_by_base(entity: ods.Model.Entity, base_name: str) -> str | None:
 
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
-def test_open_and_model_not_empty(atfx_file: Path) -> None:
+def test_open_and_model_not_empty(atfx_file: Path, lazy_load_binary: bool) -> None:
     """Every ATFX file must open and return a model with at least one entity."""
-    with _open_store(atfx_file) as store:
+    with _open_store(atfx_file, lazy_load_binary=lazy_load_binary) as store:
         model = store.model()
         assert len(model.entities) > 0, f"{atfx_file.name}: model has no entities"
 
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
-def test_entities_have_attributes(atfx_file: Path) -> None:
+def test_entities_have_attributes(atfx_file: Path, lazy_load_binary: bool) -> None:
     """Every entity in every file must expose at least one attribute."""
-    with _open_store(atfx_file) as store:
+    with _open_store(atfx_file, lazy_load_binary=lazy_load_binary) as store:
         model = store.model()
         for ename, entity in model.entities.items():
             assert entity.aid > 0, f"{atfx_file.name}/{ename}: aid must be positive"
@@ -73,12 +82,12 @@ def test_entities_have_attributes(atfx_file: Path) -> None:
 
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
-def test_wildcard_query_all_entities(atfx_file: Path) -> None:
+def test_wildcard_query_all_entities(atfx_file: Path, lazy_load_binary: bool) -> None:
     """A wildcard SELECT on each entity must succeed and return a DataMatrices.
 
     Entities with zero instances produce 0 matrices; entities with instances produce 1.
     """
-    with _open_store(atfx_file) as store:
+    with _open_store(atfx_file, lazy_load_binary=lazy_load_binary) as store:
         model = store.model()
         for ename, entity in model.entities.items():
             stmt = ods.SelectStatement()
@@ -98,9 +107,9 @@ def test_wildcard_query_all_entities(atfx_file: Path) -> None:
 
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
-def test_id_and_name_query(atfx_file: Path) -> None:
+def test_id_and_name_query(atfx_file: Path, lazy_load_binary: bool) -> None:
     """SELECT Id, Name must return columns with matching row counts."""
-    with _open_store(atfx_file) as store:
+    with _open_store(atfx_file, lazy_load_binary=lazy_load_binary) as store:
         model = store.model()
         for ename, entity in model.entities.items():
             if "Id" not in entity.attributes or "Name" not in entity.attributes:
@@ -133,10 +142,10 @@ def test_id_and_name_query(atfx_file: Path) -> None:
 
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
-def test_localcolumn_values_accessible(atfx_file: Path) -> None:
+def test_localcolumn_values_accessible(atfx_file: Path, lazy_load_binary: bool) -> None:
     """If the model contains an AoLocalColumn entity, querying its Values
     attribute must not raise and the result must be a DataMatrices."""
-    with _open_store(atfx_file) as store:
+    with _open_store(atfx_file, lazy_load_binary=lazy_load_binary) as store:
         model = store.model()
         lc_name = _localcolumn_entity_name(model)
         if lc_name is None:
@@ -165,9 +174,9 @@ def test_localcolumn_values_accessible(atfx_file: Path) -> None:
 
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
-def test_localcolumn_values_row_count_consistent(atfx_file: Path) -> None:
+def test_localcolumn_values_row_count_consistent(atfx_file: Path, lazy_load_binary: bool) -> None:
     """Id and Values columns must have the same number of rows."""
-    with _open_store(atfx_file) as store:
+    with _open_store(atfx_file, lazy_load_binary=lazy_load_binary) as store:
         model = store.model()
         lc_name = _localcolumn_entity_name(model)
         if lc_name is None:
@@ -205,9 +214,9 @@ def test_localcolumn_values_row_count_consistent(atfx_file: Path) -> None:
 
 
 @pytest.mark.parametrize("atfx_file", ALL_ATFX_FILES, ids=lambda p: p.relative_to(DATA_DIR).as_posix())
-def test_count_aggregate_per_entity(atfx_file: Path) -> None:
+def test_count_aggregate_per_entity(atfx_file: Path, lazy_load_binary: bool) -> None:
     """COUNT aggregate on Id must return a single non-negative integer per entity."""
-    with _open_store(atfx_file) as store:
+    with _open_store(atfx_file, lazy_load_binary=lazy_load_binary) as store:
         model = store.model()
         for ename, entity in model.entities.items():
             if "Id" not in entity.attributes:

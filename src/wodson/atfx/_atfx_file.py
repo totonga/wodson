@@ -55,12 +55,26 @@ class AtfxFile(Measurements):
                 display(df.head())
     """
 
-    def __init__(self, filepath: str | Path) -> None:
+    def __init__(
+        self,
+        filepath: str | Path,
+        *,
+        lazy_load_binary: bool = True,
+        strict_binary_load: bool = False,
+    ) -> None:
         """Initialize AtfxFile with the given ATFX file path.
 
         :param filepath: Path to an ATFX file to open.
+        :param lazy_load_binary: When true, defer external binary reads until
+            the relevant values are queried. Set to false to eagerly load the
+            referenced binary payloads while opening the file.
+        :param strict_binary_load: When true together with
+            ``lazy_load_binary=False``, fail open if any referenced external
+            binary payload is unreadable.
         """
         self._filepath = str(filepath)
+        self._lazy_load_binary = lazy_load_binary
+        self._strict_binary_load = strict_binary_load
         self._session: AtfxSession | None = None
         self._atfx_con_i: ConI | None = None
 
@@ -69,7 +83,11 @@ class AtfxFile(Measurements):
         _log.debug("Opening ATFX file: %s", self._filepath)
 
         # Create and enter AtfxSession
-        self._session = AtfxSession(default_file=self._filepath)
+        self._session = AtfxSession(
+            default_file=self._filepath,
+            lazy_load_binary=self._lazy_load_binary,
+            strict_binary_load=self._strict_binary_load,
+        )
         self._session.__enter__()
 
         # Create and enter ConI with immediate model loading

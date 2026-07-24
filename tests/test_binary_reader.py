@@ -1,6 +1,7 @@
 """Tests for binary reader with external .dat files."""
 
 from pathlib import Path
+import shutil
 
 import odsbox.proto.ods_pb2 as ods
 import pytest
@@ -37,6 +38,13 @@ def cast_store(cast_typespecs_atfx):
         yield store
 
 
+def _copy_atfx_without_binary(atfx_path: Path, tmp_path: Path) -> Path:
+    """Copy only the ATFX file so relative binary paths become unreadable."""
+    copied = tmp_path / atfx_path.name
+    shutil.copy(atfx_path, copied)
+    return copied
+
+
 def test_common_typespecs_model_loads(common_typespecs_atfx):
     """CommonTypespecs should load model even if .dat is missing."""
     dat_file = common_typespecs_atfx.parent / "Example_CommonTypespecs.dat"
@@ -45,6 +53,33 @@ def test_common_typespecs_model_loads(common_typespecs_atfx):
     with AtfxStore(common_typespecs_atfx) as store:
         model = store.model()
         assert len(model.entities) > 0
+
+
+def test_common_typespecs_lazy_loads_without_binary(tmp_path: Path, common_typespecs_atfx: Path) -> None:
+    """Default lazy loading keeps model open even when the binary payload is absent."""
+    copied_atfx = _copy_atfx_without_binary(common_typespecs_atfx, tmp_path)
+
+    with AtfxStore(copied_atfx) as store:
+        assert len(store.model().entities) > 0
+
+
+def test_common_typespecs_eager_loads_without_binary(tmp_path: Path, common_typespecs_atfx: Path) -> None:
+    """Best-effort eager loading preserves the pre-lazy behaviour for missing binaries."""
+    copied_atfx = _copy_atfx_without_binary(common_typespecs_atfx, tmp_path)
+
+    with AtfxStore(copied_atfx, lazy_load_binary=False) as store:
+        assert len(store.model().entities) > 0
+
+
+def test_common_typespecs_strict_eager_validation_fails_without_binary(
+    tmp_path: Path, common_typespecs_atfx: Path
+) -> None:
+    """Strict eager validation surfaces unreadable external binary payloads."""
+    copied_atfx = _copy_atfx_without_binary(common_typespecs_atfx, tmp_path)
+
+    with pytest.raises(FileNotFoundError):
+        with AtfxStore(copied_atfx, lazy_load_binary=False, strict_binary_load=True):
+            pass
 
 
 def test_common_typespecs_localcolumns(common_store):
