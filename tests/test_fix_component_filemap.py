@@ -25,8 +25,6 @@ import pytest
 from wodson.atfx import AtfxStore
 from wodson.atfx._instance_parser import ExternalComponentRef, resolve_external_component_refs
 
-pytestmark = pytest.mark.devtest
-
 DATA_DIR = Path(__file__).resolve().parent / "data" / "openatfx"
 COMMON_TYPESPECS_ATFX = DATA_DIR / "Example_CommonTypespecs.atfx"
 COMMON_TYPESPECS_DAT = DATA_DIR / "Example_CommonTypespecs.dat"

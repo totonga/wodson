@@ -156,6 +156,12 @@ class AtfxStore:
             ctx.variables["ODSVERSION"].string_array.values.append(self._ods_version)
         if self._base_model_version:
             ctx.variables["BASE-MODEL-VERSION"].string_array.values.append(self._base_model_version)
+        if self._atfx_dir:
+            ctx.variables["FILE_ROOT"].string_array.values.append(str(self._atfx_dir))
+            ctx.variables["FILE_ROOT_MANAGED"].string_array.values.append(str(self._atfx_dir))
+            ctx.variables["FILE_ROOT_EXTREF"].string_array.values.append(str(self._atfx_dir))
+            ctx.variables["FILE_MODE"].string_array.values.append("SINGLE_VOLUME")
+            ctx.variables["FILE_NOTATION"].string_array.values.append("UNC_WIN" if self._atfx_dir.drive else "UNC_UNIX")
         return ctx
 
     def close(self) -> None:

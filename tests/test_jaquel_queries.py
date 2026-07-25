@@ -22,6 +22,8 @@ import pytest
 
 from wodson.atfx import AtfxFile
 
+pytest_plugins = ["tests._devtest_fixtures"]
+
 pytestmark = pytest.mark.devtest
 
 _SPEC_DIR = Path(__file__).resolve().parent.parent / "docs" / "spec" / "examples"
