@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.5.1 (2026-07-25)
+
+### Bug Fixes
+
+- Some cleanup in the PathResolver ([#16](https://github.com/totonga/wodson/pull/16),
+  [`b66a96d`](https://github.com/totonga/wodson/commit/b66a96dcae4e155a6998bfed4b6d74003418b066))
+
+
 ## v1.5.0 (2026-07-24)
 
 ### Features
