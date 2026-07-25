@@ -50,14 +50,6 @@ class InvalidMultiVolumePathError(PathResolutionError):
     """MULTI_VOLUME path does not follow $(SYMBOL)... syntax."""
 
 
-class SourcePathMode(Enum):
-    """Internal three-state resolution mode derived from a source attribute."""
-
-    ROOT = "root"
-    EXTREF = "extref"
-    MANAGED = "managed"
-
-
 # ============================================================================
 # Path Resolution Class
 # ============================================================================
@@ -75,9 +67,16 @@ class PathResolver:
         ...     base_name = "filename_url"
         ...     data_type = 7
         ...     name = "filename_url"
-        >>> resolver.resolve_path("measurements\\file.dat", _Attr())
+        >>> resolver.resolve_url("measurements\\file.dat", _Attr())
         'C:\\data\\measurements\\file.dat'
     """
+
+    class AttrMode(Enum):
+        """Internal three-state resolution mode derived from a source attribute."""
+
+        ROOT = "root"
+        EXTREF = "extref"
+        MANAGED = "managed"
 
     FILE_MODE_ABSOLUTE = "ABSOLUTE"
     FILE_MODE_SINGLE_VOLUME = "SINGLE_VOLUME"
@@ -194,36 +193,40 @@ class PathResolver:
         ao_root_key = self.CTX_FILE_ROOT_MANAGED if file_root_managed else self.CTX_FILE_ROOT
 
         self._root_key_by_source_mode = {
-            SourcePathMode.ROOT: self.CTX_FILE_ROOT,
-            SourcePathMode.EXTREF: self.CTX_FILE_ROOT_EXTREF,
-            SourcePathMode.MANAGED: ao_root_key,
+            PathResolver.AttrMode.ROOT: self.CTX_FILE_ROOT,
+            PathResolver.AttrMode.EXTREF: self.CTX_FILE_ROOT_EXTREF,
+            PathResolver.AttrMode.MANAGED: ao_root_key,
         }
         self._root_by_source_mode = {
-            SourcePathMode.ROOT: file_root,
-            SourcePathMode.EXTREF: file_root_extref,
-            SourcePathMode.MANAGED: file_root_managed or file_root,
+            PathResolver.AttrMode.ROOT: file_root,
+            PathResolver.AttrMode.EXTREF: file_root_extref,
+            PathResolver.AttrMode.MANAGED: file_root_managed or file_root,
         }
         self._join_separator = (
             self._WINDOWS_SEPARATOR if self._notation == self.FILE_NOTATION_UNC_WIN else self._UNIX_SEPARATOR
         )
         self._symbols: frozenset[str] | None = None
 
-    def resolve_urls(self, value: list[str], attr_or_mode: ods.Model.Attribute | SourcePathMode) -> list[str]:
+    def resolve_urls(self, input_urls: list[str], attr_or_mode: ods.Model.Attribute | AttrMode) -> list[str]:
         """Resolve a list of ASAM ODS URLs to absolute file paths."""
         source_mode = (
-            attr_or_mode if isinstance(attr_or_mode, SourcePathMode) else self._get_attribute_path_mode(attr_or_mode)
+            attr_or_mode
+            if isinstance(attr_or_mode, PathResolver.AttrMode)
+            else self._get_attribute_path_mode(attr_or_mode)
         )
-        return [self._resolve_path_with_source_attr(url, source_mode) for url in value]
+        return [self._resolve_url_with_source_attr(url, source_mode) for url in input_urls]
 
-    def resolve_path(self, input_url: str, attr_or_mode: ods.Model.Attribute | SourcePathMode) -> str:
+    def resolve_url(self, input_url: str, attr_or_mode: ods.Model.Attribute | AttrMode) -> str:
         """Resolve an ASAM ODS URL to an absolute file path."""
         source_mode = (
-            attr_or_mode if isinstance(attr_or_mode, SourcePathMode) else self._get_attribute_path_mode(attr_or_mode)
+            attr_or_mode
+            if isinstance(attr_or_mode, PathResolver.AttrMode)
+            else self._get_attribute_path_mode(attr_or_mode)
         )
-        return self._resolve_path_with_source_attr(input_url, source_mode)
+        return self._resolve_url_with_source_attr(input_url, source_mode)
 
     @classmethod
-    def _get_attribute_path_mode(cls, attribute: ods.Model.Attribute) -> SourcePathMode:
+    def _get_attribute_path_mode(cls, attribute: ods.Model.Attribute) -> AttrMode:
         """Determine the three-state path resolution mode from an attribute."""
         data_type = getattr(attribute, "data_type", None)
         attr_name = getattr(attribute, "name", "<unknown>")
@@ -232,18 +235,18 @@ class PathResolver:
             PathResolver._log.debug(
                 "Attribute %s has datatype DT_EXTERNALREFERENCE -> mode=%s",
                 attr_name,
-                SourcePathMode.EXTREF.name,
+                PathResolver.AttrMode.EXTREF.name,
             )
-            return SourcePathMode.EXTREF
+            return PathResolver.AttrMode.EXTREF
 
         raw_base_name = getattr(attribute, "base_name", "")
         base_name = raw_base_name.lower() if isinstance(raw_base_name, str) else ""
         if base_name in (cls.SOURCE_ATTR_FILENAME, cls.SOURCE_ATTR_FLAGS_FILENAME):
-            source_mode = SourcePathMode.ROOT
+            source_mode = PathResolver.AttrMode.ROOT
         elif base_name == cls.SOURCE_ATTR_LOCATION:
-            source_mode = SourcePathMode.EXTREF
+            source_mode = PathResolver.AttrMode.EXTREF
         elif base_name == cls.SOURCE_ATTR_AO_LOCATION:
-            source_mode = SourcePathMode.MANAGED
+            source_mode = PathResolver.AttrMode.MANAGED
         else:
             source_mode = None
 
@@ -263,13 +266,13 @@ class PathResolver:
         PathResolver._log.error(msg)
         raise UnknownSourceAttributeError(msg)
 
-    def _resolve_path_with_source_attr(
+    def _resolve_url_with_source_attr(
         self,
         input_url: str,
-        source_mode: SourcePathMode,
+        source_mode: AttrMode,
     ) -> str:
         self._log.debug(
-            "resolve_path: input_url=%r, source_mode=%s, mode=%s, notation=%s",
+            "resolve_url: input_url=%r, source_mode=%s, mode=%s, notation=%s",
             input_url,
             source_mode.name,
             self._mode,
@@ -299,7 +302,7 @@ class PathResolver:
         self._log.debug("ABSOLUTE mode: returning input unchanged")
         return input_url
 
-    def _resolve_single_volume(self, input_url: str, source_mode: SourcePathMode) -> str:
+    def _resolve_single_volume(self, input_url: str, source_mode: AttrMode) -> str:
         """BRANCH B: SINGLE_VOLUME mode - concatenate root + relative path."""
         root_key = self._root_key_by_source_mode[source_mode]
         root = self._root_by_source_mode[source_mode]
@@ -308,7 +311,7 @@ class PathResolver:
             self._log.error(msg)
             raise MissingContextVariableError(msg)
 
-        if source_mode is SourcePathMode.MANAGED and root_key == self.CTX_FILE_ROOT:
+        if source_mode is PathResolver.AttrMode.MANAGED and root_key == self.CTX_FILE_ROOT:
             self._log.debug("FILE_ROOT_MANAGED not set, falling back to FILE_ROOT for ao_location")
         else:
             self._log.debug("SINGLE_VOLUME mode: root_key=%s, root=%r", root_key, root)

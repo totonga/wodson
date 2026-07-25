@@ -7,11 +7,6 @@ import pytest
 
 from wodson.atfx import AtfxStore
 
-# All tests in this module require binary data files that are not checked in to
-# the repository (byte_sbyte_test.btf, external_with_flags.bda).  Mark them so
-# CI can exclude them with ``pytest -m "not devtest"``.
-pytestmark = pytest.mark.devtest
-
 DATA_DIR = Path(__file__).resolve().parent / "data" / "openatfx"
 ATFX_FILE = DATA_DIR / "example_toleratedIncorrect.atfx"
 BTF_FILE = DATA_DIR / "byte_sbyte_test.btf"
