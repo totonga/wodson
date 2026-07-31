@@ -1,0 +1,15 @@
+{
+    "TestStep": {
+        "children.UnitUnderTest": { "$or": [
+                {"tyre.name":{"$notnull": 1}},
+                {"vehicle.name": {"$notnull": 1}},
+                {"silencer.name": {"$notnull": 1}}
+        ]}
+    },
+    "$attributes": {
+        "id":1
+    },
+    "$options": {
+        "$rowlimit": 100
+    }
+}

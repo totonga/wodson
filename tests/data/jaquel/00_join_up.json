@@ -1,0 +1,8 @@
+{
+    "AoMeasurement": {
+        "name": "MyMea",
+        "test.name": "MySubTest2",
+        "test.parent_test.name": "MySubTest1",
+        "test.parent_test.parent_test.name": "MyTest"
+    }
+}

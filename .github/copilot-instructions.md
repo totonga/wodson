@@ -35,8 +35,8 @@ from wodson.atfx import AtfxStore, AtfxServer, AtfxSession, CONTEXT_VAR_ATFX_FIL
 
 ```python
 with AtfxStore("path/to/file.atfx") as store:
-    model = store.model()                    # ods.Model
-    result = store.data_read(select_stmt)    # ods.DataMatrices
+    model = store.model()  # ods.Model
+    result = store.data_read(select_stmt)  # ods.DataMatrices
 ```
 
 ### AtfxServer (HTTP server for odsbox ConI)

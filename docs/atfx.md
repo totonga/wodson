@@ -15,11 +15,11 @@ from wodson.atfx import AtfxStore
 import odsbox.proto.ods_pb2 as ods
 
 with AtfxStore("path/to/file.atfx") as store:
-    model = store.model()                         # ods.Model
+    model = store.model()  # ods.Model
 
     stmt = ods.SelectStatement()
     stmt.columns.add(aid=model.entities["Measurement"].aid, attribute="*")
-    result = store.data_read(stmt)                # ods.DataMatrices
+    result = store.data_read(stmt)  # ods.DataMatrices
 ```
 
 ## HTTP server + odsbox ConI
@@ -36,7 +36,7 @@ with AtfxServer(host="127.0.0.1", port=8080) as server:
         load_model=False,
     ) as con:
         model = con.model_read()
-        df    = con.query({"AoMeasurement": {"$attributes": {"name": 1}}})
+        df = con.query({"AoMeasurement": {"$attributes": {"name": 1}}})
 ```
 
 ## High-level DataFrame API

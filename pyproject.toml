@@ -21,15 +21,14 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "numpy>=2.0",
-    "odsbox[oidc]>=1.6.0",
+    "odsbox>=1.6.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/totonga/asamatfx"
-Repository = "https://github.com/totonga/asamatfx"
-Issues = "https://github.com/totonga/asamatfx/issues"
-Changelog = "https://github.com/totonga/asamatfx/releases"
+Homepage = "https://github.com/totonga/wodson"
+Repository = "https://github.com/totonga/wodson"
+Issues = "https://github.com/totonga/wodson/issues"
+Changelog = "https://github.com/totonga/wodson/releases"
 
 [project.scripts]
 wodson = "wodson._cli:main"
