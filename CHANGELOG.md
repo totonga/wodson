@@ -6,7 +6,7 @@
 
 ### Bug Fixes
 
-- Some cleanup in the PathResolver ([#16](https://github.com/totonga/wodson/pull/16),
+- Some cleanup in the FilePathResolver ([#16](https://github.com/totonga/wodson/pull/16),
   [`b66a96d`](https://github.com/totonga/wodson/commit/b66a96dcae4e155a6998bfed4b6d74003418b066))
 
 
@@ -14,7 +14,7 @@
 
 ### Features
 
-- Added PathResolver ([#15](https://github.com/totonga/wodson/pull/15),
+- Added FilePathResolver ([#15](https://github.com/totonga/wodson/pull/15),
   [`b039fd4`](https://github.com/totonga/wodson/commit/b039fd47b38403632e9c32a5d06347a907ada1a7))
 
 

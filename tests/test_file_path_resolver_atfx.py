@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from wodson.atfx import AtfxFile
-from wodson.utils import PathResolver
+from wodson.utils import FilePathResolver
 
 DATA_DIR = Path(__file__).resolve().parent / "data" / "openatfx"
 
@@ -18,13 +18,13 @@ def test_aofile_ao_location():
         assert len(locations) > 0
         assert all(loc is not None and loc != "" for loc in locations)
 
-        pr = PathResolver(atfx.con_i.context)
+        pr = FilePathResolver(atfx.con_i.context)
         resolved_a = pr.resolve_urls(input_urls=locations, attr_or_mode=a)
         assert all(Path(p).is_absolute() for p in resolved_a)
         assert all(Path(p).exists() for p in resolved_a)
 
-        assert PathResolver._get_attribute_path_mode(a) == PathResolver.AttrMode.MANAGED
-        resolved_m = pr.resolve_urls(input_urls=locations, attr_or_mode=PathResolver.AttrMode.MANAGED)
+        assert FilePathResolver._get_attribute_path_mode(a) == FilePathResolver.AttrMode.MANAGED
+        resolved_m = pr.resolve_urls(input_urls=locations, attr_or_mode=FilePathResolver.AttrMode.MANAGED)
         assert all(Path(p).is_absolute() for p in resolved_m)
         assert all(Path(p).exists() for p in resolved_m)
 
@@ -40,13 +40,13 @@ def test_ec_filename_url():
         assert len(locations) > 0
         assert all(loc is not None and loc != "" for loc in locations)
 
-        pr = PathResolver(atfx.con_i.context)
+        pr = FilePathResolver(atfx.con_i.context)
         resolved_a = pr.resolve_urls(input_urls=locations, attr_or_mode=a)
         assert all(Path(p).is_absolute() for p in resolved_a)
         assert all(Path(p).exists() for p in resolved_a)
 
-        assert PathResolver._get_attribute_path_mode(a) == PathResolver.AttrMode.ROOT
-        resolved_m = pr.resolve_urls(input_urls=locations, attr_or_mode=PathResolver.AttrMode.ROOT)
+        assert FilePathResolver._get_attribute_path_mode(a) == FilePathResolver.AttrMode.ROOT
+        resolved_m = pr.resolve_urls(input_urls=locations, attr_or_mode=FilePathResolver.AttrMode.ROOT)
         assert all(Path(p).is_absolute() for p in resolved_m)
         assert all(Path(p).exists() for p in resolved_m)
 
