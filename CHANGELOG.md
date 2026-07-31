@@ -2,6 +2,24 @@
 
 <!-- version list -->
 
+## v1.6.0 (2026-07-31)
+
+### Features
+
+- Add ods_to_jaquel ([#18](https://github.com/totonga/wodson/pull/18),
+  [`1e285e9`](https://github.com/totonga/wodson/commit/1e285e9e592acf6da7c82958ce4365e38e2f0868))
+
+- Add ods_to_jaquel feature and refactor PathResolver
+  ([#18](https://github.com/totonga/wodson/pull/18),
+  [`1e285e9`](https://github.com/totonga/wodson/commit/1e285e9e592acf6da7c82958ce4365e38e2f0868))
+
+### Refactoring
+
+- Renamed PathResolver to FilePathResolver to make clear which kind of path is meant
+  ([#18](https://github.com/totonga/wodson/pull/18),
+  [`1e285e9`](https://github.com/totonga/wodson/commit/1e285e9e592acf6da7c82958ce4365e38e2f0868))
+
+
 ## v1.5.1 (2026-07-25)
 
 ### Bug Fixes
