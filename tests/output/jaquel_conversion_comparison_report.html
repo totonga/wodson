@@ -1,0 +1,4893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JAQueL conversion comparison</title>
+<style>
+  body { font-family: sans-serif; margin: 0; padding: 1rem; }
+  h2 { font-size: 0.95rem; word-break: break-all; }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+  .row.mismatch { background: #fff3f3; }
+  .col h3 { margin: 0 0 0.25rem; font-size: 0.8rem; color: #555; }
+  pre {
+    background: #f5f5f5;
+    padding: 0.5rem;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+<h1>JAQueL conversion comparison</h1>
+<h2>00_join_up.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurement&quot;: {
+    &quot;name&quot;: &quot;MyMea&quot;,
+    &quot;test.name&quot;: &quot;MySubTest2&quot;,
+    &quot;test.parent_test.name&quot;: &quot;MySubTest1&quot;,
+    &quot;test.parent_test.parent_test.name&quot;: &quot;MyTest&quot;
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;79&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;MyMea&quot;
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;78&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;MySubTest2&quot;
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;77&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;MySubTest1&quot;
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;67&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;MyTest&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;79&quot;,
+      &quot;aidTo&quot;: &quot;78&quot;,
+      &quot;relation&quot;: &quot;TestStep&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;78&quot;,
+      &quot;aidTo&quot;: &quot;77&quot;,
+      &quot;relation&quot;: &quot;Test&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;77&quot;,
+      &quot;aidTo&quot;: &quot;67&quot;,
+      &quot;relation&quot;: &quot;StructureLevel&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;Name&quot;: &quot;MyMea&quot;,
+    &quot;TestStep&quot;: {
+      &quot;Name&quot;: &quot;MySubTest2&quot;,
+      &quot;Test&quot;: {
+        &quot;Name&quot;: &quot;MySubTest1&quot;,
+        &quot;StructureLevel&quot;: {
+          &quot;Name&quot;: &quot;MyTest&quot;
+        }
+      }
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;name&quot;: &quot;MyMea&quot;,
+    &quot;test&quot;: {
+      &quot;name&quot;: &quot;MySubTest2&quot;,
+      &quot;parent_test&quot;: {
+        &quot;name&quot;: &quot;MySubTest1&quot;,
+        &quot;parent_test&quot;: {
+          &quot;name&quot;: &quot;MyTest&quot;
+        }
+      }
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>00_path.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;TestStep&quot;: {
+    &quot;children.UnitUnderTest&quot;: {
+      &quot;$or&quot;: [
+        {
+          &quot;tyre.name&quot;: {
+            &quot;$notnull&quot;: 1
+          }
+        },
+        {
+          &quot;vehicle.name&quot;: {
+            &quot;$notnull&quot;: 1
+          }
+        },
+        {
+          &quot;silencer.name&quot;: {
+            &quot;$notnull&quot;: 1
+          }
+        }
+      ]
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 100
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;78&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;94&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;operator&quot;: &quot;OP_IS_NOT_NULL&quot;
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OR&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;95&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;operator&quot;: &quot;OP_IS_NOT_NULL&quot;
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OR&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;93&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;operator&quot;: &quot;OP_IS_NOT_NULL&quot;
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;79&quot;,
+      &quot;aidTo&quot;: &quot;78&quot;,
+      &quot;relation&quot;: &quot;TestStep&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;79&quot;,
+      &quot;aidTo&quot;: &quot;56&quot;,
+      &quot;relation&quot;: &quot;UnitUnderTest&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;94&quot;,
+      &quot;aidTo&quot;: &quot;56&quot;,
+      &quot;relation&quot;: &quot;UnitUnderTest&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;95&quot;,
+      &quot;aidTo&quot;: &quot;56&quot;,
+      &quot;relation&quot;: &quot;UnitUnderTest&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;93&quot;,
+      &quot;aidTo&quot;: &quot;56&quot;,
+      &quot;relation&quot;: &quot;UnitUnderTest&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;100&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;TestStep&quot;: {
+    &quot;$or&quot;: [
+      {
+        &quot;MeaResults&quot;: {
+          &quot;UnitUnderTest&quot;: {
+            &quot;tyre&quot;: {
+              &quot;Name&quot;: {
+                &quot;$notnull&quot;: 1
+              }
+            }
+          }
+        }
+      },
+      {
+        &quot;MeaResults&quot;: {
+          &quot;UnitUnderTest&quot;: {
+            &quot;vehicle&quot;: {
+              &quot;Name&quot;: {
+                &quot;$notnull&quot;: 1
+              }
+            }
+          }
+        }
+      },
+      {
+        &quot;MeaResults&quot;: {
+          &quot;UnitUnderTest&quot;: {
+            &quot;silencer&quot;: {
+              &quot;Name&quot;: {
+                &quot;$notnull&quot;: 1
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  &quot;$attributes&quot;: {
+    &quot;Id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 100
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;TestStep&quot;: {
+    &quot;$or&quot;: [
+      {
+        &quot;children&quot;: {
+          &quot;units_under_test&quot;: {
+            &quot;tyre&quot;: {
+              &quot;name&quot;: {
+                &quot;$notnull&quot;: 1
+              }
+            }
+          }
+        }
+      },
+      {
+        &quot;children&quot;: {
+          &quot;units_under_test&quot;: {
+            &quot;vehicle&quot;: {
+              &quot;name&quot;: {
+                &quot;$notnull&quot;: 1
+              }
+            }
+          }
+        }
+      },
+      {
+        &quot;children&quot;: {
+          &quot;units_under_test&quot;: {
+            &quot;silencer&quot;: {
+              &quot;name&quot;: {
+                &quot;$notnull&quot;: 1
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  &quot;$attributes&quot;: {
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 100
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 01 Basic access 00 Add some of the related physical dimension.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;factor&quot;: 1,
+    &quot;offset&quot;: 1,
+    &quot;phys_dimension.name&quot;: 1,
+    &quot;phys_dimension.length_exp&quot;: 1,
+    &quot;phys_dimension.mass_exp&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Offset&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;Length&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;Mass&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;54&quot;,
+      &quot;aidTo&quot;: &quot;47&quot;,
+      &quot;relation&quot;: &quot;PhysDimension&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Factor&quot;: 1,
+    &quot;Offset&quot;: 1,
+    &quot;PhysDimension&quot;: {
+      &quot;Name&quot;: 1,
+      &quot;Length&quot;: 1,
+      &quot;Mass&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;PhysDimension&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;units&quot;: {
+      &quot;name&quot;: 1,
+      &quot;factor&quot;: 1,
+      &quot;offset&quot;: 1
+    },
+    &quot;name&quot;: 1,
+    &quot;length_exp&quot;: 1,
+    &quot;mass_exp&quot;: 1
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 01 Basic access 00 Do access only few attributes.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;factor&quot;: 1,
+    &quot;offset&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Offset&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Factor&quot;: 1,
+    &quot;Offset&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;factor&quot;: 1,
+    &quot;offset&quot;: 1
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 01 Basic access 00 Lets query for units with base entity name.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {}
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {}
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {}
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 01 Basic access 00 Lets query for units with entity name.json</h2><section class="row">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;Unit&quot;: {}
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {}
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {}
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 01 Basic access 00 Retrieve all attributes using asterisk.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;factor&quot;: 1,
+    &quot;offset&quot;: 1,
+    &quot;phys_dimension.*&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Offset&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;54&quot;,
+      &quot;aidTo&quot;: &quot;47&quot;,
+      &quot;relation&quot;: &quot;PhysDimension&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Factor&quot;: 1,
+    &quot;Offset&quot;: 1,
+    &quot;PhysDimension&quot;: {
+      &quot;*&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;PhysDimension&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;units&quot;: {
+      &quot;name&quot;: 1,
+      &quot;factor&quot;: 1,
+      &quot;offset&quot;: 1
+    },
+    &quot;*&quot;: 1
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 01 Basic access 00 Simplify attribute definition.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;factor&quot;: 1,
+    &quot;offset&quot;: 1,
+    &quot;phys_dimension&quot;: {
+      &quot;name&quot;: 1,
+      &quot;length_exp&quot;: 1,
+      &quot;mass_exp&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Offset&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;Length&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;Mass&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;54&quot;,
+      &quot;aidTo&quot;: &quot;47&quot;,
+      &quot;relation&quot;: &quot;PhysDimension&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Factor&quot;: 1,
+    &quot;Offset&quot;: 1,
+    &quot;PhysDimension&quot;: {
+      &quot;Name&quot;: 1,
+      &quot;Length&quot;: 1,
+      &quot;Mass&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;PhysDimension&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;units&quot;: {
+      &quot;name&quot;: 1,
+      &quot;factor&quot;: 1,
+      &quot;offset&quot;: 1
+    },
+    &quot;name&quot;: 1,
+    &quot;length_exp&quot;: 1,
+    &quot;mass_exp&quot;: 1
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 02 Order results by an attribute 00 Order results by  name .json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;id&quot;: 1,
+    &quot;name&quot;: 1
+  },
+  &quot;$orderby&quot;: {
+    &quot;name&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    }
+  ],
+  &quot;orderBy&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Id&quot;: 1,
+    &quot;Name&quot;: 1
+  },
+  &quot;$orderby&quot;: {
+    &quot;Name&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;id&quot;: 1,
+    &quot;name&quot;: 1
+  },
+  &quot;$orderby&quot;: {
+    &quot;name&quot;: 1
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 03 Limit the amounts of results 00 Retrieve only 5 result rows.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 04 Query Instance by  id  00 Query the unit with the id  3  full.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;id&quot;: {
+      &quot;$eq&quot;: 3
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;54&quot;,
+        &quot;attribute&quot;: &quot;Id&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;3&quot;
+          ]
+        }
+      }
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;Id&quot;: 3
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;id&quot;: 3
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 04 Query Instance by  id  00 Query the unit with the id  3  simplified.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: 3
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;54&quot;,
+        &quot;attribute&quot;: &quot;Id&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;3&quot;
+          ]
+        }
+      }
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;Id&quot;: 3
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;id&quot;: 3
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 04 Query Instance by  id  00 Query the unit with the id  3 .json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;id&quot;: 3
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;54&quot;,
+        &quot;attribute&quot;: &quot;Id&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;3&quot;
+          ]
+        }
+      }
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;Id&quot;: 3
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;id&quot;: 3
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 04 Query Instance by  id  00 Query the units with the ids in  1 ,  2  and  3 .json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;id&quot;: {
+      &quot;$in&quot;: [
+        1,
+        2,
+        3
+      ]
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;54&quot;,
+        &quot;attribute&quot;: &quot;Id&quot;,
+        &quot;operator&quot;: &quot;OP_INSET&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;1&quot;,
+            &quot;2&quot;,
+            &quot;3&quot;
+          ]
+        }
+      }
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;Id&quot;: {
+      &quot;$in&quot;: [
+        1,
+        2,
+        3
+      ]
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;id&quot;: {
+      &quot;$in&quot;: [
+        1,
+        2,
+        3
+      ]
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 05 Query Instance by  name  00 Query the unit with the name equal  s  case insensitive full.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;name&quot;: {
+      &quot;$eq&quot;: &quot;s&quot;
+    },
+    &quot;$options&quot;: &quot;i&quot;
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;54&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;operator&quot;: &quot;OP_CI_EQ&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;s&quot;
+          ]
+        }
+      }
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;Name&quot;: {
+      &quot;$eq&quot;: &quot;s&quot;,
+      &quot;$options&quot;: &quot;i&quot;
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;name&quot;: {
+      &quot;$eq&quot;: &quot;s&quot;,
+      &quot;$options&quot;: &quot;i&quot;
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 05 Query Instance by  name  00 Query the unit with the name equal  s  case insensitive.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;name&quot;: &quot;s&quot;,
+    &quot;$options&quot;: &quot;i&quot;
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;54&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;operator&quot;: &quot;OP_CI_EQ&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;s&quot;
+          ]
+        }
+      }
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;Name&quot;: {
+      &quot;$eq&quot;: &quot;s&quot;,
+      &quot;$options&quot;: &quot;i&quot;
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;name&quot;: {
+      &quot;$eq&quot;: &quot;s&quot;,
+      &quot;$options&quot;: &quot;i&quot;
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 05 Query Instance by  name  00 Query the unit with the name equal  s .json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;name&quot;: &quot;s&quot;
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;54&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;s&quot;
+          ]
+        }
+      }
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;Name&quot;: &quot;s&quot;
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;name&quot;: &quot;s&quot;
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 05 Query Instance by  name  00 Query the unit with the name like  k   case insensitive.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;name&quot;: {
+      &quot;$like&quot;: &quot;k*&quot;
+    },
+    &quot;$options&quot;: &quot;i&quot;
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;54&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;operator&quot;: &quot;OP_CI_LIKE&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;k*&quot;
+          ]
+        }
+      }
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;Name&quot;: {
+      &quot;$like&quot;: &quot;k*&quot;,
+      &quot;$options&quot;: &quot;i&quot;
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;name&quot;: {
+      &quot;$like&quot;: &quot;k*&quot;,
+      &quot;$options&quot;: &quot;i&quot;
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 05 Query Instance by  name  00 Query the unit with the name like  k  .json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;name&quot;: {
+      &quot;$like&quot;: &quot;k*&quot;
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;54&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;operator&quot;: &quot;OP_LIKE&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;k*&quot;
+          ]
+        }
+      }
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;Name&quot;: {
+      &quot;$like&quot;: &quot;k*&quot;
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;name&quot;: {
+      &quot;$like&quot;: &quot;k*&quot;
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 06 And conjunctions  $and  and  $or  00 Search speed based Units with explicit  $and  conjunction.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;phys_dimension&quot;: {
+      &quot;$and&quot;: [
+        {
+          &quot;length_exp&quot;: 1
+        },
+        {
+          &quot;mass_exp&quot;: 0
+        },
+        {
+          &quot;time_exp&quot;: -1
+        },
+        {
+          &quot;current_exp&quot;: 0
+        },
+        {
+          &quot;temperature_exp&quot;: 0
+        },
+        {
+          &quot;molar_amount_exp&quot;: 0
+        },
+        {
+          &quot;luminous_intensity_exp&quot;: 0
+        }
+      ]
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;factor&quot;: 1,
+    &quot;offset&quot;: 1,
+    &quot;phys_dimension.name&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Offset&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Length&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            1
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Mass&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Time&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            -1
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Current&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Temperature&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;MolarAmount&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;LuminousIntensity&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;54&quot;,
+      &quot;aidTo&quot;: &quot;47&quot;,
+      &quot;relation&quot;: &quot;PhysDimension&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;PhysDimension&quot;: {
+    &quot;$and&quot;: [
+      {
+        &quot;Length&quot;: 1
+      },
+      {
+        &quot;Mass&quot;: 0
+      },
+      {
+        &quot;Time&quot;: -1
+      },
+      {
+        &quot;Current&quot;: 0
+      },
+      {
+        &quot;Temperature&quot;: 0
+      },
+      {
+        &quot;MolarAmount&quot;: 0
+      },
+      {
+        &quot;LuminousIntensity&quot;: 0
+      }
+    ]
+  },
+  &quot;$attributes&quot;: {
+    &quot;Units&quot;: {
+      &quot;Name&quot;: 1,
+      &quot;Factor&quot;: 1,
+      &quot;Offset&quot;: 1
+    },
+    &quot;Name&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;PhysDimension&quot;: {
+    &quot;$and&quot;: [
+      {
+        &quot;length_exp&quot;: 1
+      },
+      {
+        &quot;mass_exp&quot;: 0
+      },
+      {
+        &quot;time_exp&quot;: -1
+      },
+      {
+        &quot;current_exp&quot;: 0
+      },
+      {
+        &quot;temperature_exp&quot;: 0
+      },
+      {
+        &quot;molar_amount_exp&quot;: 0
+      },
+      {
+        &quot;luminous_intensity_exp&quot;: 0
+      }
+    ]
+  },
+  &quot;$attributes&quot;: {
+    &quot;units&quot;: {
+      &quot;name&quot;: 1,
+      &quot;factor&quot;: 1,
+      &quot;offset&quot;: 1
+    },
+    &quot;name&quot;: 1
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 06 And conjunctions  $and  and  $or  00 Search speed based Units.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;phys_dimension&quot;: {
+      &quot;length_exp&quot;: 1,
+      &quot;mass_exp&quot;: 0,
+      &quot;time_exp&quot;: -1,
+      &quot;current_exp&quot;: 0,
+      &quot;temperature_exp&quot;: 0,
+      &quot;molar_amount_exp&quot;: 0,
+      &quot;luminous_intensity_exp&quot;: 0
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;factor&quot;: 1,
+    &quot;offset&quot;: 1,
+    &quot;phys_dimension.name&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Offset&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Length&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            1
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Mass&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Time&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            -1
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Current&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Temperature&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;MolarAmount&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;LuminousIntensity&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;54&quot;,
+      &quot;aidTo&quot;: &quot;47&quot;,
+      &quot;relation&quot;: &quot;PhysDimension&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;PhysDimension&quot;: {
+    &quot;Length&quot;: 1,
+    &quot;Mass&quot;: 0,
+    &quot;Time&quot;: -1,
+    &quot;Current&quot;: 0,
+    &quot;Temperature&quot;: 0,
+    &quot;MolarAmount&quot;: 0,
+    &quot;LuminousIntensity&quot;: 0
+  },
+  &quot;$attributes&quot;: {
+    &quot;Units&quot;: {
+      &quot;Name&quot;: 1,
+      &quot;Factor&quot;: 1,
+      &quot;Offset&quot;: 1
+    },
+    &quot;Name&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;PhysDimension&quot;: {
+    &quot;length_exp&quot;: 1,
+    &quot;mass_exp&quot;: 0,
+    &quot;time_exp&quot;: -1,
+    &quot;current_exp&quot;: 0,
+    &quot;temperature_exp&quot;: 0,
+    &quot;molar_amount_exp&quot;: 0,
+    &quot;luminous_intensity_exp&quot;: 0
+  },
+  &quot;$attributes&quot;: {
+    &quot;units&quot;: {
+      &quot;name&quot;: 1,
+      &quot;factor&quot;: 1,
+      &quot;offset&quot;: 1
+    },
+    &quot;name&quot;: 1
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 06 And conjunctions  $and  and  $or  00 Search speed or time based Units.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;phys_dimension&quot;: {
+      &quot;$or&quot;: [
+        {
+          &quot;length_exp&quot;: 1,
+          &quot;mass_exp&quot;: 0,
+          &quot;time_exp&quot;: -1,
+          &quot;current_exp&quot;: 0,
+          &quot;temperature_exp&quot;: 0,
+          &quot;molar_amount_exp&quot;: 0,
+          &quot;luminous_intensity_exp&quot;: 0
+        },
+        {
+          &quot;length_exp&quot;: 0,
+          &quot;mass_exp&quot;: 0,
+          &quot;time_exp&quot;: 1,
+          &quot;current_exp&quot;: 0,
+          &quot;temperature_exp&quot;: 0,
+          &quot;molar_amount_exp&quot;: 0,
+          &quot;luminous_intensity_exp&quot;: 0
+        }
+      ]
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;factor&quot;: 1,
+    &quot;offset&quot;: 1,
+    &quot;phys_dimension.name&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Offset&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;47&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Length&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            1
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Mass&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Time&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            -1
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Current&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Temperature&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;MolarAmount&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;LuminousIntensity&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OR&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_OPEN&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Length&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Mass&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Time&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            1
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Current&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Temperature&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;MolarAmount&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;LuminousIntensity&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_CLOSE&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;54&quot;,
+      &quot;aidTo&quot;: &quot;47&quot;,
+      &quot;relation&quot;: &quot;PhysDimension&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;PhysDimension&quot;: {
+    &quot;$or&quot;: [
+      {
+        &quot;Length&quot;: 1,
+        &quot;Mass&quot;: 0,
+        &quot;Time&quot;: -1,
+        &quot;Current&quot;: 0,
+        &quot;Temperature&quot;: 0,
+        &quot;MolarAmount&quot;: 0,
+        &quot;LuminousIntensity&quot;: 0
+      },
+      {
+        &quot;Length&quot;: 0,
+        &quot;Mass&quot;: 0,
+        &quot;Time&quot;: 1,
+        &quot;Current&quot;: 0,
+        &quot;Temperature&quot;: 0,
+        &quot;MolarAmount&quot;: 0,
+        &quot;LuminousIntensity&quot;: 0
+      }
+    ]
+  },
+  &quot;$attributes&quot;: {
+    &quot;Units&quot;: {
+      &quot;Name&quot;: 1,
+      &quot;Factor&quot;: 1,
+      &quot;Offset&quot;: 1
+    },
+    &quot;Name&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;PhysDimension&quot;: {
+    &quot;$or&quot;: [
+      {
+        &quot;length_exp&quot;: 1,
+        &quot;mass_exp&quot;: 0,
+        &quot;time_exp&quot;: -1,
+        &quot;current_exp&quot;: 0,
+        &quot;temperature_exp&quot;: 0,
+        &quot;molar_amount_exp&quot;: 0,
+        &quot;luminous_intensity_exp&quot;: 0
+      },
+      {
+        &quot;length_exp&quot;: 0,
+        &quot;mass_exp&quot;: 0,
+        &quot;time_exp&quot;: 1,
+        &quot;current_exp&quot;: 0,
+        &quot;temperature_exp&quot;: 0,
+        &quot;molar_amount_exp&quot;: 0,
+        &quot;luminous_intensity_exp&quot;: 0
+      }
+    ]
+  },
+  &quot;$attributes&quot;: {
+    &quot;units&quot;: {
+      &quot;name&quot;: 1,
+      &quot;factor&quot;: 1,
+      &quot;offset&quot;: 1
+    },
+    &quot;name&quot;: 1
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 06 And conjunctions  $and  and  $or  00 Search time based Units.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {
+    &quot;phys_dimension&quot;: {
+      &quot;length_exp&quot;: 0,
+      &quot;mass_exp&quot;: 0,
+      &quot;time_exp&quot;: 1,
+      &quot;current_exp&quot;: 0,
+      &quot;temperature_exp&quot;: 0,
+      &quot;molar_amount_exp&quot;: 0,
+      &quot;luminous_intensity_exp&quot;: 0
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Length&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Mass&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Time&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            1
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Current&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;Temperature&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;MolarAmount&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;47&quot;,
+        &quot;attribute&quot;: &quot;LuminousIntensity&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            0
+          ]
+        }
+      }
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;54&quot;,
+      &quot;aidTo&quot;: &quot;47&quot;,
+      &quot;relation&quot;: &quot;PhysDimension&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;PhysDimension&quot;: {
+      &quot;Length&quot;: 0,
+      &quot;Mass&quot;: 0,
+      &quot;Time&quot;: 1,
+      &quot;Current&quot;: 0,
+      &quot;Temperature&quot;: 0,
+      &quot;MolarAmount&quot;: 0,
+      &quot;LuminousIntensity&quot;: 0
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {
+    &quot;phys_dimension&quot;: {
+      &quot;length_exp&quot;: 0,
+      &quot;mass_exp&quot;: 0,
+      &quot;time_exp&quot;: 1,
+      &quot;current_exp&quot;: 0,
+      &quot;temperature_exp&quot;: 0,
+      &quot;molar_amount_exp&quot;: 0,
+      &quot;luminous_intensity_exp&quot;: 0
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 07 Query using an enumeration int value.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurementQuantity&quot;: {
+    &quot;datatype&quot;: 8
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;80&quot;,
+        &quot;attribute&quot;: &quot;DataType&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            8
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;DataType&quot;: 8
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;datatype&quot;: 8
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 07 Query using an enumeration text value.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurementQuantity&quot;: {
+    &quot;datatype&quot;: &quot;DT_DOUBLE&quot;
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;80&quot;,
+        &quot;attribute&quot;: &quot;DataType&quot;,
+        &quot;longArray&quot;: {
+          &quot;values&quot;: [
+            7
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;DataType&quot;: 7
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;datatype&quot;: 7
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 07 Use  $between  operator 00 Get measurements that started in a time interval, ODS time.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurement&quot;: {
+    &quot;measurement_begin&quot;: {
+      &quot;$between&quot;: [
+        &quot;20001223000000&quot;,
+        &quot;20241224000000&quot;
+      ]
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;79&quot;,
+        &quot;attribute&quot;: &quot;MeasurementBegin&quot;,
+        &quot;operator&quot;: &quot;OP_BETWEEN&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;20001223000000&quot;,
+            &quot;20241224000000&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;MeasurementBegin&quot;: {
+      &quot;$between&quot;: [
+        &quot;20001223000000&quot;,
+        &quot;20241224000000&quot;
+      ]
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;measurement_begin&quot;: {
+      &quot;$between&quot;: [
+        &quot;20001223000000&quot;,
+        &quot;20241224000000&quot;
+      ]
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 07 Use  $between  operator 00 Get measurements that started in a time interval.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurement&quot;: {
+    &quot;measurement_begin&quot;: {
+      &quot;$between&quot;: [
+        &quot;2000-04-22T00:00:00.001Z&quot;,
+        &quot;2024-04-23T00:00:00.002Z&quot;
+      ]
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;79&quot;,
+        &quot;attribute&quot;: &quot;MeasurementBegin&quot;,
+        &quot;operator&quot;: &quot;OP_BETWEEN&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;20000422000000001&quot;,
+            &quot;20240423000000002&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;MeasurementBegin&quot;: {
+      &quot;$between&quot;: [
+        &quot;20000422000000001&quot;,
+        &quot;20240423000000002&quot;
+      ]
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;measurement_begin&quot;: {
+      &quot;$between&quot;: [
+        &quot;20000422000000001&quot;,
+        &quot;20240423000000002&quot;
+      ]
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 07 Use operator  $lt  and  gt .json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurementQuantity&quot;: {
+    &quot;maximum&quot;: {
+      &quot;$gt&quot;: 0.0,
+      &quot;$lt&quot;: 12000.0
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;80&quot;,
+        &quot;attribute&quot;: &quot;Maximum&quot;,
+        &quot;operator&quot;: &quot;OP_GT&quot;,
+        &quot;doubleArray&quot;: {
+          &quot;values&quot;: [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;80&quot;,
+        &quot;attribute&quot;: &quot;Maximum&quot;,
+        &quot;operator&quot;: &quot;OP_LT&quot;,
+        &quot;doubleArray&quot;: {
+          &quot;values&quot;: [
+            12000.0
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;Maximum&quot;: {
+      &quot;$gt&quot;: 0.0,
+      &quot;$lt&quot;: 12000.0
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;maximum&quot;: {
+      &quot;$gt&quot;: 0.0,
+      &quot;$lt&quot;: 12000.0
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 07 Use operator  $lte  and  gte .json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurementQuantity&quot;: {
+    &quot;maximum&quot;: {
+      &quot;$gte&quot;: 0.0,
+      &quot;$lte&quot;: 12000.0
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;80&quot;,
+        &quot;attribute&quot;: &quot;Maximum&quot;,
+        &quot;operator&quot;: &quot;OP_GTE&quot;,
+        &quot;doubleArray&quot;: {
+          &quot;values&quot;: [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      &quot;conjunction&quot;: &quot;CO_AND&quot;
+    },
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;80&quot;,
+        &quot;attribute&quot;: &quot;Maximum&quot;,
+        &quot;operator&quot;: &quot;OP_LTE&quot;,
+        &quot;doubleArray&quot;: {
+          &quot;values&quot;: [
+            12000.0
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;Maximum&quot;: {
+      &quot;$gte&quot;: 0.0,
+      &quot;$lte&quot;: 12000.0
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;maximum&quot;: {
+      &quot;$gte&quot;: 0.0,
+      &quot;$lte&quot;: 12000.0
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 08 Use aggregates  $min ,  $max ,  $dcount , and  $distinct  00 Get the distincted count of Unit description.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;description&quot;: {
+      &quot;$dcount&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Description&quot;,
+      &quot;aggregate&quot;: &quot;AG_DCOUNT&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Description&quot;: {
+      &quot;$dcount&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;description&quot;: {
+      &quot;$dcount&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 08 Use aggregates  $min ,  $max ,  $dcount , and  $distinct  00 Get the distincted values of Unit description.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;description&quot;: {
+      &quot;$distinct&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Description&quot;,
+      &quot;aggregate&quot;: &quot;AG_DISTINCT&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Description&quot;: {
+      &quot;$distinct&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;description&quot;: {
+      &quot;$distinct&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 08 Use aggregates  $min ,  $max ,  $dcount , and  $distinct  00 Get the min and max of unit factor and offset.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;factor&quot;: {
+      &quot;$max&quot;: 1,
+      &quot;$min&quot;: 1
+    },
+    &quot;offset&quot;: {
+      &quot;$max&quot;: 1,
+      &quot;$min&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;,
+      &quot;aggregate&quot;: &quot;AG_MAX&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;,
+      &quot;aggregate&quot;: &quot;AG_MIN&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Offset&quot;,
+      &quot;aggregate&quot;: &quot;AG_MAX&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Offset&quot;,
+      &quot;aggregate&quot;: &quot;AG_MIN&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Factor&quot;: {
+      &quot;$max&quot;: 1,
+      &quot;$min&quot;: 1
+    },
+    &quot;Offset&quot;: {
+      &quot;$max&quot;: 1,
+      &quot;$min&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;factor&quot;: {
+      &quot;$max&quot;: 1,
+      &quot;$min&quot;: 1
+    },
+    &quot;offset&quot;: {
+      &quot;$max&quot;: 1,
+      &quot;$min&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 08 Use aggregates  $min ,  $max ,  $dcount , and  $distinct  00 Get the min and max of unit factor.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoUnit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;factor&quot;: {
+      &quot;$max&quot;: 1,
+      &quot;$min&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;,
+      &quot;aggregate&quot;: &quot;AG_MAX&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Factor&quot;,
+      &quot;aggregate&quot;: &quot;AG_MIN&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Factor&quot;: {
+      &quot;$max&quot;: 1,
+      &quot;$min&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Unit&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;factor&quot;: {
+      &quot;$max&quot;: 1,
+      &quot;$min&quot;: 1
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 09 Inner and outer joins 00 Use inner join.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurementQuantity&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;unit.name&quot;: 1,
+    &quot;quantity.name&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;55&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;80&quot;,
+      &quot;aidTo&quot;: &quot;54&quot;,
+      &quot;relation&quot;: &quot;Unit&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;80&quot;,
+      &quot;aidTo&quot;: &quot;55&quot;,
+      &quot;relation&quot;: &quot;Quantity&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Unit&quot;: {
+      &quot;Name&quot;: 1
+    },
+    &quot;Quantity&quot;: {
+      &quot;Name&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;unit&quot;: {
+      &quot;name&quot;: 1
+    },
+    &quot;quantity&quot;: {
+      &quot;name&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 09 Inner and outer joins 00 Use outer join.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurementQuantity&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;unit:OUTER.name&quot;: 1,
+    &quot;quantity:OUTER.name&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;55&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;80&quot;,
+      &quot;aidTo&quot;: &quot;54&quot;,
+      &quot;relation&quot;: &quot;Unit&quot;,
+      &quot;joinType&quot;: &quot;JT_OUTER&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;80&quot;,
+      &quot;aidTo&quot;: &quot;55&quot;,
+      &quot;relation&quot;: &quot;Quantity&quot;,
+      &quot;joinType&quot;: &quot;JT_OUTER&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Unit:OUTER&quot;: {
+      &quot;Name&quot;: 1
+    },
+    &quot;Quantity:OUTER&quot;: {
+      &quot;Name&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;unit:OUTER&quot;: {
+      &quot;name&quot;: 1
+    },
+    &quot;quantity:OUTER&quot;: {
+      &quot;name&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>01 Access Instances 10 Use  $groupby  00 Use a  $groupby  on two attributes.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurement&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;description&quot;: 1
+  },
+  &quot;$orderby&quot;: {
+    &quot;name&quot;: 1
+  },
+  &quot;$groupby&quot;: {
+    &quot;name&quot;: 1,
+    &quot;description&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Description&quot;
+    }
+  ],
+  &quot;orderBy&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    }
+  ],
+  &quot;groupBy&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Description&quot;
+    }
+  ]
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Description&quot;: 1
+  },
+  &quot;$orderby&quot;: {
+    &quot;Name&quot;: 1
+  },
+  &quot;$groupby&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Description&quot;: 1
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;description&quot;: 1
+  },
+  &quot;$orderby&quot;: {
+    &quot;name&quot;: 1
+  },
+  &quot;$groupby&quot;: {
+    &quot;name&quot;: 1,
+    &quot;description&quot;: 1
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 01 Access hierarchy elements 00 Get  AoTest  instances.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoTest&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;48&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Project&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Project&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 01 Access hierarchy elements 00 Get  MeaQuantity  instances.json</h2><section class="row">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 01 Access hierarchy elements 00 Get  MeaResult  instances.json</h2><section class="row">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 01 Access hierarchy elements 00 Get  Project  instances.json</h2><section class="row">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;Project&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;48&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Project&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Project&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 01 Access hierarchy elements 00 Get  StructureLevel  instances.json</h2><section class="row">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;StructureLevel&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;67&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;StructureLevel&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;StructureLevel&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 01 Access hierarchy elements 00 Get  Test  instances.json</h2><section class="row">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;Test&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;77&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Test&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Test&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 01 Access hierarchy elements 00 Get  TestStep  instances.json</h2><section class="row">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;TestStep&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;78&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;TestStep&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;TestStep&quot;: {},
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 02 Browse ODS tree 00 Get  MeaResult  from  TestStep  with  id  equal 4.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;TestStep&quot;: 4,
+  &quot;$attributes&quot;: {
+    &quot;children&quot;: {
+      &quot;name&quot;: 1,
+      &quot;id&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;78&quot;,
+        &quot;attribute&quot;: &quot;Id&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;4&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;79&quot;,
+      &quot;aidTo&quot;: &quot;78&quot;,
+      &quot;relation&quot;: &quot;TestStep&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;TestStep&quot;: {
+      &quot;Id&quot;: 4
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;test&quot;: {
+      &quot;id&quot;: 4
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 02 Browse ODS tree 00 Get  MeaResult  with  test  with  id  equal 4.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;test&quot;: 4
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;79&quot;,
+        &quot;attribute&quot;: &quot;TestStep&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;4&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;TestStep&quot;: 4
+  },
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;TestStep&quot;: 4
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 02 Browse ODS tree 00 Get  StructureLevel  from  Project  with  id  equal 3.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;Project&quot;: 3,
+  &quot;$attributes&quot;: {
+    &quot;children&quot;: {
+      &quot;name&quot;: 1,
+      &quot;id&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;67&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;67&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;48&quot;,
+        &quot;attribute&quot;: &quot;Id&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;3&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;67&quot;,
+      &quot;aidTo&quot;: &quot;48&quot;,
+      &quot;relation&quot;: &quot;Project&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;Project&quot;: {
+    &quot;Id&quot;: 3
+  },
+  &quot;$attributes&quot;: {
+    &quot;StructureLevel&quot;: {
+      &quot;Name&quot;: 1,
+      &quot;Id&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;Project&quot;: {
+    &quot;id&quot;: 3
+  },
+  &quot;$attributes&quot;: {
+    &quot;children&quot;: {
+      &quot;name&quot;: 1,
+      &quot;id&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 02 Browse ODS tree 00 Get  StructureLevel  with  parent_test  with  id  equal 3.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;StructureLevel&quot;: {
+    &quot;parent_test&quot;: 3
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;67&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;67&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;67&quot;,
+        &quot;attribute&quot;: &quot;Project&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;3&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;StructureLevel&quot;: {
+    &quot;Project&quot;: 3
+  },
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;StructureLevel&quot;: {
+    &quot;Project&quot;: 3
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 03 Access descriptive meta 00 Get some meta of related  AoUnitUnderTestPart  instances.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;id&quot;: 1,
+    &quot;name&quot;: 1,
+    &quot;units_under_test&quot;: {
+      &quot;id&quot;: 1,
+      &quot;vehicle.model&quot;: 1,
+      &quot;engine.type&quot;: 1,
+      &quot;gearbox.transmission&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;56&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;95&quot;,
+      &quot;attribute&quot;: &quot;model&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;88&quot;,
+      &quot;attribute&quot;: &quot;type&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;91&quot;,
+      &quot;attribute&quot;: &quot;transmission&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;79&quot;,
+      &quot;aidTo&quot;: &quot;56&quot;,
+      &quot;relation&quot;: &quot;UnitUnderTest&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;95&quot;,
+      &quot;aidTo&quot;: &quot;56&quot;,
+      &quot;relation&quot;: &quot;UnitUnderTest&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;88&quot;,
+      &quot;aidTo&quot;: &quot;56&quot;,
+      &quot;relation&quot;: &quot;UnitUnderTest&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;91&quot;,
+      &quot;aidTo&quot;: &quot;56&quot;,
+      &quot;relation&quot;: &quot;UnitUnderTest&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Id&quot;: 1,
+    &quot;Name&quot;: 1,
+    &quot;UnitUnderTest&quot;: {
+      &quot;Id&quot;: 1,
+      &quot;vehicle&quot;: {
+        &quot;model&quot;: 1
+      },
+      &quot;engine&quot;: {
+        &quot;type&quot;: 1
+      },
+      &quot;gearbox&quot;: {
+        &quot;transmission&quot;: 1
+      }
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;UnitUnderTest&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;measurement&quot;: {
+      &quot;id&quot;: 1,
+      &quot;name&quot;: 1
+    },
+    &quot;id&quot;: 1,
+    &quot;vehicle&quot;: {
+      &quot;model&quot;: 1
+    },
+    &quot;engine&quot;: {
+      &quot;type&quot;: 1
+    },
+    &quot;children&quot;: {
+      &quot;transmission&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>02 Access OpenMDM content 04 Access parameter sets 00 Get name value pairs attached to  MeaResult .json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;ResultParameter&quot;: {
+    &quot;parameter_set.MeaResult.Name&quot;: {
+      &quot;$like&quot;: &quot;APS*&quot;
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Value&quot;: 1,
+    &quot;DataType&quot;: 1,
+    &quot;parameter_set&quot;: {
+      &quot;name&quot;: 1,
+      &quot;MeaResult.id&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 20
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;66&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;66&quot;,
+      &quot;attribute&quot;: &quot;Value&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;66&quot;,
+      &quot;attribute&quot;: &quot;DataType&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;49&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;79&quot;,
+        &quot;attribute&quot;: &quot;Name&quot;,
+        &quot;operator&quot;: &quot;OP_LIKE&quot;,
+        &quot;stringArray&quot;: {
+          &quot;values&quot;: [
+            &quot;APS*&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;66&quot;,
+      &quot;aidTo&quot;: &quot;49&quot;,
+      &quot;relation&quot;: &quot;ResultParameterSet&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;49&quot;,
+      &quot;aidTo&quot;: &quot;79&quot;,
+      &quot;relation&quot;: &quot;MeaResult&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;20&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;ResultParameter&quot;: {
+    &quot;ResultParameterSet&quot;: {
+      &quot;MeaResult&quot;: {
+        &quot;Name&quot;: {
+          &quot;$like&quot;: &quot;APS*&quot;
+        }
+      }
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Value&quot;: 1,
+    &quot;DataType&quot;: 1,
+    &quot;ResultParameterSet&quot;: {
+      &quot;Name&quot;: 1,
+      &quot;MeaResult&quot;: {
+        &quot;Id&quot;: 1
+      }
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 20
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;ResultParameter&quot;: {
+    &quot;parameter_set&quot;: {
+      &quot;MeaResult&quot;: {
+        &quot;name&quot;: {
+          &quot;$like&quot;: &quot;APS*&quot;
+        }
+      }
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;pvalue&quot;: 1,
+    &quot;parameter_datatype&quot;: 1,
+    &quot;parameter_set&quot;: {
+      &quot;name&quot;: 1,
+      &quot;MeaResult&quot;: {
+        &quot;id&quot;: 1
+      }
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 20
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>03 Access Bulk 01 Read data from Measurement 00 Get  AoMeasurementQuantity  from  AoMeasurement  with  id  equal 153.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurement&quot;: 153,
+  &quot;$attributes&quot;: {
+    &quot;measurement_quantities&quot;: {
+      &quot;name&quot;: 1,
+      &quot;id&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;79&quot;,
+        &quot;attribute&quot;: &quot;Id&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;153&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;80&quot;,
+      &quot;aidTo&quot;: &quot;79&quot;,
+      &quot;relation&quot;: &quot;MeaResult&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;MeaResult&quot;: {
+      &quot;Id&quot;: 153
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;measurement&quot;: {
+      &quot;id&quot;: 153
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>03 Access Bulk 01 Read data from Measurement 00 Get  AoMeasurementQuantity  with  measurement  with  id  equal 153.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurementQuantity&quot;: {
+    &quot;measurement&quot;: 153
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;80&quot;,
+        &quot;attribute&quot;: &quot;MeaResult&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;153&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;MeaResult&quot;: 153
+  },
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaQuantity&quot;: {
+    &quot;MeaResult&quot;: 153
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>03 Access Bulk 01 Read data from Measurement 00 Get  AoSubmatrix  with  measurement  with  id  equal 153.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoSubmatrix&quot;: {
+    &quot;measurement&quot;: 153
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1,
+    &quot;number_of_rows&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;81&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;81&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;81&quot;,
+      &quot;attribute&quot;: &quot;SubMatrixNoRows&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;81&quot;,
+        &quot;attribute&quot;: &quot;MeaResult&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;153&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;SubMatrix&quot;: {
+    &quot;MeaResult&quot;: 153
+  },
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Id&quot;: 1,
+    &quot;SubMatrixNoRows&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;SubMatrix&quot;: {
+    &quot;MeaResult&quot;: 153
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1,
+    &quot;number_of_rows&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>03 Access Bulk 01 Read data from Measurement 00 Get bulk of  AoLocalColumn  with  submatrix.measurement  with  id  equal 153.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoLocalColumn&quot;: {
+    &quot;submatrix.measurement&quot;: 153
+  },
+  &quot;$attributes&quot;: {
+    &quot;id&quot;: 1,
+    &quot;flags&quot;: 1,
+    &quot;generation_parameters&quot;: 1,
+    &quot;values&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;82&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;82&quot;,
+      &quot;attribute&quot;: &quot;Flags&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;82&quot;,
+      &quot;attribute&quot;: &quot;GenerationParameters&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;82&quot;,
+      &quot;attribute&quot;: &quot;Values&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;81&quot;,
+        &quot;attribute&quot;: &quot;MeaResult&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;153&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;82&quot;,
+      &quot;aidTo&quot;: &quot;81&quot;,
+      &quot;relation&quot;: &quot;SubMatrix&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;LocalColumn&quot;: {
+    &quot;SubMatrix&quot;: {
+      &quot;MeaResult&quot;: 153
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;Id&quot;: 1,
+    &quot;Flags&quot;: 1,
+    &quot;GenerationParameters&quot;: 1,
+    &quot;Values&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;LocalColumn&quot;: {
+    &quot;submatrix&quot;: {
+      &quot;MeaResult&quot;: 153
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;id&quot;: 1,
+    &quot;flags&quot;: 1,
+    &quot;generation_parameters&quot;: 1,
+    &quot;values&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>03 Access Bulk 01 Read data from Measurement 00 Get meta of  AoLocalColumn  with  submatrix.measurement  with  id  equal 153.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoLocalColumn&quot;: {
+    &quot;submatrix.measurement&quot;: 153
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1,
+    &quot;sequence_representation&quot;: 1,
+    &quot;independent&quot;: 1,
+    &quot;global_flag&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;82&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;82&quot;,
+      &quot;attribute&quot;: &quot;Id&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;82&quot;,
+      &quot;attribute&quot;: &quot;SequenceRepresentation&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;82&quot;,
+      &quot;attribute&quot;: &quot;IndependentFlag&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;82&quot;,
+      &quot;attribute&quot;: &quot;GlobalFlag&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;81&quot;,
+        &quot;attribute&quot;: &quot;MeaResult&quot;,
+        &quot;longlongArray&quot;: {
+          &quot;values&quot;: [
+            &quot;153&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;82&quot;,
+      &quot;aidTo&quot;: &quot;81&quot;,
+      &quot;relation&quot;: &quot;SubMatrix&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;LocalColumn&quot;: {
+    &quot;SubMatrix&quot;: {
+      &quot;MeaResult&quot;: 153
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;Id&quot;: 1,
+    &quot;SequenceRepresentation&quot;: 1,
+    &quot;IndependentFlag&quot;: 1,
+    &quot;GlobalFlag&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;LocalColumn&quot;: {
+    &quot;submatrix&quot;: {
+      &quot;MeaResult&quot;: 153
+    }
+  },
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;id&quot;: 1,
+    &quot;sequence_representation&quot;: 1,
+    &quot;independent&quot;: 1,
+    &quot;global_flag&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>bug_127_$notnull.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurement&quot;: {
+    &quot;measurement_begin&quot;: {
+      &quot;$notnull&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;79&quot;,
+        &quot;attribute&quot;: &quot;MeasurementBegin&quot;,
+        &quot;operator&quot;: &quot;OP_IS_NOT_NULL&quot;
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;MeasurementBegin&quot;: {
+      &quot;$notnull&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;measurement_begin&quot;: {
+      &quot;$notnull&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>bug_127_$null.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurement&quot;: {
+    &quot;measurement_begin&quot;: {
+      &quot;$null&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;*&quot;
+    }
+  ],
+  &quot;where&quot;: [
+    {
+      &quot;condition&quot;: {
+        &quot;aid&quot;: &quot;79&quot;,
+        &quot;attribute&quot;: &quot;MeasurementBegin&quot;,
+        &quot;operator&quot;: &quot;OP_IS_NULL&quot;
+      }
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;5&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;MeasurementBegin&quot;: {
+      &quot;$null&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {
+    &quot;measurement_begin&quot;: {
+      &quot;$null&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 5
+  }
+}</pre>
+  </div>
+</section>
+
+<h2>bug_93_outer_join_must_preserve_direction.json</h2><section class="row mismatch">
+  <div class="col">
+    <h3>JAQueL query (source)</h3>
+    <pre>{
+  &quot;AoMeasurement&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;measurement_quantities:OUTER&quot;: {
+      &quot;name&quot;: 1,
+      &quot;unit:OUTER.name&quot;: 1
+    },
+    &quot;submatrices:OUTER.name&quot;: 1
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 10
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>SelectStatement (source .proto)</h3>
+    <pre>{
+  &quot;columns&quot;: [
+    {
+      &quot;aid&quot;: &quot;79&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;80&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;54&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    },
+    {
+      &quot;aid&quot;: &quot;81&quot;,
+      &quot;attribute&quot;: &quot;Name&quot;
+    }
+  ],
+  &quot;joins&quot;: [
+    {
+      &quot;aidFrom&quot;: &quot;79&quot;,
+      &quot;aidTo&quot;: &quot;80&quot;,
+      &quot;relation&quot;: &quot;MeaQuantities&quot;,
+      &quot;joinType&quot;: &quot;JT_OUTER&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;80&quot;,
+      &quot;aidTo&quot;: &quot;54&quot;,
+      &quot;relation&quot;: &quot;Unit&quot;,
+      &quot;joinType&quot;: &quot;JT_OUTER&quot;
+    },
+    {
+      &quot;aidFrom&quot;: &quot;79&quot;,
+      &quot;aidTo&quot;: &quot;81&quot;,
+      &quot;relation&quot;: &quot;SubMatrices&quot;,
+      &quot;joinType&quot;: &quot;JT_OUTER&quot;
+    }
+  ],
+  &quot;rowLimit&quot;: &quot;10&quot;
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;Name&quot;: 1,
+    &quot;MeaQuantities:OUTER&quot;: {
+      &quot;Name&quot;: 1,
+      &quot;Unit:OUTER&quot;: {
+        &quot;Name&quot;: 1
+      }
+    },
+    &quot;SubMatrices:OUTER&quot;: {
+      &quot;Name&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 10
+  }
+}</pre>
+  </div>
+  <div class="col">
+    <h3>JAQueL query (generated, base names)</h3>
+    <pre>{
+  &quot;MeaResult&quot;: {},
+  &quot;$attributes&quot;: {
+    &quot;name&quot;: 1,
+    &quot;measurement_quantities:OUTER&quot;: {
+      &quot;name&quot;: 1,
+      &quot;unit:OUTER&quot;: {
+        &quot;name&quot;: 1
+      }
+    },
+    &quot;submatrices:OUTER&quot;: {
+      &quot;name&quot;: 1
+    }
+  },
+  &quot;$options&quot;: {
+    &quot;$rowlimit&quot;: 10
+  }
+}</pre>
+  </div>
+</section>
+
+</body>
+</html>

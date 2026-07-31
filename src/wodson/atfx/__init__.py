@@ -1,6 +1,6 @@
 """wodson.atfx — ATFX reader with in-memory SQLite backend and ODS data-read API."""
 
-from ..utils._path_resolver import PathResolutionError, PathResolver
+from ..utils._file_path_resolver import FilePathResolver, PathResolutionError
 from ._atfx_file import AtfxFile
 from ._atfx_store import AtfxStore
 from ._server import CONTEXT_VAR_ATFX_FILE, AtfxServer
@@ -13,5 +13,5 @@ __all__ = [
     "AtfxStore",
     "CONTEXT_VAR_ATFX_FILE",
     "PathResolutionError",
-    "PathResolver",
+    "FilePathResolver",
 ]

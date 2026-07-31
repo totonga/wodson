@@ -1,4 +1,4 @@
-"""Tests for ASAM ODS URL path resolution (_path_resolver.py)."""
+"""Tests for ASAM ODS URL path resolution (_file_path_resolver.py)."""
 
 import platform
 from typing import Any, Literal, cast
@@ -6,44 +6,44 @@ from unittest.mock import Mock
 
 import pytest
 
-from wodson.utils._path_resolver import (
+from wodson.utils._file_path_resolver import (
+    FilePathResolver,
     InvalidFileModeError,
     InvalidFileNotationError,
     InvalidMultiVolumePathError,
     MissingContextVariableError,
-    PathResolver,
     UnknownSourceAttributeError,
     UnknownSymbolError,
 )
 
-FILE_MODE_ABSOLUTE = PathResolver.FILE_MODE_ABSOLUTE
-FILE_MODE_SINGLE_VOLUME = PathResolver.FILE_MODE_SINGLE_VOLUME
-FILE_MODE_MULTI_VOLUME = PathResolver.FILE_MODE_MULTI_VOLUME
+FILE_MODE_ABSOLUTE = FilePathResolver.FILE_MODE_ABSOLUTE
+FILE_MODE_SINGLE_VOLUME = FilePathResolver.FILE_MODE_SINGLE_VOLUME
+FILE_MODE_MULTI_VOLUME = FilePathResolver.FILE_MODE_MULTI_VOLUME
 
-FILE_NOTATION_UNC_WIN = PathResolver.FILE_NOTATION_UNC_WIN
-FILE_NOTATION_UNC_UNIX = PathResolver.FILE_NOTATION_UNC_UNIX
-FILE_NOTATION_URL = PathResolver.FILE_NOTATION_URL
+FILE_NOTATION_UNC_WIN = FilePathResolver.FILE_NOTATION_UNC_WIN
+FILE_NOTATION_UNC_UNIX = FilePathResolver.FILE_NOTATION_UNC_UNIX
+FILE_NOTATION_URL = FilePathResolver.FILE_NOTATION_URL
 
 JOIN_BEHAVIOR_DEFAULT: Literal["DEFAULT"] = cast(
     Literal["DEFAULT"],
-    PathResolver.JOIN_BEHAVIOR_DEFAULT,
+    FilePathResolver.JOIN_BEHAVIOR_DEFAULT,
 )
 JOIN_BEHAVIOR_ATTACH: Literal["ATTACH"] = cast(
     Literal["ATTACH"],
-    PathResolver.JOIN_BEHAVIOR_ATTACH,
+    FilePathResolver.JOIN_BEHAVIOR_ATTACH,
 )
 
-SOURCE_ATTR_FILENAME = PathResolver.SOURCE_ATTR_FILENAME
-SOURCE_ATTR_FLAGS_FILENAME = PathResolver.SOURCE_ATTR_FLAGS_FILENAME
-SOURCE_ATTR_LOCATION = PathResolver.SOURCE_ATTR_LOCATION
-SOURCE_ATTR_AO_LOCATION = PathResolver.SOURCE_ATTR_AO_LOCATION
+SOURCE_ATTR_FILENAME = FilePathResolver.SOURCE_ATTR_FILENAME
+SOURCE_ATTR_FLAGS_FILENAME = FilePathResolver.SOURCE_ATTR_FLAGS_FILENAME
+SOURCE_ATTR_LOCATION = FilePathResolver.SOURCE_ATTR_LOCATION
+SOURCE_ATTR_AO_LOCATION = FilePathResolver.SOURCE_ATTR_AO_LOCATION
 
-CTX_FILE_MODE = PathResolver.CTX_FILE_MODE
-CTX_FILE_NOTATION = PathResolver.CTX_FILE_NOTATION
-CTX_FILE_SYMBOLS = PathResolver.CTX_FILE_SYMBOLS
-CTX_FILE_ROOT = PathResolver.CTX_FILE_ROOT
-CTX_FILE_ROOT_EXTREF = PathResolver.CTX_FILE_ROOT_EXTREF
-CTX_FILE_ROOT_MANAGED = PathResolver.CTX_FILE_ROOT_MANAGED
+CTX_FILE_MODE = FilePathResolver.CTX_FILE_MODE
+CTX_FILE_NOTATION = FilePathResolver.CTX_FILE_NOTATION
+CTX_FILE_SYMBOLS = FilePathResolver.CTX_FILE_SYMBOLS
+CTX_FILE_ROOT = FilePathResolver.CTX_FILE_ROOT
+CTX_FILE_ROOT_EXTREF = FilePathResolver.CTX_FILE_ROOT_EXTREF
+CTX_FILE_ROOT_MANAGED = FilePathResolver.CTX_FILE_ROOT_MANAGED
 
 # ============================================================================
 # Fixtures
@@ -74,51 +74,51 @@ def _make_attribute(base_name: str) -> Mock:
 
 
 # ============================================================================
-# Tests: PathResolver._get_attribute_path_mode
+# Tests: FilePathResolver._get_attribute_path_mode
 # ============================================================================
 
 
 def test_get_source_attr_from_extref(mock_ods_attribute):
     """ExtRef datatype (15) should return EXTREF mode."""
     attr = mock_ods_attribute(base_name="some_ref", data_type=15)  # DT_EXTERNALREFERENCE
-    assert PathResolver._get_attribute_path_mode(attr) is PathResolver.AttrMode.EXTREF
+    assert FilePathResolver._get_attribute_path_mode(attr) is FilePathResolver.AttrMode.EXTREF
 
 
 def test_get_source_attr_from_ds_extref(mock_ods_attribute):
     """ExtRef datatype (16) should also return EXTREF mode."""
     attr = mock_ods_attribute(base_name="some_ref", data_type=16)
-    assert PathResolver._get_attribute_path_mode(attr) is PathResolver.AttrMode.EXTREF
+    assert FilePathResolver._get_attribute_path_mode(attr) is FilePathResolver.AttrMode.EXTREF
 
 
 def test_get_source_attr_from_filename_url(mock_ods_attribute):
     """filename_url base_name should return ROOT mode."""
     attr = mock_ods_attribute(base_name=SOURCE_ATTR_FILENAME)
-    assert PathResolver._get_attribute_path_mode(attr) is PathResolver.AttrMode.ROOT
+    assert FilePathResolver._get_attribute_path_mode(attr) is FilePathResolver.AttrMode.ROOT
 
 
 def test_get_source_attr_from_flags_filename_url(mock_ods_attribute):
     """flags_filename_url base_name should return ROOT mode."""
     attr = mock_ods_attribute(base_name=SOURCE_ATTR_FLAGS_FILENAME)
-    assert PathResolver._get_attribute_path_mode(attr) is PathResolver.AttrMode.ROOT
+    assert FilePathResolver._get_attribute_path_mode(attr) is FilePathResolver.AttrMode.ROOT
 
 
 def test_get_source_attr_from_ao_location(mock_ods_attribute):
     """ao_location base_name should return MANAGED mode."""
     attr = mock_ods_attribute(base_name=SOURCE_ATTR_AO_LOCATION)
-    assert PathResolver._get_attribute_path_mode(attr) is PathResolver.AttrMode.MANAGED
+    assert FilePathResolver._get_attribute_path_mode(attr) is FilePathResolver.AttrMode.MANAGED
 
 
 def test_get_source_attr_from_location_base_name(mock_ods_attribute):
     """location base_name should return EXTREF mode without extref datatype."""
     attr = mock_ods_attribute(base_name=SOURCE_ATTR_LOCATION, data_type=7)
-    assert PathResolver._get_attribute_path_mode(attr) is PathResolver.AttrMode.EXTREF
+    assert FilePathResolver._get_attribute_path_mode(attr) is FilePathResolver.AttrMode.EXTREF
 
 
 def test_get_source_attr_unknown_raises(mock_ods_attribute):
     """Unknown attribute should raise UnknownSourceAttributeError."""
     attr = mock_ods_attribute(base_name="unknown_attr", data_type=7)
     with pytest.raises(UnknownSourceAttributeError, match="not a recognized file attribute"):
-        PathResolver._get_attribute_path_mode(attr)
+        FilePathResolver._get_attribute_path_mode(attr)
 
 
 # ============================================================================
@@ -129,21 +129,21 @@ def test_get_source_attr_unknown_raises(mock_ods_attribute):
 def test_absolute_mode_windows_path():
     """ABSOLUTE mode returns input unchanged (Windows path)."""
     ctx = {CTX_FILE_MODE: FILE_MODE_ABSOLUTE, CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN}
-    result = PathResolver(ctx).resolve_url(r"C:\data\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"C:\data\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == r"C:\data\file.dat"
 
 
 def test_absolute_mode_unix_path():
     """ABSOLUTE mode returns input unchanged (Unix path)."""
     ctx = {CTX_FILE_MODE: FILE_MODE_ABSOLUTE, CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX}
-    result = PathResolver(ctx).resolve_url("/data/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("/data/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == "/data/file.dat"
 
 
 def test_absolute_mode_unc_path():
     """ABSOLUTE mode returns input unchanged (UNC network path)."""
     ctx = {CTX_FILE_MODE: FILE_MODE_ABSOLUTE, CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN}
-    result = PathResolver(ctx).resolve_url(r"\\server\share\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"\\server\share\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == r"\\server\share\file.dat"
 
 
@@ -160,7 +160,7 @@ def test_single_volume_filename_url_windows():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT: r"C:\data",
     }
-    result = PathResolver(ctx).resolve_url(r"measurements\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"measurements\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == r"C:\data\measurements\file.dat"
 
 
@@ -171,7 +171,7 @@ def test_single_volume_filename_url_unix():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
         CTX_FILE_ROOT: "/data",
     }
-    result = PathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == "/data/measurements/file.dat"
 
 
@@ -183,7 +183,7 @@ def test_single_volume_flags_filename_url_windows():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT: r"C:\data",
     }
-    result = PathResolver(ctx).resolve_url(r"flags\file.btf", _make_attribute(SOURCE_ATTR_FLAGS_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"flags\file.btf", _make_attribute(SOURCE_ATTR_FLAGS_FILENAME))
     assert result == r"C:\data\flags\file.btf"
 
 
@@ -195,7 +195,7 @@ def test_single_volume_location_windows():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT_EXTREF: r"C:\extref",
     }
-    result = PathResolver(ctx).resolve_url(r"refs\doc.pdf", _make_attribute(SOURCE_ATTR_LOCATION))
+    result = FilePathResolver(ctx).resolve_url(r"refs\doc.pdf", _make_attribute(SOURCE_ATTR_LOCATION))
     assert result == r"C:\extref\refs\doc.pdf"
 
 
@@ -208,7 +208,7 @@ def test_single_volume_ao_location_with_managed_windows():
         CTX_FILE_ROOT: r"C:\data",
         CTX_FILE_ROOT_MANAGED: r"C:\managed",
     }
-    result = PathResolver(ctx).resolve_url(r"ao\file.dat", _make_attribute(SOURCE_ATTR_AO_LOCATION))
+    result = FilePathResolver(ctx).resolve_url(r"ao\file.dat", _make_attribute(SOURCE_ATTR_AO_LOCATION))
     assert result == r"C:\managed\ao\file.dat"
 
 
@@ -220,44 +220,44 @@ def test_single_volume_ao_location_fallback_windows():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT: r"C:\data",
     }
-    result = PathResolver(ctx).resolve_url(r"ao\file.dat", _make_attribute(SOURCE_ATTR_AO_LOCATION))
+    result = FilePathResolver(ctx).resolve_url(r"ao\file.dat", _make_attribute(SOURCE_ATTR_AO_LOCATION))
     assert result == r"C:\data\ao\file.dat"
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows-specific test")
 def test_single_volume_resolve_url_accepts_source_mode_root_windows():
-    """resolve_url accepts PathResolver.AttrMode.ROOT directly."""
+    """resolve_url accepts FilePathResolver.AttrMode.ROOT directly."""
     ctx = {
         CTX_FILE_MODE: FILE_MODE_SINGLE_VOLUME,
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT: r"C:\data",
     }
-    result = PathResolver(ctx).resolve_url(r"measurements\file.dat", PathResolver.AttrMode.ROOT)
+    result = FilePathResolver(ctx).resolve_url(r"measurements\file.dat", FilePathResolver.AttrMode.ROOT)
     assert result == r"C:\data\measurements\file.dat"
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows-specific test")
 def test_single_volume_resolve_url_accepts_source_mode_extref_windows():
-    """resolve_url accepts PathResolver.AttrMode.EXTREF directly."""
+    """resolve_url accepts FilePathResolver.AttrMode.EXTREF directly."""
     ctx = {
         CTX_FILE_MODE: FILE_MODE_SINGLE_VOLUME,
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT_EXTREF: r"C:\extref",
     }
-    result = PathResolver(ctx).resolve_url(r"refs\doc.pdf", PathResolver.AttrMode.EXTREF)
+    result = FilePathResolver(ctx).resolve_url(r"refs\doc.pdf", FilePathResolver.AttrMode.EXTREF)
     assert result == r"C:\extref\refs\doc.pdf"
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows-specific test")
 def test_single_volume_resolve_url_accepts_source_mode_managed_windows():
-    """resolve_url accepts PathResolver.AttrMode.MANAGED directly."""
+    """resolve_url accepts FilePathResolver.AttrMode.MANAGED directly."""
     ctx = {
         CTX_FILE_MODE: FILE_MODE_SINGLE_VOLUME,
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT: r"C:\data",
         CTX_FILE_ROOT_MANAGED: r"C:\managed",
     }
-    result = PathResolver(ctx).resolve_url(r"ao\file.dat", PathResolver.AttrMode.MANAGED)
+    result = FilePathResolver(ctx).resolve_url(r"ao\file.dat", FilePathResolver.AttrMode.MANAGED)
     assert result == r"C:\managed\ao\file.dat"
 
 
@@ -269,7 +269,7 @@ def test_single_volume_missing_root_raises():
         # Missing FILE_ROOT
     }
     with pytest.raises(MissingContextVariableError, match="FILE_ROOT"):
-        PathResolver(ctx).resolve_url(r"file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+        FilePathResolver(ctx).resolve_url(r"file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
 
 
 def test_single_volume_missing_extref_root_raises():
@@ -280,7 +280,7 @@ def test_single_volume_missing_extref_root_raises():
         CTX_FILE_ROOT: r"C:\data",
     }
     with pytest.raises(MissingContextVariableError, match="FILE_ROOT_EXTREF"):
-        PathResolver(ctx).resolve_url(r"refs\doc.pdf", _make_attribute(SOURCE_ATTR_LOCATION))
+        FilePathResolver(ctx).resolve_url(r"refs\doc.pdf", _make_attribute(SOURCE_ATTR_LOCATION))
 
 
 # ============================================================================
@@ -297,7 +297,7 @@ def test_multi_volume_with_symbol_windows():
         CTX_FILE_SYMBOLS: "ROOT,BACKUP",
         "ROOT": r"C:\primary",
     }
-    result = PathResolver(ctx).resolve_url(r"$(ROOT)measurements\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"$(ROOT)measurements\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == r"C:\primary\measurements\file.dat"
 
 
@@ -309,7 +309,7 @@ def test_multi_volume_with_symbol_unix():
         CTX_FILE_SYMBOLS: "ROOT,BACKUP",
         "ROOT": "/primary",
     }
-    result = PathResolver(ctx).resolve_url("$(ROOT)measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("$(ROOT)measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == "/primary/measurements/file.dat"
 
 
@@ -322,7 +322,7 @@ def test_multi_volume_multiple_symbols_windows():
         CTX_FILE_SYMBOLS: "ROOT,BACKUP,TEMP",
         "BACKUP": r"D:\backup",
     }
-    result = PathResolver(ctx).resolve_url(r"$(BACKUP)archive\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"$(BACKUP)archive\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == r"D:\backup\archive\file.dat"
 
 
@@ -333,7 +333,7 @@ def test_multi_volume_no_symbol_returns_unchanged():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_SYMBOLS: "ROOT",
     }
-    result = PathResolver(ctx).resolve_url(r"C:\absolute\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"C:\absolute\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     # Should be normalized but not resolved
     assert "file.dat" in result
 
@@ -346,7 +346,7 @@ def test_multi_volume_unknown_symbol_raises():
         CTX_FILE_SYMBOLS: "ROOT",
     }
     with pytest.raises(UnknownSymbolError, match="Unknown symbol 'UNKNOWN'"):
-        PathResolver(ctx).resolve_url(r"$(UNKNOWN)file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+        FilePathResolver(ctx).resolve_url(r"$(UNKNOWN)file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
 
 
 def test_multi_volume_symbol_lookup_is_case_insensitive_and_trims_symbols():
@@ -357,7 +357,7 @@ def test_multi_volume_symbol_lookup_is_case_insensitive_and_trims_symbols():
         CTX_FILE_SYMBOLS: " root , backup ",
         "root": r"D:\data",
     }
-    result = PathResolver(ctx).resolve_url(r"$(RoOt)folder\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"$(RoOt)folder\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == r"D:\data\folder\file.dat"
 
 
@@ -369,7 +369,7 @@ def test_multi_volume_missing_closing_paren_raises():
         CTX_FILE_SYMBOLS: "ROOT",
     }
     with pytest.raises(InvalidMultiVolumePathError, match="missing closing paren"):
-        PathResolver(ctx).resolve_url(r"$(ROOTfile.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+        FilePathResolver(ctx).resolve_url(r"$(ROOTfile.dat", _make_attribute(SOURCE_ATTR_FILENAME))
 
 
 def test_multi_volume_symbol_not_in_context_raises():
@@ -381,7 +381,7 @@ def test_multi_volume_symbol_not_in_context_raises():
         # ROOT not defined in context
     }
     with pytest.raises(MissingContextVariableError, match="not defined in context"):
-        PathResolver(ctx).resolve_url(r"$(ROOT)file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+        FilePathResolver(ctx).resolve_url(r"$(ROOT)file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
 
 
 def test_multi_volume_empty_symbol_root_raises():
@@ -393,7 +393,7 @@ def test_multi_volume_empty_symbol_root_raises():
         "ROOT": "",
     }
     with pytest.raises(MissingContextVariableError, match="not defined in context"):
-        PathResolver(ctx).resolve_url(r"$(ROOT)file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+        FilePathResolver(ctx).resolve_url(r"$(ROOT)file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
 
 
 # ============================================================================
@@ -410,7 +410,7 @@ def test_normalize_unc_win_on_windows():
         CTX_FILE_ROOT: r"C:\data",
     }
     # Input with mixed separators
-    result = PathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert "\\" in result
     assert "/" not in result
 
@@ -424,7 +424,7 @@ def test_normalize_unc_win_on_unix():
         CTX_FILE_ROOT: "/data",
     }
     # FILE_NOTATION specifies the separator convention, not the platform.
-    result = PathResolver(ctx).resolve_url(r"measurements\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"measurements\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert "\\" in result
     assert "/" not in result
 
@@ -437,7 +437,7 @@ def test_normalize_unc_unix_on_windows():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
         CTX_FILE_ROOT: r"C:\data",
     }
-    result = PathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     # FILE_NOTATION specifies the separator convention, not the platform
     # UNC_UNIX means use forward slashes, even on Windows
     assert "/" in result
@@ -452,7 +452,7 @@ def test_normalize_unc_unix_on_unix():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
         CTX_FILE_ROOT: "/data",
     }
-    result = PathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert "/" in result
     assert "\\" not in result
 
@@ -464,7 +464,7 @@ def test_normalize_url_windows():
         CTX_FILE_NOTATION: FILE_NOTATION_URL,
         CTX_FILE_ROOT: "C:/data",
     }
-    result = PathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result.startswith("file:///")
     assert "/" in result
     assert "\\" not in result
@@ -477,7 +477,7 @@ def test_normalize_url_unix():
         CTX_FILE_NOTATION: FILE_NOTATION_URL,
         CTX_FILE_ROOT: "/data",
     }
-    result = PathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result.startswith("file:///")
     assert "/" in result
 
@@ -488,7 +488,7 @@ def test_normalize_url_unc_path():
         CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
         CTX_FILE_NOTATION: FILE_NOTATION_URL,
     }
-    result = PathResolver(ctx).resolve_url("//server/share/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("//server/share/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result.startswith("file://")
     assert "server" in result
 
@@ -506,7 +506,7 @@ def test_no_double_separators_windows():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT: "C:\\data\\",  # Trailing separator
     }
-    result = PathResolver(ctx).resolve_url(r"\measurements\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"\measurements\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == r"C:\data\measurements\file.dat"
 
 
@@ -517,7 +517,7 @@ def test_no_double_separators_unix():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
         CTX_FILE_ROOT: "/data/",  # Trailing separator
     }
-    result = PathResolver(ctx).resolve_url("/measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("/measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     # Should not have // (except at start for absolute paths)
     assert "//" not in result[1:]  # Skip first char
 
@@ -529,7 +529,7 @@ def test_no_double_separators_url():
         CTX_FILE_NOTATION: FILE_NOTATION_URL,
         CTX_FILE_ROOT: "/data/",
     }
-    result = PathResolver(ctx).resolve_url("//measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url("//measurements/file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     # Should have file:/// but not more slashes
     assert result.startswith("file:///")
     # After file:///, no double slashes
@@ -539,7 +539,7 @@ def test_no_double_separators_url():
 
 def test_remove_double_separators_url_without_path_keeps_prefix() -> None:
     """A bare file:// URL is returned unchanged."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
             CTX_FILE_NOTATION: FILE_NOTATION_URL,
@@ -550,7 +550,7 @@ def test_remove_double_separators_url_without_path_keeps_prefix() -> None:
 
 def test_remove_double_separators_url_without_prefix_collapses_slashes() -> None:
     """URL notation collapses duplicate slashes without a file:// prefix."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
             CTX_FILE_NOTATION: FILE_NOTATION_URL,
@@ -561,7 +561,7 @@ def test_remove_double_separators_url_without_prefix_collapses_slashes() -> None
 
 def test_join_path_components_trims_only_join_boundary():
     """Join helper removes redundant separators at the join boundary."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
             CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
@@ -573,7 +573,7 @@ def test_join_path_components_trims_only_join_boundary():
 
 def test_join_path_components_empty_root_returns_path() -> None:
     """Join helper returns the path unchanged when the root is empty."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
             CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
@@ -584,7 +584,7 @@ def test_join_path_components_empty_root_returns_path() -> None:
 
 def test_join_path_components_empty_path_returns_root() -> None:
     """Join helper returns the root unchanged when the path is empty."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
             CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
@@ -595,7 +595,7 @@ def test_join_path_components_empty_path_returns_root() -> None:
 
 def test_join_with_separator_empty_normalized_root_returns_join_separator() -> None:
     """Join helper preserves one leading separator when the root is only separators."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
             CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
@@ -606,7 +606,7 @@ def test_join_with_separator_empty_normalized_root_returns_join_separator() -> N
 
 def test_join_with_separator_empty_normalized_path_returns_normalized_root() -> None:
     """Join helper returns the normalized root when the path is only separators."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
             CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
@@ -622,7 +622,7 @@ def test_unc_path_preserves_leading_double_backslash():
         CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
     }
-    result = PathResolver(ctx).resolve_url(r"\\server\share\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+    result = FilePathResolver(ctx).resolve_url(r"\\server\share\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result.startswith("\\\\")
     # But should not have triple or more
     assert "\\\\\\" not in result
@@ -637,28 +637,28 @@ def test_missing_file_mode_raises():
     """Missing FILE_MODE raises MissingContextVariableError."""
     ctx = {CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN}
     with pytest.raises(MissingContextVariableError, match="FILE_MODE"):
-        PathResolver(ctx).resolve_url("file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+        FilePathResolver(ctx).resolve_url("file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
 
 
 def test_invalid_file_mode_raises():
     """Invalid FILE_MODE raises InvalidFileModeError."""
     ctx = {CTX_FILE_MODE: "INVALID", CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN}
     with pytest.raises(InvalidFileModeError, match="Invalid FILE_MODE"):
-        PathResolver(ctx).resolve_url("file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+        FilePathResolver(ctx).resolve_url("file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
 
 
 def test_missing_file_notation_raises():
     """Missing FILE_NOTATION raises MissingContextVariableError."""
     ctx = {CTX_FILE_MODE: FILE_MODE_ABSOLUTE}
     with pytest.raises(MissingContextVariableError, match="FILE_NOTATION"):
-        PathResolver(ctx).resolve_url("file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+        FilePathResolver(ctx).resolve_url("file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
 
 
 def test_invalid_file_notation_raises():
     """Invalid FILE_NOTATION raises InvalidFileNotationError."""
     ctx = {CTX_FILE_MODE: FILE_MODE_ABSOLUTE, CTX_FILE_NOTATION: "INVALID"}
     with pytest.raises(InvalidFileNotationError, match="Invalid FILE_NOTATION"):
-        PathResolver(ctx).resolve_url("file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
+        FilePathResolver(ctx).resolve_url("file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
 
 
 def test_invalid_source_attr_raises():
@@ -670,7 +670,7 @@ def test_invalid_source_attr_raises():
     attr.data_type = 7
     attr.name = "test"
     with pytest.raises(UnknownSourceAttributeError, match="not a recognized file attribute"):
-        PathResolver(ctx).resolve_url("file.dat", attr)
+        FilePathResolver(ctx).resolve_url("file.dat", attr)
 
 
 # ============================================================================
@@ -679,7 +679,7 @@ def test_invalid_source_attr_raises():
 
 
 def test_non_dict_context_raises_type_error() -> None:
-    """PathResolver only accepts plain dict context values."""
+    """FilePathResolver only accepts plain dict context values."""
 
     class MockContext:
         def context_read(self) -> dict[str, str]:
@@ -689,13 +689,13 @@ def test_non_dict_context_raises_type_error() -> None:
             }
 
     with pytest.raises(TypeError, match="dict\\[str, str\\]"):
-        PathResolver(cast(dict[str, str], MockContext()))
+        FilePathResolver(cast(dict[str, str], MockContext()))
 
 
 def test_invalid_join_behavior_raises_value_error() -> None:
-    """PathResolver rejects unsupported join_behavior values."""
+    """FilePathResolver rejects unsupported join_behavior values."""
     with pytest.raises(ValueError, match="Invalid join_behavior"):
-        PathResolver(
+        FilePathResolver(
             {
                 CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
                 CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
@@ -718,7 +718,7 @@ def test_real_world_atfx_windows():
         CTX_FILE_ROOT: r"C:\Measurements\Project1",
         CTX_FILE_ROOT_EXTREF: r"C:\References",
     }
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
 
     # Component file
     comp_result = resolver.resolve_url(r"SubFolder\data.dat", _make_attribute(SOURCE_ATTR_FILENAME))
@@ -738,7 +738,7 @@ def test_real_world_atfx_unix():
         CTX_FILE_ROOT: "/home/user/measurements/project1",
         CTX_FILE_ROOT_EXTREF: "/home/user/references",
     }
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
 
     # Component file
     comp_result = resolver.resolve_url("subfolder/data.dat", _make_attribute(SOURCE_ATTR_FILENAME))
@@ -750,34 +750,34 @@ def test_real_world_atfx_unix():
 
 
 # ============================================================================
-# Tests: PathResolver class
+# Tests: FilePathResolver class
 # ============================================================================
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows-specific test")
-def test_path_resolver_class_single_volume():
-    """PathResolver class resolves paths correctly."""
+def test_file_path_resolver_class_single_volume():
+    """FilePathResolver class resolves paths correctly."""
     ctx = {
         CTX_FILE_MODE: FILE_MODE_SINGLE_VOLUME,
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT: r"C:\data",
     }
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
     result = resolver.resolve_url("measurements\\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == r"C:\data\measurements\file.dat"
 
 
-def test_path_resolver_class_absolute():
-    """PathResolver class handles ABSOLUTE mode."""
+def test_file_path_resolver_class_absolute():
+    """FilePathResolver class handles ABSOLUTE mode."""
     ctx = {CTX_FILE_MODE: FILE_MODE_ABSOLUTE, CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN}
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
     result = resolver.resolve_url("C:\\data\\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == "C:\\data\\file.dat"
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows-specific test")
-def test_path_resolver_class_multi_volume():
-    """PathResolver class handles MULTI_VOLUME mode."""
+def test_file_path_resolver_class_multi_volume():
+    """FilePathResolver class handles MULTI_VOLUME mode."""
     ctx = {
         CTX_FILE_MODE: FILE_MODE_MULTI_VOLUME,
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
@@ -785,18 +785,18 @@ def test_path_resolver_class_multi_volume():
         "DATA": r"C:\primary",
         "BACKUP": r"D:\secondary",
     }
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
     result = resolver.resolve_url("$(DATA)measurements\\file.dat", _make_attribute(SOURCE_ATTR_FILENAME))
     assert result == r"C:\primary\measurements\file.dat"
 
 
-def test_path_resolver_case_insensitive_context():
-    """PathResolver handles case-insensitive keys, values, and source attrs."""
+def test_file_path_resolver_case_insensitive_context():
+    """FilePathResolver handles case-insensitive keys, values, and source attrs."""
     ctx = {
         "file_mode": "absolute",
         "File_Notation": "unc_win",
     }
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
     result = resolver.resolve_url("C:\\data\\file.dat", _make_attribute("FILENAME_URL"))
     assert result == "C:\\data\\file.dat"
 
@@ -816,7 +816,7 @@ def test_path_resolver_case_insensitive_context():
 )
 def test_join_behavior_default_matrix(root: str, path: str, expected: str) -> None:
     """DEFAULT join behavior inserts a separator between bare segments."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
             CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
@@ -840,7 +840,7 @@ def test_join_behavior_default_matrix(root: str, path: str, expected: str) -> No
 )
 def test_join_behavior_second_matrix(root: str, path: str, expected: str) -> None:
     """ATTACH join behavior skips separator insertion for bare segments only."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_ABSOLUTE,
             CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
@@ -852,7 +852,7 @@ def test_join_behavior_second_matrix(root: str, path: str, expected: str) -> Non
 
 def test_single_volume_second_join_behavior_changes_public_result() -> None:
     """ATTACH join behavior is reflected by the public resolve_url API."""
-    resolver = PathResolver(
+    resolver = FilePathResolver(
         {
             CTX_FILE_MODE: FILE_MODE_SINGLE_VOLUME,
             CTX_FILE_NOTATION: FILE_NOTATION_UNC_UNIX,
@@ -870,10 +870,10 @@ def test_single_volume_second_join_behavior_changes_public_result() -> None:
 
 
 def test_resolve_urls_absolute_mode(mock_ods_attribute):
-    """PathResolver.resolve_urls resolves multiple URLs in ABSOLUTE mode."""
+    """FilePathResolver.resolve_urls resolves multiple URLs in ABSOLUTE mode."""
     attr = mock_ods_attribute(base_name=SOURCE_ATTR_FILENAME)
     ctx = {CTX_FILE_MODE: FILE_MODE_ABSOLUTE, CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN}
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
     urls = ["C:\\data\\file1.dat", "C:\\data\\file2.dat", "C:\\data\\file3.dat"]
     results = resolver.resolve_urls(urls, attr)
     assert results == ["C:\\data\\file1.dat", "C:\\data\\file2.dat", "C:\\data\\file3.dat"]
@@ -881,14 +881,14 @@ def test_resolve_urls_absolute_mode(mock_ods_attribute):
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows-specific test")
 def test_resolve_urls_single_volume(mock_ods_attribute):
-    """PathResolver.resolve_urls resolves multiple URLs in SINGLE_VOLUME mode."""
+    """FilePathResolver.resolve_urls resolves multiple URLs in SINGLE_VOLUME mode."""
     attr = mock_ods_attribute(base_name=SOURCE_ATTR_FILENAME)
     ctx = {
         CTX_FILE_MODE: FILE_MODE_SINGLE_VOLUME,
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT: r"C:\data",
     }
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
     urls = ["file1.dat", "subdir\\file2.dat", "file3.dat"]
     results = resolver.resolve_urls(urls, attr)
     assert results == [
@@ -899,19 +899,19 @@ def test_resolve_urls_single_volume(mock_ods_attribute):
 
 
 def test_resolve_urls_empty_list(mock_ods_attribute):
-    """PathResolver.resolve_urls handles empty list."""
+    """FilePathResolver.resolve_urls handles empty list."""
     attr = mock_ods_attribute(base_name=SOURCE_ATTR_FILENAME)
     ctx = {CTX_FILE_MODE: FILE_MODE_ABSOLUTE, CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN}
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
     results = resolver.resolve_urls([], attr)
     assert results == []
 
 
-def test_resolve_urls_with_path_resolver_class(mock_ods_attribute):
-    """PathResolver.resolve_urls works correctly."""
+def test_resolve_urls_with_file_path_resolver_class(mock_ods_attribute):
+    """FilePathResolver.resolve_urls works correctly."""
     attr = mock_ods_attribute(base_name=SOURCE_ATTR_FILENAME)
     ctx = {CTX_FILE_MODE: FILE_MODE_ABSOLUTE, CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN}
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
     urls = ["C:\\data\\file1.dat", "C:\\data\\file2.dat"]
     results = resolver.resolve_urls(urls, attr)
     assert results == ["C:\\data\\file1.dat", "C:\\data\\file2.dat"]
@@ -925,9 +925,9 @@ def test_resolve_urls_accepts_source_mode_directly():
         CTX_FILE_NOTATION: FILE_NOTATION_UNC_WIN,
         CTX_FILE_ROOT: r"C:\data",
     }
-    resolver = PathResolver(ctx)
+    resolver = FilePathResolver(ctx)
     urls = ["file1.dat", r"subdir\file2.dat"]
-    results = resolver.resolve_urls(urls, PathResolver.AttrMode.ROOT)
+    results = resolver.resolve_urls(urls, FilePathResolver.AttrMode.ROOT)
     assert results == [
         r"C:\data\file1.dat",
         r"C:\data\subdir\file2.dat",

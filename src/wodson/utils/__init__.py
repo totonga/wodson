@@ -1,3 +1,3 @@
-from ._path_resolver import PathResolver
+from ._file_path_resolver import FilePathResolver
 
-__all__ = ["PathResolver"]
+__all__ = ["FilePathResolver"]

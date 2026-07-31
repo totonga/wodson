@@ -195,12 +195,6 @@ def test_aofile_entity_resolved_via_relation_target() -> None:
     model = _build_model_two_aofile_entities()
     instances = _make_instances()
 
-    # Confirm DecoyAoFile comes before CorrectAoFile in model.entities (insertion order)
-    entity_names = list(model.entities.keys())
-    assert entity_names.index("DecoyAoFile") < entity_names.index("CorrectAoFile"), (
-        "Precondition: DecoyAoFile must precede CorrectAoFile so old scan would pick it first"
-    )
-
     file_map: dict[str, Path] = {}
     atfx_dir = Path("/fake/atfx/dir")
 

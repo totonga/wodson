@@ -60,7 +60,7 @@ from wodson.atfx import AtfxStore
 
 # Context manager (recommended)
 with AtfxStore("measurement.atfx") as store:
-    model = store.model()       # ods.Model
+    model = store.model()  # ods.Model
     ...
     # file is closed on exit
 
@@ -100,7 +100,7 @@ with AtfxStore("measurement.atfx") as store:
     # Select all columns
     stmt = ods.SelectStatement()
     stmt.columns.add(aid=mea.aid, attribute="*")
-    result = store.data_read(stmt)   # ods.DataMatrices
+    result = store.data_read(stmt)  # ods.DataMatrices
 
     for matrix in result.matrices:
         print(f"Entity: {matrix.name}")
@@ -248,7 +248,7 @@ from wodson.atfx import AtfxSession
 
 with AtfxSession(default_file="path/to/file.atfx") as session:
     with ConI(
-        url=session.url,       # "http://wodson.local" — no real HTTP
+        url=session.url,  # "http://wodson.local" — no real HTTP
         auth=None,
         custom_session=session,
     ) as con:
@@ -353,7 +353,7 @@ from wodson.atfx import CONTEXT_VAR_ATFX_FILE
 
 with ConI(
     url="http://127.0.0.1:8080",
-    auth=None,                                              # no auth required
+    auth=None,  # no auth required
     context_variables={CONTEXT_VAR_ATFX_FILE: "/path/to/file.atfx"},
     load_model=False,
 ) as con:
@@ -365,6 +365,7 @@ with ConI(
 
     # Low-level SelectStatement
     import odsbox.proto.ods_pb2 as ods
+
     mea = model.entities["Measurement"]
     stmt = ods.SelectStatement()
     stmt.columns.add(aid=mea.aid, attribute="*")
