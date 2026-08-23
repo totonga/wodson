@@ -8,6 +8,7 @@ import numpy as np
 import odsbox.proto.ods_pb2 as ods
 import pandas as pd
 from odsbox.model_cache import ModelCache
+from odsbox.asam_time import from_pd_timestamp
 
 from ._resolve import resolve_entity_and_columns
 
@@ -112,8 +113,13 @@ def _infer_ods_type(series: pd.Series[Any]) -> int:
 
 def _write_scalar(column: Any, val: Any, data_type: int) -> None:
     """Append one non-null scalar *val* to the appropriate protobuf array."""
-    if data_type in _STR_LIKE:
+    if data_type == _DT_STRING:
         column.string_array.values.append(str(val))
+    elif data_type == _DT_DATE:
+        if isinstance(val, str):
+            column.string_array.values.append(val)
+        else: 
+            column.string_array.values.append(from_pd_timestamp(val))
     elif data_type in _INT_LIKE:
         column.long_array.values.append(int(val))
     elif data_type == _DT_LONGLONG:
@@ -298,9 +304,9 @@ def _matrix_row_count(matrix: ods.DataMatrix) -> int | None:
 
 
 def dataframe_to_datamatrix(
-    df: pd.DataFrame,
+    df_or_dict: pd.DataFrame | dict[str, list[Any]],
     model_cache: ModelCache,
-    entity_name: str | None = None,
+    entity: str | ods.Model.Entity | None = None,
     *,
     name_separator: str = ".",
     data_type_hints: dict[str, int] | None = None,
@@ -318,11 +324,11 @@ def dataframe_to_datamatrix(
     aligned.
 
     Args:
-        df:              Source DataFrame.
+        df_or_dict:      Source DataFrame or dictionary to generate the DataMatrix.
         model_cache:     :class:`~odsbox.model_cache.ModelCache` wrapping the
                          ODS application model.  Provides case-insensitive
                          entity/attribute lookup by application or base name.
-        entity_name:     Application or base name of the ODS entity.  When
+        entity:          Application or base name of the ODS entity.  When
                          provided, wins over any ``Entity.`` prefix in the
                          column names.
         name_separator:  Separator used to split ``'Entity.Attribute'`` names.
@@ -333,13 +339,18 @@ def dataframe_to_datamatrix(
         ``ods.DataMatrix`` with matrix metadata and one ``Column`` per
         DataFrame column.
     """
+    if isinstance(df_or_dict, dict):
+        df = pd.DataFrame(df_or_dict)
+    else: 
+        df = df_or_dict
+
     col_names = list(df.columns)
-    entity, resolved = resolve_entity_and_columns(col_names, model_cache, entity_name, name_separator)
+    entity_obj, resolved = resolve_entity_and_columns(col_names, model_cache, entity.name if isinstance(entity, ods.Model.Entity) else entity, name_separator)
 
     matrix = ods.DataMatrix()
-    matrix.name = entity.name
-    matrix.base_name = entity.base_name
-    matrix.aid = entity.aid
+    matrix.name = entity_obj.name
+    matrix.base_name = entity_obj.base_name
+    matrix.aid = entity_obj.aid
 
     for df_col, (attr_name, attr_base_name, model_dt) in zip(col_names, resolved):
         series: pd.Series[Any] = df[df_col]
@@ -350,7 +361,14 @@ def dataframe_to_datamatrix(
         column.base_name = attr_base_name
         column.data_type = data_type  # type: ignore[assignment]
 
-        _fill_normal_column(column, series, data_type)
+        if data_type != _DT_UNKNOWN:
+            _fill_normal_column(column, series, data_type)
+            if column.is_null and not any(column.is_null):
+                del column.is_null[:]
+        else:
+            _fill_unknown_array_column(column, series)
+            if column.is_null and not any(column.is_null):
+                del column.is_null[:]
 
     return matrix
 

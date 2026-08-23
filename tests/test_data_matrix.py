@@ -225,7 +225,7 @@ def test_dataframe_to_datamatrix_metadata(simple_model: ModelCache) -> None:
 
 def test_dataframe_to_datamatrix_explicit_entity(simple_model: ModelCache) -> None:
     df = pd.DataFrame({"Id": [10, 20], "Name": ["x", "y"]})
-    matrix = dataframe_to_datamatrix(df, simple_model, entity_name="Measurement")
+    matrix = dataframe_to_datamatrix(df, simple_model, entity_obj="Measurement")
     assert matrix.aid == 10
     assert list(matrix.columns[0].longlong_array.values) == [10, 20]
 
@@ -478,7 +478,7 @@ def test_data_type_hint_overrides_model(simple_model: ModelCache) -> None:
     col = dataframe_to_datamatrix(
         df,
         simple_model,
-        entity_name="Measurement",
+        entity_obj="Measurement",
         data_type_hints={"Id": ods.DataTypeEnum.DT_LONG},
     ).columns[0]
     assert col.data_type == ods.DataTypeEnum.DT_LONG
@@ -491,7 +491,7 @@ def test_data_type_hint_overrides_inferred(simple_model: ModelCache) -> None:
     col = dataframe_to_datamatrix(
         df,
         simple_model,
-        entity_name="Measurement",
+        entity_obj="Measurement",
         data_type_hints={"Values": ods.DataTypeEnum.DT_LONG},
     ).columns[0]
     assert col.data_type == ods.DataTypeEnum.DT_LONG

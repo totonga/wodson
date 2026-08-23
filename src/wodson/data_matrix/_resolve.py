@@ -86,9 +86,12 @@ def resolve_entity_and_columns(
                 "All columns must belong to the same entity."
             )
 
-        # ModelCache.attribute() raises ValueError with suggestions when not found
-        attr = model_cache.attribute(entity, attr_lookup)
-        resolved_attrs.append((attr.name, attr.base_name, int(attr.data_type)))
+        attr: ods.Model.Attribute | None = model_cache.attribute_no_throw(entity, attr_lookup)
+        if attr is not None:
+            resolved_attrs.append((attr.name, attr.base_name, int(attr.data_type)))
+        else:
+            rel = model_cache.relation(entity, attr_lookup)
+            resolved_attrs.append((rel.name, rel.base_name, int(ods.DT_LONGLONG)))
 
     assert entity is not None  # satisfied: columns is non-empty
     return entity, resolved_attrs
